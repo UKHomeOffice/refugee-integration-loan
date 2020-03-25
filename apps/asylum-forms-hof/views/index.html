@@ -1,0 +1,30 @@
+{{<partials-page}}
+{{$page-content}}
+<p>{{#t}}pages.index.text1{{/t}}</p>
+<p>{{#t}}pages.index.text2{{/t}}</p>
+<ul class="govuk-list govuk-list--bullet">
+    <li>{{#t}}pages.index.bullet1{{/t}}</li>
+    <li>{{#t}}pages.index.bullet2{{/t}}</li>
+    <li>{{#t}}pages.index.bullet3{{/t}}</li>
+</ul>
+<p>{{#t}}pages.index.applicationTime{{/t}}</p>
+
+<input type="submit" class="button govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8" value="{{#t}}pages.index.start{{/t}}" data-module="govuk-button"/>
+
+<details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">
+         {{#t}}pages.index.getHelp{{/t}}
+        </span>
+    </summary>
+    <div class="govuk-details__text">
+        <p>{{#t}}pages.index.getHelpText1{{/t}}</p>
+        <p>{{#t}}pages.index.getHelpText2{{/t}}</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>{{#t}}pages.index.getHelpContact1{{/t}}</li>
+            <li>{{#t}}pages.index.getHelpContact2{{/t}}</li>
+        </ul>
+    </div>
+</details>
+{{/page-content}}
+{{/partials-page}}

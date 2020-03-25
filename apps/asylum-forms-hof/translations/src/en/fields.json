@@ -1,0 +1,224 @@
+{
+  "joint": {
+    "legend": "Are you applying for a joint loan with your partner?",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "refugeeDate": {
+    "label": "What date were you granted refugee or humanitarian protection status?",
+    "hint": "You can find this date on your biometric residence permit (BRP)."
+  },
+  "employmentStatus": {
+    "legend": "What is your employment status?",
+    "options": {
+      "unemployed": {
+        "label": "Not employed (on universal credit)"
+      },
+      "work_part_time": {
+        "label": "Work part-time"
+      },
+      "work_full_time": {
+        "label": "Work full-time"
+      },
+      "self_employed": {
+        "label": "Self-employed"
+      },
+      "retired": {
+        "label": "Retired"
+      },
+      "full_time_student": {
+        "label": "Full-time student"
+      }
+    }
+  },
+  "fullName": {
+    "label": "Full name"
+  },
+  "dateOfBirth": {
+    "label": "Date of Birth",
+    "hint": "For example, 31 3 1980"
+  },
+  "brpNumber": {
+    "label": "Biometric residence permit (BRP) number",
+    "hint": "For example, ‘RE1234567’."
+  },
+  "niNumber": {
+    "label": "National Insurance number",
+    "hint": "You can find this on the back of your biometric residency permit (BRP). For example, ‘AB 12 34 56 C’."
+  },
+  "homeOfficeReference": {
+    "label": "Home Office reference number",
+    "hint": "You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'. For example, ‘A1234567’."
+  },
+  "building": {
+    "label": "Building and street"
+  },
+  "street": {
+    "label": " "
+  },
+  "townOrCity": {
+    "label": "Town or city"
+  },
+  "county": {
+    "label": "County"
+  },
+  "postcode": {
+    "label": "Postcode"
+  },
+  "incomeTypes": {
+    "legend": " ",
+    "hint": "Select all options that are relevant to you.",
+    "options": {
+      "salary": {
+        "label": "Salary"
+      },
+      "universal_credit": {
+        "label": "Universal credit"
+      },
+      "child_maintenance_or_support": {
+        "label": "Child maintenance or support"
+      },
+      "other": {
+        "label": "Other"
+      }
+    }
+  },
+  "outgoingTypes": {
+    "legend": " ",
+    "hint": "Select all options that are relevant to you.",
+    "options": {
+      "rent": {
+        "label": "Rent"
+      },
+      "household_bills": {
+        "label": "Utility (household) bills"
+      },
+      "food_toiletries_cleaning_supplies": {
+        "label": "Food, toiletries and cleaning supplies"
+      },
+      "mobile_phone": {
+        "label": "Mobile phone"
+      },
+      "travel": {
+        "label": "Travel/fares"
+      },
+      "clothing_and_footwear": {
+        "label": "Clothing and footwear"
+      },
+      "other": {
+        "label": "Other"
+      }
+    }
+  },
+  "debts": {
+    "legend": " ",
+    "hint": "This includes universal credit advance payment, credit card debt and loans.",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "savings": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "purposeTypes": {
+    "legend": " ",
+    "hint": "Select all options that are relevant to you.",
+    "options": {
+      "housing": {
+        "label": "Housing",
+        "hint": "Deposit, rent payment or moving costs."
+      },
+      "essential_items": {
+        "label": "Essential items",
+        "hint": "For example, furniture, fridge, curtains or carpets."
+      },
+      "basic_living_costs": {
+        "label": "Basic living costs",
+        "hint": "For example, food, household bills or travel within the UK."
+      },
+      "training_or_retraining": {
+        "label": "Training or retraining"
+      },
+      "work_clothing_and_equipment": {
+        "label": "Work clothing and equipment"
+      }
+    }
+  },
+  "previouslyHadIntegrationLoan": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "paymentType": {
+    "legend": " ",
+    "options": {
+      "bank_account": {
+        "label": "Bank account",
+        "hint": "You’ll already have a bank account open in your name."
+      },
+      "aspen_card": {
+        "label": "ASPEN card",
+        "hint": "You’ll have an ASPEN card and received Asylum support."
+      }
+    }
+  },
+  "aspenNumber": {
+    "label": "ASPEN card number",
+    "hint": "This is a 12 digit number on the front of your ASPEN card."
+  },
+  "accountName": {
+    "label": "Name on the account"
+  },
+  "sortCode": {
+    "label": "Sort code",
+    "hint": "Must be 6 digits long"
+  },
+  "accountNumber": {
+    "label": "Account number",
+    "hint": "Must be between 6 and 8 digits long"
+  },
+  "rollNumber": {
+    "label": "Building society roll number (if you have one)",
+    "hint": "You can find it on your card, statement or passbook"
+  },
+  "contactTypes": {
+    "legend": "We will need to contact you to let you know the result of your application.",
+    "hint": "Select all options that are relevant to you.",
+    "options": {
+      "email": {
+        "label": "Email"
+      },
+      "text_message": {
+        "label": "Text message"
+      },
+      "post": {
+        "label": "Post"
+      }
+    }
+  }
+}

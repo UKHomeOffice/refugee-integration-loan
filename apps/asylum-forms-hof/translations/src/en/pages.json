@@ -1,0 +1,83 @@
+{
+  "index": {
+    "header": "Apply for a refugee integration loan",
+    "text1": "If you are a refugee or have been given humanitarian protection, you might be able to apply for a loan of up to £1000 to help you integrate into UK society.",
+    "text2": "To apply, you will need your:",
+    "bullet1": "biometric residence permit (BRP)",
+    "bullet2": "bank account or ASPEN card details",
+    "bullet3": "Home Office reference number",
+    "applicationTime": "Applying takes around 10 minutes.",
+    "getHelp": "Get help completing this application",
+    "getHelpText1": "Your local refugee community organisation can help you with your application and filling in the form.",
+    "getHelpText2": "You can also contact the integration loan team:",
+    "getHelpContact1": "Email: integrationloan@homeoffice.gov.uk",
+    "getHelpContact2": "Telephone: 020 8196 5440",
+    "start": "Start now"
+  },
+  "joint": {
+    "header": "Are you applying for a joint loan with your partner?"
+  },
+  "humanitarian-refugee-status-date": {
+    "header": "What date were you granted refugee or humanitarian protection status?"
+  },
+  "employment-status": {
+    "header": "What is your employment status?"
+  },
+  "brp": {
+    "header": "Your Biometric residence permit (BRP)",
+    "intro": "Enter your details as they appear on your Biometric residence permit (BRP)."
+  },
+  "ni-number": {
+    "header": "What is your National Insurance number?"
+  },
+  "home-office-reference": {
+    "header": "What is your Home Office reference number?"
+  },
+  "address": {
+    "header": "What is your address in the UK?"
+  },
+  "income": {
+    "header": "Your monthly income"
+  },
+  "outgoings": {
+    "header": "Your monthly outgoings"
+  },
+  "debts": {
+    "header": "Do you or your household have any debts/other liabilities?"
+  },
+  "savings": {
+    "header": "Do you or your household have any savings?"
+  },
+  "purpose": {
+    "header": "What do you intend to use the loan for?"
+  },
+  "previous": {
+    "header": "Have you or a member of your household received an integration loan previously?"
+  },
+  "payment": {
+    "header": "How would you like to receive your loan?"
+  },
+  "bank-details": {
+    "header": "What are your bank or building society account details?"
+  },
+  "aspen-details": {
+    "header": "What is your ASPEN card number?"
+  },
+  "contact": {
+    "header": "How would you like to be contacted?"
+  },
+  "declaration": {
+    "header": "Declaration",
+    "text1": "By submitting this application, you agree that:",
+    "bullet1": "the information is correct and complete as far as you know",
+    "bullet2": "you will use the loan for its intended purpose",
+    "submit": "Submit my application"
+  },
+  "confirmation": {
+    "confirmed": "Application complete",
+    "header2": "What happens next",
+    "text1": "We’ll contact you with the outcome of your application or if we need further information from you.",
+    "text2": "If you have been sucessful, you will be sent a loan agreement which you will have accept before receiving your loan.",
+    "text3": "If you have been unsucessful, we will write to you explaining the reasons for this decision."
+  }
+}

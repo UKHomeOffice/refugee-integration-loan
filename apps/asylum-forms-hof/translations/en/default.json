@@ -1,0 +1,16 @@
+{
+  "fields": {
+    "joint": {
+      "label": "Are you applying for a joint loan with your partner?"
+    }
+  },
+  "journey": {
+    "header": "Apply for a refugee integration loan",
+    "phase": "beta"
+  },
+  "pages": {
+    "joint": {
+      "header": "Are you applying for a joint loan with your partner?"
+    }
+  }
+}

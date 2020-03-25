@@ -1,3 +1,7 @@
-# hof-form-example
+## An example implementation of the Refugee Loans Application using HOF
 
-A sample ACP deployment of a hof form
+
+```
+docker-compose up
+```
+

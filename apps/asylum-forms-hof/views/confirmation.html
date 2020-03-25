@@ -1,0 +1,16 @@
+{{<partials-page}}
+{{$page-content}}
+
+<!-- alert-complete is the HOF supported class currently, should be using the govuk-styles -->
+<div class="govuk-panel alert-complete govuk-panel--confirmation">
+    <h1 class="govuk-panel__title">
+        {{#t}}pages.confirmation.confirmed{{/t}}
+    </h1>
+</div>
+<h2 class="govuk-heading-m">{{#t}}pages.confirmation.header2{{/t}}</h2>
+<p class="govuk-body">{{#t}}pages.confirmation.text1{{/t}}</p>
+<p class="govuk-body">{{#t}}pages.confirmation.text2{{/t}}</p>
+<p class="govuk-body">{{#t}}pages.confirmation.text3{{/t}}</p>
+
+{{/page-content}}
+{{/partials-page}}
