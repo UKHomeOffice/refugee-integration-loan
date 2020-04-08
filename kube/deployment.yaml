@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    downscaler/uptime: Mon-Fri 08:00-18:00 Europe/London
+  name: {{ .NAME }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: {{ .NAME }}
+        service: hof-form-example
+    spec:
+      containers:
+        - name: hof-form-example
+          image: {{ .IMAGE_URL }}
+          imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+          ports:
+            - containerPort: 8080

@@ -1,0 +1,23 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .NAME }}-internal
+  labels:
+    stable.k8s.psg.io/kcm.class: default
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: "nginx-internal"
+spec:
+  tls:
+    - hosts:
+        - {{ .NAME }}-dev.internal.cto-notprod.homeoffice.gov.uk
+      secretName: {{ .NAME }}-internal
+  rules:
+    - host: {{ .NAME }}-dev.internal.cto-notprod.homeoffice.gov.uk
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .NAME }}
+              servicePort: 443
