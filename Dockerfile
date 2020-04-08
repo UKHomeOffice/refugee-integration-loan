@@ -8,6 +8,6 @@ COPY . /app
 RUN npm --loglevel warn run postinstall --production
 RUN chown -R nodejs:nodejs /public
 
-USER nodejs
+USER 1000
 
 CMD ["/app/run.sh"]
