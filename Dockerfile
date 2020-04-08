@@ -9,7 +9,7 @@ RUN npm --loglevel warn install --production
 COPY . /app
 
 RUN npm --loglevel warn run postinstall --production
-RUN chown -R nodejs:nodejs /public
+RUN chown -R 1000:1000 /public
 
 USER 1000
 
