@@ -1,0 +1,31 @@
+pipeline:
+
+  build_ecr:
+    image: quay.io/ukhomeofficedigital/ecr:latest
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    repo: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/cto/hof-form-example
+    tags:
+      - latest
+      - ${DRONE_COMMIT_SHA}
+    when:
+      event: push
+      branch: master
+
+  deploy-to-dev:
+    image: quay.io/ukhomeofficedigital/kd:v1.14.0
+    secrets:
+      - kube_token_acp_notprod
+    environment:
+      - IMAGE_URL=340268328991.dkr.ecr.eu-west-2.amazonaws.com/cto/hof-form-example:${DRONE_COMMIT_SHA}
+      - DRONE_DEPLOY_TO=acp-notprod
+    commands:
+      - apk update
+      - apk add curl
+      - bin/deploy.sh
+    when:
+      event: push
+      branch: master
+
+
