@@ -11,3 +11,5 @@ RUN chown -R nodejs:nodejs /public
 USER 1000
 
 CMD ["/app/run.sh"]
+
+EXPOSE 8080
