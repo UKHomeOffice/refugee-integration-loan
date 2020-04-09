@@ -7,7 +7,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          name: app
+          name: hof-form-example 
     ports:
     - port: 6379
       protocol: TCP
