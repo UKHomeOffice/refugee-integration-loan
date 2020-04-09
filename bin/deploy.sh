@@ -21,6 +21,15 @@ esac
 echo "--- kube api url: ${KUBE_SERVER}"
 echo "--- namespace: ${KUBE_NAMESPACE}"
 
+echo "--- deploying redis"
+
+kd --timeout=5m \
+   --check-interval=5s \
+  -f kube/redis-service.yml \
+  -f kube/redis-network-policy.yml \
+  -f kube/redis-deployment.yml \
+
+
 echo "--- deploying ${NAME}"
 if ! kd --timeout=5m \
   -f kube/networkpolicy-internal.yaml \

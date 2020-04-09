@@ -1,0 +1,26 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: redis
+        service: redis
+    spec:
+      containers:
+        - name: redis
+          image: quay.io/ukhomeofficedigital/redis:v1.0.1
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - mountPath: /var/lib/redis
+              name: data
+          securityContext:
+            runAsNonRoot: true
+      volumes:
+        - name: data
+          emptyDir: {}
