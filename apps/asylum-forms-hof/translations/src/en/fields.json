@@ -1,6 +1,53 @@
 {
+  "previouslyApplied": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "previouslyHadIntegrationLoan": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "whoReceivedPreviousLoan": {
+    "legend": " ",
+    "options":{
+      "me": {
+        "label": "Me"
+      },
+      "partner": {
+        "label": "My partner"
+      },
+      "someoneElse": {
+        "label": "Another person living at my address"
+      }
+    }
+  },
+  "partner": {
+    "legend": "A partner is someone over the age of 18 who you’re married to or in a civil partnership with, or live with as if you are.",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
   "joint": {
-    "legend": "Are you applying for a joint loan with your partner?",
+    "legend": " ",
     "options":{
       "yes": {
         "label": "Yes"
@@ -50,11 +97,89 @@
   },
   "niNumber": {
     "label": "National Insurance number",
-    "hint": "You can find this on the back of your biometric residency permit (BRP). For example, ‘AB 12 34 56 C’."
+    "hint": "For example, ‘AB 12 34 56 C’. You can find this on the back of your biometric residency permit (BRP)."
+  },
+  "hasOtherNames": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "otherNames": {
+    "label": "Full name"
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
-    "hint": "You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'. For example, ‘A1234567’."
+    "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'."
+  },
+  "convicted": {
+    "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "detailsOfCrime": {
+    "label": "Details of the crime/s"
+  },
+  "partnerFullName": {
+    "label": "Full name"
+  },
+  "partnerDateOfBirth": {
+    "label": "Date of Birth",
+    "hint": "For example, 31 3 1980"
+  },
+  "partnerBrpNumber": {
+    "label": "Biometric residence permit (BRP) number",
+    "hint": "For example, ‘RE1234567’."
+  },
+  "partnerNiNumber": {
+    "label": "National Insurance number",
+    "hint": "For example, ‘AB 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP)."
+  },
+  "partnerHasOtherNames": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "partnerOtherNames": {
+    "label": "Full name"
+  },
+  "dependents": {
+    "legend": "This could be a child under 18, grandchild, parent, or someone who depends on you for care.",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "dependentFullName": {
+    "label": "Full name"
+  },
+  "dependentDateOfBirth": {
+    "label": "Date of Birth",
+    "hint": "For example, 31 3 1980"
+  },
+  "dependentRelationship": {
+    "label": "Relationship to you"
   },
   "building": {
     "label": "Building and street"
@@ -139,9 +264,17 @@
       }
     }
   },
+  "amount": {
+    "label": "Loan amount",
+    "hint": "You can apply for a minimum of £100 and a maximum of £500."
+  },
+  "jointAmount": {
+    "label": "Loan amount",
+    "hint": "You can apply for a minimum of £100 and a maximum of £780."
+  },
   "purposeTypes": {
     "legend": " ",
-    "hint": "Select all options that are relevant to you.",
+    "hint": "Select all options that apply to you.",
     "options": {
       "housing": {
         "label": "Housing",
@@ -153,43 +286,15 @@
       },
       "basic_living_costs": {
         "label": "Basic living costs",
-        "hint": "For example, food, household bills or travel within the UK."
+        "hint": "For example, food or household bills."
       },
       "training_or_retraining": {
-        "label": "Training or retraining"
+        "label": "Training or education"
       },
       "work_clothing_and_equipment": {
         "label": "Work clothing and equipment"
       }
     }
-  },
-  "previouslyHadIntegrationLoan": {
-    "legend": " ",
-    "options":{
-      "yes": {
-        "label": "Yes"
-      },
-      "no": {
-        "label": "No"
-      }
-    }
-  },
-  "paymentType": {
-    "legend": " ",
-    "options": {
-      "bank_account": {
-        "label": "Bank account",
-        "hint": "You’ll already have a bank account open in your name."
-      },
-      "aspen_card": {
-        "label": "ASPEN card",
-        "hint": "You’ll have an ASPEN card and received Asylum support."
-      }
-    }
-  },
-  "aspenNumber": {
-    "label": "ASPEN card number",
-    "hint": "This is a 12 digit number on the front of your ASPEN card."
   },
   "accountName": {
     "label": "Name on the account"
@@ -206,15 +311,22 @@
     "label": "Building society roll number (if you have one)",
     "hint": "You can find it on your card, statement or passbook"
   },
-  "contactTypes": {
-    "legend": "We will need to contact you to let you know the result of your application.",
-    "hint": "Select all options that are relevant to you.",
+  "infoContactTypes": {
+    "legend": "For more information",
     "options": {
       "email": {
         "label": "Email"
       },
-      "text_message": {
-        "label": "Text message"
+      "phone": {
+        "label": "Phone"
+      }
+    }
+  },
+  "outcomeContactTypes": {
+    "legend": "With the outcome of your application",
+    "options": {
+      "email": {
+        "label": "Email"
       },
       "post": {
         "label": "Post"

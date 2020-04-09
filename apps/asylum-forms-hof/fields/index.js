@@ -3,6 +3,26 @@
 const dateComponent = require('hof-component-date');
 
 module.exports = {
+  previouslyApplied: {
+    mixin: 'radio-group',
+    options: ['yes', 'no'],
+    validate: 'required'
+  },
+  previouslyHadIntegrationLoan: {
+   mixin: 'radio-group',
+   options: ['yes', 'no'],
+   validate: 'required'
+  },
+  whoReceivedPreviousLoan: {
+   mixin: 'radio-group',
+   options: ['me', 'partner', 'someoneElse'],
+   validate: 'required'
+  },
+  partner: {
+    mixin: 'radio-group',
+    options: ['yes', 'no'],
+    validate: 'required'
+  },
   joint: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
@@ -16,10 +36,9 @@ module.exports = {
     options: ['unemployed', 'work_part_time', 'work_full_time', 'self_employed', 'retired', 'full_time_student'],
     validate: 'required'
   },
-
-  dateOfBirth: dateComponent('dateOfBirth', {
-                     validate: ['required', 'before']
-               }),
+   dateOfBirth: dateComponent('dateOfBirth', {
+    validate: ['required', 'before']
+   }),
    fullName: {
     validate: 'required',
     className: "govuk-input"
@@ -31,7 +50,59 @@ module.exports = {
    niNumber: {
     validate: 'required'
    },
+   hasOtherNames: {
+    mixin: 'radio-group',
+    options: ['yes', 'no'],
+    validate: 'required'
+   },
+   otherNames: {
+    validate: 'required'
+   },
    homeOfficeReference: {
+    validate: 'required'
+   },
+   convicted: {
+    mixin: 'radio-group',
+    options: ['yes', 'no'],
+    validate: 'required'
+   },
+   detailsOfCrime: {
+    validate: 'required'
+   },
+   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
+    validate: ['required', 'before']
+   }),
+   partnerFullName: {
+    validate: 'required',
+    className: "govuk-input"
+   },
+   partnerBrpNumber: {
+    validate: 'required',
+    className: "govuk-input govuk-input--width-10"
+   },
+   partnerNiNumber: {
+    validate: 'required'
+   },
+   partnerHasOtherNames: {
+    mixin: 'radio-group',
+    options: ['yes', 'no'],
+    validate: 'required'
+   },
+   partnerOtherNames: {
+    validate: 'required'
+   },
+   dependents: {
+    mixin: 'radio-group',
+    options: ['yes', 'no'],
+    validate: 'required'
+   },
+   dependentFullName: {
+    validate: 'required'
+   },
+   dependentDateOfBirth: dateComponent('dependentDateOfBirth', {
+    validate: ['required', 'before']
+   }),
+   dependentRelationship: {
     validate: 'required'
    },
    building: {
@@ -67,14 +138,15 @@ module.exports = {
     options: ['yes', 'no'],
     validate: 'required'
    },
+   amount: {
+    validate: 'required'
+   },
+   jointAmount: {
+    validate: 'required'
+   },
    purposeTypes: {
     mixin: 'checkbox-group',
     options: ['housing', 'essential_items', 'basic_living_costs', 'training_or_retraining', 'work_clothing_and_equipment'],
-    validate: 'required'
-   },
-   previouslyHadIntegrationLoan: {
-    mixin: 'radio-group',
-    options: ['yes', 'no'],
     validate: 'required'
    },
    paymentType: {
@@ -96,9 +168,14 @@ module.exports = {
    },
    rollNumber: {
    },
-   contactTypes: {
+   infoContactTypes: {
        mixin: 'checkbox-group',
-       options: ['email', 'text_message', 'post'],
+       options: ['email', 'phone'],
+       validate: 'required'
+   },
+   outcomeContactTypes: {
+       mixin: 'checkbox-group',
+       options: ['email', 'post'],
        validate: 'required'
    }
 };

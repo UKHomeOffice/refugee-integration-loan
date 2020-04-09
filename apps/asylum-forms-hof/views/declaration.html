@@ -1,12 +1,13 @@
 {{<partials-page}}
 {{$page-content}}
 <p>{{#t}}pages.declaration.text1{{/t}}</p>
-<ul class="govuk-list govuk-list--bullet">
+<ul class="list list-bullet">
     <li>{{#t}}pages.declaration.bullet1{{/t}}</li>
     <li>{{#t}}pages.declaration.bullet2{{/t}}</li>
+    <li>{{#t}}pages.declaration.bullet3{{/t}} <a href="https://www.gov.uk/government/publications/personal-information-use-in-borders-immigration-and-citizenship">{{#t}}pages.declaration.bullet3-link{{/t}}</a></li>
 </ul>
 
-<input type="submit" class="button govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8" value="{{#t}}pages.declaration.submit{{/t}}" data-module="govuk-button"/>
+<input type="submit" class="button" value="{{#t}}pages.declaration.submit{{/t}}"/>
 
 {{/page-content}}
 {{/partials-page}}
