@@ -280,11 +280,6 @@ module.exports = {
       value: 'other'
     }
    },
-   debts: {
-    mixin: 'radio-group',
-    options: ['yes', 'no'],
-    validate: 'required'
-   },
    savings: {
     mixin: 'radio-group',
     options: ['yes', 'no'],

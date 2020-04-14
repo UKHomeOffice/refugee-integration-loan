@@ -130,10 +130,6 @@ module.exports = {
     },
     '/outgoings': {
       fields: ['outgoingTypes'],
-      next: '/debts'
-    },
-    '/debts': {
-      fields: ['debts'],
       next: '/savings'
     },
     '/savings': {
@@ -150,10 +146,6 @@ module.exports = {
     },
     '/combined-outgoings': {
       fields: ['outgoingTypes'],
-      next: '/combined-debts'
-    },
-    '/combined-debts': {
-      fields: ['debts'],
       next: '/combined-savings'
     },
     '/combined-savings': {
