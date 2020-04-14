@@ -61,29 +61,6 @@
     "label": "What date were you granted refugee or humanitarian protection status?",
     "hint": "You can find this date on your biometric residence permit (BRP)."
   },
-  "employmentStatus": {
-    "legend": "What is your employment status?",
-    "options": {
-      "unemployed": {
-        "label": "Not employed (on universal credit)"
-      },
-      "work_part_time": {
-        "label": "Work part-time"
-      },
-      "work_full_time": {
-        "label": "Work full-time"
-      },
-      "self_employed": {
-        "label": "Self-employed"
-      },
-      "retired": {
-        "label": "Retired"
-      },
-      "full_time_student": {
-        "label": "Full-time student"
-      }
-    }
-  },
   "fullName": {
     "label": "Full name"
   },
@@ -123,7 +100,11 @@
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
-    "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'."
+    "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'.",
+    "validation": {
+      "regex": "Enter a Home Office reference number in the correct format",
+      "required": "Enter a Home Office reference number in the correct format"
+    }
   },
   "convicted": {
     "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",

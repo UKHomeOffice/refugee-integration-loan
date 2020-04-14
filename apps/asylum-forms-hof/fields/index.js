@@ -31,11 +31,6 @@ module.exports = {
   refugeeDate: dateComponent('refugeeDate', {
                    validate: ['required', 'before']
              }),
-  employmentStatus: {
-    mixin: 'radio-group',
-    options: ['unemployed', 'work_part_time', 'work_full_time', 'self_employed', 'retired', 'full_time_student'],
-    validate: 'required'
-  },
    dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', 'before']
    }),
@@ -70,7 +65,7 @@ module.exports = {
     }
    },
    homeOfficeReference: {
-    validate: 'required'
+    validate: ['required', {type:'regex', arguments:'^[A-Z]\\d{7}$'}]
    },
    convicted: {
     mixin: 'radio-group',
@@ -88,7 +83,7 @@ module.exports = {
     className: "govuk-input"
    },
    partnerBrpNumber: {
-    validate: 'required',
+    validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}]
     className: "govuk-input govuk-input--width-10"
    },
    partnerNiNumber: {
