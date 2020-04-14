@@ -3,5 +3,8 @@
   "postcode": "Please enter a valid postcode",
   "before": "This date cannot be in the future",
   "regex": "Please enter a value in the required format",
-  "numeric": "Please enter a valid number"
+  "numeric": "Please enter a valid number",
+  "singleLoanAmount": "Please enter an amount between £100 and £500",
+  "jointLoanAmount": "Please enter an amount between £100 and £780",
+  "decimal": "Please enter a valid number"
 }

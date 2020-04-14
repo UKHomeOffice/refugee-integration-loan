@@ -1,6 +1,32 @@
 'use strict';
 
+const _ = require('lodash');
 const dateComponent = require('hof-component-date');
+
+function singleLoanAmount(values) {
+  return minAndMaxValue(values, 100, 500)
+}
+
+function jointLoanAmount(values) {
+  return minAndMaxValue(values, 100, 780)
+}
+
+function minAndMaxValue(values, min, max) {
+  values = _.castArray(values);
+  if(values.length == 1) {
+    const value = Number(values[0])
+    return value >=min && value <= max
+  }
+  return true
+}
+
+function decimal(value) {
+  return regex(value, /^\d*.?\d{0,2}$/)
+}
+
+function regex(value, match) {
+    return typeof value === 'string' && !!value.match(match)
+}
 
 module.exports = {
   previouslyApplied: {
@@ -152,28 +178,28 @@ module.exports = {
     ]
    },
    salaryAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'incomeTypes',
       value: 'salary'
     }
    },
    universalCreditAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'incomeTypes',
       value: 'universal_credit'
     }
    },
    childMaintenanceOrSupportAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'incomeTypes',
       value: 'child_maintenance_or_support'
     }
    },
    otherIncomeAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'incomeTypes',
       value: 'other'
@@ -225,56 +251,56 @@ module.exports = {
     ]
    },
    rentAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'rent'
     }
    },
    householdBillsAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'household_bills'
     }
    },
    foodToiletriesAndCleaningSuppliesAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'food_toiletries_cleaning_supplies'
     }
    },
    mobilePhoneAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'mobile_phone'
     }
    },
    travelAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'travel'
     }
    },
    clothingAndFootwearAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'clothing_and_footwear'
     }
    },
    universalCreditDeductionsAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'universal_credit_deductions'
     }
    },
    otherOutgoingAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'outgoingTypes',
       value: 'other'
@@ -295,17 +321,17 @@ module.exports = {
     validate: 'required'
    },
    savingsAmount: {
-    validate: ['required', 'numeric'],
+    validate: ['required', decimal],
     dependent: {
       field: 'savings',
       value: 'yes'
     }
    },
    amount: {
-    validate: 'required'
+    validate: ['required', decimal, singleLoanAmount]
    },
    jointAmount: {
-    validate: 'required'
+    validate: ['required', decimal, jointLoanAmount]
    },
    purposeTypes: {
     mixin: 'checkbox-group',
