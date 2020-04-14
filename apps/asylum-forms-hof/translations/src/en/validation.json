@@ -2,5 +2,6 @@
   "required": "Please enter a value",
   "postcode": "Please enter a valid postcode",
   "before": "This date cannot be in the future",
-  "regex": "Please enter a value in the required format"
+  "regex": "Please enter a value in the required format",
+  "numeric": "Please enter a valid number"
 }

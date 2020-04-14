@@ -128,7 +128,56 @@ module.exports = {
    },
    incomeTypes: {
     mixin: 'checkbox-group',
-    options: ['salary', 'universal_credit', 'child_maintenance_or_support', 'other']
+    options: [
+        {
+            value: 'salary',
+            toggle: 'salaryAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'universal_credit',
+            toggle: 'universalCreditAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'child_maintenance_or_support',
+            toggle: 'childMaintenanceOrSupportAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'other',
+            toggle: 'otherAmount',
+            child: 'partials/details-summary'
+        }
+    ]
+   },
+   salaryAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'incomeTypes',
+      value: 'salary'
+    }
+   },
+   universalCreditAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'incomeTypes',
+      value: 'universal_credit'
+    }
+   },
+   childMaintenanceOrSupportAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'incomeTypes',
+      value: 'child_maintenance_or_support'
+    }
+   },
+   otherAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'incomeTypes',
+      value: 'other'
+    }
    },
    outgoingTypes: {
     mixin: 'checkbox-group',

@@ -211,6 +211,18 @@
       }
     }
   },
+  "salaryAmount": {
+    "label": "Total salary amount per month"
+  },
+  "universalCreditAmount": {
+    "label": "Total Universal credit amount per month"
+  },
+  "childMaintenanceOrSupportAmount": {
+    "label": "Total Child maintenance or support amount per month"
+  },
+  "otherAmount": {
+    "label": "Total other amount per month"
+  },
   "outgoingTypes": {
     "legend": " ",
     "hint": "Select all options that are relevant to you.",
