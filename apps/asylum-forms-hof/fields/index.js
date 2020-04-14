@@ -65,7 +65,7 @@ module.exports = {
     }
    },
    homeOfficeReference: {
-    validate: ['required', {type:'regex', arguments:'^[A-Z]\\d{7}$'}]
+    validate: ['required', {type:'regex', arguments: '^[A-Z]\\d{7}$'}]
    },
    convicted: {
     mixin: 'radio-group',
@@ -83,7 +83,7 @@ module.exports = {
     className: "govuk-input"
    },
    partnerBrpNumber: {
-    validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}]
+    validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}],
     className: "govuk-input govuk-input--width-10"
    },
    partnerNiNumber: {
