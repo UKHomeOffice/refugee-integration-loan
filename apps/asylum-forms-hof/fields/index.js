@@ -44,11 +44,10 @@ module.exports = {
     className: "govuk-input"
    },
    brpNumber: {
-    validate: 'required',
-    className: "govuk-input govuk-input--width-10"
+    validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}]
    },
    niNumber: {
-    validate: 'required'
+    validate: ['required', {type:'regex', arguments:'^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$'}]
    },
    hasOtherNames: {
     mixin: 'radio-group',
@@ -81,7 +80,7 @@ module.exports = {
     className: "govuk-input govuk-input--width-10"
    },
    partnerNiNumber: {
-    validate: 'required'
+    validate: ['required', {type:'regex', arguments:'^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$'}]
    },
    partnerHasOtherNames: {
     mixin: 'radio-group',

@@ -93,11 +93,19 @@
   },
   "brpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘RE1234567’."
+    "hint": "For example, ‘RE1234567’.",
+    "validation": {
+      "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
+      "required": "Enter a Biometric residence permit (BRP) number in the correct format"
+    }
   },
   "niNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘AB 12 34 56 C’. You can find this on the back of your biometric residency permit (BRP)."
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residency permit (BRP).",
+    "validation": {
+      "regex": "Enter a National Insurance number in the correct format",
+      "required": "Enter a National Insurance number in the correct format"
+    }
   },
   "hasOtherNames": {
     "legend": " ",
@@ -140,11 +148,19 @@
   },
   "partnerBrpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘RE1234567’."
+    "hint": "For example, ‘RE1234567’.",
+    "validation": {
+      "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
+      "required": "Enter a Biometric residence permit (BRP) number in the correct format"
+    }
   },
   "partnerNiNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘AB 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP)."
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP).",
+    "validation": {
+      "regex": "Enter a National Insurance number in the correct format",
+      "required": "Enter a National Insurance number in the correct format"
+    }
   },
   "partnerHasOtherNames": {
     "legend": " ",
