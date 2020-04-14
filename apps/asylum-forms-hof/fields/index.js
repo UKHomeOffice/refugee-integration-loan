@@ -282,8 +282,24 @@ module.exports = {
    },
    savings: {
     mixin: 'radio-group',
-    options: ['yes', 'no'],
+    options: [
+        {
+            value: 'yes',
+            toggle: 'savingsAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'no'
+        }
+    ],
     validate: 'required'
+   },
+   savingsAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'savings',
+      value: 'yes'
+    }
    },
    amount: {
     validate: 'required'

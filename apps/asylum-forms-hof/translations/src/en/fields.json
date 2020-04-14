@@ -305,6 +305,9 @@
     "label": "Loan amount",
     "hint": "You can apply for a minimum of £100 and a maximum of £500."
   },
+  "savingsAmount": {
+    "label": "Total amount of savings"
+  },
   "jointAmount": {
     "label": "Loan amount",
     "hint": "You can apply for a minimum of £100 and a maximum of £780."
