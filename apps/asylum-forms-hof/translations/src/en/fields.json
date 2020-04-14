@@ -220,7 +220,7 @@
   "childMaintenanceOrSupportAmount": {
     "label": "Total Child maintenance or support amount per month"
   },
-  "otherAmount": {
+  "otherIncomeAmount": {
     "label": "Total other amount per month"
   },
   "outgoingTypes": {
@@ -245,10 +245,38 @@
       "clothing_and_footwear": {
         "label": "Clothing and footwear"
       },
+      "universal_credit_deductions": {
+        "label": "Universal credit deductions"
+      },
       "other": {
-        "label": "Other"
+        "label": "Other",
+        "hint": "This includes payments for credit card debt and loans."
       }
     }
+  },
+  "rentAmount": {
+    "label": "Total rent amount per month"
+  },
+  "householdBillsAmount": {
+    "label":  "Total utility (household) bills amount per month"
+  },
+  "foodToiletriesAndCleaningSuppliesAmount":  {
+    "label":  "Total food, toiletries and cleaning supplies amount per month"
+  },
+  "mobilePhoneAmount": {
+    "label":  "Total mobile phone amount per month"
+  },
+  "travelAmount":  {
+    "label":  "Total travel/fares amount per month"
+  },
+  "clothingAndFootwearAmount": {
+    "label":  "Total clothing and footwear amount per month"
+  },
+  "universalCreditDeductionsAmount": {
+    "label":  "Total Universal credit deductions per month"
+  },
+  "otherOutgoingAmount":  {
+    "label":  "Total other amount per month"
   },
   "debts": {
     "legend": " ",

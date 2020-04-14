@@ -146,7 +146,7 @@ module.exports = {
         },
         {
             value: 'other',
-            toggle: 'otherAmount',
+            toggle: 'otherIncomeAmount',
             child: 'partials/details-summary'
         }
     ]
@@ -172,7 +172,7 @@ module.exports = {
       value: 'child_maintenance_or_support'
     }
    },
-   otherAmount: {
+   otherIncomeAmount: {
     validate: ['required', 'numeric'],
     dependent: {
       field: 'incomeTypes',
@@ -181,7 +181,104 @@ module.exports = {
    },
    outgoingTypes: {
     mixin: 'checkbox-group',
-    options: ['rent', 'household_bills', 'food_toiletries_cleaning_supplies', 'mobile_phone', 'travel', 'clothing_and_footwear', 'other']
+    options: [
+        {
+            value: 'rent',
+            toggle: 'rentAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'household_bills',
+            toggle: 'householdBillsAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'food_toiletries_cleaning_supplies',
+            toggle: 'foodToiletriesAndCleaningSuppliesAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'mobile_phone',
+            toggle: 'mobilePhoneAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'travel',
+            toggle: 'travelAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'clothing_and_footwear',
+            toggle: 'clothingAndFootwearAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'universal_credit_deductions',
+            toggle: 'universalCreditDeductionsAmount',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'other',
+            toggle: 'otherOutgoingAmount',
+            child: 'partials/details-summary'
+        }
+    ]
+   },
+   rentAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'rent'
+    }
+   },
+   householdBillsAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'household_bills'
+    }
+   },
+   foodToiletriesAndCleaningSuppliesAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'food_toiletries_cleaning_supplies'
+    }
+   },
+   mobilePhoneAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'mobile_phone'
+    }
+   },
+   travelAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'travel'
+    }
+   },
+   clothingAndFootwearAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'clothing_and_footwear'
+    }
+   },
+   universalCreditDeductionsAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'universal_credit_deductions'
+    }
+   },
+   otherOutgoingAmount: {
+    validate: ['required', 'numeric'],
+    dependent: {
+      field: 'outgoingTypes',
+      value: 'other'
+    }
    },
    debts: {
     mixin: 'radio-group',
