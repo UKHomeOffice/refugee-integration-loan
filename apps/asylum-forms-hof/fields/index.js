@@ -51,11 +51,23 @@ module.exports = {
    },
    hasOtherNames: {
     mixin: 'radio-group',
-    options: ['yes', 'no'],
+    options: [{
+            value: 'yes',
+            toggle: 'otherNames',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'no'
+        }
+    ],
     validate: 'required'
    },
    otherNames: {
-    validate: 'required'
+    validate: 'required',
+    dependent: {
+      field: 'hasOtherNames',
+      value: 'yes'
+    }
    },
    homeOfficeReference: {
     validate: 'required'
