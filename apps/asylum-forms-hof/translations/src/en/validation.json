@@ -9,5 +9,7 @@
   "decimal": "Please enter a valid number",
   "exactlength": "Must be {{exactlength}} digits long",
   "minlength": "Please enter at least {{minlength}} digits",
-  "maxlength": "Please enter at most {{maxlength}} digits"
+  "maxlength": "Please enter at most {{maxlength}} digits",
+  "emailAddress": "Enter an email address in the correct format, like name@example.com",
+  "ukMobile": "Enter a UK mobile telephone number, like 07700 900 982"
 }

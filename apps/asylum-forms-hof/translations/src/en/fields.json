@@ -362,6 +362,12 @@
       }
     }
   },
+  "infoEmail": {
+    "label": "Email address"
+  },
+  "infoPhone": {
+    "label": "Mobile phone number"
+  },
   "outcomeContactTypes": {
     "legend": "With the outcome of your application",
     "options": {
@@ -372,5 +378,8 @@
         "label": "Post"
       }
     }
+  },
+  "outcomeEmail": {
+    "label": "Email address"
   }
 }

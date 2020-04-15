@@ -4,14 +4,14 @@ const _ = require('lodash');
 const dateComponent = require('hof-component-date');
 
 function singleLoanAmount(values) {
-  return minAndMaxValue(values, 100, 500)
+  return between(values, 100, 500)
 }
 
 function jointLoanAmount(values) {
-  return minAndMaxValue(values, 100, 780)
+  return between(values, 100, 780)
 }
 
-function minAndMaxValue(values, min, max) {
+function between(values, min, max) {
   values = _.castArray(values);
   if(values.length == 1) {
     const value = Number(values[0])
@@ -22,6 +22,14 @@ function minAndMaxValue(values, min, max) {
 
 function decimal(value) {
   return regex(value, /^\d*.?\d{0,2}$/)
+}
+
+function ukMobile(value) {
+  return regex(value.split(' ').join(''), /^(\+447\d{3}|07\d{3})\d{6}$/)
+}
+
+function emailAddress(value) {
+  return regex(value.split(' ').join(''), /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/)
 }
 
 function regex(value, match) {
@@ -359,12 +367,51 @@ module.exports = {
   },
   infoContactTypes: {
       mixin: 'checkbox-group',
-      options: ['email', 'phone'],
+      options: [
+        {
+           value: 'email',
+           toggle: 'infoEmail',
+           child: 'partials/details-summary'
+        },
+        {
+           value: 'phone',
+           toggle: 'infoPhone',
+           child: 'partials/details-summary'
+        }
+      ],
       validate: 'required'
+  },
+  infoEmail: {
+   validate: ['required', 'email'],
+   dependent: {
+     field: 'infoContactTypes',
+     value: 'email'
+   }
+  },
+  infoPhone: {
+   validate: ['required', ukMobile],
+   dependent: {
+     field: 'infoContactTypes',
+     value: 'phone'
+   }
   },
   outcomeContactTypes: {
       mixin: 'checkbox-group',
-      options: ['email', 'post'],
+      options: [
+        {
+           value: 'email',
+           toggle: 'outcomeEmail',
+           child: 'partials/details-summary'
+        },
+        'post'
+      ],
       validate: 'required'
+  },
+  outcomeEmail: {
+   validate: ['required', 'email'],
+   dependent: {
+     field: 'outcomeContactTypes',
+     value: 'email'
+   }
   }
 }
