@@ -1,5 +1,11 @@
 {{<partials-page}}
 {{$page-content}}
+
+{{#rows}}
+    {{> partials-summary-table}}
+{{/rows}}
+
+<h2 class="govuk-heading-m">{{#t}}pages.declaration.submittingHeader{{/t}}</h2>
 <p>{{#t}}pages.declaration.text1{{/t}}</p>
 <ul class="list list-bullet">
     <li>{{#t}}pages.declaration.bullet1{{/t}}</li>

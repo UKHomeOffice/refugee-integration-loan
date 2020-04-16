@@ -115,7 +115,8 @@
     "header": "How would you like us to contact you?"
   },
   "declaration": {
-    "header": "Declaration",
+    "header": "Check your answers before sending your application",
+    "submittingHeader": "Now send your application",
     "text1": "By submitting this application, you agree that:",
     "bullet1": "the information is correct and complete as far as you know",
     "bullet2": "you will use the loan for its intended purpose",

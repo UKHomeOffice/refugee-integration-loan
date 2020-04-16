@@ -169,7 +169,7 @@ module.exports = {
       next: '/declaration'
     },
     '/declaration': {
-      template: 'declaration',
+      behaviours: ['complete', require('hof-behaviour-summary-page')],
       next: '/complete'
     },
     '/complete': {
