@@ -85,11 +85,13 @@ module.exports = {
     },
     '/partner-brp': {
       fields: ['partnerBrpNumber', 'partnerFullName', 'partnerDateOfBirth'],
-      next: '/partner-ni-number'
+      next: '/partner-ni-number',
+      template: 'brp'
     },
     '/partner-ni-number': {
       fields: ['partnerNiNumber'],
-      next: '/partner-other-names'
+      next: '/partner-other-names',
+      template: 'ni-number'
     },
     '/partner-other-names': {
       fields: ['partnerHasOtherNames', 'partnerOtherNames'],
