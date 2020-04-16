@@ -57,7 +57,8 @@ module.exports = {
     },
     '/brp': {
       fields: ['brpNumber', 'fullName', 'dateOfBirth'],
-      next: '/ni-number'
+      next: '/ni-number',
+      template: 'brp'
     },
     '/ni-number': {
       fields: ['niNumber'],
