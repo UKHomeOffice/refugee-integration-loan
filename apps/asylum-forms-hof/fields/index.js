@@ -25,15 +25,23 @@ function decimal(value) {
 }
 
 function ukMobile(value) {
-  return regex(value.split(' ').join(''), /^(\+447\d{3}|07\d{3})\d{6}$/)
+  return regex(stripSpaces(value), /^(\+447\d{3}|07\d{3})\d{6}$/)
 }
 
 function emailAddress(value) {
-  return regex(value.split(' ').join(''), /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/)
+  return regex(value, /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/)
+}
+
+function niNumber(value) {
+  return regex(stripSpaces(value), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/)
 }
 
 function regex(value, match) {
     return typeof value === 'string' && !!value.match(match)
+}
+
+function stripSpaces(str) {
+    return str.split(' ').join('')
 }
 
 module.exports = {
@@ -76,7 +84,7 @@ module.exports = {
    validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}]
   },
   niNumber: {
-   validate: ['required', {type:'regex', arguments:'^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$'}]
+   validate: ['required', niNumber]
   },
   hasOtherNames: {
    mixin: 'radio-group',
@@ -121,7 +129,7 @@ module.exports = {
    className: "govuk-input govuk-input--width-10"
   },
   partnerNiNumber: {
-   validate: ['required', {type:'regex', arguments:'^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$'}]
+   validate: ['required', niNumber]
   },
   partnerHasOtherNames: {
    mixin: 'radio-group',
