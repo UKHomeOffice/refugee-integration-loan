@@ -197,8 +197,7 @@ module.exports = {
    options: [
        {
            value: 'salary',
-           toggle: 'salaryAmount',
-           child: 'partials/details-summary'
+           toggle: 'salaryAmount'
        },
        {
            value: 'universal_credit',
@@ -219,6 +218,7 @@ module.exports = {
   },
   salaryAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
      value: 'salary'
