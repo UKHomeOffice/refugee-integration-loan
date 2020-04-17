@@ -251,7 +251,7 @@
         },
         "other": {
           "label": "Other",
-          "toggle-content": "This includes payments for credit card debt and loans."
+          "hint": "This includes payments for credit card debt and loans."
         }
       }
     },
@@ -319,15 +319,15 @@
       "options": {
         "housing": {
           "label": "Housing",
-          "toggle-content": "Deposit, rent payment or moving costs."
+          "hint": "Deposit, rent payment or moving costs."
         },
         "essential_items": {
           "label": "Essential items",
-          "toggle-content": "For example, furniture, fridge, curtains or carpets."
+          "hint": "For example, furniture, fridge, curtains or carpets."
         },
         "basic_living_costs": {
           "label": "Basic living costs",
-          "toggle-content": "For example, food or household bills."
+          "hint": "For example, food or household bills."
         },
         "training_or_retraining": {
           "label": "Training or education"
