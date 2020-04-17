@@ -110,13 +110,25 @@ module.exports = {
    validate: ['required', {type:'regex', arguments: '^[A-Z]\\d{7}$'}]
   },
   convicted: {
-   mixin: 'radio-group',
-   options: ['yes', 'no'],
-   validate: 'required'
-  },
-  detailsOfCrime: {
-   validate: 'required'
-  },
+    mixin: 'radio-group',
+    options: [{
+            value: 'yes',
+            toggle: 'detailsOfCrime',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'no'
+        }
+    ],
+    validate: 'required'
+   },
+   detailsOfCrime: {
+    validate: 'required',
+    dependent: {
+      field: 'convicted',
+      value: 'yes'
+    }
+   },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
    validate: ['required', 'before']
   }),
