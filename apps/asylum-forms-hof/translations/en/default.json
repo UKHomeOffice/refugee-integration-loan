@@ -1,7 +1,387 @@
 {
   "fields": {
+    "previouslyApplied": {
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "previouslyHadIntegrationLoan": {
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "whoReceivedPreviousLoan": {
+      "legend": " ",
+      "options": {
+        "me": {
+          "label": "Me"
+        },
+        "partner": {
+          "label": "My partner"
+        },
+        "someoneElse": {
+          "label": "Another person living at my address"
+        }
+      }
+    },
+    "partner": {
+      "legend": "A partner is someone over the age of 18 who you’re married to or in a civil partnership with, or live with as if you are.",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
     "joint": {
-      "label": "Are you applying for a joint loan with your partner?"
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "refugeeDate": {
+      "label": "What date were you granted refugee or humanitarian protection status?",
+      "hint": "You can find this date on your biometric residence permit (BRP)."
+    },
+    "fullName": {
+      "label": "Full name"
+    },
+    "dateOfBirth": {
+      "label": "Date of Birth",
+      "hint": "For example, 31 3 1980"
+    },
+    "brpNumber": {
+      "label": "Biometric residence permit (BRP) number",
+      "hint": "For example, ‘RE1234567’.",
+      "validation": {
+        "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
+        "required": "Enter a Biometric residence permit (BRP) number in the correct format"
+      }
+    },
+    "niNumber": {
+      "label": "National Insurance number",
+      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residency permit (BRP).",
+      "validation": {
+        "regex": "Enter a National Insurance number in the correct format",
+        "required": "Enter a National Insurance number in the correct format"
+      }
+    },
+    "hasOtherNames": {
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "otherNames": {
+      "label": "Full name"
+    },
+    "homeOfficeReference": {
+      "label": "Home Office reference number",
+      "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'.",
+      "validation": {
+        "regex": "Enter a Home Office reference number in the correct format",
+        "required": "Enter a Home Office reference number in the correct format"
+      }
+    },
+    "convicted": {
+      "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "detailsOfCrime": {
+      "label": "Details of the crime/s"
+    },
+    "partnerFullName": {
+      "label": "Full name"
+    },
+    "partnerDateOfBirth": {
+      "label": "Date of Birth",
+      "hint": "For example, 31 3 1980"
+    },
+    "partnerBrpNumber": {
+      "label": "Biometric residence permit (BRP) number",
+      "hint": "For example, ‘RE1234567’.",
+      "validation": {
+        "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
+        "required": "Enter a Biometric residence permit (BRP) number in the correct format"
+      }
+    },
+    "partnerNiNumber": {
+      "label": "National Insurance number",
+      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP).",
+      "validation": {
+        "regex": "Enter a National Insurance number in the correct format",
+        "required": "Enter a National Insurance number in the correct format"
+      }
+    },
+    "partnerHasOtherNames": {
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "partnerOtherNames": {
+      "label": "Full name"
+    },
+    "dependents": {
+      "legend": "This could be a child under 18, grandchild, parent, or someone who depends on you for care.",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "dependentFullName": {
+      "label": "Full name"
+    },
+    "dependentDateOfBirth": {
+      "label": "Date of Birth",
+      "hint": "For example, 31 3 1980"
+    },
+    "dependentRelationship": {
+      "label": "Relationship to you"
+    },
+    "building": {
+      "label": "Building and street"
+    },
+    "street": {
+      "label": " "
+    },
+    "townOrCity": {
+      "label": "Town or city"
+    },
+    "county": {
+      "label": "County"
+    },
+    "postcode": {
+      "label": "Postcode"
+    },
+    "incomeTypes": {
+      "legend": " ",
+      "hint": "Select all options that are relevant to you.",
+      "options": {
+        "salary": {
+          "label": "Salary"
+        },
+        "universal_credit": {
+          "label": "Universal credit"
+        },
+        "child_maintenance_or_support": {
+          "label": "Child maintenance or support"
+        },
+        "other": {
+          "label": "Other"
+        }
+      }
+    },
+    "salaryAmount": {
+      "label": "Total salary amount per month"
+    },
+    "universalCreditAmount": {
+      "label": "Total Universal credit amount per month"
+    },
+    "childMaintenanceOrSupportAmount": {
+      "label": "Total Child maintenance or support amount per month"
+    },
+    "otherIncomeAmount": {
+      "label": "Total other amount per month"
+    },
+    "outgoingTypes": {
+      "legend": " ",
+      "hint": "Select all options that are relevant to you.",
+      "options": {
+        "rent": {
+          "label": "Rent"
+        },
+        "household_bills": {
+          "label": "Utility (household) bills"
+        },
+        "food_toiletries_cleaning_supplies": {
+          "label": "Food, toiletries and cleaning supplies"
+        },
+        "mobile_phone": {
+          "label": "Mobile phone"
+        },
+        "travel": {
+          "label": "Travel/fares"
+        },
+        "clothing_and_footwear": {
+          "label": "Clothing and footwear"
+        },
+        "universal_credit_deductions": {
+          "label": "Universal credit deductions"
+        },
+        "other": {
+          "label": "Other",
+          "toggle-content": "This includes payments for credit card debt and loans."
+        }
+      }
+    },
+    "rentAmount": {
+      "label": "Total rent amount per month"
+    },
+    "householdBillsAmount": {
+      "label": "Total utility (household) bills amount per month"
+    },
+    "foodToiletriesAndCleaningSuppliesAmount": {
+      "label": "Total food, toiletries and cleaning supplies amount per month"
+    },
+    "mobilePhoneAmount": {
+      "label": "Total mobile phone amount per month"
+    },
+    "travelAmount": {
+      "label": "Total travel/fares amount per month"
+    },
+    "clothingAndFootwearAmount": {
+      "label": "Total clothing and footwear amount per month"
+    },
+    "universalCreditDeductionsAmount": {
+      "label": "Total Universal credit deductions per month"
+    },
+    "otherOutgoingAmount": {
+      "label": "Total other amount per month"
+    },
+    "debts": {
+      "legend": " ",
+      "hint": "This includes universal credit advance payment, credit card debt and loans.",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "savings": {
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "amount": {
+      "label": "Loan amount",
+      "hint": "You can apply for a minimum of £100 and a maximum of £500."
+    },
+    "savingsAmount": {
+      "label": "Total amount of savings"
+    },
+    "jointAmount": {
+      "label": "Loan amount",
+      "hint": "You can apply for a minimum of £100 and a maximum of £780."
+    },
+    "purposeTypes": {
+      "legend": " ",
+      "hint": "Select all options that apply to you.",
+      "options": {
+        "housing": {
+          "label": "Housing",
+          "toggle-content": "Deposit, rent payment or moving costs."
+        },
+        "essential_items": {
+          "label": "Essential items",
+          "toggle-content": "For example, furniture, fridge, curtains or carpets."
+        },
+        "basic_living_costs": {
+          "label": "Basic living costs",
+          "toggle-content": "For example, food or household bills."
+        },
+        "training_or_retraining": {
+          "label": "Training or education"
+        },
+        "work_clothing_and_equipment": {
+          "label": "Work clothing and equipment"
+        }
+      }
+    },
+    "accountName": {
+      "label": "Name on the account"
+    },
+    "sortCode": {
+      "label": "Sort code",
+      "hint": "Must be 6 digits long"
+    },
+    "accountNumber": {
+      "label": "Account number",
+      "hint": "Must be between 6 and 8 digits long"
+    },
+    "rollNumber": {
+      "label": "Building society roll number (if you have one)",
+      "hint": "You can find it on your card, statement or passbook"
+    },
+    "infoContactTypes": {
+      "legend": "For more information",
+      "options": {
+        "email": {
+          "label": "Email"
+        },
+        "phone": {
+          "label": "Phone"
+        }
+      }
+    },
+    "infoEmail": {
+      "label": "Email address"
+    },
+    "infoPhone": {
+      "label": "Mobile phone number"
+    },
+    "outcomeContactTypes": {
+      "legend": "With the outcome of your application",
+      "options": {
+        "email": {
+          "label": "Email"
+        },
+        "post": {
+          "label": "Post"
+        }
+      }
+    },
+    "outcomeEmail": {
+      "label": "Email address"
     }
   },
   "journey": {
@@ -9,8 +389,160 @@
     "phase": "beta"
   },
   "pages": {
+    "index": {
+      "header": "Apply for a refugee integration loan",
+      "text1": "If you are a refugee or have been given humanitarian protection, you can apply for a loan to help you settle into UK society.",
+      "text2": "To apply, you will need your:",
+      "bullet1": "biometric residence permit (BRP)",
+      "bullet2": "Home Office reference number",
+      "bullet3": "bank account details",
+      "text3": "If you are applying together with a partner, you will also need their BRP details.",
+      "applicationTime": "Applying takes around 15 minutes.",
+      "getHelp": "Get more help",
+      "getHelpText1": "Your local",
+      "getHelpText1-link": "refugee community organisation",
+      "getHelpText1-2": "can help you with your application and filling in the form.",
+      "getHelpText2": "You can also contact the integration loan team at integrationloan@homeoffice.gov.uk",
+      "start": "Start now"
+    },
+    "previously-applied": {
+      "header": "Have you or anyone currently living at your address applied for an integration loan before?"
+    },
+    "previous": {
+      "header": "Was the loan granted?"
+    },
+    "who-received-previous-loan": {
+      "header": "Who received the integration loan?"
+    },
+    "partner": {
+      "header": "Do you have a partner with you in the UK?"
+    },
     "joint": {
-      "header": "Are you applying for a joint loan with your partner?"
+      "header": "Are you applying for loan together with your partner?"
+    },
+    "brp": {
+      "header": "What are your biometric residence permit (BRP) details?",
+      "intro": "Enter your details as they appear on your BRP."
+    },
+    "ni-number": {
+      "header": "What is your National Insurance number?"
+    },
+    "other-names": {
+      "header": "Have you been known by any other names?"
+    },
+    "home-office-reference": {
+      "header": "What is your Home Office reference number?"
+    },
+    "partner-brp": {
+      "header": "Your partner's biometric residence permit (BRP)",
+      "intro": "Enter the details as they appear on your partner's BRP."
+    },
+    "partner-ni-number": {
+      "header": "What is your partner's National Insurance number?"
+    },
+    "partner-other-names": {
+      "header": "Has your partner been known by any other names?"
+    },
+    "convictions": {
+      "header": "Have you ever been convicted of a crime in the UK?"
+    },
+    "convictions-joint": {
+      "header": "Have you or your partner ever been convicted of a crime in the UK?"
+    },
+    "dependents": {
+      "header": "Do you have any dependants living with you?"
+    },
+    "dependent": {
+      "header": "Enter details of your dependant",
+      "intro": "You can add more dependants later."
+    },
+    "humanitarian-refugee-status-date": {
+      "header": "What date were you granted refugee or humanitarian protection status?"
+    },
+    "employment-status": {
+      "header": "What is your employment status?"
+    },
+    "address": {
+      "header": "What is your address in the UK?"
+    },
+    "income": {
+      "header": "Your monthly income"
+    },
+    "outgoings": {
+      "header": "Your monthly outgoings"
+    },
+    "debts": {
+      "header": "Do you have any debts/other liabilities?"
+    },
+    "savings": {
+      "header": "Do you have any savings?"
+    },
+    "amount": {
+      "header": "What loan amount would you like to apply for?"
+    },
+    "combined-income": {
+      "header": "You and your partner's combined monthly income"
+    },
+    "combined-outgoings": {
+      "header": "You and your partner's combined monthly outgoings"
+    },
+    "combined-debts": {
+      "header": "Do you or your partner have any debts/other liabilities?"
+    },
+    "combined-savings": {
+      "header": "Do you or your partner have any savings?"
+    },
+    "combined-amount": {
+      "header": "What loan amount would you like to apply for?"
+    },
+    "purpose": {
+      "header": "What will you use the loan for?"
+    },
+    "bank-details": {
+      "header": "What are your bank or building society account details?"
+    },
+    "contact": {
+      "header": "How would you like us to contact you?"
+    },
+    "declaration": {
+      "header": "Check your answers before sending your application",
+      "submittingHeader": "Now send your application",
+      "text1": "By submitting this application, you agree that:",
+      "bullet1": "the information is correct and complete as far as you know",
+      "bullet2": "you will use the loan for its intended purpose",
+      "bullet3": "you have read and understood the",
+      "bullet3-link": "privacy policy",
+      "submit": "Submit my application"
+    },
+    "confirmation": {
+      "confirmed": "Application complete",
+      "header2": "What happens next",
+      "text1": "We’ll contact you with the outcome of your application or if we need further information from you.",
+      "text2": "\nIf you have been successful, we will send you a loan agreement by email or post. You will need to go online to accept the terms of this agreement.",
+      "text3": "If you have been unsuccessful, we will write to you explaining the reasons for this decision."
+    },
+    "ineligible": {
+      "header": "You cannot apply for a loan",
+      "text1": "As you or your partner have already received an integration loan, you cannot apply again.",
+      "text2": "Your",
+      "text2-link": "local refugee community organisation",
+      "text2-2": "may be able to tell you what other support is available."
     }
+  },
+  "validation": {
+    "required": "Please enter a value",
+    "postcode": "Please enter a valid postcode",
+    "before": "This date cannot be in the future",
+    "regex": "Please enter a value in the correct format",
+    "numeric": "Please enter a valid number",
+    "singleLoanAmount": "Please enter an amount between £100 and £500",
+    "jointLoanAmount": "Please enter an amount between £100 and £780",
+    "decimal": "Please enter a valid number",
+    "exactlength": "Must be {{exactlength}} digits long",
+    "minlength": "Please enter at least {{minlength}} digits",
+    "maxlength": "Please enter at most {{maxlength}} digits",
+    "emailAddress": "Enter an email address in the correct format, like name@example.com",
+    "ukMobile": "Enter a UK mobile telephone number, like 07700 900 982",
+    "niNumber": "Please enter your National insurance number in the correct format"
   }
 }
