@@ -2,7 +2,7 @@
   "required": "Please enter a value",
   "postcode": "Please enter a valid postcode",
   "before": "This date cannot be in the future",
-  "regex": "Please enter a value in the required format",
+  "regex": "Please enter a value in the correct format",
   "numeric": "Please enter a valid number",
   "singleLoanAmount": "Please enter an amount between £100 and £500",
   "jointLoanAmount": "Please enter an amount between £100 and £780",
@@ -11,5 +11,6 @@
   "minlength": "Please enter at least {{minlength}} digits",
   "maxlength": "Please enter at most {{maxlength}} digits",
   "emailAddress": "Enter an email address in the correct format, like name@example.com",
-  "ukMobile": "Enter a UK mobile telephone number, like 07700 900 982"
+  "ukMobile": "Enter a UK mobile telephone number, like 07700 900 982",
+  "niNumber": "Please enter your National insurance number in the correct format"
 }
