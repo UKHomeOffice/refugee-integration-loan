@@ -144,13 +144,25 @@ module.exports = {
    validate: ['required', niNumber]
   },
   partnerHasOtherNames: {
-   mixin: 'radio-group',
-   options: ['yes', 'no'],
-   validate: 'required'
-  },
-  partnerOtherNames: {
-   validate: 'required'
-  },
+    mixin: 'radio-group',
+    options: [{
+            value: 'yes',
+            toggle: 'partnerOtherNames',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'no'
+        }
+    ],
+    validate: 'required'
+   },
+   partnerOtherNames: {
+    validate: 'required',
+    dependent: {
+      field: 'partnerHasOtherNames',
+      value: 'yes'
+    }
+   },
   dependents: {
    mixin: 'radio-group',
    options: ['yes', 'no'],
