@@ -128,15 +128,15 @@ module.exports = {
       }]
     },
     '/income': {
-      fields: ['incomeTypes'],
+      fields: ['incomeTypes', 'salaryAmount', 'universalCreditAmount', 'childMaintenanceOrSupportAmount', 'otherIncomeAmount'],
       next: '/outgoings'
     },
     '/outgoings': {
-      fields: ['outgoingTypes'],
+      fields: ['outgoingTypes', 'rentAmount', 'householdBillsAmount', 'foodToiletriesAndCleaningSuppliesAmount', 'mobilePhoneAmount', 'travelAmount', 'clothingAndFootwearAmount', 'universalCreditDeductionsAmount', 'otherOutgoingAmount'],
       next: '/savings'
     },
     '/savings': {
-      fields: ['savings'],
+      fields: ['savings', 'savingsAmount'],
       next: '/amount'
     },
     '/amount': {
@@ -168,7 +168,7 @@ module.exports = {
       next: '/contact'
     },
     '/contact': {
-      fields: ['infoContactTypes', 'outcomeContactTypes'],
+      fields: ['infoContactTypes', 'infoEmail', 'infoPhone', 'outcomeContactTypes', 'outcomeEmail'],
       next: '/declaration'
     },
     '/declaration': {

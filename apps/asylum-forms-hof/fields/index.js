@@ -197,7 +197,8 @@ module.exports = {
    options: [
        {
            value: 'salary',
-           toggle: 'salaryAmount'
+           toggle: 'salaryAmount',
+           child: 'partials/details-summary'
        },
        {
            value: 'universal_credit',
@@ -226,6 +227,7 @@ module.exports = {
   },
   universalCreditAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
      value: 'universal_credit'
@@ -233,6 +235,7 @@ module.exports = {
   },
   childMaintenanceOrSupportAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
      value: 'child_maintenance_or_support'
@@ -240,6 +243,7 @@ module.exports = {
   },
   otherIncomeAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
      value: 'other'
@@ -292,6 +296,7 @@ module.exports = {
   },
   rentAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'rent'
@@ -299,12 +304,14 @@ module.exports = {
   },
   householdBillsAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'household_bills'
    }
   },
   foodToiletriesAndCleaningSuppliesAmount: {
+   attributes: [{attribute: 'placeholder', value: '£'}],
    validate: ['required', decimal],
    dependent: {
      field: 'outgoingTypes',
@@ -313,6 +320,7 @@ module.exports = {
   },
   mobilePhoneAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'mobile_phone'
@@ -320,6 +328,7 @@ module.exports = {
   },
   travelAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'travel'
@@ -327,6 +336,7 @@ module.exports = {
   },
   clothingAndFootwearAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'clothing_and_footwear'
@@ -334,6 +344,7 @@ module.exports = {
   },
   universalCreditDeductionsAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'universal_credit_deductions'
@@ -341,6 +352,7 @@ module.exports = {
   },
   otherOutgoingAmount: {
    validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
      value: 'other'
@@ -361,16 +373,19 @@ module.exports = {
    validate: 'required'
   },
   savingsAmount: {
-   validate: ['required', decimal],
+   validate: 'required',
+   attributes: [ {attribute:'placeholder', value:'£'} ],
    dependent: {
      field: 'savings',
      value: 'yes'
    }
   },
   amount: {
-   validate: ['required', decimal, singleLoanAmount]
+   validate: ['required', decimal, singleLoanAmount],
+   attributes: [{attribute: 'placeholder', value: '£'}]
   },
   jointAmount: {
+   attributes: [{attribute: 'placeholder', value: '£'}],
    validate: ['required', decimal, jointLoanAmount]
   },
   purposeTypes: {
