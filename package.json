@@ -6,6 +6,7 @@
     "test": "npm run test:lint",
     "test:lint": "eslint .",
     "build": "hof-build",
+    "preinstall": "npx npm-force-resolutions",
     "postinstall": "npm run build"
   },
   "dependencies": {
@@ -13,11 +14,14 @@
     "hof-behaviour-summary-page": "^3.1.0",
     "hof-build": "^1.6.0",
     "hof-component-date": "^1.4.0",
-    "hof-theme-govuk": "^4.3.0"
+    "hof-theme-govuk": "^4.4.1"
   },
   "devDependencies": {
     "eslint": "^3.14.0",
     "eslint-config-homeoffice": "^2.1.0"
+  },
+  "resolutions": {
+    "hof-template-mixins": "^5.2.1"
   },
   "name": "asylum-forms-hof",
   "version": "1.0.0",
