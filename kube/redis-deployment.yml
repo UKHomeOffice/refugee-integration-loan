@@ -16,7 +16,7 @@ spec:
         app: {{ .REDIS_NAME }}
     spec:
       containers:
-        - name: redis
+        - name: {{ .REDIS_NAME }}
           image: quay.io/ukhomeofficedigital/redis:v1.0.1
           ports:
             - containerPort: 6379

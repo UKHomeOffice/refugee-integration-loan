@@ -18,7 +18,7 @@ spec:
         service: hof-form-example
     spec:
       containers:
-        - name: hof-form-example
+        - name: {{ .NAME }}
           image: {{ .IMAGE_URL }}
           imagePullPolicy: Always
           securityContext:
