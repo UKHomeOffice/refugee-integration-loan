@@ -7,13 +7,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: {{ .REDIS_NAME }}
   template:
     metadata:
       labels:
-        name: redis
+        name: {{ .REDIS_NAME }}
         service: redis
-        app: redis
+        app: {{ .REDIS_NAME }}
     spec:
       containers:
         - name: redis

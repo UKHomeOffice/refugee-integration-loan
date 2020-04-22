@@ -9,6 +9,7 @@ export KUBE_NAMESPACE=${KUBE_NAMESPACE=cto-dev}
 export KUBE_CERTIFICATE_AUTHORITY=https://raw.githubusercontent.com/UKHomeOffice/acp-ca/master/${DRONE_DEPLOY_TO}.crt
 
 export NAME="hof-form-example"
+export REDIS_NAME="redis"
 export REPO="ssh://git@gitlab.digital.homeoffice.gov.uk:2222/cto/defra-form-example.git"
 
 case ${DRONE_DEPLOY_TO} in
