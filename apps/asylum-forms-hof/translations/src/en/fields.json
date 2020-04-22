@@ -158,7 +158,7 @@
     "label": "Full name"
   },
   "dependents": {
-    "legend": "This could be a child under 18, grandchild, parent, or someone who depends on you for care.",
+    "legend": " ",
     "options":{
       "yes": {
         "label": "Yes"
@@ -177,6 +177,17 @@
   },
   "dependentRelationship": {
     "label": "Relationship to you"
+  },
+  "addAnother" : {
+    "legend": "",
+    "options": {
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
   },
   "building": {
     "label": "Building and street"

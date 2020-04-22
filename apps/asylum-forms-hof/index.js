@@ -1,8 +1,13 @@
 'use strict';
 
+const Loop = require('./behaviours/loop');
+const SetConfirmStep = require('./behaviours/set-confirm-step');
+const LocalSummary = require('./behaviours/summary');
+
 module.exports = {
   name: 'asylum-forms-hof',
   baseUrl: '/asylum-forms-hof',
+  behaviours: SetConfirmStep,
   steps: {
     '/index': {
       next: '/previously-applied'
@@ -105,15 +110,38 @@ module.exports = {
       fields: ['dependents'],
       next: '/address',
       forks: [{
-        target: '/dependent',
+        target: '/dependent-details',
           condition: {
             field: 'dependents',
             value: 'yes'
           }
       }]
     },
-    '/dependent': {
-      fields: ['dependentFullName', 'dependentDateOfBirth', 'dependentRelationship'],
+    '/dependent-details': {
+      behaviours: Loop,
+      storeKey: 'dependentDetails',
+      fields: [
+        'dependentFullName',
+        'dependentDateOfBirth',
+        'dependentRelationship',
+        'addAnother'
+      ],
+      firstStep: 'dependent',
+      subSteps: {
+        dependent: {
+          fields: ['dependentFullName', 'dependentDateOfBirth', 'dependentRelationship'],
+          next: 'add-another'
+        },
+        'add-another': {
+          fields: [
+            'addAnother'
+          ]
+        }
+      },
+      loopCondition: {
+        field: 'addAnother',
+        value: 'yes'
+      },
       next: '/address'
     },
     '/address': {
@@ -172,7 +200,8 @@ module.exports = {
       next: '/declaration'
     },
     '/declaration': {
-      behaviours: ['complete', require('hof-behaviour-summary-page')],
+      behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary],
+      sections: require('./sections/request-confirm-sections'),
       next: '/complete'
     },
     '/complete': {

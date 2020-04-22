@@ -1983,3 +1983,6 @@ fieldset + .reveal {
   .phase-banner span {
     display: table-cell;
     vertical-align: baseline; }
+
+.govuk-table {
+  margin-bottom: 30px; }

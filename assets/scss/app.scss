@@ -3,3 +3,7 @@
 .phase-banner {
   @include phase-banner(beta);
 }
+
+.govuk-table {
+    margin-bottom: 30px;
+}

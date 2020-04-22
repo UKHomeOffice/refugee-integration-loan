@@ -1,0 +1,23 @@
+<div class="loop-summary-table">
+    <h2>{{summaryTitle}}</h2>
+    {{#items}}
+        <table class="govuk-table">
+            <!-- <caption class="govuk-table__caption">Dates and amounts</caption> -->
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header" colspan="2">{{itemTitle}} {{#multipleDependents}}{{index}}{{/multipleDependents}}</th>
+                    <th scope="col" class="govuk-table__header"><a href="{{baseUrl}}/{{route}}/name/{{id}}/delete">{{#t}}buttons.deleteDependant{{/t}}</a></th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                {{#fields}}
+                    <tr class="govuk-table__row">
+                        <th scope="row" class="govuk-table__header">{{header}}</th>
+                        <td class="govuk-table__cell">{{value}}</td>
+                        <td class="govuk-table__cell"><a href="{{baseUrl}}/{{route}}/{{subroute}}/{{id}}/change">{{#t}}buttons.edit{{/t}}</a></td>
+                    </tr>
+                {{/fields}}
+            </tbody>
+        </table>
+    {{/items}}
+</div>

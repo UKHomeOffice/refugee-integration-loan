@@ -177,6 +177,17 @@ module.exports = {
   dependentRelationship: {
    validate: 'required'
   },
+  'addAnother': {
+      mixin: 'radio-group',
+      legend: {
+        className: 'visuallyhidden'
+      },
+      validate: 'required',
+      options: [
+        'yes',
+        'no'
+      ]
+  },
   building: {
    validate: 'required'
   },

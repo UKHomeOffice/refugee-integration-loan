@@ -1,4 +1,8 @@
 {
+  "buttons": {
+    "deleteDependant": "Delete dependant",
+    "edit": "Change"
+  },
   "fields": {
     "previouslyApplied": {
       "legend": " ",
@@ -159,7 +163,7 @@
       "label": "Full name"
     },
     "dependents": {
-      "legend": "This could be a child under 18, grandchild, parent, or someone who depends on you for care.",
+      "legend": " ",
       "options": {
         "yes": {
           "label": "Yes"
@@ -178,6 +182,17 @@
     },
     "dependentRelationship": {
       "label": "Relationship to you"
+    },
+    "addAnother": {
+      "legend": "",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
     },
     "building": {
       "label": "Building and street"
@@ -450,11 +465,30 @@
       "header": "Have you or your partner ever been convicted of a crime in the UK?"
     },
     "dependents": {
-      "header": "Do you have any dependants living with you?"
+      "header": "Do you have any dependants living with you?",
+      "intro": "A dependant could be a child under 18, grandchild, parent, or someone who depends on you for care."
     },
-    "dependent": {
-      "header": "Enter details of your dependant",
+    "dependent-details": {
+      "header": {
+        "default": "Your dependants"
+      },
+      "summary-title": {
+        "default": "Your dependants"
+      },
+      "summary-item": {
+        "default": "Dependant"
+      }
+    },
+    "dependent-details-dependent": {
+      "header": {
+        "default": "Enter details of your dependant"
+      },
       "intro": "You can add more dependants later."
+    },
+    "dependent-details-add-another": {
+      "header": {
+        "default": "Do you have any other dependants to add?"
+      }
     },
     "humanitarian-refugee-status-date": {
       "header": "What date were you granted refugee or humanitarian protection status?"
