@@ -12,7 +12,7 @@ spec:
     metadata:
       labels:
         name: {{ .REDIS_NAME }}
-        service: redis
+        service: {{ .REDIS_NAME }}
         app: {{ .REDIS_NAME }}
     spec:
       containers:
