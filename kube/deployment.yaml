@@ -15,6 +15,7 @@ spec:
       labels:
         name: {{ .NAME }}
         service: hof-form-example
+    spec:
       containers:
         - name: hof-form-example
           image: {{ .IMAGE_URL }}

@@ -13,6 +13,7 @@ spec:
       labels:
         name: redis
         service: redis
+    spec:
       containers:
         - name: redis
           image: quay.io/ukhomeofficedigital/redis:v1.0.1
