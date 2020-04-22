@@ -7,15 +7,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .NAME }}
+      app: redis
   template:
     metadata:
       labels:
-        name: {{ .NAME }}
+        name: redis
         service: redis
+        app: redis
     spec:
       containers:
-        - name: {{ .NAME }}
+        - name: redis
           image: quay.io/ukhomeofficedigital/redis:v1.0.1
           ports:
             - containerPort: 6379
