@@ -59,7 +59,7 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
 
   addLoopSection(req) {
     const loopStep = req.form.options.steps['/dependent-details'];
-    const tenants = req.sessionModel.get(loopStep.storeKey);
+    const dependents = req.sessionModel.get(loopStep.storeKey);
 
     const includeField = (value, field) => {
       return req.form.options.sections['dependent-details'].map(f =>
@@ -83,13 +83,13 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
     let _id;
 
     const fields = _.flatten(
-      _.map(tenants, (tenant, id) =>
+      _.map(dependents, (tenant, id) =>
         _.map(
           _.pickBy(tenant, includeField), (value, field) => ({
             field,
             className: _id !== id ? (_id = id) && 'dependent' : '',
             value: formatValue(value, field),
-            step: `/tenant-details/${getSubStep(field, loopStep.subSteps)}/${id}`,
+            step: `/dependent-details/${getSubStep(field, loopStep.subSteps)}/${id}`,
             label: req.translate([
               `pages.confirm.fields.${field}.label`,
               `fields.${field}.summary`,
