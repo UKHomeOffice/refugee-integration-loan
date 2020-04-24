@@ -39,7 +39,8 @@ module.exports = superclass => class extends superclass {
 
   constructor(options) {
     super(options);
-    this.options.storeKey = this.options.storeKey || 'items';
+    this.options.loopData.storeKey = this.options.loopData.storeKey || 'items';
+    this.confirmStep = this.options.loopData.confirmStep;
   }
 
   stepIncluded(step) {
@@ -84,7 +85,7 @@ module.exports = superclass => class extends superclass {
   }
 
   hasItems(req) {
-    return _.size(req.sessionModel.get(this.options.storeKey));
+    return _.size(req.sessionModel.get(this.options.loopData.storeKey));
   }
 
   get(req, res, callback) {
@@ -112,15 +113,15 @@ module.exports = superclass => class extends superclass {
   }
 
   removeItem(req, res) {
-    const items = req.sessionModel.get(this.options.storeKey);
-    req.sessionModel.set(this.options.storeKey, _.omit(items, req.params.id));
+    const items = req.sessionModel.get(this.options.loopData.storeKey);
+    req.sessionModel.set(this.options.loopData.storeKey, _.omit(items, req.params.id));
     const steps = Object.keys(this.options.subSteps);
     const step = _.size(items) > 1 ? steps[steps.length - 1] : steps[0];
     return res.redirect(`${req.baseUrl}${this.options.route}/${step}`);
   }
 
   getItems(req) {
-    return req.sessionModel.get(req.form.options.storeKey) || {};
+    return req.sessionModel.get(req.form.options.loopData.storeKey) || {};
   }
 
   getValues(req, res, callback) {
@@ -175,7 +176,7 @@ module.exports = superclass => class extends superclass {
           delete items[req.params.id][field];
         }
       });
-      req.sessionModel.set(req.form.options.storeKey, items);
+      req.sessionModel.set(req.form.options.loopData.storeKey, items);
       return callback();
     }
     if (this.getNext(req, res) === steps[steps.length - 1]) {
@@ -183,11 +184,11 @@ module.exports = superclass => class extends superclass {
         if (err) {
           return callback(err);
         }
-        const items = req.sessionModel.get(req.form.options.storeKey) || {};
+        const items = req.sessionModel.get(req.form.options.loopData.storeKey) || {};
         let id = req.params.id;
         if (id === undefined) {
-          id = parseInt(req.sessionModel.get(`${req.form.options.storeKey}-id`) || 0, 10);
-          req.sessionModel.set(`${req.form.options.storeKey}-id`, id + 1);
+          id = parseInt(req.sessionModel.get(`${req.form.options.loopData.storeKey}-id`) || 0, 10);
+          req.sessionModel.set(`${req.form.options.loopData.storeKey}-id`, id + 1);
         }
         items[id] = Object.keys(this.options.fields).reduce((obj, field) => {
           const value = req.sessionModel.get(field);
@@ -198,7 +199,7 @@ module.exports = superclass => class extends superclass {
           }
           return obj;
         }, {});
-        req.sessionModel.set(req.form.options.storeKey, items);
+        req.sessionModel.set(req.form.options.loopData.storeKey, items);
         req.sessionModel.unset(Object.keys(this.options.fields));
         return callback();
       });
@@ -212,7 +213,7 @@ module.exports = superclass => class extends superclass {
   locals(req, res) {
     const locals = super.locals(req, res);
     const pagePath = `${locals.route}-${req.params.action}`;
-    let items = req.sessionModel.get(req.form.options.storeKey);
+    let items = req.sessionModel.get(req.form.options.loopData.storeKey);
 
     const fields = _.reduce(items, (arr, item) =>
       _.uniq(
@@ -245,10 +246,10 @@ module.exports = superclass => class extends superclass {
 
     return Object.assign({}, locals, {
       title,
-      itemTitle: req.translate('pages.dependent-details.summary-item'),
+      itemTitle: req.translate(`pages.${this.options.loopData.sectionKey}.summary-item`),
       multipleDependents,
       items,
-      summaryTitle: req.translate('pages.dependent-details.header'),
+      summaryTitle: req.translate(`pages.${this.options.loopData.sectionKey}.header`),
       hasItems: items.length
     });
   }

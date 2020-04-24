@@ -119,8 +119,12 @@ module.exports = {
       }]
     },
     '/dependent-details': {
-      behaviours: [Loop, SetConfirmStep],
-      storeKey: 'dependentDetails',
+      behaviours: Loop,
+      loopData: {
+        storeKey: 'dependentDetails',
+        sectionKey: 'dependent-details',
+        confirmStep: '/declaration',
+      },
       fields: [
         'dependentFullName',
         'dependentDateOfBirth',

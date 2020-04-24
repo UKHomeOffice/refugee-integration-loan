@@ -22,8 +22,7 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
 
   parseSections(req) {
     const result = super.parseSections(req);
-    const section = this.addLoopSection(req);
-    result.splice(1, 0, section);
+    const splicedResult = this.addLoopSections(req, result);
     return result;
   }
 
@@ -61,58 +60,78 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
     return {};
   }
 
-  addLoopSection(req) {
-    const loopStep = req.form.options.steps['/dependent-details'];
-    const dependents = req.sessionModel.get(loopStep.storeKey);
-
-    const includeField = (value, field) => {
-      return req.form.options.loopSections['dependent-details'].map(f =>
-        (typeof f === 'object') ? f.field : f
-      ).indexOf(field) > -1;
-    };
-
-    const formatValue = (value, field) => {
-      const fieldConfig = req.form.options.loopSections['dependent-details'].find(f =>
-        f === field || f.field === field
+  addLoopSections(req, sections) {
+    const addLoopSection = (req, loopStep, path) => {
+      const entities = req.sessionModel.get(loopStep.loopData.storeKey);
+  
+      const includeField = (value, field) => {
+        return req.form.options.loopSections[loopStep.loopData.sectionKey].map(f =>
+          (typeof f === 'object') ? f.field : f
+        ).indexOf(field) > -1;
+      };
+  
+      const formatValue = (value, field) => {
+        const fieldConfig = req.form.options.loopSections[loopStep.loopData.sectionKey].find(f =>
+          f === field || f.field === field
+        );
+        if (typeof fieldConfig === 'string') {
+          return value;
+        }
+        return fieldConfig.parse ? fieldConfig.parse(value) : value;
+      };
+  
+      const getSubStep = (field, subSteps) =>
+        _.findKey(subSteps, subStep => subStep.fields.indexOf(field) > -1);
+  
+      let _id;
+      let spacer = {
+          spacer: true
+      };
+  
+      const fields = _.flatten(
+        _.map(entities, (entity, id) =>
+          _.flatMap(
+            _.pickBy(entity, includeField), (value, field) => {
+              let isFirstField = _id !== id;
+              _id = id;
+              let fieldEntry = {
+                  field,
+                  value: formatValue(value, field),
+                  step: `${path}/${getSubStep(field, loopStep.subSteps)}/${id}`,
+                  label: req.translate([
+                    `pages.confirm.fields.${field}.label`,
+                    `fields.${field}.summary`,
+                    `fields.${field}.label`,
+                    `fields.${field}.legend`
+                  ])
+              };
+              return id > 0 && isFirstField ? [spacer, fieldEntry] : [fieldEntry]
+            })
+        )
       );
-      if (typeof fieldConfig === 'string') {
-        return value;
+      return {
+        section: req.translate(`pages.${loopStep.loopData.sectionKey}.header`),
+        fields
+      };
+    }
+
+
+    let foundSections = 0;
+    Object.keys(req.form.options.steps).forEach((key, index) => {
+      const step = req.form.options.steps[key];
+      
+      if(step.loopData) {
+          //this is a loop step
+          //increment the foundSections first as we want to splice after the previously found section
+          foundSections++; 
+          //insert our loop section
+          sections.splice(foundSections, 0, addLoopSection(req, step, key));
+      } else if(_.find(sections, section => section.fields && section.fields[0].step === key)) {
+          foundSections++;
       }
-      return fieldConfig.parse ? fieldConfig.parse(value) : value;
-    };
-
-    const getSubStep = (field, subSteps) =>
-      _.findKey(subSteps, subStep => subStep.fields.indexOf(field) > -1);
-
-    let _id;
-    let spacer = {
-        spacer: true
-    };
-
-    const fields = _.flatten(
-      _.map(dependents, (dependent, id) =>
-        _.flatMap(
-          _.pickBy(dependent, includeField), (value, field) => {
-            let isFirst = _id !== id;
-            let fieldEntry = {
-                field,
-                className: isFirst ? (_id = id) && 'dependent' : '',
-                value: formatValue(value, field),
-                step: `/dependent-details/${getSubStep(field, loopStep.subSteps)}/${id}`,
-                label: req.translate([
-                  `pages.confirm.fields.${field}.label`,
-                  `fields.${field}.summary`,
-                  `fields.${field}.label`,
-                  `fields.${field}.legend`
-                ])
-            };
-            return id > 0 && isFirst ? [spacer, fieldEntry] : [fieldEntry]
-          })
-      )
-    );
-    return {
-      section: req.translate('pages.dependent-details.header'),
-      fields
-    };
+    })
+    return sections;
   }
+
+  
 };
