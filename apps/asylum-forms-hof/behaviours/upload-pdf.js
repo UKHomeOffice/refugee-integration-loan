@@ -13,7 +13,7 @@ const summaryData = require('./summary');
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   process(req, res, next) {
-    console.warn('Generating PDF');
+    req.log('info', 'Upload-pdf processing ** START **');
     this.renderHTML(req, res)
       .then(html => {
         req.log('info', 'Creating PDF document');
