@@ -85,22 +85,29 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
       _.findKey(subSteps, subStep => subStep.fields.indexOf(field) > -1);
 
     let _id;
+    let spacer = {
+        spacer: true
+    };
 
     const fields = _.flatten(
       _.map(dependents, (dependent, id) =>
-        _.map(
-          _.pickBy(dependent, includeField), (value, field) => ({
-            field,
-            className: _id !== id ? (_id = id) && 'dependent' : '',
-            value: formatValue(value, field),
-            step: `/dependent-details/${getSubStep(field, loopStep.subSteps)}/${id}`,
-            label: req.translate([
-              `pages.confirm.fields.${field}.label`,
-              `fields.${field}.summary`,
-              `fields.${field}.label`,
-              `fields.${field}.legend`
-            ])
-          }))
+        _.flatMap(
+          _.pickBy(dependent, includeField), (value, field) => {
+            let isFirst = _id !== id;
+            let fieldEntry = {
+                field,
+                className: isFirst ? (_id = id) && 'dependent' : '',
+                value: formatValue(value, field),
+                step: `/dependent-details/${getSubStep(field, loopStep.subSteps)}/${id}`,
+                label: req.translate([
+                  `pages.confirm.fields.${field}.label`,
+                  `fields.${field}.summary`,
+                  `fields.${field}.label`,
+                  `fields.${field}.legend`
+                ])
+            };
+            return id > 0 && isFirst ? [spacer, fieldEntry] : [fieldEntry]
+          })
       )
     );
     return {
