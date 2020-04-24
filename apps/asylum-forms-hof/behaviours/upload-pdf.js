@@ -13,17 +13,14 @@ const summaryData = require('./summary');
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   process(req, res, next) {
-    console.warn('XXXX - 1. PDF');
-    req.log('info', 'Creating PDF document');
+    console.warn('Generating PDF');
     this.renderHTML(req, res)
       .then(html => {
         req.log('info', 'Creating PDF document');
-        console.warn('XXXX - 1. PDF HTML ' + html);
         return this.createPDF(html);
       })
       .then(pdfBuffer => {
-        req.log('debug', 'Created PDF document. Uploading.');
-        console.warn('XXXX - 2. PDF Buffer');
+        req.log('info', 'Created PDF document. Uploading. ** UPLOAD is DISABLED **');
         // return this.uploadPdf({
         //   name: 'application_form.pdf',
         //   data: pdfBuffer,
@@ -31,8 +28,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         // });
       })
       .then(() => { // todo: add result to be processed by this function
-        console.warn('XXXX - 3. PDF Upload Result');
-        req.log('debug', 'Saved PDF document to S3');
+        req.log('info', 'Saved PDF document to S3. ** UPLOAD is DISABLED **');
         //req.form.values['pdf-upload'] = result.url;
       })
       .then(() => {
@@ -44,7 +40,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   renderHTML(req, res) {
-    console.warn('XXXX - 1.1 renderHTML');
     const locals = Object.assign({}, this.locals(req, res));
     locals.title = 'Request has been received';
     locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
@@ -76,7 +71,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   uploadPdf(file) {
-    console.warn('XXXX - 2.1 Before UploadModel');
     const model = new UploadModel();
     model.set(file);
     return model.save();
