@@ -3,6 +3,7 @@
 const Loop = require('./behaviours/loop');
 const SetConfirmStep = require('./behaviours/set-confirm-step');
 const LocalSummary = require('./behaviours/summary');
+const UploadPDF = require('./behaviours/upload-pdf');
 
 module.exports = {
   name: 'asylum-forms-hof',
@@ -200,7 +201,7 @@ module.exports = {
       next: '/declaration'
     },
     '/declaration': {
-      behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary],
+      behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary, UploadPDF],
       loopSections: require('./sections/loop-sections'),
       next: '/complete'
     },

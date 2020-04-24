@@ -8,8 +8,10 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SESSION_TTL=300
+      - PDF_CONVERTER_URL=http://html-pdf-converter:8001/convert
     links:
       - redis
+      - html-pdf-converter
     ports:
       - "8080:8080"
     volumes:
@@ -32,3 +34,15 @@ services:
       - app
     volumes_from:
       - app
+      
+  html-pdf-converter:
+    image: quay.io/ukhomeofficedigital/html-pdf-converter:01442cbca45c8c1965a64f680d8fab95998e5238
+    environment:
+      - CHROME_HOST=chrome
+    ports:
+      - "8001:8001"
+    links:
+      - chrome
+
+  chrome:
+    image: quay.io/ukhomeofficedigital/docker-chrome-headless:v1.0.0
