@@ -16,6 +16,10 @@ const getValue = (value, field, translate) => {
 
 module.exports = Base => class extends mix(Base).with(Behaviour) {
 
+  configure(req, res, callback) {
+    super.configure(req, res, callback);
+  }
+
   parseSections(req) {
     const result = super.parseSections(req);
     const section = this.addLoopSection(req);
@@ -62,13 +66,13 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
     const dependents = req.sessionModel.get(loopStep.storeKey);
 
     const includeField = (value, field) => {
-      return req.form.options.sections['dependent-details'].map(f =>
+      return req.form.options.loopSections['dependent-details'].map(f =>
         (typeof f === 'object') ? f.field : f
       ).indexOf(field) > -1;
     };
 
     const formatValue = (value, field) => {
-      const fieldConfig = req.form.options.sections['dependent-details'].find(f =>
+      const fieldConfig = req.form.options.loopSections['dependent-details'].find(f =>
         f === field || f.field === field
       );
       if (typeof fieldConfig === 'string') {
@@ -83,9 +87,9 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
     let _id;
 
     const fields = _.flatten(
-      _.map(dependents, (tenant, id) =>
+      _.map(dependents, (dependent, id) =>
         _.map(
-          _.pickBy(tenant, includeField), (value, field) => ({
+          _.pickBy(dependent, includeField), (value, field) => ({
             field,
             className: _id !== id ? (_id = id) && 'dependent' : '',
             value: formatValue(value, field),

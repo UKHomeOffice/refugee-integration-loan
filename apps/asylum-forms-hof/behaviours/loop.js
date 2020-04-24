@@ -231,7 +231,7 @@ module.exports = superclass => class extends superclass {
         field,
         header: req.translate([`fields.${field}.summary`, `fields.${field}.label`]),
         subroute: _.findKey(req.form.options.subSteps, subStep => subStep.fields.indexOf(field) > -1),
-        value: formatValue(item[field], field, req.form.options.steps[this.confirmStep].sections)
+        value: formatValue(item[field], field, req.form.options.steps[this.confirmStep].loopSections)
       }))
     }));
 

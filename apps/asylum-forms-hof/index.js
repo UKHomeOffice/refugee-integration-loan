@@ -6,8 +6,8 @@ const LocalSummary = require('./behaviours/summary');
 
 module.exports = {
   name: 'asylum-forms-hof',
+  params: '/:action?/:id?/:edit?',
   baseUrl: '/asylum-forms-hof',
-  behaviours: SetConfirmStep,
   steps: {
     '/index': {
       next: '/previously-applied'
@@ -118,7 +118,7 @@ module.exports = {
       }]
     },
     '/dependent-details': {
-      behaviours: Loop,
+      behaviours: [Loop, SetConfirmStep],
       storeKey: 'dependentDetails',
       fields: [
         'dependentFullName',
@@ -201,7 +201,7 @@ module.exports = {
     },
     '/declaration': {
       behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary],
-      sections: require('./sections/request-confirm-sections'),
+      loopSections: require('./sections/loop-sections'),
       next: '/complete'
     },
     '/complete': {
