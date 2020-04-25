@@ -8,7 +8,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - SESSION_TTL=300
-      - PDF_CONVERTER_URL=http://html-pdf-converter:8001/convert
+      - PDF_CONVERTER_URL=html-pdf-converter:8001
     links:
       - redis
       - html-pdf-converter

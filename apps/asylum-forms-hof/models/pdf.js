@@ -16,8 +16,8 @@ module.exports = class PDFModel extends Model {
   }
 
   url() {
-    console.warn('CONFIG.PDF.HOSTNAME ' + config.pdf.hostname);
-    return config.pdf.hostname;
+    console.warn('CONFIG.PDF.HOSTNAME ' + config.pdf.url);
+    return config.pdf.url;
   }
 
   handleResponse(response, callback) {

@@ -28,7 +28,7 @@ module.exports = {
   },
   pdf: {
     mock: '/api/pdf-converter',
-    hostname: env !== 'production' ? `http://${localhost()}/api/pdf-converter` : `http://${localhost()}/api/pdf-converter` 
+    url: process.env.PDF_CONVERTER_URL
   },
   upload: {
     mock: '/api/file-upload',
