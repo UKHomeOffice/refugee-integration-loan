@@ -140,7 +140,7 @@ module.exports = {
       next: '/convictions-joint'
     },
     '/convictions-joint': {
-      fields: ['convicted', 'detailsOfCrime'],
+      fields: ['convictedJoint', 'detailsOfCrimeJoint'],
       next: '/dependents'
     },
     '/dependents': {
@@ -221,7 +221,7 @@ module.exports = {
       next: '/combined-savings'
     },
     '/combined-savings': {
-      fields: ['savings'],
+      fields: ['combinedSavings', 'combinedSavingsAmount'],
       next: '/combined-amount'
     },
     '/combined-amount': {

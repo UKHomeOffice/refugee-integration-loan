@@ -153,6 +153,20 @@
   "partnerOtherNames": {
     "label": "Full name"
   },
+  "convictedJoint": {
+    "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "detailsOfCrimeJoint": {
+    "label": "Details of the crime/s"
+  },
   "dependents": {
     "legend": " ",
     "options":{
@@ -308,12 +322,26 @@
       }
     }
   },
+  "savingsAmount": {
+    "label": "Total amount of savings"
+  },
+  "combinedSavings": {
+    "legend": " ",
+    "options":{
+      "yes": {
+        "label": "Yes"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "combinedSavingsAmount": {
+    "label": "Total amount of savings"
+  },
   "amount": {
     "label": "Loan amount",
     "hint": "You can apply for a minimum of £100 and a maximum of £500."
-  },
-  "savingsAmount": {
-    "label": "Total amount of savings"
   },
   "jointAmount": {
     "label": "Loan amount",

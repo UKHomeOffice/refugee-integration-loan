@@ -120,6 +120,26 @@ module.exports = {
       value: 'yes'
     }
    },
+  convictedJoint: {
+    mixin: 'radio-group',
+    options: [{
+            value: 'yes',
+            toggle: 'detailsOfCrimeJoint',
+            child: 'partials/details-summary'
+        },
+        {
+            value: 'no'
+        }
+    ],
+    validate: 'required'
+  },
+  detailsOfCrimeJoint: {
+    validate: 'required',
+    dependent: {
+      field: 'convictedJoint',
+      value: 'yes'
+    }
+  },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
    validate: ['required', 'before']
   }),
@@ -379,6 +399,28 @@ module.exports = {
    attributes: [ {attribute:'placeholder', value:'£'} ],
    dependent: {
      field: 'savings',
+     value: 'yes'
+   }
+  },
+  combinedSavings: {
+   mixin: 'radio-group',
+   options: [
+       {
+           value: 'yes',
+           toggle: 'combinedSavingsAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'no'
+       }
+   ],
+   validate: 'required'
+  },
+  combinedSavingsAmount: {
+   validate: 'required',
+   attributes: [ {attribute:'placeholder', value:'£'} ],
+   dependent: {
+     field: 'combinedSavings',
      value: 'yes'
    }
   },
