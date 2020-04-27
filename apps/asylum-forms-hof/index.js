@@ -52,7 +52,7 @@ module.exports = {
       forks: [{
         target: '/brp',
           condition: {
-                field: 'partner',
+            field: 'partner',
             value: 'no'
           }
       }]
@@ -68,10 +68,46 @@ module.exports = {
     },
     '/ni-number': {
       fields: ['niNumber'],
-      next: '/other-names'
+      next: '/has-other-names'
+    },
+    '/has-other-names': {
+      fields: ['hasOtherNames'],
+      next: '/home-office-reference',
+      forks: [{
+        target: '/other-names',
+        condition: {
+          field: 'hasOtherNames',
+          value: 'yes'
+        }
+      }]
     },
     '/other-names': {
-      fields: ['hasOtherNames', 'otherNames'],
+      behaviours: Loop,
+      loopData: {
+        storeKey: 'otherNamesList',
+        sectionKey: 'other-names',
+        confirmStep: '/confirm',
+        applySpacer: false
+      },
+      fields: [
+        'otherNames',
+        'addAnotherName'
+      ],
+      firstStep: 'name',
+      subSteps: {
+        name: {
+          fields: ['otherNames'],
+          next: 'add-another'
+        },
+        'add-another': {
+          fields: ['addAnotherName'],
+          template: 'other-names-add-another'
+        }
+      },
+      loopCondition: {
+        field: 'addAnotherName',
+        value: 'yes'
+      },
       next: '/home-office-reference'
     },
     '/home-office-reference': {
@@ -123,7 +159,7 @@ module.exports = {
       loopData: {
         storeKey: 'dependentDetails',
         sectionKey: 'dependent-details',
-        confirmStep: '/declaration',
+        confirmStep: '/confirm',
       },
       fields: [
         'dependentFullName',
@@ -202,9 +238,9 @@ module.exports = {
     },
     '/contact': {
       fields: ['infoContactTypes', 'infoEmail', 'infoPhone', 'outcomeContactTypes', 'outcomeEmail'],
-      next: '/declaration'
+      next: '/confirm'
     },
-    '/declaration': {
+    '/confirm': {
       behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary, UploadPDF],
       loopSections: require('./sections/loop-sections'),
       next: '/complete'

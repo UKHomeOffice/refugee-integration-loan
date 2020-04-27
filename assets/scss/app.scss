@@ -35,3 +35,17 @@
     color: #000;
   }
 }
+
+button.govuk-link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    font-size: arial, sans-serif;
+    /* color: #069; */
+    text-decoration: underline;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 1em;
+    color: #1d70b8;
+    font-size: 1em;
+}

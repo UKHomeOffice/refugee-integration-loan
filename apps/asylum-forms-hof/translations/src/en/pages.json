@@ -28,7 +28,7 @@
     "header": "Do you have a partner with you in the UK?"
   },
   "joint": {
-    "header": "Are you applying for loan together with your partner?"
+    "header": "Are you applying for a loan together with your partner?"
   },
   "brp": {
     "header": "What are your biometric residence permit (BRP) details?",
@@ -37,8 +37,22 @@
   "ni-number": {
     "header": "What is your National Insurance number?"
   },
-  "other-names": {
+  "has-other-names": {
     "header": "Have you been known by any other names?"
+  },
+  "other-names": {
+    "header": "Other names",
+    "summary-item": {
+      "default" : "Name"
+    },
+    "delete-text": {
+      "default" : "Delete"
+    }
+  },
+  "other-names-name": {
+    "header": {
+      "default": "Other names"
+    }
   },
   "home-office-reference": {
     "header": "What is your Home Office reference number?"
@@ -72,6 +86,9 @@
     },
     "summary-item": {
       "default" : "Dependant"
+    },
+    "delete-text": {
+      "default" : "Delete dependant"
     }
   },
   "dependent-details-dependent": {

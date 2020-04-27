@@ -87,6 +87,7 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
       let spacer = {
           spacer: true
       };
+      let applySpacer = loopStep.loopData.applySpacer == null ? true : loopStep.loopData.applySpacer;
   
       const fields = _.flatten(
         _.map(entities, (entity, id) =>
@@ -105,7 +106,7 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
                     `fields.${field}.legend`
                   ])
               };
-              return id > 0 && isFirstField ? [spacer, fieldEntry] : [fieldEntry]
+              return id > 0 && isFirstField && applySpacer ? [spacer, fieldEntry] : [fieldEntry]
             })
         )
       );
@@ -115,17 +116,18 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
       };
     }
 
-
     let foundSections = 0;
     Object.keys(req.form.options.steps).forEach((key, index) => {
       const step = req.form.options.steps[key];
-      
+
       if(step.loopData) {
           //this is a loop step
-          //increment the foundSections first as we want to splice after the previously found section
-          foundSections++; 
-          //insert our loop section
-          sections.splice(foundSections, 0, addLoopSection(req, step, key));
+          const loopSection = addLoopSection(req, step, key);
+          if(_.size(loopSection.fields) > 0) {
+            //insert our loop section if it has any fields to show
+            sections.splice(foundSections, 0, loopSection);
+            foundSections++;
+          }
       } else if(_.find(sections, section => section.fields && section.fields.length > 0 && section.fields[0].step === key)) {
           foundSections++;
       }

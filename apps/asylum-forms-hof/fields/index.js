@@ -88,23 +88,14 @@ module.exports = {
   },
   hasOtherNames: {
    mixin: 'radio-group',
-   options: [{
-           value: 'yes',
-           toggle: 'otherNames',
-           child: 'partials/details-summary'
-       },
-       {
-           value: 'no'
-       }
-   ],
+   options: ['yes', 'no'],
    validate: 'required'
   },
   otherNames: {
-   validate: 'required',
-   dependent: {
-     field: 'hasOtherNames',
-     value: 'yes'
-   }
+   validate: 'required'
+  },
+  addAnotherName: {
+   omitFromSummary: true
   },
   homeOfficeReference: {
    validate: ['required', {type:'regex', arguments: '^[A-Z]\\d{7}$'}]

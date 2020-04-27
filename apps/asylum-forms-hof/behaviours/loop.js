@@ -179,7 +179,7 @@ module.exports = superclass => class extends superclass {
       req.sessionModel.set(req.form.options.loopData.storeKey, items);
       return callback();
     }
-    if (this.getNext(req, res) === steps[steps.length - 1]) {
+    if (this.getNext(req, res) === steps[steps.length - 1] || steps.length == 1) {
       return super.saveValues(req, res, (err) => {
         if (err) {
           return callback(err);
@@ -228,6 +228,7 @@ module.exports = superclass => class extends superclass {
     items = _.map(items, (item, id) => ({
       id,
       index: Number(id)+1,
+      deleteRoute: req.form.options.firstStep,
       fields: _.map(fields, field => ({
         field,
         header: req.translate([`fields.${field}.summary`, `fields.${field}.label`]),
@@ -236,7 +237,7 @@ module.exports = superclass => class extends superclass {
       }))
     }));
 
-    const multipleDependents = items.length > 1;
+    const multipleItems = items.length > 1;
 
     const title = hoganRender(conditionalTranslate(`pages.${pagePath}.header`, req.translate),
       Object.assign({}, res.locals, {
@@ -247,10 +248,11 @@ module.exports = superclass => class extends superclass {
     return Object.assign({}, locals, {
       title,
       itemTitle: req.translate(`pages.${this.options.loopData.sectionKey}.summary-item`),
-      multipleDependents,
+      multipleItems,
       items,
       summaryTitle: req.translate(`pages.${this.options.loopData.sectionKey}.header`),
-      hasItems: items.length
+      hasItems: items.length,
+      deleteText: req.translate(`pages.${this.options.loopData.sectionKey}.delete-text`)
     });
   }
 

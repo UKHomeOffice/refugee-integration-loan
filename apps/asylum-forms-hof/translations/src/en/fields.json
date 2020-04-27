@@ -57,10 +57,6 @@
       }
     }
   },
-  "refugeeDate": {
-    "label": "What date were you granted refugee or humanitarian protection status?",
-    "hint": "You can find this date on your biometric residence permit (BRP)."
-  },
   "fullName": {
     "label": "Full name"
   },
@@ -78,7 +74,7 @@
   },
   "niNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residency permit (BRP).",
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
     "validation": {
       "regex": "Enter a National Insurance number in the correct format",
       "required": "Enter a National Insurance number in the correct format"

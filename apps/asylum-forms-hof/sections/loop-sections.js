@@ -11,5 +11,8 @@ module.exports = {
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     },
     'dependentRelationship'
+  ],
+  'other-names': [
+    'otherNames'
   ]
 };
