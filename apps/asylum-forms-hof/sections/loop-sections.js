@@ -14,5 +14,8 @@ module.exports = {
   ],
   'other-names': [
     'otherNames'
+  ],
+  'partner-other-names': [
+    'partnerOtherNames'
   ]
 };

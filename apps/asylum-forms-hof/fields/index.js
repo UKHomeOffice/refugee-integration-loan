@@ -97,6 +97,9 @@ module.exports = {
   addAnotherName: {
    omitFromSummary: true
   },
+  partnerAddAnotherName: {
+   omitFromSummary: true
+  },
   homeOfficeReference: {
    validate: ['required', {type:'regex', arguments: '^[A-Z]\\d{7}$'}]
   },
@@ -156,23 +159,11 @@ module.exports = {
   },
   partnerHasOtherNames: {
     mixin: 'radio-group',
-    options: [{
-            value: 'yes',
-            toggle: 'partnerOtherNames',
-            child: 'partials/details-summary'
-        },
-        {
-            value: 'no'
-        }
-    ],
+    options: ['yes', 'no'],
     validate: 'required'
    },
    partnerOtherNames: {
-    validate: 'required',
-    dependent: {
-      field: 'partnerHasOtherNames',
-      value: 'yes'
-    }
+    validate: 'required'
    },
   dependents: {
    mixin: 'radio-group',

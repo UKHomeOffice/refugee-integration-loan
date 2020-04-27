@@ -132,11 +132,47 @@ module.exports = {
     },
     '/partner-ni-number': {
       fields: ['partnerNiNumber'],
-      next: '/partner-other-names',
+      next: '/partner-has-other-names',
       template: 'ni-number'
     },
+    '/partner-has-other-names': {
+      fields: ['partnerHasOtherNames'],
+      next: '/convictions-joint',
+      forks: [{
+        target: '/partner-other-names',
+        condition: {
+          field: 'partnerHasOtherNames',
+          value: 'yes'
+        }
+      }]
+    },
     '/partner-other-names': {
-      fields: ['partnerHasOtherNames', 'partnerOtherNames'],
+      behaviours: Loop,
+      loopData: {
+        storeKey: 'partnerOtherNamesList',
+        sectionKey: 'partner-other-names',
+        confirmStep: '/confirm',
+        applySpacer: false
+      },
+      fields: [
+        'partnerOtherNames',
+        'partnerAddAnotherName'
+      ],
+      firstStep: 'name',
+      subSteps: {
+        name: {
+          fields: ['partnerOtherNames'],
+          next: 'add-another'
+        },
+        'add-another': {
+          fields: ['partnerAddAnotherName'],
+          template: 'partner-other-names-add-another'
+        }
+      },
+      loopCondition: {
+        field: 'partnerAddAnotherName',
+        value: 'yes'
+      },
       next: '/convictions-joint'
     },
     '/convictions-joint': {

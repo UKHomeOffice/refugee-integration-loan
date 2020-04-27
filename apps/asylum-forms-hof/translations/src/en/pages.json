@@ -64,8 +64,20 @@
   "partner-ni-number": {
     "header": "What is your partner's National Insurance number?"
   },
-  "partner-other-names": {
+  "partner-has-other-names": {
     "header": "Has your partner been known by any other names?"
+  },
+  "partner-other-names": {
+    "header": "Other names",
+    "summary-item": {
+      "default" : "Name"
+    },
+    "delete-text": {
+      "default" : "Delete"
+    }
+  },
+  "partner-other-names-name": {
+    "header": "Other names"
   },
   "convictions": {
     "header": "Have you ever been convicted of a crime in the UK?"
