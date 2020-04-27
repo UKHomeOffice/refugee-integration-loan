@@ -126,7 +126,7 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
           foundSections++; 
           //insert our loop section
           sections.splice(foundSections, 0, addLoopSection(req, step, key));
-      } else if(_.find(sections, section => section.fields && section.fields[0].step === key)) {
+      } else if(_.find(sections, section => section.fields && section.fields.length > 0 && section.fields[0].step === key)) {
           foundSections++;
       }
     })
