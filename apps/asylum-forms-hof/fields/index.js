@@ -77,8 +77,7 @@ module.exports = {
     validate: ['required', 'before']
   }),
   fullName: {
-   validate: 'required',
-   className: "govuk-input"
+   validate: 'required'
   },
   brpNumber: {
    validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}]
@@ -197,7 +196,6 @@ module.exports = {
    validate: 'required'
   },
   street: {
-   validate: 'required'
   },
   townOrCity: {
    validate: 'required'
@@ -453,20 +451,20 @@ module.exports = {
   rollNumber: {
   },
   contactTypes: {
-      mixin: 'checkbox-group',
-      options: [
-        {
-           value: 'email',
-           toggle: 'email',
-           child: 'partials/details-summary'
-        },
-        {
-           value: 'phone',
-           toggle: 'phone',
-           child: 'partials/details-summary'
-        }
-      ],
-      validate: 'required'
+   mixin: 'checkbox-group',
+   options: [
+     {
+        value: 'email',
+        toggle: 'email',
+        child: 'partials/details-summary'
+     },
+     {
+        value: 'phone',
+        toggle: 'phone',
+        child: 'partials/details-summary'
+     }
+   ],
+   validate: 'required'
   },
   email: {
    validate: ['required', 'email'],
@@ -504,7 +502,6 @@ module.exports = {
    }
   },
   outcomeStreet: {
-   validate: 'required',
    dependent: {
      field: 'likelyToMove',
      value: 'yes'
@@ -522,6 +519,52 @@ module.exports = {
    dependent: {
      field: 'likelyToMove',
      value: 'yes'
+   }
+  },
+  hadHelp: {
+   mixin: 'radio-group',
+   validate: ['required'],
+   options: ['yes', 'no']
+  },
+  helpReasons: {
+   mixin: 'checkbox-group',
+   validate: ['required'],
+   options: ['no_internet', 'english_not_first_language', 'not_confident', 'faster', 'health_condition']
+  },
+  helpFullName: {
+   validate: 'required'
+  },
+  helpRelationship: {
+   validate: 'required'
+  },
+  helpContactTypes: {
+   mixin: 'checkbox-group',
+   options: [
+     {
+        value: 'email',
+        toggle: 'helpEmail',
+        child: 'partials/details-summary'
+     },
+     {
+        value: 'phone',
+        toggle: 'helpPhone',
+        child: 'partials/details-summary'
+     }
+   ],
+   validate: 'required'
+  },
+  helpEmail: {
+   validate: ['required', 'email'],
+   dependent: {
+     field: 'helpContactTypes',
+     value: 'email'
+   }
+  },
+  helpPhone: {
+   validate: ['required', phoneNumber],
+   dependent: {
+     field: 'helpContactTypes',
+     value: 'phone'
    }
   }
 }

@@ -167,6 +167,15 @@
     "header": "Receiving your outcome",
     "postTo": "We will post your decision letter to"
   },
+  "help": {
+    "header": "Did you get any help making this application?"
+  },
+  "help-reasons": {
+    "header": "Why did you need help?"
+  },
+  "who-helped": {
+    "header": "What are the details of the person who helped you?"
+  },
   "declaration": {
     "header": "Check your answers before sending your application",
     "submittingHeader": "Now send your application",

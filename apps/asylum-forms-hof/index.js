@@ -275,7 +275,7 @@ module.exports = {
     },
     '/contact': {
       fields: ['contactTypes', 'email', 'phone'],
-      next: '/confirm',
+      next: '/help',
       forks: [{
         target: '/outcome',
         condition: function (req, res) {
@@ -286,6 +286,25 @@ module.exports = {
     '/outcome': {
       fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],
       template: 'outcome',
+      next: '/help'
+    },
+    '/help': {
+      fields: ['hadHelp'],
+      next: '/confirm',
+      forks: [{
+        target: '/help-reasons',
+        condition: {
+          field: 'hadHelp',
+          value: 'yes'
+        }
+      }]
+    },
+    '/help-reasons': {
+      fields: ['helpReasons'],
+      next: '/who-helped'
+    },
+    '/who-helped': {
+      fields: ['helpFullName', 'helpRelationship', 'helpContactTypes', 'helpEmail', 'helpPhone'],
       next: '/confirm'
     },
     '/confirm': {
