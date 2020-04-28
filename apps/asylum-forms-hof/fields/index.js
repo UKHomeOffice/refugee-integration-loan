@@ -222,8 +222,13 @@ module.exports = {
            child: 'partials/details-summary'
        },
        {
-           value: 'child_maintenance_or_support',
-           toggle: 'childMaintenanceOrSupportAmount',
+           value: 'child_benefit',
+           toggle: 'childBenefitAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'housing_benefit',
+           toggle: 'housingBenefitAmount',
            child: 'partials/details-summary'
        },
        {
@@ -249,12 +254,20 @@ module.exports = {
      value: 'universal_credit'
    }
   },
-  childMaintenanceOrSupportAmount: {
+  childBenefitAmount: {
    validate: ['required', decimal],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
-     value: 'child_maintenance_or_support'
+     value: 'child_benefit'
+   }
+  },
+  housingBenefitAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'incomeTypes',
+     value: 'housing_benefit'
    }
   },
   otherIncomeAmount: {

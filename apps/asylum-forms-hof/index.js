@@ -223,7 +223,7 @@ module.exports = {
       next: '/address'
     },
     '/address': {
-      fields: ['building', 'street', 'townOrCity', 'county', 'postcode'],
+      fields: ['building', 'street', 'townOrCity', 'postcode'],
       next: '/income',
       forks: [{
         target: '/combined-income',
@@ -234,7 +234,7 @@ module.exports = {
       }]
     },
     '/income': {
-      fields: ['incomeTypes', 'salaryAmount', 'universalCreditAmount', 'childMaintenanceOrSupportAmount', 'otherIncomeAmount'],
+      fields: ['incomeTypes', 'salaryAmount', 'universalCreditAmount', 'childBenefitAmount', 'housingBenefitAmount', 'otherIncomeAmount'],
       next: '/outgoings'
     },
     '/outgoings': {

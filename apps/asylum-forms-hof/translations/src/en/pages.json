@@ -123,7 +123,8 @@
     "header": "What is your employment status?"
   },
   "address": {
-    "header": "What is your address in the UK?"
+    "header": "What is your address in the UK?",
+    "intro": "If you have no fixed address, enter an address where we can contact you."
   },
   "income": {
     "header": "Your monthly income"
@@ -146,9 +147,6 @@
   "combined-outgoings": {
     "header": "You and your partner's combined monthly outgoings"
   },
-  "combined-debts": {
-    "header": "Do you or your partner have any debts/other liabilities?"
-  },
   "combined-savings": {
     "header": "Do you or your partner have any savings?"
   },
@@ -159,7 +157,8 @@
     "header": "What will you use the loan for?"
   },
   "bank-details": {
-    "header": "What are your bank or building society account details?"
+    "header": "What are your bank or building society account details?",
+    "intro": "We will send your loan to this account."
   },
   "contact": {
     "header": "How would you like us to contact you?"
