@@ -16,7 +16,8 @@
     "hof-component-date": "^1.4.0",
     "hof-theme-govuk": "^4.4.1",
     "hof-model": "^3.1.0",
-    "is-pdf": "^1.0.0"
+    "puppeteer": "^1.12.2",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^3.14.0",

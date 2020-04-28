@@ -27,8 +27,7 @@ module.exports = {
     password: process.env.REDIS_PASSWORD
   },
   pdf: {
-    mock: '/api/pdf-converter',
-    url: process.env.PDF_CONVERTER_URL
+    tempLocation: 'pdf-form-submissions'
   },
   upload: {
     mock: '/api/file-upload',

@@ -5,10 +5,15 @@ const path = require('path');
 const mix = require('mixwith').mix;
 const moment = require('moment');
 const config = require('../../../config');
-const PDFModel = require('../models/pdf');
 const UploadModel = require('../models/upload');
 
 const summaryData = require('./summary');
+const pdfPuppeteer = require('./util/pdf-puppeteer');
+const uuid = require('uuid');
+const tempLocation = path.resolve(config.pdf.tempLocation);
+const createTemporaryFileName = () => {
+  return (`${uuid.v1()}.pdf`);
+};
 
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
@@ -76,10 +81,32 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     return model.save();
   }
 
-  createPDF(template) {
-    const model = new PDFModel();
-    model.set({template});
-    return model.save();
+  async createPDF(html) {
+    const tempName = createTemporaryFileName();
+
+    console.log('    tempLocation: ' + tempLocation);
+    console.log('    tempName: ' + tempName);
+    const file = await pdfPuppeteer.generate(html, tempLocation, tempName);
+    console.log('info', '**** PDF File created **** ' + file);
+    fs.stat(file, function(err, stats) {
+        if (stats.isFile()) {
+            console.log('    Type: file');
+        }
+        if (stats.isDirectory()) {
+            console.log('    Type: directory');
+        }
+    
+        console.log('    size: ' + stats["size"]);
+        console.log('    mode: ' + stats["mode"])
+    });
+
+    fs.readFile(file, (err, data) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      return data;
+    })
   }
 
   readCss() {
