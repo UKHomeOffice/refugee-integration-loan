@@ -274,7 +274,7 @@ module.exports = {
       next: '/contact'
     },
     '/contact': {
-      fields: ['infoContactTypes', 'infoEmail', 'infoPhone', 'outcomeContactTypes', 'outcomeEmail'],
+      fields: ['contactTypes', 'email', 'phone'],
       next: '/confirm'
     },
     '/confirm': {

@@ -24,8 +24,8 @@ function decimal(value) {
   return regex(value, /^\d*.?\d{0,2}$/)
 }
 
-function ukMobile(value) {
-  return regex(stripSpaces(value), /^(\+447\d{3}|07\d{3})\d{6}$/)
+function phoneNumber(value) {
+  return regex(stripSpaces(value), /^\(?\+?[\d() -]{0,15}$/)
 }
 
 function emailAddress(value) {
@@ -463,53 +463,34 @@ module.exports = {
   },
   rollNumber: {
   },
-  infoContactTypes: {
+  contactTypes: {
       mixin: 'checkbox-group',
       options: [
         {
            value: 'email',
-           toggle: 'infoEmail',
+           toggle: 'email',
            child: 'partials/details-summary'
         },
         {
            value: 'phone',
-           toggle: 'infoPhone',
+           toggle: 'phone',
            child: 'partials/details-summary'
         }
       ],
       validate: 'required'
   },
-  infoEmail: {
+  email: {
    validate: ['required', 'email'],
    dependent: {
-     field: 'infoContactTypes',
+     field: 'contactTypes',
      value: 'email'
    }
   },
-  infoPhone: {
-   validate: ['required', ukMobile],
+  phone: {
+   validate: ['required', phoneNumber],
    dependent: {
-     field: 'infoContactTypes',
+     field: 'contactTypes',
      value: 'phone'
-   }
-  },
-  outcomeContactTypes: {
-      mixin: 'checkbox-group',
-      options: [
-        {
-           value: 'email',
-           toggle: 'outcomeEmail',
-           child: 'partials/details-summary'
-        },
-        'post'
-      ],
-      validate: 'required'
-  },
-  outcomeEmail: {
-   validate: ['required', 'email'],
-   dependent: {
-     field: 'outcomeContactTypes',
-     value: 'email'
    }
   }
 }

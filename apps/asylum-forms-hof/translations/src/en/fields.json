@@ -379,8 +379,9 @@
     "label": "Building society or credit union number (if you have one)",
     "hint": "You can find this on your card, statement or passbook"
   },
-  "infoContactTypes": {
-    "legend": "For more information",
+  "contactTypes": {
+    "legend": " ",
+    "hint": "Select at least one option.",
     "options": {
       "email": {
         "label": "Email"
@@ -390,24 +391,11 @@
       }
     }
   },
-  "infoEmail": {
+  "email": {
     "label": "Email address"
   },
-  "infoPhone": {
-    "label": "Mobile phone number"
-  },
-  "outcomeContactTypes": {
-    "legend": "With the outcome of your application",
-    "options": {
-      "email": {
-        "label": "Email"
-      },
-      "post": {
-        "label": "Post"
-      }
-    }
-  },
-  "outcomeEmail": {
-    "label": "Email address"
+  "phone": {
+    "label": "Mobile phone number",
+    "hint":"For international numbers include the country code"
   }
 }
