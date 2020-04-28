@@ -163,6 +163,10 @@
   "contact": {
     "header": "How would you like us to contact you?"
   },
+  "outcome": {
+    "header": "Receiving your outcome",
+    "postTo": "We will post your decision letter to"
+  },
   "declaration": {
     "header": "Check your answers before sending your application",
     "submittingHeader": "Now send your application",

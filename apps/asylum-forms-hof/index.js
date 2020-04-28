@@ -275,6 +275,17 @@ module.exports = {
     },
     '/contact': {
       fields: ['contactTypes', 'email', 'phone'],
+      next: '/confirm',
+      forks: [{
+        target: '/outcome',
+        condition: function (req, res) {
+          return req.form.values['contactTypes'] && !(req.form.values['contactTypes'].includes('email'));
+        }
+      }]
+    },
+    '/outcome': {
+      fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],
+      template: 'outcome',
       next: '/confirm'
     },
     '/confirm': {

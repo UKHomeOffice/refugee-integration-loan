@@ -62,15 +62,11 @@
         }
       }
     },
-    "refugeeDate": {
-      "label": "What date were you granted refugee or humanitarian protection status?",
-      "hint": "You can find this date on your biometric residence permit (BRP)."
-    },
     "fullName": {
       "label": "Full name"
     },
     "dateOfBirth": {
-      "label": "Date of Birth",
+      "legend": "Date of Birth",
       "hint": "For example, 31 3 1980"
     },
     "brpNumber": {
@@ -83,7 +79,7 @@
     },
     "niNumber": {
       "label": "National Insurance number",
-      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residency permit (BRP).",
+      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
       "validation": {
         "regex": "Enter a National Insurance number in the correct format",
         "required": "Enter a National Insurance number in the correct format"
@@ -123,13 +119,13 @@
       }
     },
     "detailsOfCrime": {
-      "label": "Details of the crime/s"
+      "label": "Enter details of the crime(s)"
     },
     "partnerFullName": {
       "label": "Full name"
     },
     "partnerDateOfBirth": {
-      "label": "Date of Birth",
+      "legend": "Date of Birth",
       "hint": "For example, 31 3 1980"
     },
     "partnerBrpNumber": {
@@ -162,6 +158,20 @@
     "partnerOtherNames": {
       "label": "Full name"
     },
+    "convictedJoint": {
+      "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "detailsOfCrimeJoint": {
+      "label": "Enter details of the crime(s)"
+    },
     "dependents": {
       "legend": " ",
       "options": {
@@ -177,22 +187,11 @@
       "label": "Full name"
     },
     "dependentDateOfBirth": {
-      "label": "Date of Birth",
+      "legend": "Date of Birth",
       "hint": "For example, 31 3 1980"
     },
     "dependentRelationship": {
       "label": "Relationship to you"
-    },
-    "addAnother": {
-      "legend": "",
-      "options": {
-        "yes": {
-          "label": "Yes"
-        },
-        "no": {
-          "label": "No"
-        }
-      }
     },
     "building": {
       "label": "Building and street"
@@ -203,24 +202,25 @@
     "townOrCity": {
       "label": "Town or city"
     },
-    "county": {
-      "label": "County"
-    },
     "postcode": {
       "label": "Postcode"
     },
     "incomeTypes": {
       "legend": " ",
-      "hint": "Select all options that are relevant to you.",
+      "hint": "Select all options that apply to you.",
       "options": {
         "salary": {
-          "label": "Salary"
+          "label": "Salary (before tax)"
         },
         "universal_credit": {
-          "label": "Universal credit"
+          "label": "Universal Credit",
+          "hint": "Enter the amount you expect to receive if you haven’t yet had a payment."
         },
-        "child_maintenance_or_support": {
-          "label": "Child maintenance or support"
+        "child_benefit": {
+          "label": "Child benefit"
+        },
+        "housing_benefit": {
+          "label": "Housing benefit"
         },
         "other": {
           "label": "Other"
@@ -231,17 +231,20 @@
       "label": "Total salary amount per month"
     },
     "universalCreditAmount": {
-      "label": "Total Universal credit amount per month"
+      "label": "Total Universal Credit amount per month"
     },
-    "childMaintenanceOrSupportAmount": {
-      "label": "Total Child maintenance or support amount per month"
+    "childBenefitAmount": {
+      "label": "Total child benefit amount per month"
+    },
+    "housingBenefitAmount": {
+      "label": "Total housing benefit amount per month"
     },
     "otherIncomeAmount": {
-      "label": "Total other amount per month"
+      "label": "Total other income amount per month"
     },
     "outgoingTypes": {
       "legend": " ",
-      "hint": "Select all options that are relevant to you.",
+      "hint": "Select all options that currently apply to you.",
       "options": {
         "rent": {
           "label": "Rent"
@@ -256,13 +259,13 @@
           "label": "Mobile phone"
         },
         "travel": {
-          "label": "Travel/fares"
+          "label": "Travel"
         },
         "clothing_and_footwear": {
           "label": "Clothing and footwear"
         },
         "universal_credit_deductions": {
-          "label": "Universal credit deductions"
+          "label": "Universal Credit deductions"
         },
         "other": {
           "label": "Other",
@@ -274,7 +277,7 @@
       "label": "Total rent amount per month"
     },
     "householdBillsAmount": {
-      "label": "Total utility (household) bills amount per month"
+      "label": "Total utility bills amount per month"
     },
     "foodToiletriesAndCleaningSuppliesAmount": {
       "label": "Total food, toiletries and cleaning supplies amount per month"
@@ -283,16 +286,16 @@
       "label": "Total mobile phone amount per month"
     },
     "travelAmount": {
-      "label": "Total travel/fares amount per month"
+      "label": "Total travel amount per month"
     },
     "clothingAndFootwearAmount": {
       "label": "Total clothing and footwear amount per month"
     },
     "universalCreditDeductionsAmount": {
-      "label": "Total Universal credit deductions per month"
+      "label": "Total Universal Credit deductions per month"
     },
     "otherOutgoingAmount": {
-      "label": "Total other amount per month"
+      "label": "Total other outgoings per month"
     },
     "debts": {
       "legend": " ",
@@ -317,12 +320,26 @@
         }
       }
     },
+    "savingsAmount": {
+      "label": "Total amount of savings"
+    },
+    "combinedSavings": {
+      "legend": " ",
+      "options": {
+        "yes": {
+          "label": "Yes"
+        },
+        "no": {
+          "label": "No"
+        }
+      }
+    },
+    "combinedSavingsAmount": {
+      "label": "Total amount of savings"
+    },
     "amount": {
       "label": "Loan amount",
       "hint": "You can apply for a minimum of £100 and a maximum of £500."
-    },
-    "savingsAmount": {
-      "label": "Total amount of savings"
     },
     "jointAmount": {
       "label": "Loan amount",
@@ -364,11 +381,12 @@
       "hint": "Must be between 6 and 8 digits long"
     },
     "rollNumber": {
-      "label": "Building society roll number (if you have one)",
-      "hint": "You can find it on your card, statement or passbook"
+      "label": "Building society or credit union number (if you have one)",
+      "hint": "You can find this on your card, statement or passbook"
     },
-    "infoContactTypes": {
-      "legend": "For more information",
+    "contactTypes": {
+      "legend": " ",
+      "hint": "Select at least one option.",
       "options": {
         "email": {
           "label": "Email"
@@ -378,25 +396,35 @@
         }
       }
     },
-    "infoEmail": {
+    "email": {
       "label": "Email address"
     },
-    "infoPhone": {
-      "label": "Mobile phone number"
+    "phone": {
+      "label": "Mobile phone number",
+      "hint": "For international numbers include the country code"
     },
-    "outcomeContactTypes": {
-      "legend": "With the outcome of your application",
+    "likelyToMove": {
+      "legend": "Are you likely to move to another address in the next 4 weeks?",
       "options": {
-        "email": {
-          "label": "Email"
+        "yes": {
+          "label": "Yes - add another address"
         },
-        "post": {
-          "label": "Post"
+        "no": {
+          "label": "No"
         }
       }
     },
-    "outcomeEmail": {
-      "label": "Email address"
+    "outcomeBuilding": {
+      "label": "Building and street"
+    },
+    "outcomeStreet": {
+      "label": " "
+    },
+    "outcomeTownOrCity": {
+      "label": "Town or city"
+    },
+    "outcomePostcode": {
+      "label": "Postcode"
     }
   },
   "journey": {
@@ -433,7 +461,7 @@
       "header": "Do you have a partner with you in the UK?"
     },
     "joint": {
-      "header": "Are you applying for loan together with your partner?"
+      "header": "Are you applying for a loan together with your partner?"
     },
     "brp": {
       "header": "What are your biometric residence permit (BRP) details?",
@@ -442,8 +470,22 @@
     "ni-number": {
       "header": "What is your National Insurance number?"
     },
-    "other-names": {
+    "has-other-names": {
       "header": "Have you been known by any other names?"
+    },
+    "other-names": {
+      "header": "Other names",
+      "summary-item": {
+        "default": "Name"
+      },
+      "delete-text": {
+        "default": "Delete"
+      }
+    },
+    "other-names-name": {
+      "header": {
+        "default": "Other names"
+      }
     },
     "home-office-reference": {
       "header": "What is your Home Office reference number?"
@@ -455,8 +497,20 @@
     "partner-ni-number": {
       "header": "What is your partner's National Insurance number?"
     },
-    "partner-other-names": {
+    "partner-has-other-names": {
       "header": "Has your partner been known by any other names?"
+    },
+    "partner-other-names": {
+      "header": "Other names",
+      "summary-item": {
+        "default": "Name"
+      },
+      "delete-text": {
+        "default": "Delete"
+      }
+    },
+    "partner-other-names-name": {
+      "header": "Other names"
     },
     "convictions": {
       "header": "Have you ever been convicted of a crime in the UK?"
@@ -477,13 +531,18 @@
       },
       "summary-item": {
         "default": "Dependant"
+      },
+      "delete-text": {
+        "default": "Delete dependant"
       }
     },
     "dependent-details-dependent": {
       "header": {
         "default": "Enter details of your dependant"
       },
-      "intro": "You can add more dependants later."
+      "intro": {
+        "default": "You can add more dependants later."
+      }
     },
     "dependent-details-add-another": {
       "header": {
@@ -497,7 +556,8 @@
       "header": "What is your employment status?"
     },
     "address": {
-      "header": "What is your address in the UK?"
+      "header": "What is your address in the UK?",
+      "intro": "If you have no fixed address, enter an address where we can contact you."
     },
     "income": {
       "header": "Your monthly income"
@@ -520,9 +580,6 @@
     "combined-outgoings": {
       "header": "You and your partner's combined monthly outgoings"
     },
-    "combined-debts": {
-      "header": "Do you or your partner have any debts/other liabilities?"
-    },
     "combined-savings": {
       "header": "Do you or your partner have any savings?"
     },
@@ -533,10 +590,15 @@
       "header": "What will you use the loan for?"
     },
     "bank-details": {
-      "header": "What are your bank or building society account details?"
+      "header": "What are your bank or building society account details?",
+      "intro": "We will send your loan to this account."
     },
     "contact": {
       "header": "How would you like us to contact you?"
+    },
+    "outcome": {
+      "header": "Receiving your outcome",
+      "postTo": "We will post your decision letter to"
     },
     "declaration": {
       "header": "Check your answers before sending your application",

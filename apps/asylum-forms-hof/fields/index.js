@@ -202,9 +202,6 @@ module.exports = {
   townOrCity: {
    validate: 'required'
   },
-  county: {
-   validate: 'required'
-  },
   postcode: {
    validate: ['required', 'postcode']
   },
@@ -444,14 +441,6 @@ module.exports = {
    options: ['housing', 'essential_items', 'basic_living_costs', 'training_or_retraining', 'work_clothing_and_equipment'],
    validate: 'required'
   },
-  paymentType: {
-   mixin: 'radio-group',
-   options: ['bank_account', 'aspen_card'],
-   validate: 'required'
-  },
-  aspenNumber: {
-   validate: 'required'
-  },
   accountName: {
    validate: 'required'
   },
@@ -491,6 +480,48 @@ module.exports = {
    dependent: {
      field: 'contactTypes',
      value: 'phone'
+   }
+  },
+  likelyToMove: {
+    mixin: 'radio-group',
+    options: [
+      {
+        value: 'yes',
+        toggle: 'outcome-address',
+        child: 'partials/outcome-address'
+      },
+      {
+        value: 'no'
+      }
+    ],
+    validate: 'required'
+  },
+  outcomeBuilding: {
+   validate: 'required',
+   dependent: {
+     field: 'likelyToMove',
+     value: 'yes'
+   }
+  },
+  outcomeStreet: {
+   validate: 'required',
+   dependent: {
+     field: 'likelyToMove',
+     value: 'yes'
+   }
+  },
+  outcomeTownOrCity: {
+   validate: 'required',
+   dependent: {
+     field: 'likelyToMove',
+     value: 'yes'
+   }
+  },
+  outcomePostcode: {
+   validate: ['required', 'postcode'],
+   dependent: {
+     field: 'likelyToMove',
+     value: 'yes'
    }
   }
 }

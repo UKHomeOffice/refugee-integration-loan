@@ -397,5 +397,28 @@
   "phone": {
     "label": "Mobile phone number",
     "hint":"For international numbers include the country code"
+  },
+  "likelyToMove": {
+    "legend": "Are you likely to move to another address in the next 4 weeks?",
+    "options": {
+      "yes": {
+        "label": "Yes - add another address"
+      },
+      "no": {
+        "label": "No"
+      }
+    }
+  },
+  "outcomeBuilding": {
+    "label": "Building and street"
+  },
+  "outcomeStreet": {
+    "label": " "
+  },
+  "outcomeTownOrCity": {
+    "label": "Town or city"
+  },
+  "outcomePostcode": {
+    "label": "Postcode"
   }
 }
