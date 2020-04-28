@@ -107,7 +107,9 @@
     "header": {
       "default": "Enter details of your dependant"
     },
-    "intro": "You can add more dependants later."
+    "intro": {
+      "default": "You can add more dependants later."
+    }
   },
   "dependent-details-add-another": {
     "header": {

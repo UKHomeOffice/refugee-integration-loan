@@ -231,7 +231,7 @@ module.exports = superclass => class extends superclass {
       deleteRoute: req.form.options.firstStep,
       fields: _.map(fields, field => ({
         field,
-        header: req.translate([`fields.${field}.summary`, `fields.${field}.label`]),
+        header: req.translate([`fields.${field}.summary`, `fields.${field}.label`, `fields.${field}.legend`]),
         subroute: _.findKey(req.form.options.subSteps, subStep => subStep.fields.indexOf(field) > -1),
         value: formatValue(item[field], field, req.form.options.steps[this.confirmStep].loopSections)
       }))
@@ -245,8 +245,11 @@ module.exports = superclass => class extends superclass {
       })
     );
 
+    const intro = conditionalTranslate(`pages.${pagePath}.intro`, req.translate);
+
     return Object.assign({}, locals, {
       title,
+      intro,
       itemTitle: req.translate(`pages.${this.options.loopData.sectionKey}.summary-item`),
       multipleItems,
       items,

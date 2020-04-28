@@ -201,7 +201,7 @@ module.exports = {
         'dependentFullName',
         'dependentDateOfBirth',
         'dependentRelationship',
-        'addAnother'
+        'addAnotherDependant'
       ],
       firstStep: 'dependent',
       subSteps: {
@@ -211,12 +211,13 @@ module.exports = {
         },
         'add-another': {
           fields: [
-            'addAnother'
-          ]
+            'addAnotherDependant'
+          ],
+          template: 'dependents-add-another'
         }
       },
       loopCondition: {
-        field: 'addAnother',
+        field: 'addAnotherDependant',
         value: 'yes'
       },
       next: '/address'

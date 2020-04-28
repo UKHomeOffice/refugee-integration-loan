@@ -61,7 +61,7 @@
     "label": "Full name"
   },
   "dateOfBirth": {
-    "label": "Date of Birth",
+    "legend": "Date of Birth",
     "hint": "For example, 31 3 1980"
   },
   "brpNumber": {
@@ -114,13 +114,13 @@
     }
   },
   "detailsOfCrime": {
-    "label": "Details of the crime/s"
+    "label": "Enter details of the crime(s)"
   },
   "partnerFullName": {
     "label": "Full name"
   },
   "partnerDateOfBirth": {
-    "label": "Date of Birth",
+    "legend": "Date of Birth",
     "hint": "For example, 31 3 1980"
   },
   "partnerBrpNumber": {
@@ -182,22 +182,11 @@
     "label": "Full name"
   },
   "dependentDateOfBirth": {
-    "label": "Date of Birth",
+    "legend": "Date of Birth",
     "hint": "For example, 31 3 1980"
   },
   "dependentRelationship": {
     "label": "Relationship to you"
-  },
-  "addAnother" : {
-    "legend": "",
-    "options": {
-      "yes": {
-        "label": "Yes"
-      },
-      "no": {
-        "label": "No"
-      }
-    }
   },
   "building": {
     "label": "Building and street"

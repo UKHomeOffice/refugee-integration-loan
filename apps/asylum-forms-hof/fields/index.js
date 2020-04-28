@@ -94,6 +94,9 @@ module.exports = {
   otherNames: {
    validate: 'required'
   },
+  addAnotherDependant: {
+   omitFromSummary: true
+  },
   addAnotherName: {
    omitFromSummary: true
   },
