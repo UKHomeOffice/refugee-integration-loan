@@ -197,8 +197,6 @@
   "ineligible": {
     "header": "You cannot apply for a loan",
     "text1": "As you or your partner have already received an integration loan, you cannot apply again.",
-    "text2": "Your",
-    "text2-link": "local refugee community organisation",
-    "text2-2": "may be able to tell you what other support is available."
+    "text2": "Your local refugee community organisation may be able to tell you what other support is available."
   }
 }
