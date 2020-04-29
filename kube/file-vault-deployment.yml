@@ -13,6 +13,9 @@ spec:
   {{if eq .KUBE_NAMESPACE "cto-dev"}}
   replicas: 1
   {{end}}
+  selector:
+    matchLabels:
+      app: file-vault
   template:
     metadata:
       labels:
