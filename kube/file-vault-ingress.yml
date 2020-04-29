@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: file-vault-ingress
+  annotations:
+    ingress.kubernetes.io/secure-backends: "true"
+    ingress.kubernetes.io/backend-protocol: "HTTPS"
+    kubernetes.io/ingress.class: "nginx-external"
+    stable.k8s.psg.io/kcm.provider: http
+  labels:
+    stable.k8s.psg.io/kcm.class: "default"
+spec:
+  tls:
+  - hosts:
+    {{if eq .KUBE_NAMESPACE "refugee-integration-loan"}}
+    - file-vault.prod.refugee-integration-loan.homeoffice.gov.uk
+    {{end}}
+    {{if eq .KUBE_NAMESPACE "refugee-integration-loan-preprod"}}
+    - file-vault.preprod.refugee-integration-loan.homeoffice.gov.uk
+    {{end}}
+    {{if eq .KUBE_NAMESPACE "acp-notprod"}}
+    - file-vault-dev.notprod.refugee-integration-loan.homeoffice.gov.uk
+    {{end}}
+    secretName: file-vault-cert
+  rules:
+  {{if eq .KUBE_NAMESPACE "refugee-integration-loan"}}
+  - host: file-vault.prod.refugee-integration-loan.homeoffice.gov.uk
+  {{end}}
+  {{if eq .KUBE_NAMESPACE "refugee-integration-loan-preprod"}}
+  - host: file-vault.preprod.refugee-integration-loan.homeoffice.gov.uk
+  {{end}}
+  {{if eq .KUBE_NAMESPACE "acp-notprod"}}
+  - host: file-vault-dev.notprod.refugee-integration-loan.homeoffice.gov.uk
+  {{end}}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: file-vault
+          servicePort: 10443

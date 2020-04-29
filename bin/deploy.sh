@@ -5,7 +5,8 @@ set -o nounset
 
 # default values
 export DRONE_DEPLOY_TO=${DRONE_DEPLOY_TO:?'[error] Please specify which cluster to deploy to.'}
-export KUBE_NAMESPACE=${KUBE_NAMESPACE=cto-dev}
+export KUBE_NAMESPACE=${KUBE_NAMESPACE:-${DRONE_DEPLOY_TO}}
+
 export KUBE_CERTIFICATE_AUTHORITY=https://raw.githubusercontent.com/UKHomeOffice/acp-ca/master/${DRONE_DEPLOY_TO}.crt
 
 export NAME="hof-form-example"
@@ -23,13 +24,16 @@ echo "--- kube api url: ${KUBE_SERVER}"
 echo "--- namespace: ${KUBE_NAMESPACE}"
 
 echo "--- deploying redis"
-
 kd --timeout=5m \
    --check-interval=5s \
   -f kube/redis-service.yml \
   -f kube/redis-network-policy.yml \
   -f kube/redis-deployment.yml \
 
+echo "--- deploying file vault"
+kd --timeout=5m \
+   --check-interval=5s \
+  -f kube/file-vault-ingress.yml \
 
 echo "--- deploying ${NAME}"
 if ! kd --timeout=5m \
