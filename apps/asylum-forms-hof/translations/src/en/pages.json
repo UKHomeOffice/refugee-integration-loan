@@ -81,10 +81,12 @@
     "header": "Other names"
   },
   "convictions": {
-    "header": "Have you ever been convicted of a crime in the UK?"
+    "header": "Have you ever been convicted of a crime in the UK?",
+    "intro": "Some crimes could affect your application, but we won’t use this information for anything else."
   },
   "convictions-joint": {
-    "header": "Have you or your partner ever been convicted of a crime in the UK?"
+    "header": "Have you or your partner ever been convicted of a crime in the UK?",
+    "intro": "Some crimes could affect your application, but we won’t use this information for anything else."
   },
   "dependents": {
     "header": "Do you have any dependants living with you?",
@@ -132,9 +134,6 @@
   },
   "outgoings": {
     "header": "Your monthly outgoings"
-  },
-  "debts": {
-    "header": "Do you have any debts/other liabilities?"
   },
   "savings": {
     "header": "Do you have any savings?"

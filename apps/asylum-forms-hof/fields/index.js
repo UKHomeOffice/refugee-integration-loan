@@ -48,27 +48,42 @@ module.exports = {
   previouslyApplied: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
   },
   previouslyHadIntegrationLoan: {
    mixin: 'radio-group',
    options: ['yes', 'no'],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   whoReceivedPreviousLoan: {
    mixin: 'radio-group',
    options: ['me', 'partner', 'someoneElse'],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   partner: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
   },
   joint: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
   },
   refugeeDate: dateComponent('refugeeDate', {
                    validate: ['required', 'before']
@@ -88,7 +103,10 @@ module.exports = {
   hasOtherNames: {
    mixin: 'radio-group',
    options: ['yes', 'no'],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   otherNames: {
    validate: 'required'
@@ -116,7 +134,10 @@ module.exports = {
             value: 'no'
         }
     ],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
    },
    detailsOfCrime: {
     validate: 'required',
@@ -136,7 +157,10 @@ module.exports = {
             value: 'no'
         }
     ],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
   },
   detailsOfCrimeJoint: {
     validate: 'required',
@@ -162,7 +186,10 @@ module.exports = {
   partnerHasOtherNames: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
    },
    partnerOtherNames: {
     validate: 'required'
@@ -170,7 +197,10 @@ module.exports = {
   dependents: {
    mixin: 'radio-group',
    options: ['yes', 'no'],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   dependentFullName: {
    validate: 'required'
@@ -180,17 +210,6 @@ module.exports = {
   }),
   dependentRelationship: {
    validate: 'required'
-  },
-  'addAnother': {
-      mixin: 'radio-group',
-      legend: {
-        className: 'visuallyhidden'
-      },
-      validate: 'required',
-      options: [
-        'yes',
-        'no'
-      ]
   },
   building: {
    validate: 'required'
@@ -231,7 +250,10 @@ module.exports = {
            toggle: 'otherIncomeAmount',
            child: 'partials/details-summary'
        }
-   ]
+   ],
+    legend: {
+      className: 'visuallyhidden'
+    }
   },
   salaryAmount: {
    validate: ['required', decimal],
@@ -301,7 +323,10 @@ module.exports = {
            toggle: 'combinedOtherIncomeAmount',
            child: 'partials/details-summary'
        }
-   ]
+   ],
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   combinedSalaryAmount: {
    validate: ['required', decimal],
@@ -386,7 +411,10 @@ module.exports = {
            toggle: 'otherOutgoingAmount',
            child: 'partials/details-summary'
        }
-   ]
+   ],
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   rentAmount: {
    validate: ['required', decimal],
@@ -495,7 +523,10 @@ module.exports = {
            toggle: 'combinedOtherOutgoingAmount',
            child: 'partials/details-summary'
        }
-   ]
+   ],
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   combinedRentAmount: {
    validate: ['required', decimal],
@@ -573,7 +604,10 @@ module.exports = {
            value: 'no'
        }
    ],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   savingsAmount: {
    validate: ['required', decimal],
@@ -595,7 +629,10 @@ module.exports = {
            value: 'no'
        }
    ],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   combinedSavingsAmount: {
    validate: ['required', decimal],
@@ -616,7 +653,10 @@ module.exports = {
   purposeTypes: {
    mixin: 'checkbox-group',
    options: ['housing', 'essential_items', 'basic_living_costs', 'training_or_retraining', 'work_clothing_and_equipment'],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   accountName: {
    validate: 'required'
@@ -643,7 +683,10 @@ module.exports = {
         child: 'partials/details-summary'
      }
    ],
-   validate: 'required'
+   validate: 'required',
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   email: {
    validate: ['required', 'email'],
@@ -671,7 +714,10 @@ module.exports = {
         value: 'no'
       }
     ],
-    validate: 'required'
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
   },
   outcomeBuilding: {
    validate: 'required',
@@ -703,12 +749,18 @@ module.exports = {
   hadHelp: {
    mixin: 'radio-group',
    validate: ['required'],
-   options: ['yes', 'no']
+   options: ['yes', 'no'],
+   legend: {
+     className: 'visuallyhidden'
+   }
   },
   helpReasons: {
    mixin: 'checkbox-group',
    validate: ['required'],
-   options: ['no_internet', 'english_not_first_language', 'not_confident', 'faster', 'health_condition']
+   options: ['no_internet', 'english_not_first_language', 'not_confident', 'faster', 'health_condition'],
+   legend: {
+    className: 'visuallyhidden'
+   }
   },
   helpFullName: {
    validate: 'required'
