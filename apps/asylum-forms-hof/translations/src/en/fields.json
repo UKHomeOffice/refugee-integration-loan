@@ -88,7 +88,7 @@
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
-    "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'."
+    "hint": "For example, ‘A1234567’ or 'VPR1234'. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'."
   },
   "convicted": {
     "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
