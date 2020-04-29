@@ -44,7 +44,7 @@ if ! kd --timeout=5m \
   exit 1
 fi
 
-echo "--- deploying file vault"
-kd --timeout=5m \
-   --check-interval=5s \
-  -f kube/file-vault-ingress.yml \
+# echo "--- deploying file vault"
+# kd --timeout=5m \
+#    --check-interval=5s \
+#   -f kube/file-vault-ingress.yml \
