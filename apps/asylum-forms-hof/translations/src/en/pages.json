@@ -59,8 +59,8 @@
     "header": "What is your Home Office reference number?"
   },
   "partner-brp": {
-    "header": "Your partner's biometric residence permit (BRP)",
-    "intro": "Enter the details as they appear on your partner's BRP."
+    "header": "What are your partner's biometric residence permit (BRP) details?",
+    "intro": "Enter details as they appear on your partner's BRP."
   },
   "partner-ni-number": {
     "header": "What is your partner's National Insurance number?"
