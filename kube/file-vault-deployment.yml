@@ -15,7 +15,7 @@ spec:
   {{end}}
   selector:
     matchLabels:
-      app: file-vault
+      name: file-vault
   template:
     metadata:
       labels:
