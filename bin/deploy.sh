@@ -32,11 +32,6 @@ kd --timeout=5m \
   -f kube/redis-network-policy.yml \
   -f kube/redis-deployment.yml \
 
-echo "--- deploying file vault"
-kd --timeout=5m \
-   --check-interval=5s \
-  -f kube/file-vault-ingress.yml \
-
 echo "--- deploying ${NAME}"
 if ! kd --timeout=5m \
   -f kube/networkpolicy-internal.yaml \
@@ -48,3 +43,8 @@ if ! kd --timeout=5m \
   echo "[error] failed to deploy ${NAME}"
   exit 1
 fi
+
+echo "--- deploying file vault"
+kd --timeout=5m \
+   --check-interval=5s \
+  -f kube/file-vault-ingress.yml \
