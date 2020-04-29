@@ -14,6 +14,7 @@
     "hof-behaviour-summary-page": "^3.1.0",
     "hof-build": "^1.6.0",
     "hof-component-date": "^1.4.0",
+    "hof-template-mixins": "^5.2.1",
     "hof-theme-govuk": "^4.4.1",
     "hof-model": "^3.1.0",
     "puppeteer": "^1.12.2",
