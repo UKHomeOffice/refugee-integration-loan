@@ -36,7 +36,7 @@
     }
   },
   "partner": {
-    "legend": "A partner is someone over the age of 18 who you’re married to or in a civil partnership with, or live with as if you are.",
+    "legend": " ",
     "options":{
       "yes": {
         "label": "Yes"

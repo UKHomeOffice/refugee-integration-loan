@@ -25,7 +25,8 @@
     "header": "Who received the integration loan?"
   },
   "partner": {
-    "header": "Do you have a partner with you in the UK?"
+    "header": "Do you have a partner with you in the UK?",
+    "intro": "A partner is someone over the age of 18 who you’re married to or in a civil partnership with, or live with as if you are."
   },
   "joint": {
     "header": "Are you applying for a loan together with your partner?"
