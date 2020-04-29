@@ -50,4 +50,4 @@ kd --timeout=5m \
    -f kube/file-vault-ingress.yml \
    -f kube/file-vault-service.yml \
    -f kube/file-vault-network-policy.yml \
-  #  -f kube/file-vault-deployment.yml \
+   -f kube/file-vault-deployment.yml \
