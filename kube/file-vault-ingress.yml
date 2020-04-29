@@ -12,25 +12,25 @@ metadata:
 spec:
   tls:
   - hosts:
-    {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan"}}
-    - file-vault.prod.refugee-integration-loan.homeoffice.gov.uk
+    {{if eq .KUBE_ENVIRONMENT "hof-form-example"}}
+    - file-vault.prod.hof-form-example.homeoffice.gov.uk
     {{end}}
-    {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan-preprod"}}
-    - file-vault.preprod.refugee-integration-loan.homeoffice.gov.uk
+    {{if eq .KUBE_ENVIRONMENT "hof-form-example-preprod"}}
+    - file-vault.preprod.hof-form-example.homeoffice.gov.uk
     {{end}}
     {{if eq .KUBE_ENVIRONMENT "acp-notprod"}}
-    - file-vault-dev.notprod.refugee-integration-loan.homeoffice.gov.uk
+    - file-vault-dev.notprod.hof-form-example.homeoffice.gov.uk
     {{end}}
     secretName: file-vault-cert
   rules:
-  {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan"}}
-  - host: file-vault.prod.refugee-integration-loan.homeoffice.gov.uk
+  {{if eq .KUBE_ENVIRONMENT "hof-form-example"}}
+  - host: file-vault.prod.hof-form-example.homeoffice.gov.uk
   {{end}}
-  {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan-preprod"}}
-  - host: file-vault.preprod.refugee-integration-loan.homeoffice.gov.uk
+  {{if eq .KUBE_ENVIRONMENT "hof-form-example-preprod"}}
+  - host: file-vault.preprod.hof-form-example.homeoffice.gov.uk
   {{end}}
   {{if eq .KUBE_ENVIRONMENT "acp-notprod"}}
-  - host: file-vault-dev.notprod.refugee-integration-loan.homeoffice.gov.uk
+  - host: file-vault-dev.notprod.hof-form-example.homeoffice.gov.uk
   {{end}}
     http:
       paths:
