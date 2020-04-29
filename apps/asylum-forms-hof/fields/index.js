@@ -33,7 +33,7 @@ function emailAddress(value) {
 }
 
 function niNumber(value) {
-  return regex(stripSpaces(value), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/)
+  return regex(stripSpaces(value.toUpperCase()), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/)
 }
 
 function regex(value, match) {
