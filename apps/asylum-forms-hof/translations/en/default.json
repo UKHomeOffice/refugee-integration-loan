@@ -4,7 +4,7 @@
   },
   "fields": {
     "previouslyApplied": {
-      "legend": " ",
+      "legend": "Have you or anyone currently living at your address applied for an integration loan before?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -15,7 +15,7 @@
       }
     },
     "previouslyHadIntegrationLoan": {
-      "legend": " ",
+      "legend": "Was the loan granted?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -26,7 +26,7 @@
       }
     },
     "whoReceivedPreviousLoan": {
-      "legend": " ",
+      "legend": "Who received the integration loan?",
       "options": {
         "me": {
           "label": "Me"
@@ -40,7 +40,7 @@
       }
     },
     "partner": {
-      "legend": " ",
+      "legend": "Do you have a partner with you in the UK?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -51,7 +51,7 @@
       }
     },
     "joint": {
-      "legend": " ",
+      "legend": "Are you applying for a loan together with your partner?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -77,7 +77,7 @@
       "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP)."
     },
     "hasOtherNames": {
-      "legend": " ",
+      "legend": "Have you been known by any other names?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -95,7 +95,7 @@
       "hint": "For example, ‘A1234567’ or ‘VPR1234’. You can find this on your asylum application letter from the Home Office. It’s sometimes called ‘Case ID’."
     },
     "convicted": {
-      "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
+      "legend": "Have you ever been convicted of a crime in the UK?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -124,7 +124,7 @@
       "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residence permit (BRP)."
     },
     "partnerHasOtherNames": {
-      "legend": " ",
+      "legend": "Has your partner been known by any other names?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -138,7 +138,7 @@
       "label": "Full name"
     },
     "convictedJoint": {
-      "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
+      "legend": "Have you or your partner ever been convicted of a crime in the UK?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -152,7 +152,7 @@
       "label": "Enter details of the crime(s)"
     },
     "dependents": {
-      "legend": " ",
+      "legend": "Do you have any dependants living with you?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -185,7 +185,7 @@
       "label": "Postcode"
     },
     "incomeTypes": {
-      "legend": " ",
+      "legend": "Your monthly income",
       "hint": "Select all options that apply to you.",
       "options": {
         "salary": {
@@ -222,7 +222,7 @@
       "label": "Total other income amount per month"
     },
     "combinedIncomeTypes": {
-      "legend": " ",
+      "legend": "You and your partner’s combined monthly income",
       "hint": "Select all options that apply to you.",
       "options": {
         "salary": {
@@ -259,7 +259,7 @@
       "label": "Total other income amount per month"
     },
     "outgoingTypes": {
-      "legend": " ",
+      "legend": "Your monthly outgoings",
       "hint": "Select all options that currently apply to you.",
       "options": {
         "rent": {
@@ -314,7 +314,7 @@
       "label": "Total other outgoings per month"
     },
     "combinedOutgoingTypes": {
-      "legend": " ",
+      "legend": "You and your partner’s combined monthly outgoings",
       "hint": "Select all options that currently apply to you.",
       "options": {
         "rent": {
@@ -368,20 +368,8 @@
     "otherOutgoingAmount": {
       "label": "Total other outgoings per month"
     },
-    "debts": {
-      "legend": " ",
-      "hint": "This includes universal credit advance payment, credit card debt and loans.",
-      "options": {
-        "yes": {
-          "label": "Yes"
-        },
-        "no": {
-          "label": "No"
-        }
-      }
-    },
     "savings": {
-      "legend": " ",
+      "legend": "Do you have any savings?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -395,7 +383,7 @@
       "label": "Total amount of savings"
     },
     "combinedSavings": {
-      "legend": " ",
+      "legend": "Do you or your partner have any savings?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -417,7 +405,7 @@
       "hint": "You can apply for a minimum of £100 and a maximum of £780."
     },
     "purposeTypes": {
-      "legend": " ",
+      "legend": "What will you use the loan for?",
       "hint": "Select all options that apply to you.",
       "options": {
         "housing": {
@@ -456,7 +444,7 @@
       "hint": "You can find this on your card, statement or passbook"
     },
     "contactTypes": {
-      "legend": " ",
+      "legend": "How would you like us to contact you?",
       "hint": "Select at least one option.",
       "options": {
         "email": {
@@ -498,7 +486,7 @@
       "label": "Postcode"
     },
     "hadHelp": {
-      "legend": " ",
+      "legend": "Did you get any help making this application?",
       "options": {
         "yes": {
           "label": "Yes"
@@ -509,7 +497,7 @@
       }
     },
     "helpReasons": {
-      "legend": " ",
+      "legend": "Why did you need help?",
       "hint": "Select all that apply.",
       "options": {
         "no_internet": {
@@ -641,10 +629,12 @@
       "header": "Other names"
     },
     "convictions": {
-      "header": "Have you ever been convicted of a crime in the UK?"
+      "header": "Have you ever been convicted of a crime in the UK?",
+      "intro": "Some crimes could affect your application, but we won’t use this information for anything else."
     },
     "convictions-joint": {
-      "header": "Have you or your partner ever been convicted of a crime in the UK?"
+      "header": "Have you or your partner ever been convicted of a crime in the UK?",
+      "intro": "Some crimes could affect your application, but we won’t use this information for anything else."
     },
     "dependents": {
       "header": "Do you have any dependants living with you?",
@@ -692,9 +682,6 @@
     },
     "outgoings": {
       "header": "Your monthly outgoings"
-    },
-    "debts": {
-      "header": "Do you have any debts/other liabilities?"
     },
     "savings": {
       "header": "Do you have any savings?"
