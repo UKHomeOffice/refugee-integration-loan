@@ -88,7 +88,7 @@
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
-    "hint": "For example, ‘A1234567’ or 'VPR1234'. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'."
+    "hint": "For example, ‘A1234567’ or ‘VPR1234’. You can find this on your asylum application letter from the Home Office. It’s sometimes called ‘Case ID’."
   },
   "convicted": {
     "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
@@ -117,7 +117,7 @@
   },
   "partnerNiNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP)."
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residency permit (BRP)."
   },
   "partnerHasOtherNames": {
     "legend": " ",

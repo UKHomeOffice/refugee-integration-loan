@@ -59,11 +59,11 @@
     "header": "What is your Home Office reference number?"
   },
   "partner-brp": {
-    "header": "What are your partner's biometric residence permit (BRP) details?",
-    "intro": "Enter details as they appear on your partner's BRP."
+    "header": "What are your partner’s biometric residence permit (BRP) details?",
+    "intro": "Enter details as they appear on your partner’s BRP."
   },
   "partner-ni-number": {
-    "header": "What is your partner's National Insurance number?"
+    "header": "What is your partner’s National Insurance number?"
   },
   "partner-has-other-names": {
     "header": "Has your partner been known by any other names?"
@@ -143,10 +143,10 @@
     "header": "What loan amount would you like to apply for?"
   },
   "combined-income": {
-    "header": "You and your partner's combined monthly income"
+    "header": "You and your partner’s combined monthly income"
   },
   "combined-outgoings": {
-    "header": "You and your partner's combined monthly outgoings"
+    "header": "You and your partner’s combined monthly outgoings"
   },
   "combined-savings": {
     "header": "Do you or your partner have any savings?"
