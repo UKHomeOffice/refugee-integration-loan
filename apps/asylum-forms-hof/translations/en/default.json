@@ -1,6 +1,5 @@
 {
   "buttons": {
-    "deleteDependant": "Delete dependant",
     "edit": "Change"
   },
   "fields": {
@@ -41,7 +40,7 @@
       }
     },
     "partner": {
-      "legend": "A partner is someone over the age of 18 who you’re married to or in a civil partnership with, or live with as if you are.",
+      "legend": " ",
       "options": {
         "yes": {
           "label": "Yes"
@@ -71,19 +70,11 @@
     },
     "brpNumber": {
       "label": "Biometric residence permit (BRP) number",
-      "hint": "For example, ‘RE1234567’.",
-      "validation": {
-        "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
-        "required": "Enter a Biometric residence permit (BRP) number in the correct format"
-      }
+      "hint": "For example, ‘ZU1234567’."
     },
     "niNumber": {
       "label": "National Insurance number",
-      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
-      "validation": {
-        "regex": "Enter a National Insurance number in the correct format",
-        "required": "Enter a National Insurance number in the correct format"
-      }
+      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP)."
     },
     "hasOtherNames": {
       "legend": " ",
@@ -101,11 +92,7 @@
     },
     "homeOfficeReference": {
       "label": "Home Office reference number",
-      "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'.",
-      "validation": {
-        "regex": "Enter a Home Office reference number in the correct format",
-        "required": "Enter a Home Office reference number in the correct format"
-      }
+      "hint": "For example, ‘A1234567’ or ‘VPR1234’. You can find this on your asylum application letter from the Home Office. It’s sometimes called ‘Case ID’."
     },
     "convicted": {
       "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
@@ -130,19 +117,11 @@
     },
     "partnerBrpNumber": {
       "label": "Biometric residence permit (BRP) number",
-      "hint": "For example, ‘RE1234567’.",
-      "validation": {
-        "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
-        "required": "Enter a Biometric residence permit (BRP) number in the correct format"
-      }
+      "hint": "For example, ‘ZU1234567’."
     },
     "partnerNiNumber": {
       "label": "National Insurance number",
-      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP).",
-      "validation": {
-        "regex": "Enter a National Insurance number in the correct format",
-        "required": "Enter a National Insurance number in the correct format"
-      }
+      "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residence permit (BRP)."
     },
     "partnerHasOtherNames": {
       "legend": " ",
@@ -242,7 +221,99 @@
     "otherIncomeAmount": {
       "label": "Total other income amount per month"
     },
+    "combinedIncomeTypes": {
+      "legend": " ",
+      "hint": "Select all options that apply to you.",
+      "options": {
+        "salary": {
+          "label": "Salary (before tax)"
+        },
+        "universal_credit": {
+          "label": "Universal Credit",
+          "hint": "Enter the amount you expect to receive if you haven’t yet had a payment."
+        },
+        "child_benefit": {
+          "label": "Child benefit"
+        },
+        "housing_benefit": {
+          "label": "Housing benefit"
+        },
+        "other": {
+          "label": "Other"
+        }
+      }
+    },
+    "combinedSalaryAmount": {
+      "label": "Total salary amount per month"
+    },
+    "combinedUniversalCreditAmount": {
+      "label": "Total Universal Credit amount per month"
+    },
+    "combinedChildBenefitAmount": {
+      "label": "Total child benefit amount per month"
+    },
+    "combinedHousingBenefitAmount": {
+      "label": "Total housing benefit amount per month"
+    },
+    "combinedOtherIncomeAmount": {
+      "label": "Total other income amount per month"
+    },
     "outgoingTypes": {
+      "legend": " ",
+      "hint": "Select all options that currently apply to you.",
+      "options": {
+        "rent": {
+          "label": "Rent"
+        },
+        "household_bills": {
+          "label": "Utility (household) bills"
+        },
+        "food_toiletries_cleaning_supplies": {
+          "label": "Food, toiletries and cleaning supplies"
+        },
+        "mobile_phone": {
+          "label": "Mobile phone"
+        },
+        "travel": {
+          "label": "Travel"
+        },
+        "clothing_and_footwear": {
+          "label": "Clothing and footwear"
+        },
+        "universal_credit_deductions": {
+          "label": "Universal Credit deductions"
+        },
+        "other": {
+          "label": "Other",
+          "hint": "This includes payments for credit card debt and loans."
+        }
+      }
+    },
+    "combinedRentAmount": {
+      "label": "Total rent amount per month"
+    },
+    "combinedHouseholdBillsAmount": {
+      "label": "Total utility bills amount per month"
+    },
+    "combinedFoodToiletriesAndCleaningSuppliesAmount": {
+      "label": "Total food, toiletries and cleaning supplies amount per month"
+    },
+    "combinedMobilePhoneAmount": {
+      "label": "Total mobile phone amount per month"
+    },
+    "combinedTravelAmount": {
+      "label": "Total travel amount per month"
+    },
+    "combinedClothingAndFootwearAmount": {
+      "label": "Total clothing and footwear amount per month"
+    },
+    "combinedUniversalCreditDeductionsAmount": {
+      "label": "Total Universal Credit deductions per month"
+    },
+    "combinedOtherOutgoingAmount": {
+      "label": "Total other outgoings per month"
+    },
+    "combinedOutgoingTypes": {
       "legend": " ",
       "hint": "Select all options that currently apply to you.",
       "options": {
@@ -514,7 +585,8 @@
       "header": "Who received the integration loan?"
     },
     "partner": {
-      "header": "Do you have a partner with you in the UK?"
+      "header": "Do you have a partner with you in the UK?",
+      "intro": "A partner is someone over the age of 18 who you’re married to or in a civil partnership with, or live with as if you are."
     },
     "joint": {
       "header": "Are you applying for a loan together with your partner?"
@@ -547,11 +619,11 @@
       "header": "What is your Home Office reference number?"
     },
     "partner-brp": {
-      "header": "Your partner's biometric residence permit (BRP)",
-      "intro": "Enter the details as they appear on your partner's BRP."
+      "header": "What are your partner’s biometric residence permit (BRP) details?",
+      "intro": "Enter details as they appear on your partner’s BRP."
     },
     "partner-ni-number": {
-      "header": "What is your partner's National Insurance number?"
+      "header": "What is your partner’s National Insurance number?"
     },
     "partner-has-other-names": {
       "header": "Has your partner been known by any other names?"
@@ -631,10 +703,10 @@
       "header": "What loan amount would you like to apply for?"
     },
     "combined-income": {
-      "header": "You and your partner's combined monthly income"
+      "header": "You and your partner’s combined monthly income"
     },
     "combined-outgoings": {
-      "header": "You and your partner's combined monthly outgoings"
+      "header": "You and your partner’s combined monthly outgoings"
     },
     "combined-savings": {
       "header": "Do you or your partner have any savings?"
@@ -685,25 +757,261 @@
     "ineligible": {
       "header": "You cannot apply for a loan",
       "text1": "As you or your partner have already received an integration loan, you cannot apply again.",
-      "text2": "Your",
-      "text2-link": "local refugee community organisation",
-      "text2-2": "may be able to tell you what other support is available."
+      "text2": "Your local refugee community organisation may be able to tell you what other support is available."
     }
   },
   "validation": {
-    "required": "Please enter a value",
-    "postcode": "Please enter a valid postcode",
-    "before": "This date cannot be in the future",
-    "regex": "Please enter a value in the correct format",
-    "numeric": "Please enter a valid number",
-    "singleLoanAmount": "Please enter an amount between £100 and £500",
-    "jointLoanAmount": "Please enter an amount between £100 and £780",
-    "decimal": "Please enter a valid number",
-    "exactlength": "Must be {{exactlength}} digits long",
-    "minlength": "Please enter at least {{minlength}} digits",
-    "maxlength": "Please enter at most {{maxlength}} digits",
-    "emailAddress": "Enter an email address in the correct format, like name@example.com",
-    "ukMobile": "Enter a UK mobile telephone number, like 07700 900 982",
-    "niNumber": "Please enter your National insurance number in the correct format"
+    "previouslyApplied": {
+      "default": "Select if you or someone else at your address have previously applied for a loan"
+    },
+    "previouslyHadIntegrationLoan": {
+      "default": "Select if the loan was granted or not"
+    },
+    "whoReceivedPreviousLoan": {
+      "default": "Select who was granted the loan"
+    },
+    "partner": {
+      "default": "Select if you have a partner with you in the UK or not"
+    },
+    "joint": {
+      "default": "Select if you are applying for a loan together with your partner"
+    },
+    "fullName": {
+      "default": "Enter your full name"
+    },
+    "dateOfBirth": {
+      "default": "Enter your date of birth in the correct format",
+      "before": "Enter a date that is in the past"
+    },
+    "brpNumber": {
+      "default": "Enter your BRP number in the correct format"
+    },
+    "niNumber": {
+      "default": "Enter your National Insurance number in the correct format"
+    },
+    "hasOtherNames": {
+      "default": "Select if you have been known by any other names"
+    },
+    "otherNames": {
+      "default": "Enter a full name"
+    },
+    "homeOfficeReference": {
+      "default": "Enter a Home Office reference number in the correct format"
+    },
+    "partnerBrpNumber": {
+      "default": "Enter your partner's BRP number in the correct format"
+    },
+    "partnerFullName": {
+      "default": "Enter your partner's full name"
+    },
+    "partnerDateOfBirth": {
+      "default": "Enter your partner's date of birth in the correct format",
+      "before": "Enter a date that is in the past"
+    },
+    "partnerNiNumber": {
+      "default": "Enter your partner's National Insurance number in the correct format"
+    },
+    "partnerHasOtherNames": {
+      "default": "Select if your partner has been known by any other names"
+    },
+    "partnerOtherNames": {
+      "default": "Enter a full name"
+    },
+    "convicted": {
+      "default": "Select if you have ever been convicted of a crime in the UK"
+    },
+    "detailsOfCrime": {
+      "default": "Enter details of the crime(s)"
+    },
+    "convictedJoint": {
+      "default": "Select if you or your partner have ever been convicted of a crime in the UK"
+    },
+    "detailsOfCrimeJoint": {
+      "default": "Enter details of the crime(s)"
+    },
+    "dependents": {
+      "default": "Select if you have any dependants living with you"
+    },
+    "dependentFullName": {
+      "default": "Enter dependant's full name"
+    },
+    "dependentDateOfBirth": {
+      "default": "Enter dependant's date of birth in the correct format",
+      "before": "Enter a date that is in the past"
+    },
+    "dependentRelationship": {
+      "default": "Enter the dependant's relationship to you"
+    },
+    "building": {
+      "default": "Enter details of your building and street"
+    },
+    "townOrCity": {
+      "default": "Enter a town or city"
+    },
+    "postcode": {
+      "default": "Enter your postcode"
+    },
+    "incomeTypes": {
+      "default": "Select options for your monthly income"
+    },
+    "combinedIncomeTypes": {
+      "default": "Select options for you and your partner's monthly income"
+    },
+    "salaryAmount": {
+      "default": "Enter total salary amount per month"
+    },
+    "combinedSalaryAmount": {
+      "default": "Enter total salary amount per month"
+    },
+    "universalCreditAmount": {
+      "default": "Enter total Universal Credit amount per month"
+    },
+    "combinedUniversalCreditAmount": {
+      "default": "Enter total Universal Credit amount per month"
+    },
+    "childBenefitAmount": {
+      "default": "Enter total child benefit amount per month"
+    },
+    "combinedChildBenefitAmount": {
+      "default": "Enter total child benefit amount per month"
+    },
+    "housingBenefitAmount": {
+      "default": "Enter total housing benefit amount per month"
+    },
+    "combinedHousingBenefitAmount": {
+      "default": "Enter total housing benefit amount per month"
+    },
+    "otherIncomeAmount": {
+      "default": "Enter total other income amount per month"
+    },
+    "combinedOtherIncomeAmount": {
+      "default": "Enter total other income amount per month"
+    },
+    "outgoingTypes": {
+      "default": "Select options for your monthly outgoings"
+    },
+    "combinedOutgoingTypes": {
+      "default": "Select options for you and your partner's monthly outgoings"
+    },
+    "rentAmount": {
+      "default": "Enter total rent amount per month"
+    },
+    "combinedRentAmount": {
+      "default": "Enter total rent amount per month"
+    },
+    "householdBillsAmount": {
+      "default": "Enter total utility bills amount per month"
+    },
+    "combinedHouseholdBillsAmount": {
+      "default": "Enter total utility bills amount per month"
+    },
+    "foodToiletriesAndCleaningSuppliesAmount": {
+      "default": "Enter total food, toiletries and cleaning supplies amount per month"
+    },
+    "combinedFoodToiletriesAndCleaningSuppliesAmount": {
+      "default": "Enter total food, toiletries and cleaning supplies amount per month"
+    },
+    "mobilePhoneAmount": {
+      "default": "Enter total mobile phone amount per month"
+    },
+    "combinedMobilePhoneAmount": {
+      "default": "Enter total mobile phone amount per month"
+    },
+    "travelAmount": {
+      "default": "Enter total travel amount per month"
+    },
+    "combinedTravelAmount": {
+      "default": "Enter total travel amount per month"
+    },
+    "clothingAndFootwearAmount": {
+      "default": "Enter total clothing and footwear amount per month"
+    },
+    "combinedClothingAndFootwearAmount": {
+      "default": "Enter total clothing and footwear amount per month"
+    },
+    "universalCreditDeductionsAmount": {
+      "default": "Enter total Universal Credit deductions amount per month"
+    },
+    "combinedUniversalCreditDeductionsAmount": {
+      "default": "Enter total Universal Credit deductions per month"
+    },
+    "otherOutgoingAmount": {
+      "default": "Enter total other outgoings per month"
+    },
+    "combinedOtherOutgoingAmount": {
+      "default": "Enter total other outgoings per month"
+    },
+    "savings": {
+      "default": "Select if you have any savings"
+    },
+    "combinedSavings": {
+      "default": "Select if you or your partner have any savings"
+    },
+    "savingsAmount": {
+      "default": "Enter total amount of savings"
+    },
+    "combinedSavingsAmount": {
+      "default": "Enter total amount of savings"
+    },
+    "amount": {
+      "default": "Enter loan amount"
+    },
+    "jointAmount": {
+      "default": "Enter loan amount"
+    },
+    "purposeTypes": {
+      "default": "Select what you will use the loan for"
+    },
+    "accountName": {
+      "default": "Enter the name on your account"
+    },
+    "sortCode": {
+      "default": "Enter your sort code in the correct format"
+    },
+    "accountNumber": {
+      "default": "Enter your account number in the correct format"
+    },
+    "contactTypes": {
+      "default": "Select how we can contact you"
+    },
+    "email": {
+      "default": "Enter your email address in the correct format"
+    },
+    "phone": {
+      "default": "Enter your mobile phone number in the correct format"
+    },
+    "likelyToMove": {
+      "default": "Select if you are likely to move to another address in the next 4 weeks"
+    },
+    "outcomeBuilding": {
+      "default": "Enter details of the building and street"
+    },
+    "outcomeTownOrCity": {
+      "default": "Enter a town or city"
+    },
+    "outcomePostcode": {
+      "default": "Enter a postcode"
+    },
+    "hadHelp": {
+      "default": "Select if you had any help making this application"
+    },
+    "helpReasons": {
+      "default": "Select why you needed help"
+    },
+    "helpFullName": {
+      "default": "Enter the full name of the person who helped you"
+    },
+    "helpRelationship": {
+      "default": "Enter the person's relationship to you"
+    },
+    "helpContactTypes": {
+      "default": "Select how we can contact the person who helped you"
+    },
+    "helpEmail": {
+      "default": "Enter the person's email address in the correct format"
+    },
+    "helpPhone": {
+      "default": "Enter the person's mobile phone number in the correct format"
+    }
   }
 }

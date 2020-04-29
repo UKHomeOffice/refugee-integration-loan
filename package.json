@@ -24,7 +24,8 @@
     "eslint-config-homeoffice": "^2.1.0"
   },
   "resolutions": {
-    "hof-template-mixins": "^5.2.1"
+    "hof-template-mixins": "^5.2.1",
+    "hof-theme-govuk": "^4.4.1"
   },
   "name": "asylum-forms-hof",
   "version": "1.0.0",
