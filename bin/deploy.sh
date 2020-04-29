@@ -5,7 +5,8 @@ set -o nounset
 
 # default values
 export DRONE_DEPLOY_TO=${DRONE_DEPLOY_TO:?'[error] Please specify which cluster to deploy to.'}
-export KUBE_NAMESPACE=${KUBE_NAMESPACE:-${DRONE_DEPLOY_TO}}
+export KUBE_NAMESPACE=${KUBE_NAMESPACE=cto-dev}
+export KUBE_ENVIRONMENT=${KUBE_NAMESPACE:-${DRONE_DEPLOY_TO}}
 
 export KUBE_CERTIFICATE_AUTHORITY=https://raw.githubusercontent.com/UKHomeOffice/acp-ca/master/${DRONE_DEPLOY_TO}.crt
 
@@ -22,6 +23,7 @@ esac
 
 echo "--- kube api url: ${KUBE_SERVER}"
 echo "--- namespace: ${KUBE_NAMESPACE}"
+echo "--- environment: ${KUBE_ENVIRONMENT}"
 
 echo "--- deploying redis"
 kd --timeout=5m \

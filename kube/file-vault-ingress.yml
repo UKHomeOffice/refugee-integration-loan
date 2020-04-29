@@ -12,24 +12,24 @@ metadata:
 spec:
   tls:
   - hosts:
-    {{if eq .KUBE_NAMESPACE "refugee-integration-loan"}}
+    {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan"}}
     - file-vault.prod.refugee-integration-loan.homeoffice.gov.uk
     {{end}}
-    {{if eq .KUBE_NAMESPACE "refugee-integration-loan-preprod"}}
+    {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan-preprod"}}
     - file-vault.preprod.refugee-integration-loan.homeoffice.gov.uk
     {{end}}
-    {{if eq .KUBE_NAMESPACE "acp-notprod"}}
+    {{if eq .KUBE_ENVIRONMENT "acp-notprod"}}
     - file-vault-dev.notprod.refugee-integration-loan.homeoffice.gov.uk
     {{end}}
     secretName: file-vault-cert
   rules:
-  {{if eq .KUBE_NAMESPACE "refugee-integration-loan"}}
+  {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan"}}
   - host: file-vault.prod.refugee-integration-loan.homeoffice.gov.uk
   {{end}}
-  {{if eq .KUBE_NAMESPACE "refugee-integration-loan-preprod"}}
+  {{if eq .KUBE_ENVIRONMENT "refugee-integration-loan-preprod"}}
   - host: file-vault.preprod.refugee-integration-loan.homeoffice.gov.uk
   {{end}}
-  {{if eq .KUBE_NAMESPACE "acp-notprod"}}
+  {{if eq .KUBE_ENVIRONMENT "acp-notprod"}}
   - host: file-vault-dev.notprod.refugee-integration-loan.homeoffice.gov.uk
   {{end}}
     http:
