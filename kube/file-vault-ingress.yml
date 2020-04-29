@@ -19,7 +19,7 @@ spec:
     - file-vault.preprod.hof-form-example.homeoffice.gov.uk
     {{end}}
     {{if eq .KUBE_ENVIRONMENT "acp-notprod"}}
-    - file-vault-dev.internal.cto-notprod.homeoffice.gov.uk
+    - file-vault-dev.cto-notprod.homeoffice.gov.uk
     {{end}}
     secretName: file-vault-cert
   rules:
@@ -30,7 +30,7 @@ spec:
   - host: file-vault.preprod.hof-form-example.homeoffice.gov.uk
   {{end}}
   {{if eq .KUBE_ENVIRONMENT "acp-notprod"}}
-  - host: file-vault-dev.internal.cto-notprod.homeoffice.gov.uk
+  - host: file-vault-dev.cto-notprod.homeoffice.gov.uk
   {{end}}
     http:
       paths:
