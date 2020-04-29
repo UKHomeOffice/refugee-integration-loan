@@ -21,7 +21,7 @@ function between(values, min, max) {
 }
 
 function decimal(value) {
-  return regex(value, /^\d*.?\d{0,2}$/)
+  return regex(value, /^[\d]*\.?\d{0,2}$/)
 }
 
 function phoneNumber(value) {
@@ -273,6 +273,76 @@ module.exports = {
      value: 'other'
    }
   },
+  combinedIncomeTypes: {
+   mixin: 'checkbox-group',
+   options: [
+       {
+           value: 'salary',
+           toggle: 'combinedSalaryAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'universal_credit',
+           toggle: 'combinedUniversalCreditAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'child_benefit',
+           toggle: 'combinedChildBenefitAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'housing_benefit',
+           toggle: 'combinedHousingBenefitAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'other',
+           toggle: 'combinedOtherIncomeAmount',
+           child: 'partials/details-summary'
+       }
+   ]
+  },
+  combinedSalaryAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedIncomeTypes',
+     value: 'salary'
+   }
+  },
+  combinedUniversalCreditAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedIncomeTypes',
+     value: 'universal_credit'
+   }
+  },
+  combinedChildBenefitAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedIncomeTypes',
+     value: 'child_benefit'
+   }
+  },
+  combinedHousingBenefitAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedIncomeTypes',
+     value: 'housing_benefit'
+   }
+  },
+  combinedOtherIncomeAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedIncomeTypes',
+     value: 'other'
+   }
+  },
   outgoingTypes: {
    mixin: 'checkbox-group',
    options: [
@@ -382,6 +452,115 @@ module.exports = {
      value: 'other'
    }
   },
+  combinedOutgoingTypes: {
+   mixin: 'checkbox-group',
+   options: [
+       {
+           value: 'rent',
+           toggle: 'combinedRentAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'household_bills',
+           toggle: 'combinedHouseholdBillsAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'food_toiletries_cleaning_supplies',
+           toggle: 'combinedFoodToiletriesAndCleaningSuppliesAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'mobile_phone',
+           toggle: 'combinedMobilePhoneAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'travel',
+           toggle: 'combinedTravelAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'clothing_and_footwear',
+           toggle: 'combinedClothingAndFootwearAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'universal_credit_deductions',
+           toggle: 'combinedUniversalCreditDeductionsAmount',
+           child: 'partials/details-summary'
+       },
+       {
+           value: 'other',
+           toggle: 'combinedOtherOutgoingAmount',
+           child: 'partials/details-summary'
+       }
+   ]
+  },
+  combinedRentAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'rent'
+   }
+  },
+  combinedHouseholdBillsAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'household_bills'
+   }
+  },
+  combinedFoodToiletriesAndCleaningSuppliesAmount: {
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   validate: ['required', decimal],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'food_toiletries_cleaning_supplies'
+   }
+  },
+  combinedMobilePhoneAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'mobile_phone'
+   }
+  },
+  combinedTravelAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'travel'
+   }
+  },
+  combinedClothingAndFootwearAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'clothing_and_footwear'
+   }
+  },
+  combinedUniversalCreditDeductionsAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'universal_credit_deductions'
+   }
+  },
+  combinedOtherOutgoingAmount: {
+   validate: ['required', decimal],
+   attributes: [{attribute: 'placeholder', value: '£'}],
+   dependent: {
+     field: 'combinedOutgoingTypes',
+     value: 'other'
+   }
+  },
   savings: {
    mixin: 'radio-group',
    options: [
@@ -397,8 +576,8 @@ module.exports = {
    validate: 'required'
   },
   savingsAmount: {
-   validate: 'required',
-   attributes: [ {attribute:'placeholder', value:'£'} ],
+   validate: ['required', decimal],
+   attributes: [ {attribute: 'placeholder', value:'£'} ],
    dependent: {
      field: 'savings',
      value: 'yes'
@@ -419,8 +598,8 @@ module.exports = {
    validate: 'required'
   },
   combinedSavingsAmount: {
-   validate: 'required',
-   attributes: [ {attribute:'placeholder', value:'£'} ],
+   validate: ['required', decimal],
+   attributes: [ {attribute: 'placeholder', value:'£'} ],
    dependent: {
      field: 'combinedSavings',
      value: 'yes'

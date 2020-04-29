@@ -66,19 +66,11 @@
   },
   "brpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘RE1234567’.",
-    "validation": {
-      "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
-      "required": "Enter a Biometric residence permit (BRP) number in the correct format"
-    }
+    "hint": "For example, ‘RE1234567’."
   },
   "niNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
-    "validation": {
-      "regex": "Enter a National Insurance number in the correct format",
-      "required": "Enter a National Insurance number in the correct format"
-    }
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP)."
   },
   "hasOtherNames": {
     "legend": " ",
@@ -96,11 +88,7 @@
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
-    "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'.",
-    "validation": {
-      "regex": "Enter a Home Office reference number in the correct format",
-      "required": "Enter a Home Office reference number in the correct format"
-    }
+    "hint": "For example, ‘A1234567’. You can find this on your asylum application letter from the Home Office. It's sometimes called 'Case ID'."
   },
   "convicted": {
     "legend": "Some crimes could affect your application, but we won’t use this information for anything else.",
@@ -125,19 +113,11 @@
   },
   "partnerBrpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘RE1234567’.",
-    "validation": {
-      "regex": "Enter a Biometric residence permit (BRP) number in the correct format",
-      "required": "Enter a Biometric residence permit (BRP) number in the correct format"
-    }
+    "hint": "For example, ‘RE1234567’."
   },
   "partnerNiNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP).",
-    "validation": {
-      "regex": "Enter a National Insurance number in the correct format",
-      "required": "Enter a National Insurance number in the correct format"
-    }
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner's biometric residency permit (BRP)."
   },
   "partnerHasOtherNames": {
     "legend": " ",
@@ -237,7 +217,99 @@
   "otherIncomeAmount": {
     "label": "Total other income amount per month"
   },
+  "combinedIncomeTypes": {
+    "legend": " ",
+    "hint": "Select all options that apply to you.",
+    "options": {
+      "salary": {
+        "label": "Salary (before tax)"
+      },
+      "universal_credit": {
+        "label": "Universal Credit",
+        "hint": "Enter the amount you expect to receive if you haven’t yet had a payment."
+      },
+      "child_benefit": {
+        "label": "Child benefit"
+      },
+      "housing_benefit": {
+        "label": "Housing benefit"
+      },
+      "other": {
+        "label": "Other"
+      }
+    }
+  },
+  "combinedSalaryAmount": {
+    "label": "Total salary amount per month"
+  },
+  "combinedUniversalCreditAmount": {
+    "label": "Total Universal Credit amount per month"
+  },
+  "combinedChildBenefitAmount": {
+    "label": "Total child benefit amount per month"
+  },
+  "combinedHousingBenefitAmount": {
+    "label": "Total housing benefit amount per month"
+  },
+  "combinedOtherIncomeAmount": {
+    "label": "Total other income amount per month"
+  },
   "outgoingTypes": {
+    "legend": " ",
+    "hint": "Select all options that currently apply to you.",
+    "options": {
+      "rent": {
+        "label": "Rent"
+      },
+      "household_bills": {
+        "label": "Utility (household) bills"
+      },
+      "food_toiletries_cleaning_supplies": {
+        "label": "Food, toiletries and cleaning supplies"
+      },
+      "mobile_phone": {
+        "label": "Mobile phone"
+      },
+      "travel": {
+        "label": "Travel"
+      },
+      "clothing_and_footwear": {
+        "label": "Clothing and footwear"
+      },
+      "universal_credit_deductions": {
+        "label": "Universal Credit deductions"
+      },
+      "other": {
+        "label": "Other",
+        "hint": "This includes payments for credit card debt and loans."
+      }
+    }
+  },
+  "combinedRentAmount": {
+    "label": "Total rent amount per month"
+  },
+  "combinedHouseholdBillsAmount": {
+    "label":  "Total utility bills amount per month"
+  },
+  "combinedFoodToiletriesAndCleaningSuppliesAmount":  {
+    "label":  "Total food, toiletries and cleaning supplies amount per month"
+  },
+  "combinedMobilePhoneAmount": {
+    "label":  "Total mobile phone amount per month"
+  },
+  "combinedTravelAmount":  {
+    "label":  "Total travel amount per month"
+  },
+  "combinedClothingAndFootwearAmount": {
+    "label":  "Total clothing and footwear amount per month"
+  },
+  "combinedUniversalCreditDeductionsAmount": {
+    "label":  "Total Universal Credit deductions per month"
+  },
+  "combinedOtherOutgoingAmount":  {
+    "label":  "Total other outgoings per month"
+  },
+  "combinedOutgoingTypes": {
     "legend": " ",
     "hint": "Select all options that currently apply to you.",
     "options": {

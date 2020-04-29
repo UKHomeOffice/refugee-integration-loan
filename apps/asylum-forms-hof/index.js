@@ -250,11 +250,11 @@ module.exports = {
       next: '/purpose'
     },
     '/combined-income': {
-      fields: ['incomeTypes'],
+      fields: ['combinedIncomeTypes', 'combinedSalaryAmount', 'combinedUniversalCreditAmount', 'combinedChildBenefitAmount', 'combinedHousingBenefitAmount', 'combinedOtherIncomeAmount'],
       next: '/combined-outgoings'
     },
     '/combined-outgoings': {
-      fields: ['outgoingTypes'],
+      fields: ['combinedOutgoingTypes', 'combinedRentAmount', 'combinedHouseholdBillsAmount', 'combinedFoodToiletriesAndCleaningSuppliesAmount', 'combinedMobilePhoneAmount', 'combinedTravelAmount', 'combinedClothingAndFootwearAmount', 'combinedUniversalCreditDeductionsAmount', 'combinedOtherOutgoingAmount'],
       next: '/combined-savings'
     },
     '/combined-savings': {
