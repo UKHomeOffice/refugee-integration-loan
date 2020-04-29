@@ -103,7 +103,7 @@ module.exports = {
    omitFromSummary: true
   },
   homeOfficeReference: {
-   validate: ['required', {type:'regex', arguments: '^[A-Z]\\d{7}$'}]
+   validate: ['required']
   },
   convicted: {
     mixin: 'radio-group',
