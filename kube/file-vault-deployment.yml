@@ -25,7 +25,7 @@ spec:
           imagePullPolicy: Always
           resources:
             limits:
-              {{if eq .KUBE_NAMESPACE "cto-prod""}}
+              {{if eq .KUBE_NAMESPACE "cto-prod"}}
               memory: "1024Mi"
               {{end}}
               {{if eq .KUBE_NAMESPACE "cto-preprod"}}

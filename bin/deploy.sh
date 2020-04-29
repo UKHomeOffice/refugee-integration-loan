@@ -47,7 +47,7 @@ fi
 echo "--- deploying file vault"
 kd --timeout=5m \
    --check-interval=5s \
-  -f kube/file-vault-ingress.yml \
-  -f kube/file-vault-service.yml \
-  -f kube/file-vault-network-policy.yml \
-  -f kube/file-vault-deployment.yml \
+   -f kube/file-vault-ingress.yml \
+   -f kube/file-vault-service.yml \
+   -f kube/file-vault-network-policy.yml \
+   -f kube/file-vault-deployment.yml \
