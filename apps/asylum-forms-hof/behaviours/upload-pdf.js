@@ -32,7 +32,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       })
       .then(pdfBuffer => {
         req.log('info', 'Created PDF document. Uploading. ** UPLOAD is DISABLED **');
-        if (bucketName !== 'test_bucket' )
+        if (typeof query !== 'undefined' && bucketName !== 'test_bucket' )
         {
           req.log('info', 'S3 Variables set using SECRETS');
         }
