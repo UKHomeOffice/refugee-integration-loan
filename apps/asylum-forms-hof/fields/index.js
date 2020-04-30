@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 const dateComponent = require('hof-component-date');
+const libPhoneNumber = require('libphonenumber-js/max');
 
 function singleLoanAmount(values) {
   return between(values, 100, 500)
@@ -24,8 +25,14 @@ function decimal(value) {
   return regex(value, /^[\d]*\.?\d{0,2}$/)
 }
 
-function phoneNumber(value) {
-  return regex(stripSpaces(value), /^\(?\+?[\d() -]{0,15}$/)
+function mobilePhoneNumber(value) {
+    const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
+    return phoneNumber && phoneNumber.isValid() && (phoneNumber.getType().includes('MOBILE') || phoneNumber.getType() === 'PERSONAL_NUMBER');
+}
+
+function ukPhoneNumber(value) {
+    const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
+    return phoneNumber && phoneNumber.isValid() && phoneNumber.country === 'GB';
 }
 
 function emailAddress(value) {
@@ -34,6 +41,10 @@ function emailAddress(value) {
 
 function niNumber(value) {
   return regex(stripSpaces(value.toUpperCase()), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/)
+}
+
+function brpNumber(str) {
+    return regex(str.toUpperCase(), /^[A-Z0-9]{9}$/)
 }
 
 function regex(value, match) {
@@ -95,7 +106,7 @@ module.exports = {
    validate: 'required'
   },
   brpNumber: {
-   validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}]
+   validate: ['required', brpNumber]
   },
   niNumber: {
    validate: ['required', niNumber]
@@ -177,7 +188,7 @@ module.exports = {
    className: "govuk-input"
   },
   partnerBrpNumber: {
-   validate: ['required', {type:'regex', arguments: '^[A-Z]{2}[X0-9]\\d{6}$'}],
+   validate: ['required', brpNumber],
    className: "govuk-input govuk-input--width-10"
   },
   partnerNiNumber: {
@@ -696,7 +707,7 @@ module.exports = {
    }
   },
   phone: {
-   validate: ['required', phoneNumber],
+   validate: ['required', mobilePhoneNumber],
    dependent: {
      field: 'contactTypes',
      value: 'phone'
@@ -792,7 +803,7 @@ module.exports = {
    }
   },
   helpPhone: {
-   validate: ['required', phoneNumber],
+   validate: ['required', ukPhoneNumber],
    dependent: {
      field: 'helpContactTypes',
      value: 'phone'
