@@ -30,8 +30,10 @@ module.exports = {
     tempLocation: 'pdf-form-submissions'
   },
   upload: {
-    mock: '/api/file-upload',
-    hostname: env !== 'production' ? `http://${localhost()}/api/file-upload` : process.env.FILE_VAULT_URL
+    bucketName: env !== 'production' ? `test_bucket` : process.env.BUCKET,
+    awsAccessKeyId: env !== 'production' ? `test_key_id` : process.env.AWS_ACCESS_KEY_ID,
+    awsSecretAccessKey: env !== 'production' ? `test_secret_key` : process.env.AWS_SECRET_ACCESS_KEY,
+    kmsKey: env !== 'production' ? `test_kms_key` : process.env.KMS_KEY
   },
   keycloak: {
     tokenUrl: process.env.KEYCLOAK_TOKEN_URL,

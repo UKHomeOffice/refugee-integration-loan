@@ -11,6 +11,12 @@ const summaryData = require('./summary');
 const pdfPuppeteer = require('./util/pdf-puppeteer');
 const uuid = require('uuid');
 const tempLocation = path.resolve(config.pdf.tempLocation);
+
+const bucketName = config.upload.bucketName;
+const awsAccessKeyId = config.upload.awsAccessKeyId;
+const awsSecretAccessKey = config.upload.awsSecretAccessKey;
+const kmsKey = config.upload.kmsKey;
+
 const createTemporaryFileName = () => {
   return (`${uuid.v1()}.pdf`);
 };
@@ -26,6 +32,14 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       })
       .then(pdfBuffer => {
         req.log('info', 'Created PDF document. Uploading. ** UPLOAD is DISABLED **');
+        if (bucketName !== 'test_bucket' )
+        {
+          req.log('info', 'S3 Variables set using SECRETS');
+        }
+        else
+        {
+          req.log('info', 'S3 Variables set using TEST DATA');
+        }
         // return this.uploadPdf({
         //   name: 'application_form.pdf',
         //   data: pdfBuffer,
