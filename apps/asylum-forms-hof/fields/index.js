@@ -47,6 +47,12 @@ function brpNumber(str) {
     return regex(str.toUpperCase(), /^[A-Z0-9]{9}$/)
 }
 
+function postcode(str) {
+    const value = stripSpaces(str.toUpperCase())
+    //regex sourced from notify (https://github.com/alphagov/notifications-utils/blob/master/notifications_utils/postal_address.py)
+    return regex(value, /^([A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-BD-HJLNP-UW-Z]{2})$/)
+}
+
 function regex(value, match) {
     return typeof value === 'string' && !!value.match(match)
 }
@@ -231,7 +237,7 @@ module.exports = {
    validate: 'required'
   },
   postcode: {
-   validate: ['required', 'postcode']
+   validate: ['required', postcode]
   },
   incomeTypes: {
    mixin: 'checkbox-group',
