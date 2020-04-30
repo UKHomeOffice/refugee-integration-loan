@@ -176,7 +176,7 @@
   "who-helped": {
     "header": "What are the details of the person who helped you?"
   },
-  "declaration": {
+  "confirm": {
     "header": "Check your answers before sending your application",
     "submittingHeader": "Now send your application",
     "text1": "By submitting this application, you agree that:",
