@@ -187,10 +187,10 @@
     "submit": "Submit my application"
   },
   "confirmation": {
-    "confirmed": "Application complete",
+    "confirmed": "Application sent",
     "header2": "What happens next",
-    "text1": "We’ll contact you with the outcome of your application or if we need further information from you.",
-    "text2": "\nIf you have been successful, we will send you a loan agreement by email or post. You will need to go online to accept the terms of this agreement.",
+    "text1": "We’ll contact you with the outcome of your application or if we need more information from you.",
+    "text2": "If you have been successful, we will send you a loan agreement by email or post. You will need to go online to accept the terms of this agreement.",
     "text3": "If you have been unsuccessful, we will write to you explaining the reasons for this decision."
   },
   "ineligible": {
