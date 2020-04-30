@@ -941,10 +941,12 @@
       "default": "Enter total amount of savings"
     },
     "amount": {
-      "default": "Enter loan amount"
+      "default": "Enter loan amount",
+      "singleLoanAmount": "Enter loan amount within given range"
     },
     "jointAmount": {
-      "default": "Enter loan amount"
+      "default": "Enter loan amount",
+      "jointLoanAmount": "Enter loan amount within given range"
     },
     "purposeTypes": {
       "default": "Select what you will use the loan for"
