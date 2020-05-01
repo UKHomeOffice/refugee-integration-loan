@@ -19,7 +19,8 @@
     "libphonenumber-js": "^1.7.51",
     "puppeteer": "^1.12.2",
     "uuid": "^3.3.3",
-    "aws-sdk": "2.167.0"
+    "aws-sdk": "2.167.0",
+    "notifications-node-client": "^4.5.1"
   },
   "devDependencies": {
     "eslint": "^3.14.0",

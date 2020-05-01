@@ -17,6 +17,12 @@ const awsAccessKeyId = config.upload.awsAccessKeyId;
 const awsSecretAccessKey = config.upload.awsSecretAccessKey;
 const kmsKey = config.upload.kmsKey;
 
+const caseworkerEmail = config.govukNotify.caseworkerEmail;
+const templateId = config.govukNotify.templateFormSubmission;
+const notifyApiKey = config.govukNotify.notifyApiKey;
+const NotifyClient = require('notifications-node-client').NotifyClient;
+const notifyClient = new NotifyClient(notifyApiKey);
+
 const createTemporaryFileName = () => {
   return (`${uuid.v1()}.pdf`);
 };
@@ -68,7 +74,14 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
                   } else {
                       req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
                   } 
-                }); 
+                });
+                // Send email
+                notifyClient.sendEmail(templateId, caseworkerEmail, {
+                        personalisation: {
+                          'form id': pdfFileName
+                        }
+                      }).then(response => console.log('EMAIL: OK ' + response))
+                      .catch(err => console.error('EMAIL: ERROR ' + err));
             }
         });
       })

@@ -50,4 +50,9 @@ spec:
                 secretKeyRef:
                   name: refugee-integration-loans
                   key: kms_key_id
+            - name: NOTIFY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ril-notify-key
+                  key: ril-notify-key
 
