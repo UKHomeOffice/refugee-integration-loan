@@ -51,19 +51,25 @@ module.exports = superclass => class extends superclass {
     return this.options.subSteps[req.params.action];
   }
 
+  finalStep() {
+    return _.findKey(this.options.subSteps, s => !s.next);
+  }
+
   getBackLink(req, res) {
     const subSteps = _.intersection(
       Object.keys(this.options.subSteps),
       [
-        ...(req.sessionModel.get('subSteps') || []),
-        req.params.action
+       ...(req.sessionModel.get('subSteps') || []),
+        req.params.action 
       ]
     );
-    const index = subSteps.indexOf(req.params.action);
-    if (index < 1 || req.params.action === 'add-another') {
+    const finalStep = this.finalStep();
+    if (subSteps.length == 1 || req.params.action === finalStep) {
       return super.getBackLink(req, res);
     }
-    return subSteps[index - 1];
+    const index = subSteps.indexOf(req.params.action);
+    const relativeRoute = this.options.route.startsWith('/') ? this.options.route.substring(1) : this.options.route;
+    return `${relativeRoute}/${(subSteps[index - 1] || finalStep)}`;
   }
 
   redirectTo(step, req, res) {
@@ -94,7 +100,7 @@ module.exports = superclass => class extends superclass {
       (!this.prereqsSatisfied(req) && !this.editing(req))
     ) {
       const step = this.hasItems(req) ?
-        _.findKey(this.options.subSteps, s => !s.next) :
+        this.finalStep() :
         this.options.firstStep;
       return this.redirectTo(step, req, res);
     }
