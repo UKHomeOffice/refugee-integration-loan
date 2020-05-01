@@ -2045,3 +2045,10 @@ button.govuk-link {
       font-size: 19px;
       font-size: 1.1875rem;
       line-height: 1.31579; } }
+
+.field-col {
+  width: 20%; }
+
+.action-col {
+  width: 20%;
+  text-align: right; }
