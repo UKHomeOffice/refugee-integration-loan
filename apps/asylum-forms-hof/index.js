@@ -228,7 +228,7 @@ module.exports = {
       forks: [{
         target: '/combined-income',
           condition: {
-            field: 'partner',
+            field: 'joint',
             value: 'yes'
           }
       }]
