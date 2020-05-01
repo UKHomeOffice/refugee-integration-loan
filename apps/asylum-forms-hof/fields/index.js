@@ -270,7 +270,8 @@ module.exports = {
    ],
     legend: {
       className: 'visuallyhidden'
-    }
+    },
+    validate: 'required'
   },
   salaryAmount: {
    validate: ['required', decimal],
@@ -343,7 +344,8 @@ module.exports = {
    ],
    legend: {
      className: 'visuallyhidden'
-   }
+   },
+   validate: 'required'
   },
   combinedSalaryAmount: {
    validate: ['required', decimal],
@@ -431,7 +433,8 @@ module.exports = {
    ],
    legend: {
      className: 'visuallyhidden'
-   }
+   },
+   validate: 'required'
   },
   rentAmount: {
    validate: ['required', decimal],
@@ -543,7 +546,8 @@ module.exports = {
    ],
    legend: {
      className: 'visuallyhidden'
-   }
+   },
+   validate: 'required'
   },
   combinedRentAmount: {
    validate: ['required', decimal],
