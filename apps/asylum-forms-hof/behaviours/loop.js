@@ -120,21 +120,22 @@ module.exports = superclass => class extends superclass {
 
   removeItem(req, res) {
     const items = req.sessionModel.get(this.options.loopData.storeKey);
-    req.sessionModel.set(this.options.loopData.storeKey, _.omit(items, req.params.id));
+    items.splice(Number(req.params.id), 1);
+    req.sessionModel.set(this.options.loopData.storeKey, items);
     const steps = Object.keys(this.options.subSteps);
     const step = _.size(items) > 1 ? steps[steps.length - 1] : steps[0];
     return res.redirect(`${req.baseUrl}${this.options.route}/${step}`);
   }
 
   getItems(req) {
-    return req.sessionModel.get(req.form.options.loopData.storeKey) || {};
+    return req.sessionModel.get(req.form.options.loopData.storeKey) || [];
   }
 
   getValues(req, res, callback) {
     super.getValues(req, res, (err, values) => {
       if (req.params.id !== undefined) {
         const items = this.getItems(req);
-        values = Object.assign({}, values, items[req.params.id] || {});
+        values = Object.assign({}, values, items[Number(req.params.id)] || {});
       }
       return callback(err, values);
     });
@@ -177,9 +178,9 @@ module.exports = superclass => class extends superclass {
       const items = this.getItems(req);
       Object.keys(req.form.values).forEach(field => {
         if (req.form.values[field]) {
-          items[req.params.id][field] = req.form.values[field];
+          items[Number(req.params.id)][field] = req.form.values[field];
         } else {
-          delete items[req.params.id][field];
+          delete items[Number(req.params.id)][field];
         }
       });
       req.sessionModel.set(req.form.options.loopData.storeKey, items);
@@ -190,21 +191,17 @@ module.exports = superclass => class extends superclass {
         if (err) {
           return callback(err);
         }
-        const items = req.sessionModel.get(req.form.options.loopData.storeKey) || {};
-        let id = req.params.id;
-        if (id === undefined) {
-          id = parseInt(req.sessionModel.get(`${req.form.options.loopData.storeKey}-id`) || 0, 10);
-          req.sessionModel.set(`${req.form.options.loopData.storeKey}-id`, id + 1);
-        }
-        items[id] = Object.keys(this.options.fields).reduce((obj, field) => {
-          const value = req.sessionModel.get(field);
-          if (value !== '') {
-            return Object.assign(obj, {
-              [field]: value
-            });
-          }
+        const items = this.getItems(req);
+        items.push(Object.keys(this.options.fields)
+          .reduce((obj, field) => {
+            const value = req.sessionModel.get(field);
+            if (value !== '') {
+              return Object.assign(obj, {
+                [field]: value
+              });
+            }
           return obj;
-        }, {});
+          }, {}));
         req.sessionModel.set(req.form.options.loopData.storeKey, items);
         req.sessionModel.unset(Object.keys(this.options.fields));
         return callback();
@@ -219,7 +216,7 @@ module.exports = superclass => class extends superclass {
   locals(req, res) {
     const locals = super.locals(req, res);
     const pagePath = `${locals.route}-${req.params.action}`;
-    let items = req.sessionModel.get(req.form.options.loopData.storeKey);
+    let items = this.getItems(req);
 
     const fields = _.reduce(items, (arr, item) =>
       _.uniq(
