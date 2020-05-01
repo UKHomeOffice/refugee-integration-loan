@@ -21,17 +21,26 @@ const createTemporaryFileName = () => {
   return (`${uuid.v1()}.pdf`);
 };
 
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3({
+    accessKeyId: awsAccessKeyId,
+    secretAccessKey: awsSecretAccessKey
+});
+
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   process(req, res, next) {
-    req.log('info', 'Upload-pdf processing ** START **');
+    req.log('info', 'PDF Processing ** START **');
+
+    const pdfFileName = createTemporaryFileName();
     this.renderHTML(req, res)
       .then(html => {
-        req.log('info', 'Creating PDF document');
-        return this.createPDF(html);
+        req.log('info', 'Creating PDF document from generated HTML');
+        return this.createPDF(html, pdfFileName);
       })
-      .then(pdfBuffer => {
-        req.log('info', 'Created PDF document. Uploading. ** UPLOAD is DISABLED **');
+      .then(pdfFile => {
+        req.log('info', 'PDF CREATION: File [' + pdfFile + ']');
         if (typeof bucketName !== 'undefined' && bucketName !== 'test_bucket' )
         {
           req.log('info', 'S3 Variables set using SECRETS');
@@ -40,14 +49,31 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         {
           req.log('info', 'S3 Variables set using TEST DATA');
         }
-        // return this.uploadPdf({
-        //   name: 'application_form.pdf',
-        //   data: pdfBuffer,
-        //   mimetype: 'application/pdf'
-        // });
+        const params = {
+            Bucket: bucketName,
+            Key: pdfFileName,
+            Body: fs.createReadStream(pdfFile),
+            ServerSideEncryption: 'aws:kms',
+            SSEKMSKeyId: kmsKey,
+            ContentType: 'application/pdf'
+        };
+        s3.upload(params, function(err, data) {
+            if (err) {
+                req.log('info', 'UPLOAD: ERROR! File [' + pdfFile + '] NOT uploaded successfully to the S3 Bucket. File was not delelted from local storage. ' + err);
+            } else {
+                req.log('info', 'UPLOAD: OK! File [' + pdfFile + '] uploaded successfully to the S3 Bucket ' + data.Location);
+                fs.unlink(pdfFile, function (err) {
+                  if (err) {
+                      req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
+                  } else {
+                      req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
+                  } 
+                }); 
+            }
+        });
       })
       .then(() => { // todo: add result to be processed by this function
-        req.log('info', 'Saved PDF document to S3. ** UPLOAD is DISABLED **');
+        req.log('info', 'PDF Processing ** END **');
         //req.form.values['pdf-upload'] = result.url;
       })
       .then(() => {
@@ -95,12 +121,10 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     return model.save();
   }
 
-  async createPDF(html) {
-    const tempName = createTemporaryFileName();
-
+  async createPDF(html, fileName) {
     console.log('    tempLocation: ' + tempLocation);
-    console.log('    tempName: ' + tempName);
-    const file = await pdfPuppeteer.generate(html, tempLocation, tempName);
+    console.log('    fileName: ' + fileName);
+    const file = await pdfPuppeteer.generate(html, tempLocation, fileName);
     console.log('info', '**** PDF File created **** ' + file);
     fs.stat(file, function(err, stats) {
         if (stats.isFile()) {
@@ -114,13 +138,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         console.log('    mode: ' + stats["mode"])
     });
 
-    fs.readFile(file, (err, data) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      return data;
-    })
+    return file;
   }
 
   readCss() {
