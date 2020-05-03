@@ -63,27 +63,37 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
             SSEKMSKeyId: kmsKey,
             ContentType: 'application/pdf'
         };
-        s3.upload(params, function(err, data) {
-            if (err) {
-                req.log('info', 'UPLOAD: ERROR! File [' + pdfFile + '] NOT uploaded successfully to the S3 Bucket. File was not delelted from local storage. ' + err);
-            } else {
-                req.log('info', 'UPLOAD: OK! File [' + pdfFile + '] uploaded successfully to the S3 Bucket ' + data.Location);
-                fs.unlink(pdfFile, function (err) {
-                  if (err) {
-                      req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
-                  } else {
-                      req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
-                  } 
-                });
-                // Send email
-                notifyClient.sendEmail(templateId, caseworkerEmail, {
-                        personalisation: {
-                          'form id': pdfFileName
-                        }
-                      }).then(response => console.log('EMAIL: OK ' + response))
-                      .catch(err => console.error('EMAIL: ERROR ' + err));
+
+        // Use Notify to upload files
+        fs.readFile(pdfFile, function (err, pdfFileContents) {
+          console.log(err)
+          notifyClient.sendEmail(templateId, caseworkerEmail, {
+            personalisation: {
+              'form id': notifyClient.prepareUpload(pdfFileContents)
             }
+          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
         });
+        // s3.upload(params, function(err, data) {
+        //     if (err) {
+        //         req.log('info', 'UPLOAD: ERROR! File [' + pdfFile + '] NOT uploaded successfully to the S3 Bucket. File was not delelted from local storage. ' + err);
+        //     } else {
+        //         req.log('info', 'UPLOAD: OK! File [' + pdfFile + '] uploaded successfully to the S3 Bucket ' + data.Location);
+        //         fs.unlink(pdfFile, function (err) {
+        //           if (err) {
+        //               req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
+        //           } else {
+        //               req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
+        //           } 
+        //         });
+        //         // Send email
+        //         notifyClient.sendEmail(templateId, caseworkerEmail, {
+        //                 personalisation: {
+        //                   'form id': pdfFileName
+        //                 }
+        //               }).then(response => console.log('EMAIL: OK ' + response))
+        //               .catch(err => console.error('EMAIL: ERROR ' + err));
+        //     }
+        // });
       })
       .then(() => { // todo: add result to be processed by this function
         req.log('info', 'PDF Processing ** END **');
