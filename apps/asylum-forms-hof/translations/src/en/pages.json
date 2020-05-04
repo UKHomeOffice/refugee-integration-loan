@@ -52,6 +52,11 @@
   },
   "other-names-name": {
     "header": {
+      "default": "Add another name"
+    }
+  },
+  "other-names-add-another": {
+    "header": {
       "default": "Other names"
     }
   },
@@ -78,7 +83,12 @@
     }
   },
   "partner-other-names-name": {
-    "header": "Other names"
+    "header": "Add another name"
+  },
+  "partner-other-names-add-another": {
+    "header": {
+      "default": "Other names"
+    }
   },
   "convictions": {
     "header": "Have you ever been convicted of a crime in the UK?",
@@ -116,7 +126,7 @@
   },
   "dependent-details-add-another": {
     "header": {
-      "default": "Do you have any other dependants to add?"
+      "default": "Dependants summary"
     }
   },
   "humanitarian-refugee-status-date": {
