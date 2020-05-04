@@ -228,19 +228,44 @@ module.exports = superclass => class extends superclass {
       )
     , []);
 
-    items = _.map(items, (item, id) => ({
-      id,
-      index: Number(id)+1,
-      deleteRoute: req.form.options.firstStep,
-      fields: _.map(fields, field => ({
-        field,
-        header: req.translate([`fields.${field}.summary`, `fields.${field}.label`, `fields.${field}.legend`]),
-        subroute: _.findKey(req.form.options.subSteps, subStep => subStep.fields.indexOf(field) > -1),
-        value: formatValue(item[field], field, req.form.options.steps[this.confirmStep].loopSections)
-      }))
-    }));
-
     const multipleItems = items.length > 1;
+
+    const loopData = req.form.options.loopData;
+    const loopSections = req.form.options.steps[loopData.confirmStep].loopSections;
+
+    const resolveItemTitle = function resolveItemTitle(multipleItems, index, fields, item) {
+      if(loopData.firstFieldAsHeader) {
+        return formatValue(item[fields[0]], fields[0], loopSections)
+      } else {
+        const summaryTitle = req.translate(`pages.${loopData.sectionKey}.summary-item`)
+        return multipleItems ? `${summaryTitle} ${index}` : summaryTitle;
+      }
+    }
+
+    const mappingFunction = function mappingFunction(item, id) {
+     const mappedFields = _.map(fields, field => ({
+                                    field,
+                                    header: req.translate([`fields.${field}.summary`, `fields.${field}.label`, `fields.${field}.legend`]),
+                                    subroute: _.findKey(req.form.options.subSteps, subStep => subStep.fields.indexOf(field) > -1),
+                                    value: formatValue(item[field], field, loopSections)
+                                  }));
+
+     if(loopData.firstFieldAsHeader) {
+        mappedFields.splice(0, 1);
+     }
+
+     return {
+       id,
+       deleteRoute: req.form.options.firstStep,
+       itemTitle: resolveItemTitle(multipleItems, Number(id)+1, fields, item),
+       editFieldsIndividually: loopData.editFieldsIndividually == null ? mappedFields.length > 0 : loopData.editFieldsIndividually,
+       changeRoute: _.findKey(req.form.options.subSteps, subStep => subStep.fields.indexOf(fields[0]) > -1),
+       fields: mappedFields
+     };
+    };
+
+
+    items = _.map(items, mappingFunction);
 
     const title = hoganRender(conditionalTranslate(`pages.${pagePath}.header`, req.translate),
       Object.assign({}, res.locals, {
@@ -253,8 +278,6 @@ module.exports = superclass => class extends superclass {
     return Object.assign({}, locals, {
       title,
       intro,
-      itemTitle: req.translate(`pages.${this.options.loopData.sectionKey}.summary-item`),
-      multipleItems,
       items,
       summaryTitle: req.translate(`pages.${this.options.loopData.sectionKey}.header`),
       hasItems: items.length,

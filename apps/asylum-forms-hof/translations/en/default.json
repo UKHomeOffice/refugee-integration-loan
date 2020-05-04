@@ -651,7 +651,7 @@
         "default": "Dependant"
       },
       "delete-text": {
-        "default": "Delete dependant"
+        "default": "Delete"
       }
     },
     "dependent-details-dependent": {

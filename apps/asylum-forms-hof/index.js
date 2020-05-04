@@ -87,7 +87,8 @@ module.exports = {
         storeKey: 'otherNamesList',
         sectionKey: 'other-names',
         confirmStep: '/confirm',
-        applySpacer: false
+        applySpacer: false,
+        firstFieldAsHeader: true
       },
       fields: [
         'otherNames',
@@ -152,7 +153,8 @@ module.exports = {
         storeKey: 'partnerOtherNamesList',
         sectionKey: 'partner-other-names',
         confirmStep: '/confirm',
-        applySpacer: false
+        applySpacer: false,
+        firstFieldAsHeader: true
       },
       fields: [
         'partnerOtherNames',
@@ -196,6 +198,8 @@ module.exports = {
         storeKey: 'dependentDetails',
         sectionKey: 'dependent-details',
         confirmStep: '/confirm',
+        firstFieldAsHeader: true,
+        editFieldsIndividually: false
       },
       fields: [
         'dependentFullName',
