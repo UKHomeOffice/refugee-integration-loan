@@ -43,22 +43,14 @@
   },
   "other-names": {
     "header": "Other names",
-    "summary-item": {
-      "default" : "Name"
-    },
-    "delete-text": {
-      "default" : "Delete"
-    }
+    "delete-text": "Delete"
   },
   "other-names-name": {
-    "header": {
-      "default": "Add another name"
-    }
+    "first-item-header": "Add other name",
+    "header": "Add another name"
   },
   "other-names-add-another": {
-    "header": {
-      "default": "Other names"
-    }
+    "header": "Other names"
   },
   "home-office-reference": {
     "header": "What is your Home Office reference number?"
@@ -75,20 +67,14 @@
   },
   "partner-other-names": {
     "header": "Other names",
-    "summary-item": {
-      "default" : "Name"
-    },
-    "delete-text": {
-      "default" : "Delete"
-    }
+    "delete-text": "Delete"
   },
   "partner-other-names-name": {
+    "first-item-header": "Add other name",
     "header": "Add another name"
   },
   "partner-other-names-add-another": {
-    "header": {
-      "default": "Other names"
-    }
+    "header": "Other names"
   },
   "convictions": {
     "header": "Have you ever been convicted of a crime in the UK?",

@@ -20,6 +20,12 @@ function conditionalTranslate(key, t) {
   return undefined;
 }
 
+function resolveTitle(req, items, pagePath) {
+  return items.length == 0 ?
+    conditionalTranslate(`pages.${pagePath}.first-item-header`, req.translate) || conditionalTranslate(`pages.${pagePath}.header`, req.translate) :
+    conditionalTranslate(`pages.${pagePath}.header`, req.translate);
+}
+
 const isValue = (f, field) => (typeof f === 'string') ? f === field : f.field === field;
 
 function formatValue(value, field, sections) {
@@ -123,7 +129,7 @@ module.exports = superclass => class extends superclass {
     items.splice(Number(req.params.id), 1);
     req.sessionModel.set(this.options.loopData.storeKey, items);
     const steps = Object.keys(this.options.subSteps);
-    const step = _.size(items) > 1 ? steps[steps.length - 1] : steps[0];
+    const step = _.size(items) > 0 ? steps[steps.length - 1] : steps[0];
     return res.redirect(`${req.baseUrl}${this.options.route}/${step}`);
   }
 
@@ -264,14 +270,9 @@ module.exports = superclass => class extends superclass {
      };
     };
 
-
     items = _.map(items, mappingFunction);
 
-    const title = hoganRender(conditionalTranslate(`pages.${pagePath}.header`, req.translate),
-      Object.assign({}, res.locals, {
-        next: items.length ? 'next ' : null
-      })
-    );
+    const title = resolveTitle(req, items, pagePath)
 
     const intro = conditionalTranslate(`pages.${pagePath}.intro`, req.translate);
 
