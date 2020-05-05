@@ -13,7 +13,7 @@ const uuid = require('uuid');
 const tempLocation = path.resolve(config.pdf.tempLocation);
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
-const templateId = config.govukNotify.templateFormSubmission;
+const templateId = config.govukNotify.templateFormApply;
 const notifyApiKey = config.govukNotify.notifyApiKey;
 const NotifyClient = require('notifications-node-client').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);

@@ -13,7 +13,7 @@ const uuid = require('uuid');
 const tempLocation = path.resolve(config.pdf.tempLocation);
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
-const templateId = config.govukNotify.templateFormSubmission;
+const templateId = config.govukNotify.templateFormAccept;
 const notifyApiKey = config.govukNotify.notifyApiKey;
 const NotifyClient = require('notifications-node-client').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
@@ -39,13 +39,18 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
             personalisation: {
               'form id': notifyClient.prepareUpload(pdfFileContents)
             } 
-          })
-          .then(response => req.log('info', 'EMAIL: OK ' + response.body))
-          .catch(err => req.log('info', 'EMAIL: ERROR ' + err)) 
+          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err)) 
+          return pdfFile;
         });
       })
-      .then(() => { // todo: add result to be processed by this function
-        // TODO: Delete file upon successful Notify submission
+      .then(pdfFile => { // todo: add result to be processed by this function
+        fs.unlink(pdfFile, function (err) {
+          if (err) {
+              req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
+          } else {
+              req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
+          }
+        });
         req.log('info', 'PDF Processing ** END **');
         //req.form.values['pdf-upload'] = result.url;
       })
