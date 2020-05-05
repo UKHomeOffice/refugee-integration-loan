@@ -44,7 +44,7 @@ function niNumber(value) {
 }
 
 function brpNumber(str) {
-    return regex(str.toUpperCase(), /^[A-Z0-9]{9}$/)
+    return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/)
 }
 
 function postcode(str) {
