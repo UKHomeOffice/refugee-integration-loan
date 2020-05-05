@@ -736,10 +736,7 @@ module.exports = {
         value: 'no'
       }
     ],
-    validate: 'required',
-    legend: {
-      className: 'visuallyhidden'
-    }
+    validate: 'required'
   },
   outcomeBuilding: {
    validate: 'required',
