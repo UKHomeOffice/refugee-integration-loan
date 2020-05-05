@@ -29,15 +29,9 @@ module.exports = {
   pdf: {
     tempLocation: 'pdf-form-submissions'
   },
-  upload: {
-    bucketName: env !== 'production' ? `test_bucket` : process.env.BUCKET,
-    awsAccessKeyId: env !== 'production' ? `test_key_id` : process.env.AWS_ACCESS_KEY_ID,
-    awsSecretAccessKey: env !== 'production' ? `test_secret_key` : process.env.AWS_SECRET_ACCESS_KEY,
-    kmsKey: env !== 'production' ? `test_kms_key` : process.env.KMS_KEY
-  },
   govukNotify: {
     notifyApiKey: process.env.NOTIFY_KEY || '',
-    caseworkerEmail: process.env.CASEWORKER_EMAIL || 'david.sammut@digital.homeoffice.gov.uk',
+    caseworkerEmail: process.env.CASEWORKER_EMAIL || 'colab@digital.homeoffice.gov.uk',
     templateFormSubmission: process.env.TEMPLATE_SUBMISSION || '1376a8f2-2157-42f3-b9a7-5008ba8f26c9'
   },
   keycloak: {

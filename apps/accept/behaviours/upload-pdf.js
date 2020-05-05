@@ -12,11 +12,6 @@ const pdfPuppeteer = require('./util/pdf-puppeteer');
 const uuid = require('uuid');
 const tempLocation = path.resolve(config.pdf.tempLocation);
 
-const bucketName = config.upload.bucketName;
-const awsAccessKeyId = config.upload.awsAccessKeyId;
-const awsSecretAccessKey = config.upload.awsSecretAccessKey;
-const kmsKey = config.upload.kmsKey;
-
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
 const templateId = config.govukNotify.templateFormSubmission;
 const notifyApiKey = config.govukNotify.notifyApiKey;
@@ -27,18 +22,9 @@ const createTemporaryFileName = () => {
   return (`${uuid.v1()}.pdf`);
 };
 
-const AWS = require('aws-sdk');
-
-const s3 = new AWS.S3({
-    accessKeyId: awsAccessKeyId,
-    secretAccessKey: awsSecretAccessKey
-});
-
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   process(req, res, next) {
-    req.log('info', 'PDF Processing ** START **');
-
     const pdfFileName = createTemporaryFileName();
     this.renderHTML(req, res)
       .then(html => {
@@ -46,54 +32,15 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         return this.createPDF(html, pdfFileName);
       })
       .then(pdfFile => {
-        req.log('info', 'PDF CREATION: File [' + pdfFile + ']');
-        if (typeof bucketName !== 'undefined' && bucketName !== 'test_bucket' )
-        {
-          req.log('info', 'S3 Variables set using SECRETS');
-        }
-        else
-        {
-          req.log('info', 'S3 Variables set using TEST DATA');
-        }
-        const params = {
-            Bucket: bucketName,
-            Key: pdfFileName,
-            Body: fs.createReadStream(pdfFile),
-            ServerSideEncryption: 'aws:kms',
-            SSEKMSKeyId: kmsKey,
-            ContentType: 'application/pdf'
-        };
-
         // Use Notify to upload files
         fs.readFile(pdfFile, function (err, pdfFileContents) {
           console.log(err)
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
               'form id': notifyClient.prepareUpload(pdfFileContents)
-            }
-          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
+            } // TODO: Delete file upon successful Notify submission
+          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err)) 
         });
-        // s3.upload(params, function(err, data) {
-        //     if (err) {
-        //         req.log('info', 'UPLOAD: ERROR! File [' + pdfFile + '] NOT uploaded successfully to the S3 Bucket. File was not delelted from local storage. ' + err);
-        //     } else {
-        //         req.log('info', 'UPLOAD: OK! File [' + pdfFile + '] uploaded successfully to the S3 Bucket ' + data.Location);
-        //         fs.unlink(pdfFile, function (err) {
-        //           if (err) {
-        //               req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
-        //           } else {
-        //               req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
-        //           } 
-        //         });
-        //         // Send email
-        //         notifyClient.sendEmail(templateId, caseworkerEmail, {
-        //                 personalisation: {
-        //                   'form id': pdfFileName
-        //                 }
-        //               }).then(response => console.log('EMAIL: OK ' + response))
-        //               .catch(err => console.error('EMAIL: ERROR ' + err));
-        //     }
-        // });
       })
       .then(() => { // todo: add result to be processed by this function
         req.log('info', 'PDF Processing ** END **');
