@@ -4,10 +4,10 @@ const hof = require('hof');
 
 hof({
   behaviours: [
-    require('./apps/asylum-forms-hof/behaviours/fields-filter')
+    require('./apps/apply/behaviours/fields-filter')
   ],
   routes: [
-    require('./apps/asylum-forms-hof/'),
+    require('./apps/apply/'),
     require('./apps/accept/')
   ]
 });

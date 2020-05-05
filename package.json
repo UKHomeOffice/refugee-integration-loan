@@ -26,7 +26,7 @@
     "eslint": "^3.14.0",
     "eslint-config-homeoffice": "^2.1.0"
   },
-  "name": "asylum-forms-hof",
+  "name": "refugee-integration-loans",
   "version": "1.0.0",
   "main": "index.js",
   "keywords": [],

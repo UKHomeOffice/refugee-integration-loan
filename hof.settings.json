@@ -1,10 +1,10 @@
 {
   "theme": "govuk",
   "routes": [
-    "./apps/asylum-forms-hof",
+    "./apps/apply",
     "./apps/accept"
   ],
   "session": {
-    "name": "asylum-forms-hof.hof.sid"
+    "name": "refugee-integration-loans.hof.sid"
   }
 }

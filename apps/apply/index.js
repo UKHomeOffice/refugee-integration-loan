@@ -6,9 +6,9 @@ const LocalSummary = require('./behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 
 module.exports = {
-  name: 'asylum-forms-hof',
+  name: 'apply',
   params: '/:action?/:id?/:edit?',
-  baseUrl: '/asylum-forms-hof',
+  baseUrl: '/apply',
   steps: {
     '/index': {
       next: '/previously-applied'
