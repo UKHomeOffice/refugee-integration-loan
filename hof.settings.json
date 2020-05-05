@@ -1,7 +1,8 @@
 {
   "theme": "govuk",
   "routes": [
-    "./apps/asylum-forms-hof"
+    "./apps/asylum-forms-hof",
+    "./apps/accept"
   ],
   "session": {
     "name": "asylum-forms-hof.hof.sid"

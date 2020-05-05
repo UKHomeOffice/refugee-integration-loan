@@ -1,0 +1,32 @@
+{
+  "reference-number": {
+    "header": "What is your loan reference number?"
+  },
+  "brp": {
+    "header": "What are your biometric residence permit (BRP) details?",
+    "intro": "Enter your details as they appear on your BRP."
+  },
+  "confirm": {
+    "header": "Accept your offer",
+    "loanReferenceHeader": "Loan reference:",
+    "text1": "We have offered you a loan based on the terms of your agreement, sent to you by email or post.",
+    "text2": "By clicking ‘accept and send’ you are accepting these terms, including:",
+    "bullet1": "how much you will pay back and when",
+    "bullet2": "what you will use the loan for",
+    "submit": "Accept and send",
+    "hiddenHelpLink": "If you don't understand your loan agreement",
+    "hiddenHelp1": "You can contact the integration loan team at",
+    "hiddenHelpEmail": "Integrationloan@homeoffice.gov.uk",
+    "hiddenHelp2": "before accepting the terms. You will be able to return to this form."
+  },
+  "complete": {
+    "confirmed": "Offer accepted",
+    "header2": "What happens next",
+    "text1": "You'll receive your loan into the bank, building society or credit union account you gave us in your application. This should happen within 10 working days.",
+    "text2": "Please refer back to your loan agreement in your email or letter, which will explain how much you need to repay and when.",
+    "text3": "f you need any further help with your integration loan, contact the team:",
+    "helpEmail": "Integrationloan@homeoffice.gov.uk",
+    "feedbackLink": "What did you think of this service?",
+    "feedbackText": "(takes 30 seconds)"
+  }
+}

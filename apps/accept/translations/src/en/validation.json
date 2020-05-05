@@ -1,0 +1,12 @@
+{
+  "loanReference": {
+    "default": "Enter your loan reference number in the correct format"
+  },
+  "brpNumber": {
+    "default": "Enter your BRP number in the correct format"
+  },
+  "dateOfBirth": {
+    "default": "Enter your date of birth in the correct format",
+    "before": "Enter a date that is in the past"
+  }
+}

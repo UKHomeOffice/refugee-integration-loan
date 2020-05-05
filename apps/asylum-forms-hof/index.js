@@ -5,10 +5,6 @@ const SetConfirmStep = require('./behaviours/set-confirm-step');
 const LocalSummary = require('./behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 
-function notEditing(req, res) {
-  return req.url === '';
-}
-
 module.exports = {
   name: 'asylum-forms-hof',
   params: '/:action?/:id?/:edit?',
