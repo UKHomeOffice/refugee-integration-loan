@@ -5,6 +5,10 @@ const SetConfirmStep = require('./behaviours/set-confirm-step');
 const LocalSummary = require('./behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 
+function notEditing(req, res) {
+  return req.url === '';
+}
+
 module.exports = {
   name: 'asylum-forms-hof',
   params: '/:action?/:id?/:edit?',
@@ -22,7 +26,8 @@ module.exports = {
             field: 'previouslyApplied',
             value: 'no'
           }
-        }]
+        }],
+      continueOnEdit: true
     },
     '/previous': {
       fields: ['previouslyHadIntegrationLoan'],
@@ -33,7 +38,8 @@ module.exports = {
             field: 'previouslyHadIntegrationLoan',
             value: 'no'
           }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/who-received-previous-loan': {
       fields: ['whoReceivedPreviousLoan'],
@@ -44,7 +50,8 @@ module.exports = {
             field: 'whoReceivedPreviousLoan',
             value: 'someoneElse'
           }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/partner': {
       fields: ['partner'],
@@ -55,20 +62,24 @@ module.exports = {
             field: 'partner',
             value: 'no'
           }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/joint': {
       fields: ['joint'],
-      next: '/brp'
+      next: '/brp',
+      continueOnEdit: true
     },
     '/brp': {
       fields: ['brpNumber', 'fullName', 'dateOfBirth'],
       next: '/ni-number',
-      template: 'brp'
+      template: 'brp',
+      continueOnEdit: true
     },
     '/ni-number': {
       fields: ['niNumber'],
-      next: '/has-other-names'
+      next: '/has-other-names',
+      continueOnEdit: true
     },
     '/has-other-names': {
       fields: ['hasOtherNames'],
@@ -79,7 +90,8 @@ module.exports = {
           field: 'hasOtherNames',
           value: 'yes'
         }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/other-names': {
       behaviours: Loop,
@@ -109,7 +121,8 @@ module.exports = {
         field: 'addAnotherName',
         value: 'yes'
       },
-      next: '/home-office-reference'
+      next: '/home-office-reference',
+      continueOnEdit: true
     },
     '/home-office-reference': {
       fields: ['homeOfficeReference'],
@@ -120,21 +133,25 @@ module.exports = {
           field: 'joint',
           value: 'yes'
         }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
-      next: '/dependents'
+      next: '/dependents',
+      continueOnEdit: true
     },
     '/partner-brp': {
       fields: ['partnerBrpNumber', 'partnerFullName', 'partnerDateOfBirth'],
       next: '/partner-ni-number',
-      template: 'brp'
+      template: 'brp',
+      continueOnEdit: true
     },
     '/partner-ni-number': {
       fields: ['partnerNiNumber'],
       next: '/partner-has-other-names',
-      template: 'ni-number'
+      template: 'ni-number',
+      continueOnEdit: true
     },
     '/partner-has-other-names': {
       fields: ['partnerHasOtherNames'],
@@ -145,7 +162,8 @@ module.exports = {
           field: 'partnerHasOtherNames',
           value: 'yes'
         }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/partner-other-names': {
       behaviours: Loop,
@@ -175,11 +193,13 @@ module.exports = {
         field: 'partnerAddAnotherName',
         value: 'yes'
       },
-      next: '/convictions-joint'
+      next: '/convictions-joint',
+      continueOnEdit: true
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
-      next: '/dependents'
+      next: '/dependents',
+      continueOnEdit: true
     },
     '/dependents': {
       fields: ['dependents'],
@@ -190,7 +210,8 @@ module.exports = {
             field: 'dependents',
             value: 'yes'
           }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/dependent-details': {
       behaviours: Loop,
@@ -224,7 +245,8 @@ module.exports = {
         field: 'addAnotherDependant',
         value: 'yes'
       },
-      next: '/address'
+      next: '/address',
+      continueOnEdit: true
     },
     '/address': {
       fields: ['building', 'street', 'townOrCity', 'postcode'],
@@ -235,47 +257,58 @@ module.exports = {
             field: 'joint',
             value: 'yes'
           }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/income': {
       fields: ['incomeTypes', 'salaryAmount', 'universalCreditAmount', 'childBenefitAmount', 'housingBenefitAmount', 'otherIncomeAmount'],
-      next: '/outgoings'
+      next: '/outgoings',
+      continueOnEdit: true
     },
     '/outgoings': {
       fields: ['outgoingTypes', 'rentAmount', 'householdBillsAmount', 'foodToiletriesAndCleaningSuppliesAmount', 'mobilePhoneAmount', 'travelAmount', 'clothingAndFootwearAmount', 'universalCreditDeductionsAmount', 'otherOutgoingAmount'],
-      next: '/savings'
+      next: '/savings',
+      continueOnEdit: true
     },
     '/savings': {
       fields: ['savings', 'savingsAmount'],
-      next: '/amount'
+      next: '/amount',
+      continueOnEdit: true
     },
     '/amount': {
       fields: ['amount'],
-      next: '/purpose'
+      next: '/purpose',
+      continueOnEdit: true
     },
     '/combined-income': {
       fields: ['combinedIncomeTypes', 'combinedSalaryAmount', 'combinedUniversalCreditAmount', 'combinedChildBenefitAmount', 'combinedHousingBenefitAmount', 'combinedOtherIncomeAmount'],
-      next: '/combined-outgoings'
+      next: '/combined-outgoings',
+      continueOnEdit: true
     },
     '/combined-outgoings': {
       fields: ['combinedOutgoingTypes', 'combinedRentAmount', 'combinedHouseholdBillsAmount', 'combinedFoodToiletriesAndCleaningSuppliesAmount', 'combinedMobilePhoneAmount', 'combinedTravelAmount', 'combinedClothingAndFootwearAmount', 'combinedUniversalCreditDeductionsAmount', 'combinedOtherOutgoingAmount'],
-      next: '/combined-savings'
+      next: '/combined-savings',
+      continueOnEdit: true
     },
     '/combined-savings': {
       fields: ['combinedSavings', 'combinedSavingsAmount'],
-      next: '/combined-amount'
+      next: '/combined-amount',
+      continueOnEdit: true
     },
     '/combined-amount': {
       fields: ['jointAmount'],
-      next: '/purpose'
+      next: '/purpose',
+      continueOnEdit: true
     },
     '/purpose': {
       fields: ['purposeTypes'],
-      next: '/bank-details'
+      next: '/bank-details',
+      continueOnEdit: true
     },
     '/bank-details': {
       fields: ['accountName', 'sortCode', 'accountNumber', 'rollNumber'],
-      next: '/contact'
+      next: '/contact',
+      continueOnEdit: true
     },
     '/contact': {
       fields: ['contactTypes', 'email', 'phone'],
@@ -285,12 +318,14 @@ module.exports = {
         condition: function (req, res) {
           return req.form.values['contactTypes'] && !(req.form.values['contactTypes'].includes('email'));
         }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/outcome': {
       fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],
       template: 'outcome',
-      next: '/help'
+      next: '/help',
+      continueOnEdit: true
     },
     '/help': {
       fields: ['hadHelp'],
@@ -301,15 +336,18 @@ module.exports = {
           field: 'hadHelp',
           value: 'yes'
         }
-      }]
+      }],
+      continueOnEdit: true
     },
     '/help-reasons': {
       fields: ['helpReasons'],
-      next: '/who-helped'
+      next: '/who-helped',
+      continueOnEdit: true
     },
     '/who-helped': {
       fields: ['helpFullName', 'helpRelationship', 'helpContactTypes', 'helpEmail', 'helpPhone'],
-      next: '/confirm'
+      next: '/confirm',
+      continueOnEdit: true
     },
     '/confirm': {
       behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary, UploadPDF],
