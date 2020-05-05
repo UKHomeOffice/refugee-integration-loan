@@ -38,11 +38,14 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
               'form id': notifyClient.prepareUpload(pdfFileContents)
-            } // TODO: Delete file upon successful Notify submission
-          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err)) 
+            } 
+          })
+          .then(response => req.log('info', 'EMAIL: OK ' + response.body))
+          .catch(err => req.log('info', 'EMAIL: ERROR ' + err)) 
         });
       })
       .then(() => { // todo: add result to be processed by this function
+        // TODO: Delete file upon successful Notify submission
         req.log('info', 'PDF Processing ** END **');
         //req.form.values['pdf-upload'] = result.url;
       })
