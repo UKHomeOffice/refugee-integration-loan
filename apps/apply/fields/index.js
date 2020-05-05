@@ -232,6 +232,7 @@ module.exports = {
    validate: 'required'
   },
   street: {
+    labelClassName: 'visuallyhidden'
   },
   townOrCity: {
    validate: 'required'
@@ -751,7 +752,8 @@ module.exports = {
    dependent: {
      field: 'likelyToMove',
      value: 'yes'
-   }
+   },
+   labelClassName: 'visuallyhidden'
   },
   outcomeTownOrCity: {
    validate: 'required',

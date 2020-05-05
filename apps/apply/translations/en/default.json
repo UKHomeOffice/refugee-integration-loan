@@ -176,7 +176,7 @@
       "label": "Building and street"
     },
     "street": {
-      "label": " "
+      "label": "Address line 2"
     },
     "townOrCity": {
       "label": "Town or city"
@@ -477,7 +477,7 @@
       "label": "Building and street"
     },
     "outcomeStreet": {
-      "label": " "
+      "label": "Address line 2"
     },
     "outcomeTownOrCity": {
       "label": "Town or city"
