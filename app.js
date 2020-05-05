@@ -2,7 +2,7 @@
 
 const hof = require('hof');
 
-hof({
+const app = hof({
   behaviours: [
     require('./apps/apply/behaviours/fields-filter')
   ],
@@ -10,4 +10,10 @@ hof({
     require('./apps/apply/'),
     require('./apps/accept/')
   ]
+});
+
+app.use((req, res, next) => {
+  // Set HTML Language
+  res.locals.htmlLang = 'en';
+  next();
 });
