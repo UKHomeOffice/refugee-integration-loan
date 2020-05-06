@@ -733,9 +733,14 @@
     "confirmation": {
       "confirmed": "Application sent",
       "header2": "What happens next",
-      "text1": "We’ll contact you with the outcome of your application or if we need more information from you.",
+      "text1": "We’ll contact you with the decision of your application or if we need more information from you. This should happen within 4 weeks.",
       "text2": "If you have been successful, we will send you a loan agreement by email or post. You will need to go online to accept the terms of this agreement.",
-      "text3": "If you have been unsuccessful, we will write to you explaining the reasons for this decision."
+      "text3": "If you have been unsuccessful, we will write to you explaining the reasons for this decision.",
+      "header3": "If your details change",
+      "text4": "To let us know about any changes in your situation, including contact details, email",
+      "email": "integrationloan@homeoffice.gov.uk",
+      "feedbackLink": "What did you think of this service?",
+      "feedbackTime": "(takes 30 seconds)"
     },
     "ineligible": {
       "header": "You cannot apply for a loan",
