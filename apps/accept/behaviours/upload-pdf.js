@@ -25,6 +25,7 @@ const createTemporaryFileName = () => {
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   process(req, res, next) {
+
     const pdfFileName = createTemporaryFileName();
     this.renderHTML(req, res)
       .then(html => {
@@ -32,18 +33,20 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         return this.createPDF(html, pdfFileName);
       })
       .then(pdfFile => {
+        req.log('info', 'PDF CREATION: File [' + pdfFile + ']');
+
         // Use Notify to upload files
         fs.readFile(pdfFile, function (err, pdfFileContents) {
           console.log(err)
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
               'form id': notifyClient.prepareUpload(pdfFileContents)
-            } 
-          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err)) 
-          return pdfFile;
+            }
+          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
         });
+        return pdfFile;
       })
-      .then(pdfFile => { // todo: add result to be processed by this function
+      .then(pdfFile => {
         fs.unlink(pdfFile, function (err) {
           if (err) {
               req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
