@@ -4,7 +4,8 @@ const hof = require('hof');
 
 const app = hof({
   behaviours: [
-    require('./apps/apply/behaviours/fields-filter')
+    require('./apps/apply/behaviours/fields-filter'),
+    require('./apps/apply/behaviours/page-analytics')
   ],
   routes: [
     require('./apps/apply/'),
