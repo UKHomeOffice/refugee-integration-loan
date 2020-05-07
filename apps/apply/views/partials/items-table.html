@@ -4,19 +4,19 @@
             <!-- <caption class="govuk-table__caption">Dates and amounts</caption> -->
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header" colspan="2">{{itemTitle}}</th>
-                    <th scope="col" class="govuk-table__header action-col">{{^editFieldsIndividually}}<a href="{{baseUrl}}/{{route}}/{{changeRoute}}/{{id}}/change">{{#t}}buttons.edit{{/t}}<span class="visuallyhidden"> {{itemTitle}}</span></a>{{/editFieldsIndividually}} <a href="{{baseUrl}}/{{route}}/{{deleteRoute}}/{{id}}/delete">{{deleteText}}<span class="visuallyhidden"> {{itemTitle}}</span></a></th>
+                    <th scope="col" class="govuk-table__header data-col" colspan="2">{{itemTitle}}</th>
+                    <th scope="col" class="govuk-table__header action-col">{{^editFieldsIndividually}}<a href="{{baseUrl}}/{{route}}/{{changeRoute}}/{{id}}/change" class="pad-right-160">{{#t}}buttons.edit{{/t}}<span class="visuallyhidden"> {{itemTitle}}</span></a>{{/editFieldsIndividually}} <a href="{{baseUrl}}/{{route}}/{{deleteRoute}}/{{id}}/delete">{{deleteText}}<span class="visuallyhidden"> {{itemTitle}}</span></a></th>
                 </tr>
             </thead>
-            {{#fields}}
-                <tbody class="govuk-table__body">
+            <tbody class="govuk-table__body">
+                {{#fields}}
                     <tr class="govuk-table__row">
-                        <th scope="row" class="govuk-table__header field-col">{{header}}</th>
+                        <th scope="row" class="govuk-table__header data-col">{{header}}</th>
                         <td class="govuk-table__cell" {{^editFieldsIndividually}}colspan="2"{{/editFieldsIndividually}}>{{value}}</td>
                         {{#editFieldsIndividually}}<td class="govuk-table__cell action-col"><a href="{{baseUrl}}/{{route}}/{{subroute}}/{{id}}/change">{{#t}}buttons.edit{{/t}}<span class="visuallyhidden"> {{header}}</span></a></td>{{/editFieldsIndividually}}
                     </tr>
-                </tbody>
-            {{/fields}}
+                {{/fields}}
+            </tbody>
         </table>
     {{/items}}
 </div>

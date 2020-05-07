@@ -2046,11 +2046,13 @@ button.govuk-link {
       font-size: 1.1875rem;
       line-height: 1.31579; } }
 
-.field-col {
-  width: 20%; }
-
 .action-col {
   text-align: right; }
+  .action-col .pad-right-160 {
+    padding-right: 160px; }
+
+.data-col {
+  max-width: 280px; }
 
 details {
   margin-top: 34px; }
