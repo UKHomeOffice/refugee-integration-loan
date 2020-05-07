@@ -25,7 +25,6 @@ const createTemporaryFileName = () => {
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   process(req, res, next) {
-
     const pdfFileName = createTemporaryFileName();
     this.renderHTML(req, res)
       .then(html => {
@@ -40,7 +39,8 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           console.log(err)
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
-              'form id': notifyClient.prepareUpload(pdfFileContents)
+              'form id': notifyClient.prepareUpload(pdfFileContents),
+              'name': req.sessionModel.get('fullName')
             }
           }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
         });
