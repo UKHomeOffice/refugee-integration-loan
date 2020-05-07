@@ -12,7 +12,7 @@
             <tr{{#className}} class="{{className}}"{{/className}}>
                 <td>{{label}}</td>
                 <td data-value="{{value}}">{{value}}</td>
-                <td><a href="{{baseUrl}}{{step}}/edit#{{field}}" class="govuk-link" id="{{field}}-change">{{#t}}buttons.change{{/t}}</a></td>
+                <td><a href="{{baseUrl}}{{step}}/edit#{{field}}" class="govuk-link" id="{{field}}-change">{{#t}}buttons.change{{/t}} <span class="visuallyhidden">{{summaryDescription}}</span></a></td>
             </tr>
         {{/spacer}}
 

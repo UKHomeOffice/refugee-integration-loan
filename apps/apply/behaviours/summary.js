@@ -46,6 +46,11 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
           `fields.${key}.label`,
           `fields.${key}.legend`
         ]),
+        summaryDescription: req.translate([
+          `fields.${key}.summaryDescription`,
+          `fields.${key}.label`,
+          `fields.${key}.legend`
+        ]),
         value: getValue(req.sessionModel.get(key), key, req.translate),
         step: this.getStepForField(key, settings.steps, req.sessionModel),
         field: key
