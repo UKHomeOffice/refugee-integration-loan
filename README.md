@@ -2,6 +2,8 @@
 
 
 ```
-docker-compose up
+npm i && docker-compose build && docker-compose up
 ```
 
+Then navigate to <http://localhost:8080/apply>
+or to <http://localhost:8080/accept>
