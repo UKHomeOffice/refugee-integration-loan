@@ -40,7 +40,8 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           console.log(err)
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
-              'form id': notifyClient.prepareUpload(pdfFileContents)
+              'form id': notifyClient.prepareUpload(pdfFileContents),
+              'loan reference': req.sessionModel.get('loanReference')
             }
           }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
         });
