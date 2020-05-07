@@ -25,6 +25,10 @@ function decimal(value) {
   return regex(value, /^[\d]*\.?\d{0,2}$/)
 }
 
+function greaterThanZero(value) {
+  return Number(value) > 0;
+}
+
 function mobilePhoneNumber(value) {
     const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
     return phoneNumber && phoneNumber.isValid() && (phoneNumber.getType().includes('MOBILE') || phoneNumber.getType() === 'PERSONAL_NUMBER');
@@ -275,7 +279,7 @@ module.exports = {
     validate: 'required'
   },
   salaryAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
@@ -283,7 +287,7 @@ module.exports = {
    }
   },
   universalCreditAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
@@ -291,7 +295,7 @@ module.exports = {
    }
   },
   childBenefitAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
@@ -299,7 +303,7 @@ module.exports = {
    }
   },
   housingBenefitAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
@@ -307,7 +311,7 @@ module.exports = {
    }
   },
   otherIncomeAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'incomeTypes',
@@ -349,7 +353,7 @@ module.exports = {
    validate: 'required'
   },
   combinedSalaryAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedIncomeTypes',
@@ -357,7 +361,7 @@ module.exports = {
    }
   },
   combinedUniversalCreditAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedIncomeTypes',
@@ -365,7 +369,7 @@ module.exports = {
    }
   },
   combinedChildBenefitAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedIncomeTypes',
@@ -373,7 +377,7 @@ module.exports = {
    }
   },
   combinedHousingBenefitAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedIncomeTypes',
@@ -381,7 +385,7 @@ module.exports = {
    }
   },
   combinedOtherIncomeAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedIncomeTypes',
@@ -438,7 +442,7 @@ module.exports = {
    validate: 'required'
   },
   rentAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -446,7 +450,7 @@ module.exports = {
    }
   },
   householdBillsAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -455,14 +459,14 @@ module.exports = {
   },
   foodToiletriesAndCleaningSuppliesAmount: {
    attributes: [{attribute: 'placeholder', value: '£'}],
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    dependent: {
      field: 'outgoingTypes',
      value: 'food_toiletries_cleaning_supplies'
    }
   },
   mobilePhoneAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -470,7 +474,7 @@ module.exports = {
    }
   },
   travelAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -478,7 +482,7 @@ module.exports = {
    }
   },
   clothingAndFootwearAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -486,7 +490,7 @@ module.exports = {
    }
   },
   universalCreditDeductionsAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -494,7 +498,7 @@ module.exports = {
    }
   },
   otherOutgoingAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'outgoingTypes',
@@ -551,7 +555,7 @@ module.exports = {
    validate: 'required'
   },
   combinedRentAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -559,7 +563,7 @@ module.exports = {
    }
   },
   combinedHouseholdBillsAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -568,14 +572,14 @@ module.exports = {
   },
   combinedFoodToiletriesAndCleaningSuppliesAmount: {
    attributes: [{attribute: 'placeholder', value: '£'}],
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    dependent: {
      field: 'combinedOutgoingTypes',
      value: 'food_toiletries_cleaning_supplies'
    }
   },
   combinedMobilePhoneAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -583,7 +587,7 @@ module.exports = {
    }
   },
   combinedTravelAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -591,7 +595,7 @@ module.exports = {
    }
   },
   combinedClothingAndFootwearAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -599,7 +603,7 @@ module.exports = {
    }
   },
   combinedUniversalCreditDeductionsAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -607,7 +611,7 @@ module.exports = {
    }
   },
   combinedOtherOutgoingAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedOutgoingTypes',
@@ -632,7 +636,7 @@ module.exports = {
    }
   },
   savingsAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [ {attribute: 'placeholder', value:'£'} ],
    dependent: {
      field: 'savings',
@@ -657,7 +661,7 @@ module.exports = {
    }
   },
   combinedSavingsAmount: {
-   validate: ['required', decimal],
+   validate: ['required', decimal, greaterThanZero],
    attributes: [ {attribute: 'placeholder', value:'£'} ],
    dependent: {
      field: 'combinedSavings',
