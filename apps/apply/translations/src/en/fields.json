@@ -58,19 +58,23 @@
     }
   },
   "fullName": {
-    "label": "Full name"
+    "label": "Full name",
+    "summaryDescription": "Your full name"
   },
   "dateOfBirth": {
     "legend": "Date of Birth",
-    "hint": "For example, 31 3 1980"
+    "hint": "For example, 31 3 1980",
+    "summaryDescription": "Your date of birth"
   },
   "brpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘ZU1234567’."
+    "hint": "For example, ‘ZU1234567’.",
+    "summaryDescription": "Your Biometric residence permit (BRP) number"
   },
   "niNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP)."
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
+    "summaryDescription": "Your national insurance number"
   },
   "hasOtherNames": {
     "legend": "Have you been known by any other names?",
@@ -84,7 +88,8 @@
     }
   },
   "otherNames": {
-    "label": "Full name"
+    "label": "Full name",
+    "summaryDescription": "other name"
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
@@ -105,19 +110,23 @@
     "label": "Enter details of the crime(s)"
   },
   "partnerFullName": {
-    "label": "Full name"
+    "label": "Full name",
+    "summaryDescription": "Partner full name"
   },
   "partnerDateOfBirth": {
     "legend": "Date of Birth",
-    "hint": "For example, 31 3 1980"
+    "hint": "For example, 31 3 1980",
+    "summaryDescription": "Partner date of birth"
   },
   "partnerBrpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘ZU1234567’."
+    "hint": "For example, ‘ZU1234567’.",
+    "summaryDescription": "Partner biometric residence permit (BRP) number"
   },
   "partnerNiNumber": {
     "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residence permit (BRP)."
+    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residence permit (BRP).",
+    "summaryDescription": "Partner national insurance number"
   },
   "partnerHasOtherNames": {
     "legend": "Has your partner been known by any other names?",
@@ -131,7 +140,8 @@
     }
   },
   "partnerOtherNames": {
-    "label": "Full name"
+    "label": "Full name",
+    "summaryDescription": "Partner other name"
   },
   "convictedJoint": {
     "legend": "Have you or your partner ever been convicted of a crime in the UK?",
@@ -159,26 +169,33 @@
     }
   },
   "dependentFullName": {
-    "label": "Full name"
+    "label": "Full name",
+    "summaryDescription": "Dependant full name"
   },
   "dependentDateOfBirth": {
     "legend": "Date of Birth",
-    "hint": "For example, 31 3 1980"
+    "hint": "For example, 31 3 1980",
+    "summaryDescription": "Dependant date of birth"
   },
   "dependentRelationship": {
-    "label": "Relationship to you"
+    "label": "Relationship to you",
+    "summaryDescription": "Dependant relationship to you"
   },
   "building": {
-    "label": "Building and street"
+    "label": "Building and street",
+    "summaryDescription": "Your Building and street"
   },
   "street": {
-    "label": "Address line 2"
+    "label": "Address line 2",
+    "summaryDescription": "Your address line 2"
   },
   "townOrCity": {
-    "label": "Town or city"
+    "label": "Town or city",
+    "summaryDescription": "Your town or city"
   },
   "postcode": {
-    "label": "Postcode"
+    "label": "Postcode",
+    "summaryDescription": "Your postcode"
   },
   "incomeTypes": {
     "legend": "Your monthly income",
@@ -425,7 +442,8 @@
     }
   },
   "accountName": {
-    "label": "Name on the account"
+    "label": "Name on the account",
+    "summaryDescription": "Name on the bank or building society account"
   },
   "sortCode": {
     "label": "Sort code",
@@ -452,11 +470,13 @@
     }
   },
   "email": {
-    "label": "Email address"
+    "label": "Email address",
+    "summaryDescription": "Your email address"
   },
   "phone": {
     "label": "Mobile phone number",
-    "hint":"For international numbers include the country code"
+    "hint":"For international numbers include the country code",
+    "summaryDescription": "Your phone number"
   },
   "likelyToMove": {
     "legend": "Are you likely to move to another address in the next 4 weeks?",
@@ -514,14 +534,17 @@
     }
   },
   "helpFullName": {
-    "label": "Full name"
+    "label": "Full name",
+    "summaryDescription": "Full name of person who helped you"
   },
   "helpRelationship": {
-    "label": "Relationship to you"
+    "label": "Relationship to you",
+    "summaryDescription": "Relationship of person who helped you to you"
   },
   "helpContactTypes": {
     "legend": "How can we contact them?",
     "hint": "We may need to get in contact with them if we need more information. Select at least one option.",
+    "summaryDescription": "How can we contact person who helped you",
     "options": {
       "email": {
         "label" : "Email"
@@ -532,10 +555,12 @@
     }
   },
   "helpEmail": {
-    "label": "Email address"
+    "label": "Email address",
+    "summaryDescription": "Email address of person who helped you"
   },
   "helpPhone": {
-    "label": "UK telephone number"
+    "label": "UK telephone number",
+    "summaryDescription": "Phone number of person who helped you"
   },
   "feedbackText": {
     "label": "Tell us what you think of the online service"

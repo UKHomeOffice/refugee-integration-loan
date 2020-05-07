@@ -109,6 +109,11 @@ module.exports = Base => class extends mix(Base).with(Behaviour) {
                     `fields.${field}.summary`,
                     `fields.${field}.label`,
                     `fields.${field}.legend`
+                  ]),
+                  summaryDescription: req.translate([
+                    `fields.${field}.summaryDescription`,
+                    `fields.${field}.label`,
+                    `fields.${field}.legend`
                   ])
               };
               return id > 0 && isFirstField && applySpacer ? [spacer, fieldEntry] : [fieldEntry]
