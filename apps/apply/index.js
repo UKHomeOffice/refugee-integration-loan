@@ -354,6 +354,9 @@ module.exports = {
     },
     '/ineligible': {
       template: 'ineligible'
+    },
+    '/feedback': {
+        fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],
     }
   }
 }
