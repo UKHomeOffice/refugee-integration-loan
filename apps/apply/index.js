@@ -1,7 +1,6 @@
 'use strict';
 
 const Loop = require('./behaviours/loop');
-const SetConfirmStep = require('./behaviours/set-confirm-step');
 const LocalSummary = require('./behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 
