@@ -4,6 +4,9 @@ const _ = require('lodash');
 const dateComponent = require('hof-component-date');
 const libPhoneNumber = require('libphonenumber-js/max');
 
+const after1900Validator = {type: 'after', arguments:['1900']}
+const olderThan18Validator = {type: 'before', arguments:['18', 'years']}
+
 function singleLoanAmount(values) {
   return between(values, 100, 500)
 }
@@ -106,11 +109,8 @@ module.exports = {
       className: 'visuallyhidden'
     }
   },
-  refugeeDate: dateComponent('refugeeDate', {
-                   validate: ['required', 'before']
-             }),
   dateOfBirth: dateComponent('dateOfBirth', {
-    validate: ['required', 'before']
+        validate: ['required', after1900Validator, olderThan18Validator]
   }),
   fullName: {
    validate: 'required'
@@ -191,7 +191,7 @@ module.exports = {
     }
   },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
-   validate: ['required', 'before']
+   validate: ['required', 'before', after1900Validator]
   }),
   partnerFullName: {
    validate: 'required',
@@ -227,7 +227,7 @@ module.exports = {
    validate: 'required'
   },
   dependentDateOfBirth: dateComponent('dependentDateOfBirth', {
-   validate: ['required', 'before']
+   validate: ['required', 'before', after1900Validator]
   }),
   dependentRelationship: {
    validate: 'required'

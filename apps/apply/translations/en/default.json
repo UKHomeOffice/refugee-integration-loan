@@ -802,7 +802,7 @@
     },
     "dateOfBirth": {
       "default": "Enter your date of birth in the correct format",
-      "before": "Enter a date that is in the past"
+      "before": "Enter a valid date of birth. You must be over 18 to apply"
     },
     "brpNumber": {
       "default": "Enter your BRP number in the correct format"
