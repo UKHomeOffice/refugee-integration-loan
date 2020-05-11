@@ -3,6 +3,7 @@
 const Loop = require('./behaviours/loop');
 const LocalSummary = require('./behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
+const UploadFeedback = require('./behaviours/submit-feedback')
 
 module.exports = {
   name: 'apply',
@@ -357,6 +358,7 @@ module.exports = {
     },
     '/feedback': {
         fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],
+        behaviours: [UploadFeedback]
     }
   }
 }

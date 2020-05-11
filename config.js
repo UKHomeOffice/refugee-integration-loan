@@ -32,8 +32,10 @@ module.exports = {
   govukNotify: {
     notifyApiKey: process.env.NOTIFY_KEY || 'NOTIFY-KEY-NOT-SET',
     caseworkerEmail: process.env.CASEWORKER_EMAIL || 'colab@digital.homeoffice.gov.uk',
+    feedbackEmail: process.env.FEEDBACK_EMAIL || 'colab@digital.homeoffice.gov.uk',
     templateFormApply: process.env.TEMPLATE_APPLY || '1376a8f2-2157-42f3-b9a7-5008ba8f26c9',
-    templateFormAccept: process.env.TEMPLATE_ACCEPT || '21235643-6a96-426a-94d5-bc1a49c0b1d0'
+    templateFormAccept: process.env.TEMPLATE_ACCEPT || '21235643-6a96-426a-94d5-bc1a49c0b1d0',
+    templateFormFeedback: process.env.TEMPLATE_FEEDBACK || 'ccfb0d84-8bed-4749-8667-c7890cd1dcb1'
   },
   keycloak: {
     tokenUrl: process.env.KEYCLOAK_TOKEN_URL,

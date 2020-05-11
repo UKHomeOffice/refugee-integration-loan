@@ -1,6 +1,7 @@
 'use strict';
 
 const UploadPDF = require('./behaviours/upload-pdf');
+const UploadFeedback = require('./behaviours/submit-feedback')
 
 module.exports = {
   name: 'accept',
@@ -19,6 +20,10 @@ module.exports = {
        next: '/complete'
      },
      '/complete': {
+     },
+     '/feedback': {
+       fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],
+       behaviours: [UploadFeedback]
      }
   }
 }
