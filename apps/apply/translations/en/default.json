@@ -187,19 +187,19 @@
     },
     "building": {
       "label": "Building and street",
-      "summaryDescription": "Your Building and street"
+      "summaryDescription": "Your current building and street"
     },
     "street": {
       "label": "Address line 2",
-      "summaryDescription": "Your address line 2"
+      "summaryDescription": "Your current address line 2"
     },
     "townOrCity": {
       "label": "Town or city",
-      "summaryDescription": "Your town or city"
+      "summaryDescription": "Your current town or city"
     },
     "postcode": {
       "label": "Postcode",
-      "summaryDescription": "Your postcode"
+      "summaryDescription": "Your current postcode"
     },
     "incomeTypes": {
       "legend": "Your monthly income",
@@ -494,16 +494,20 @@
       }
     },
     "outcomeBuilding": {
-      "label": "Building and street"
+      "label": "Building and street",
+      "summaryDescription": "Your future building and street"
     },
     "outcomeStreet": {
-      "label": "Address line 2"
+      "label": "Address line 2",
+      "summaryDescription": "Your future address line 2"
     },
     "outcomeTownOrCity": {
-      "label": "Town or city"
+      "label": "Town or city",
+      "summaryDescription": "Your future town or city"
     },
     "outcomePostcode": {
-      "label": "Postcode"
+      "label": "Postcode",
+      "summaryDescription": "Your future postcode"
     },
     "hadHelp": {
       "legend": "Did you get any help making this application?",
