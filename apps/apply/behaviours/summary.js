@@ -5,13 +5,18 @@ const mix = require('mixwith').mix;
 const Behaviour = require('hof-behaviour-summary-page');
 
 const _ = require('lodash');
+
 const getValue = (value, field, translate) => {
-  const key = `fields.${field}.options.${value}.label`;
-  let result = translate(key);
-  if (result === key) {
-    result = value;
+  if(Array.isArray(value)) {
+      return value.map((item) => getValue(item, field, translate));
+  } else {
+      const key = `fields.${field}.options.${value}.label`;
+      let result = translate(key);
+      if (result === key) {
+        result = value;
+      }
+      return result;
   }
-  return result;
 };
 
 module.exports = Base => class extends mix(Base).with(Behaviour) {
