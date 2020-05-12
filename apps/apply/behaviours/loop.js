@@ -149,7 +149,7 @@ module.exports = superclass => class extends superclass {
 
   getNextStep(req, res) {
     if (req.params.edit === 'edit') {
-      return this.confirmStep;
+      return req.baseUrl+this.confirmStep;
     }
 
     const stepName = req.params.action;
