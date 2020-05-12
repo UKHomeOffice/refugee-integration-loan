@@ -2047,12 +2047,12 @@ button.govuk-link {
       line-height: 1.31579; } }
 
 .action-col {
-  text-align: right; }
-  .action-col .pad-right-160 {
-    padding-right: 160px; }
+  text-align: right;
+  vertical-align: top; }
 
 .data-col {
-  max-width: 280px; }
+  min-width: 300px;
+  width: 300px; }
 
 details {
   margin-top: 34px; }

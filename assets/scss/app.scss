@@ -84,13 +84,12 @@ button.govuk-link {
 
 .action-col {
     text-align: right;
-    .pad-right-160 {
-        padding-right: 160px;
-    }
+    vertical-align: top
 }
 
 .data-col {
-    max-width: 280px;
+    min-width: 300px;
+    width: 300px;
 }
 
 details {
