@@ -2,6 +2,7 @@
 
 'use strict';
 const config = require('../../../config');
+const _ = require('lodash');
 
 const feedbackEmail = config.govukNotify.feedbackEmail;
 const templateId = config.govukNotify.templateFormFeedback;
@@ -15,15 +16,32 @@ module.exports = superclass => class extends superclass {
     super(options);
   }
 
+  addOptional(target, property, value) {
+    if(property && value) {
+      return Object.assign(target, this.singleItemJson(property, value));
+    }
+  }
+
+  singleItemJson(property, value) {
+    let json = {};
+    json[property] = value;
+    return json;
+  }
+
   process(req, res, next) {
+    const feedbackEmailConfig = req.form.options.feedbackEmailConfig;
+    let templateValues = {};
+    if(feedbackEmailConfig) {
+      templateValues = this.addOptional(templateValues, feedbackEmailConfig.includeBaseUrlAs, req.baseUrl);
+      templateValues = this.addOptional(templateValues, feedbackEmailConfig.includeSourcePathAs, req.sessionModel.get('feedbackReturnPath'));
+      templateValues = _.reduce(
+        _.map(feedbackEmailConfig.fieldMappings, (property, formField) => this.singleItemJson(property, req.form.values[formField])),
+        _.assign,
+        templateValues
+      );
+    }
     notifyClient.sendEmail(templateId, feedbackEmail, {
-        personalisation: {
-          'process': req.baseUrl,
-          'path': req.sessionModel.get('feedbackReturnPath'),
-          'feedback': req.form.values['feedbackText'],
-          'name': req.form.values['feedbackName'],
-          'email': req.form.values['feedbackEmail']
-        }
+        personalisation: templateValues
     })
     .then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
     .then(() => {

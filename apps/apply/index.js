@@ -358,6 +358,15 @@ module.exports = {
     },
     '/feedback': {
         fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],
+        feedbackEmailConfig: {
+            fieldMappings: {
+                'feedbackText': 'feedback',
+                'feedbackName' : 'name',
+                'feedbackEmail' : ' email'
+            },
+            includeBaseUrlAs : "process",
+            includeSourcePathAs : "path"
+        },
         behaviours: [UploadFeedback]
     }
   }
