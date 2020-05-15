@@ -1,9 +1,10 @@
 'use strict';
 
 const Loop = require('./behaviours/loop');
-const LocalSummary = require('./behaviours/summary');
+const LoopSummary = require('./behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
-const UploadFeedback = require('./behaviours/submit-feedback')
+const UploadFeedback = require('hof-behaviour-feedback').SubmitFeedback
+const config = require('../../config')
 
 module.exports = {
   name: 'apply',
@@ -346,7 +347,7 @@ module.exports = {
       continueOnEdit: true
     },
     '/confirm': {
-      behaviours: ['complete', require('hof-behaviour-summary-page'), LocalSummary, UploadPDF],
+      behaviours: ['complete', require('hof-behaviour-summary-page'), LoopSummary, UploadPDF],
       loopSections: require('./sections/loop-sections'),
       next: '/complete'
     },
@@ -357,8 +358,14 @@ module.exports = {
       template: 'ineligible'
     },
     '/feedback': {
-        fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],
-        feedbackEmailConfig: {
+      fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],
+      behaviours: [UploadFeedback],
+      feedbackConfig: {
+        notify: {
+          apiKey: config.govukNotify.notifyApiKey,
+          email: {
+            templateId: config.govukNotify.templateFormFeedback,
+            emailAddress: config.govukNotify.feedbackEmail,
             fieldMappings: {
                 'feedbackText': 'feedback',
                 'feedbackName' : 'name',
@@ -366,8 +373,9 @@ module.exports = {
             },
             includeBaseUrlAs : "process",
             includeSourcePathAs : "path"
-        },
-        behaviours: [UploadFeedback]
+          }
+        }
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ const app = hof({
   behaviours: [
     require('./behaviours/fields-filter'),
     require('./behaviours/page-analytics'),
-    require('./behaviours/page-feedback-return-url')
+    require('hof-behaviour-feedback').SetFeedbackReturnUrl
   ],
   routes: [
     require('./apps/apply/'),

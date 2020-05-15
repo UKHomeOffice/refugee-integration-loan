@@ -19,7 +19,11 @@ COPY package.json /app/package.json
 
 WORKDIR /app
 
+# uncomment the below for running with local changes to modules published via yalc
+# COPY ./.yalc /app/.yalc
+
 RUN npm --loglevel warn install --production  --no-optional
+
 COPY . /app
 
 # Give nodejs user permissions to public and app folders. Nodejs user is set to 999 and the group 998
