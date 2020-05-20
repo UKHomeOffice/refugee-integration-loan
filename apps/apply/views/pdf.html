@@ -1,4 +1,5 @@
 {{<govuk-template}}
+  {{$pageTitle}}{{title}}{{/pageTitle}}
   {{$bodyClasses}}pdf{{/bodyClasses}}
   {{$head}}
     <style>
@@ -45,18 +46,27 @@
   {{/head}}
   {{$main}}
     <main id="content" class="main" role="main">
-      <img src="{{ho-logo}}" />
+      <img src="{{ho-logo}}" alt="Home Office logo"/>
       <h1>{{title}}</h1>
       <h2>Time and date: {{dateTime}}</h2>
       {{#rows}}
+        <h2>{{section}}</h2>
         <table data-section="{{section.id}}" class="table-details">
+          <caption class="visuallyhidden">{{section}}</caption>
           <tbody{{#name}} data-group="{{name}}"{{/name}}>
-            {{#fields}}
-              <tr data-id="{{field}}">
+          {{#fields}}
+            {{#spacer}}
+              <tr class="spacer">
+                <td colspan="2"></td>
+              </tr>
+            {{/spacer}}
+            {{^spacer}}
+              <tr data-id="{{field}}"{{#className}} class="{{className}}"{{/className}}>
                 <td data-label="{{label}}">{{label}}</td>
                 <td data-value="{{value}}">{{value}}</td>
               </tr>
-            {{/fields}}
+            {{/spacer}}
+          {{/fields}}
           </tbody>
         </table>
       {{/rows}}

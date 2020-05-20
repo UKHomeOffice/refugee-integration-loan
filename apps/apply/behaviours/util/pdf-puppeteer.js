@@ -10,8 +10,8 @@ module.exports = {
       const file = `${destination}/${tempName}`;
 
       const browser = await puppeteer.launch({
-        args: ['--no-sandbox'],
-        headless: true
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
       });
       const page = await browser.newPage();
 

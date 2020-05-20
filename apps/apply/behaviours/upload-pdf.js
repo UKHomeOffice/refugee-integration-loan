@@ -70,6 +70,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     locals.title = 'Request has been received';
     locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
     locals.values = req.sessionModel.toJSON();
+    locals.htmlLang = res.locals.htmlLang || 'en';
 
     return Promise.resolve()
       .then(() => {
