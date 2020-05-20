@@ -7,7 +7,7 @@ services:
       - IGNORE_TLS=true
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - SESSION_TTL=300
+      - SESSION_TTL=1800
     links:
       - redis
     ports:
