@@ -24,6 +24,7 @@ esac
 echo "--- kube api url: ${KUBE_SERVER}"
 echo "--- namespace: ${KUBE_NAMESPACE}"
 echo "--- environment: ${KUBE_ENVIRONMENT}"
+echo "--- drone commit sha: ${DRONE_COMMIT_SHA}" 
 
 echo "--- deploying redis"
 kd --timeout=5m \
