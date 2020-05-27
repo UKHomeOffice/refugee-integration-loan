@@ -7,7 +7,7 @@ const moment = require('moment');
 const config = require('../../../config');
 const UploadModel = require('../models/upload');
 
-const summaryData = require('./summary');
+const summaryData = require('hof-behaviour-loop').SummaryWithLoopItems;
 const pdfPuppeteer = require('./util/pdf-puppeteer');
 const uuid = require('uuid');
 const tempLocation = path.resolve(config.pdf.tempLocation);

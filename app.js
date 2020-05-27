@@ -11,7 +11,8 @@ const app = hof({
   routes: [
     require('./apps/apply/'),
     require('./apps/accept/')
-  ]
+  ],
+  views: require('hof-behaviour-loop').views
 });
 
 app.use((req, res, next) => {

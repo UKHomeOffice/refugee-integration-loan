@@ -63,22 +63,22 @@
     },
     "fullName": {
       "label": "Full name",
-      "summaryDescription": "Your full name"
+      "changeLinkDescription": "Your full name"
     },
     "dateOfBirth": {
       "legend": "Date of Birth",
       "hint": "For example, 31 3 1980",
-      "summaryDescription": "Your date of birth"
+      "changeLinkDescription": "Your date of birth"
     },
     "brpNumber": {
       "label": "Biometric residence permit (BRP) number",
       "hint": "For example, ‘ZU1234567’.",
-      "summaryDescription": "Your Biometric residence permit (BRP) number"
+      "changeLinkDescription": "Your Biometric residence permit (BRP) number"
     },
     "niNumber": {
       "label": "National Insurance number",
       "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
-      "summaryDescription": "Your national insurance number"
+      "changeLinkDescription": "Your national insurance number"
     },
     "hasOtherNames": {
       "legend": "Have you been known by any other names?",
@@ -93,7 +93,7 @@
     },
     "otherNames": {
       "label": "Full name",
-      "summaryDescription": "other name"
+      "changeLinkDescription": "other name"
     },
     "homeOfficeReference": {
       "label": "Home Office reference number",
@@ -115,22 +115,22 @@
     },
     "partnerFullName": {
       "label": "Full name",
-      "summaryDescription": "Partner full name"
+      "changeLinkDescription": "Partner full name"
     },
     "partnerDateOfBirth": {
       "legend": "Date of Birth",
       "hint": "For example, 31 3 1980",
-      "summaryDescription": "Partner date of birth"
+      "changeLinkDescription": "Partner date of birth"
     },
     "partnerBrpNumber": {
       "label": "Biometric residence permit (BRP) number",
       "hint": "For example, ‘ZU1234567’.",
-      "summaryDescription": "Partner biometric residence permit (BRP) number"
+      "changeLinkDescription": "Partner biometric residence permit (BRP) number"
     },
     "partnerNiNumber": {
       "label": "National Insurance number",
       "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residence permit (BRP).",
-      "summaryDescription": "Partner national insurance number"
+      "changeLinkDescription": "Partner national insurance number"
     },
     "partnerHasOtherNames": {
       "legend": "Has your partner been known by any other names?",
@@ -145,7 +145,7 @@
     },
     "partnerOtherNames": {
       "label": "Full name",
-      "summaryDescription": "Partner other name"
+      "changeLinkDescription": "Partner other name"
     },
     "convictedJoint": {
       "legend": "Have you or your partner ever been convicted of a crime in the UK?",
@@ -174,32 +174,32 @@
     },
     "dependentFullName": {
       "label": "Full name",
-      "summaryDescription": "Dependant full name"
+      "changeLinkDescription": "Dependant full name"
     },
     "dependentDateOfBirth": {
       "legend": "Date of Birth",
       "hint": "For example, 31 3 1980",
-      "summaryDescription": "Dependant date of birth"
+      "changeLinkDescription": "Dependant date of birth"
     },
     "dependentRelationship": {
       "label": "Relationship to you",
-      "summaryDescription": "Dependant relationship to you"
+      "changeLinkDescription": "Dependant relationship to you"
     },
     "building": {
       "label": "Building and street",
-      "summaryDescription": "Your current building and street"
+      "changeLinkDescription": "Your current building and street"
     },
     "street": {
       "label": "Address line 2",
-      "summaryDescription": "Your current address line 2"
+      "changeLinkDescription": "Your current address line 2"
     },
     "townOrCity": {
       "label": "Town or city",
-      "summaryDescription": "Your current town or city"
+      "changeLinkDescription": "Your current town or city"
     },
     "postcode": {
       "label": "Postcode",
-      "summaryDescription": "Your current postcode"
+      "changeLinkDescription": "Your current postcode"
     },
     "incomeTypes": {
       "legend": "Your monthly income",
@@ -447,7 +447,7 @@
     },
     "accountName": {
       "label": "Name on the account",
-      "summaryDescription": "Name on the bank or building society account"
+      "changeLinkDescription": "Name on the bank or building society account"
     },
     "sortCode": {
       "label": "Sort code",
@@ -475,12 +475,12 @@
     },
     "email": {
       "label": "Email address",
-      "summaryDescription": "Your email address"
+      "changeLinkDescription": "Your email address"
     },
     "phone": {
       "label": "Mobile phone number",
       "hint": "For international numbers include the country code",
-      "summaryDescription": "Your phone number"
+      "changeLinkDescription": "Your phone number"
     },
     "likelyToMove": {
       "legend": "Are you likely to move to another address in the next 4 weeks?",
@@ -495,19 +495,19 @@
     },
     "outcomeBuilding": {
       "label": "Building and street",
-      "summaryDescription": "Your future building and street"
+      "changeLinkDescription": "Your future building and street"
     },
     "outcomeStreet": {
       "label": "Address line 2",
-      "summaryDescription": "Your future address line 2"
+      "changeLinkDescription": "Your future address line 2"
     },
     "outcomeTownOrCity": {
       "label": "Town or city",
-      "summaryDescription": "Your future town or city"
+      "changeLinkDescription": "Your future town or city"
     },
     "outcomePostcode": {
       "label": "Postcode",
-      "summaryDescription": "Your future postcode"
+      "changeLinkDescription": "Your future postcode"
     },
     "hadHelp": {
       "legend": "Did you get any help making this application?",
@@ -543,16 +543,16 @@
     },
     "helpFullName": {
       "label": "Full name",
-      "summaryDescription": "Full name of person who helped you"
+      "changeLinkDescription": "Full name of person who helped you"
     },
     "helpRelationship": {
       "label": "Relationship to you",
-      "summaryDescription": "Relationship of person who helped you to you"
+      "changeLinkDescription": "Relationship of person who helped you to you"
     },
     "helpContactTypes": {
       "legend": "How can we contact them?",
       "hint": "We may need to get in contact with them if we need more information. Select at least one option.",
-      "summaryDescription": "How can we contact person who helped you",
+      "changeLinkDescription": "How can we contact person who helped you",
       "options": {
         "email": {
           "label": "Email"
@@ -564,11 +564,11 @@
     },
     "helpEmail": {
       "label": "Email address",
-      "summaryDescription": "Email address of person who helped you"
+      "changeLinkDescription": "Email address of person who helped you"
     },
     "helpPhone": {
       "label": "UK telephone number",
-      "summaryDescription": "Phone number of person who helped you"
+      "changeLinkDescription": "Phone number of person who helped you"
     },
     "feedbackText": {
       "label": "Tell us what you think of the online service"
@@ -670,12 +670,7 @@
       "intro": "A dependant could be a child under 18, grandchild, parent, or someone who depends on you for care."
     },
     "dependent-details": {
-      "header": {
-        "default": "Your dependants"
-      },
-      "summary-title": {
-        "default": "Your dependants"
-      },
+      "header": "Your dependants",
       "summary-item": {
         "default": "Dependant"
       },
@@ -684,17 +679,11 @@
       }
     },
     "dependent-details-dependent": {
-      "header": {
-        "default": "Enter details of your dependant"
-      },
-      "intro": {
-        "default": "You can add more dependants later."
-      }
+      "header": "Enter details of your dependant",
+      "intro": "You can add more dependants later."
     },
     "dependent-details-add-another": {
-      "header": {
-        "default": "Dependants summary"
-      }
+      "header": "Dependants summary"
     },
     "humanitarian-refugee-status-date": {
       "header": "What date were you granted refugee or humanitarian protection status?"

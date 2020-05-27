@@ -84,12 +84,7 @@
     "intro": "A dependant could be a child under 18, grandchild, parent, or someone who depends on you for care."
   },
   "dependent-details": {
-    "header": {
-      "default" : "Your dependants"
-    },
-    "summary-title": {
-      "default" : "Your dependants"
-    },
+    "header": "Your dependants",
     "summary-item": {
       "default" : "Dependant"
     },
@@ -98,17 +93,11 @@
     }
   },
   "dependent-details-dependent": {
-    "header": {
-      "default": "Enter details of your dependant"
-    },
-    "intro": {
-      "default": "You can add more dependants later."
-    }
+    "header": "Enter details of your dependant",
+    "intro": "You can add more dependants later."
   },
   "dependent-details-add-another": {
-    "header": {
-      "default": "Dependants summary"
-    }
+    "header": "Dependants summary"
   },
   "humanitarian-refugee-status-date": {
     "header": "What date were you granted refugee or humanitarian protection status?"

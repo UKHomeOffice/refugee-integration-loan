@@ -1,7 +1,8 @@
 'use strict';
 
-const Loop = require('./behaviours/loop');
-const LoopSummary = require('./behaviours/summary');
+const LoopBehaviour = require('hof-behaviour-loop');
+const Loop = LoopBehaviour.Loop;
+const LoopSummary = LoopBehaviour.SummaryWithLoopItems;
 const UploadPDF = require('./behaviours/upload-pdf');
 const UploadFeedback = require('hof-behaviour-feedback').SubmitFeedback
 const config = require('../../config')
@@ -92,31 +93,27 @@ module.exports = {
     },
     '/other-names': {
       behaviours: Loop,
-      loopData: {
-        storeKey: 'otherNamesList',
-        sectionKey: 'other-names',
-        confirmStep: '/confirm',
-        applySpacer: false,
-        firstFieldAsHeader: true
-      },
-      fields: [
-        'otherNames',
-        'addAnotherName'
-      ],
-      firstStep: 'name',
-      subSteps: {
-        name: {
-          fields: ['otherNames'],
-          next: 'add-another'
+      loop: {
+        subSteps: {
+          name: {
+            fields: ['otherNames'],
+            next: 'add-another'
+          },
+          'add-another': {
+            fields: ['addAnotherName'],
+            template: 'other-names-add-another'
+          }
         },
-        'add-another': {
-          fields: ['addAnotherName'],
-          template: 'other-names-add-another'
+        loopCondition: {
+          field: 'addAnotherName',
+          value: 'yes'
+        },
+        itemTable: {
+          headerField: 'otherNames'
+        },
+        summary: {
+          applySpacer: false
         }
-      },
-      loopCondition: {
-        field: 'addAnotherName',
-        value: 'yes'
       },
       next: '/home-office-reference',
       continueOnEdit: true
@@ -164,31 +161,27 @@ module.exports = {
     },
     '/partner-other-names': {
       behaviours: Loop,
-      loopData: {
-        storeKey: 'partnerOtherNamesList',
-        sectionKey: 'partner-other-names',
-        confirmStep: '/confirm',
-        applySpacer: false,
-        firstFieldAsHeader: true
-      },
-      fields: [
-        'partnerOtherNames',
-        'partnerAddAnotherName'
-      ],
-      firstStep: 'name',
-      subSteps: {
-        name: {
-          fields: ['partnerOtherNames'],
-          next: 'add-another'
+      loop: {
+        subSteps: {
+          name: {
+            fields: ['partnerOtherNames'],
+            next: 'add-another'
+          },
+          'add-another': {
+            fields: ['partnerAddAnotherName'],
+            template: 'partner-other-names-add-another'
+          }
         },
-        'add-another': {
-          fields: ['partnerAddAnotherName'],
-          template: 'partner-other-names-add-another'
+        loopCondition: {
+          field: 'partnerAddAnotherName',
+          value: 'yes'
+        },
+        itemTable: {
+          headerField: 'partnerOtherNames'
+        },
+        summary: {
+          applySpacer: false
         }
-      },
-      loopCondition: {
-        field: 'partnerAddAnotherName',
-        value: 'yes'
       },
       next: '/convictions-joint',
       continueOnEdit: true
@@ -212,35 +205,31 @@ module.exports = {
     },
     '/dependent-details': {
       behaviours: Loop,
-      loopData: {
-        storeKey: 'dependentDetails',
-        sectionKey: 'dependent-details',
-        confirmStep: '/confirm',
-        firstFieldAsHeader: true,
-        editFieldsIndividually: false
-      },
-      fields: [
-        'dependentFullName',
-        'dependentDateOfBirth',
-        'dependentRelationship',
-        'addAnotherDependant'
-      ],
-      firstStep: 'dependent',
-      subSteps: {
-        dependent: {
-          fields: ['dependentFullName', 'dependentDateOfBirth', 'dependentRelationship'],
-          next: 'add-another'
+      loop: {
+        itemTable: {
+          headerField: 'dependentFullName',
+          editFieldsIndividually: false
         },
-        'add-another': {
-          fields: [
-            'addAnotherDependant'
-          ],
-          template: 'dependents-add-another'
+        subSteps: {
+          dependent: {
+            fields: [
+              'dependentFullName',
+              'dependentDateOfBirth',
+              'dependentRelationship'
+            ],
+            next: 'add-another'
+          },
+          'add-another': {
+            fields: [
+              'addAnotherDependant'
+            ],
+            template: 'dependents-add-another'
+          }
+        },
+        loopCondition: {
+          field: 'addAnotherDependant',
+          value: 'yes'
         }
-      },
-      loopCondition: {
-        field: 'addAnotherDependant',
-        value: 'yes'
       },
       next: '/address',
       continueOnEdit: true
@@ -348,7 +337,6 @@ module.exports = {
     },
     '/confirm': {
       behaviours: ['complete', require('hof-behaviour-summary-page'), LoopSummary, UploadPDF],
-      loopSections: require('./sections/loop-sections'),
       next: '/complete'
     },
     '/complete': {

@@ -3,6 +3,8 @@
 const _ = require('lodash');
 const dateComponent = require('hof-component-date');
 const libPhoneNumber = require('libphonenumber-js/max');
+const moment = require('moment');
+const config = require('../../../config')
 
 const after1900Validator = {type: 'after', arguments:['1900']}
 const olderThan18Validator = {type: 'before', arguments:['18', 'years']}
@@ -227,7 +229,8 @@ module.exports = {
    validate: 'required'
   },
   dependentDateOfBirth: dateComponent('dependentDateOfBirth', {
-   validate: ['required', 'before', after1900Validator]
+   validate: ['required', 'before', after1900Validator],
+   parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
   }),
   dependentRelationship: {
    validate: 'required'
