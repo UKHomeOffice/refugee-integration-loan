@@ -4,12 +4,18 @@ const hof = require('hof');
 const path = require('path');
 
 const app = hof({
+  build: {
+    translate: {
+      shared: './apps/common/translations/src'
+    }
+  },
   behaviours: [
     require('./behaviours/fields-filter'),
     require('./behaviours/page-analytics'),
     require('hof-behaviour-feedback').SetFeedbackReturnUrl
   ],
   routes: [
+    require('./apps/common'),
     require('./apps/apply/'),
     require('./apps/accept/')
   ],
