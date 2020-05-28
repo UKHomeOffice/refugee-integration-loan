@@ -1,4 +1,7 @@
 {
+  "base": {
+    "accessibility": "Accessibility statement"
+  },
   "fields": {
     "loanReference": {
       "label": "Loan reference number",

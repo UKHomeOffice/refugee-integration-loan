@@ -1,6 +1,7 @@
 'use strict';
 
 const hof = require('hof');
+const path = require('path');
 
 const app = hof({
   behaviours: [
@@ -18,5 +19,10 @@ const app = hof({
 app.use((req, res, next) => {
   // Set HTML Language
   res.locals.htmlLang = 'en';
+  res.locals.footerSupportLinks = [
+    { path: '/cookies', property: 'base.cookies' },
+    { path: '/terms-and-conditions', property: 'base.terms' },
+    { path: '/accessibility', property: 'base.accessibility' },
+  ];
   next();
 });
