@@ -2,5 +2,9 @@
   "accessibility": {
     "header": "Accessibility statement",
     "intro": "Welcome to the accessibility statement, awesome isn't it?!?"
+  },
+  "feedback": {
+    "header": "Feedback",
+    "detailsHeader": "Leave your details so we can contact you if we need to"
   }
 }

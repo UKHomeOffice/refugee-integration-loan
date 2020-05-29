@@ -1,0 +1,8 @@
+{
+  "feedbackText": {
+    "default": "Enter your feedback "
+  },
+  "feedbackEmail": {
+    "default": "Enter your email address in the correct format"
+  }
+}

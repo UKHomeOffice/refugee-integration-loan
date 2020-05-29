@@ -11,7 +11,7 @@
   "dependencies": {
     "aws-sdk": "2.167.0",
     "hof": "^15.1.0",
-    "hof-behaviour-feedback": "^1.0.0",
+    "hof-behaviour-feedback": "^2.0.0",
     "hof-behaviour-loop": "^1.0.2",
     "hof-behaviour-summary-page": "^3.2.1",
     "hof-build": "^1.6.0",

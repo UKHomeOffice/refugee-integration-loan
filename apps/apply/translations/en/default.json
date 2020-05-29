@@ -569,15 +569,6 @@
     "helpPhone": {
       "label": "UK telephone number",
       "changeLinkDescription": "Phone number of person who helped you"
-    },
-    "feedbackText": {
-      "label": "Tell us what you think of the online service"
-    },
-    "feedbackName": {
-      "label": "Full name (optional)"
-    },
-    "feedbackEmail": {
-      "label": "Email address (optional)"
     }
   },
   "journey": {
@@ -768,10 +759,6 @@
       "header": "You cannot apply for a loan",
       "text1": "As you or your partner have already received an integration loan, you cannot apply again.",
       "text2": "Your local refugee community organisation may be able to tell you what other support is available."
-    },
-    "feedback": {
-      "header": "Feedback",
-      "detailsHeader": "Leave your details so we can contact you if we need to"
     }
   },
   "validation": {

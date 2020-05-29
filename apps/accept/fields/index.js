@@ -23,18 +23,5 @@ module.exports = {
   },
   dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', 'before']
-  }),
-  feedbackText: {
-    mixin: 'textarea',
-    omitFromSummary: true,
-    validate: 'required'
-  },
-  feedbackName: {
-    mixin: 'input-text',
-    omitFromSummary: true
-  },
-  feedbackEmail: {
-    mixin: 'input-text',
-    omitFromSummary: true
-  }
+  })
 }

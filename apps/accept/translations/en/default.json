@@ -14,15 +14,6 @@
     "dateOfBirth": {
       "legend": "Date of Birth",
       "hint": "For example, 31 3 1980"
-    },
-    "feedbackText": {
-      "label": "Tell us what you think of the online service"
-    },
-    "feedbackName": {
-      "label": "Full name (optional)"
-    },
-    "feedbackEmail": {
-      "label": "Email address (optional)"
     }
   },
   "journey": {

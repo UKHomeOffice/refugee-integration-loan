@@ -565,14 +565,5 @@
   "helpPhone": {
     "label": "UK telephone number",
     "changeLinkDescription": "Phone number of person who helped you"
-  },
-  "feedbackText": {
-    "label": "Tell us what you think of the online service"
-  },
-  "feedbackName" : {
-    "label": "Full name (optional)"
-  },
-  "feedbackEmail" : {
-    "label": "Email address (optional)"
   }
 }

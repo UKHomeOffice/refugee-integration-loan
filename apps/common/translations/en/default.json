@@ -1,8 +1,31 @@
 {
+  "fields": {
+    "feedbackText": {
+      "label": "Tell us what you think of the online service"
+    },
+    "feedbackName": {
+      "label": "Full name (optional)"
+    },
+    "feedbackEmail": {
+      "label": "Email address (optional)"
+    }
+  },
   "pages": {
     "accessibility": {
       "header": "Accessibility statement",
       "intro": "Welcome to the accessibility statement, awesome isn't it?!?"
+    },
+    "feedback": {
+      "header": "Feedback",
+      "detailsHeader": "Leave your details so we can contact you if we need to"
+    }
+  },
+  "validation": {
+    "feedbackText": {
+      "default": "Enter your feedback "
+    },
+    "feedbackEmail": {
+      "default": "Enter your email address in the correct format"
     }
   }
 }

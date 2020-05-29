@@ -45,7 +45,7 @@ function ukPhoneNumber(value) {
 }
 
 function emailAddress(value) {
-  return regex(value, /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/)
+  return value && value.trim() !== '' ? regex(value, /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/) : true;
 }
 
 function niNumber(value) {
@@ -824,18 +824,5 @@ module.exports = {
      field: 'helpContactTypes',
      value: 'phone'
    }
-  },
-  feedbackText: {
-    mixin: 'textarea',
-    omitFromSummary: true,
-    validate: 'required'
-  },
-  feedbackName: {
-    mixin: 'input-text',
-    omitFromSummary: true
-  },
-  feedbackEmail: {
-    mixin: 'input-text',
-    omitFromSummary: true
   }
 }
