@@ -1,4 +1,7 @@
 {
+  "base": {
+    "accessibility": "Accessibility statement"
+  },
   "fields": {
     "feedbackText": {
       "label": "Tell us what you think of the online service"

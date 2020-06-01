@@ -1,4 +1,7 @@
 {
+  "base": {
+    "accessibility": "Accessibility statement"
+  },
   "buttons": {
     "edit": "Change"
   },
