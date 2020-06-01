@@ -1,4 +1,4 @@
-## An example implementation of the Refugee Integration Loans Application using HOF
+## An example implementation of the Refugee Integration Loans Application using HOF 
 
 
 ```
