@@ -7,13 +7,13 @@ const moment = require('moment');
 const config = require('../../../config');
 const UploadModel = require('../models/upload');
 
-const summaryData = require('./summary');
+const summaryData = require('hof-behaviour-loop').SummaryWithLoopItems;
 const pdfPuppeteer = require('./util/pdf-puppeteer');
 const uuid = require('uuid');
 const tempLocation = path.resolve(config.pdf.tempLocation);
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
-const templateId = config.govukNotify.templateFormAccept;
+const templateId = config.govukNotify.templateFormApply;
 const notifyApiKey = config.govukNotify.notifyApiKey;
 const NotifyClient = require('notifications-node-client').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
@@ -75,6 +75,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     locals.title = 'Request has been received';
     locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
     locals.values = req.sessionModel.toJSON();
+    locals.htmlLang = res.locals.htmlLang || 'en';
 
     return Promise.resolve()
       .then(() => {
@@ -109,7 +110,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   async createPDF(req, html, fileName) {
     req.log('info', '**** Creating PDF File **** ' + fileName);
-    const file = await pdfPuppeteer(html, tempLocation, fileName);
+    const file = await pdfPuppeteer.generate(html, tempLocation, fileName);
     req.log('info', '**** PDF File created **** ' + file);
     fs.stat(file, (err, stats) => {
       if (err) {
