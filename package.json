@@ -3,7 +3,7 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "hof-build watch",
-    "test": "npm run test:lint",
+    "test": "npm audit --audit-level=high",
     "test:lint": "eslint .",
     "build": "hof-build",
     "postinstall": "npm run build"
@@ -26,8 +26,8 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^3.14.0",
-    "eslint-config-homeoffice": "^2.1.0"
+    "eslint": "^7.0.0",
+    "eslint-config-homeoffice": "^2.2.0"
   },
   "name": "refugee-integration-loans",
   "version": "1.0.0",

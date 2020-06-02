@@ -1,4 +1,12 @@
 pipeline:
+  test:
+    image: node
+    commands:
+      - npm install
+      - npm test
+    when:
+      event: push
+      branch: master
 
   build_ecr:
     image: quay.io/ukhomeofficedigital/ecr:latest
