@@ -1,11 +1,11 @@
 'use strict';
 
-function emailAddress(value) {
-  return value && value.trim() !== '' ? regex(value, /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/) : true;
-}
-
 function regex(value, match) {
     return typeof value === 'string' && !!value.match(match);
+}
+
+function emailAddress(value) {
+  return value && value.trim() !== '' ? regex(value, /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/) : true;
 }
 
 module.exports = {
@@ -23,4 +23,4 @@ module.exports = {
     omitFromSummary: true,
     validate: [emailAddress]
   }
-}
+};

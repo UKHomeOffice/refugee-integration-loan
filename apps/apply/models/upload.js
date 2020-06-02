@@ -29,7 +29,7 @@ module.exports = class UploadModel extends Model {
           return reject(err);
         }
         debug('RESPONSE FROM FILE VAULT SAVE', err, data);
-        resolve(data);
+        return resolve(data);
       });
     });
   }
@@ -61,7 +61,7 @@ module.exports = class UploadModel extends Model {
         if (err) {
           return reject(err);
         }
-        resolve({
+        return resolve({
           'bearer': JSON.parse(res.body).access_token
         });
       });

@@ -1,8 +1,6 @@
 'use strict';
 /* eslint-disable no-console */
-const fs = require('fs');
 const puppeteer = require('puppeteer');
-const hogan = require('hogan.js');
 
 module.exports = {
   generate: async(html, destination, tempName) => {
@@ -31,7 +29,7 @@ module.exports = {
       await browser.close();
       return file;
     } catch (e) {
-      console.log('>>>>>>>>>our error', e);
+      return Promise.reject(e);
     }
   }
 };

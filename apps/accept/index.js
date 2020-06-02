@@ -1,8 +1,6 @@
 'use strict';
 
 const UploadPDF = require('./behaviours/upload-pdf');
-const UploadFeedback = require('hof-behaviour-feedback').SubmitFeedback
-const config = require('../../config')
 
 module.exports = {
   name: 'accept',
@@ -23,4 +21,4 @@ module.exports = {
      '/complete': {
      }
   }
-}
+};

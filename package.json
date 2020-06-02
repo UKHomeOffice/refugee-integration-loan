@@ -3,13 +3,14 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "hof-build watch",
-    "test": "npm audit --audit-level=high",
+    "test": "npm run test:lint && npm audit --audit-level=high",
     "test:lint": "eslint .",
     "build": "hof-build",
     "postinstall": "npm run build"
   },
   "dependencies": {
     "aws-sdk": "2.167.0",
+    "debug": "^4.1.1",
     "hof": "^16.0.0",
     "hof-behaviour-feedback": "^2.0.1",
     "hof-behaviour-loop": "^1.0.2",
@@ -21,6 +22,9 @@
     "hof-template-partials": "^4.5.0",
     "hof-theme-govuk": "^4.5.0",
     "libphonenumber-js": "^1.7.51",
+    "lodash": "^4.17.15",
+    "mixwith": "^0.1.1",
+    "moment": "^2.26.0",
     "notifications-node-client": "^4.5.1",
     "puppeteer": "^3.1.0",
     "uuid": "^3.3.3"

@@ -4,30 +4,38 @@ const _ = require('lodash');
 const dateComponent = require('hof-component-date');
 const libPhoneNumber = require('libphonenumber-js/max');
 const moment = require('moment');
-const config = require('../../../config')
+const config = require('../../../config');
 
-const after1900Validator = {type: 'after', arguments:['1900']}
-const olderThan18Validator = {type: 'before', arguments:['18', 'years']}
-
-function singleLoanAmount(values) {
-  return between(values, 100, 500)
-}
-
-function jointLoanAmount(values) {
-  return between(values, 100, 780)
-}
+const after1900Validator = {type: 'after', arguments: ['1900']};
+const olderThan18Validator = {type: 'before', arguments: ['18', 'years']};
 
 function between(values, min, max) {
   values = _.castArray(values);
-  if(values.length == 1) {
-    const value = Number(values[0])
-    return value >=min && value <= max
+  if (values.length === 1) {
+    const value = Number(values[0]);
+    return value >= min && value <= max;
   }
-  return true
+  return true;
+}
+
+function regex(value, match) {
+    return typeof value === 'string' && !!value.match(match);
+}
+
+function stripSpaces(str) {
+    return str.split(' ').join('');
+}
+
+function singleLoanAmount(values) {
+  return between(values, 100, 500);
+}
+
+function jointLoanAmount(values) {
+  return between(values, 100, 780);
 }
 
 function decimal(value) {
-  return regex(value, /^[\d]*\.?\d{0,2}$/)
+  return regex(value, /^[\d]*\.?\d{0,2}$/);
 }
 
 function greaterThanZero(value) {
@@ -36,7 +44,8 @@ function greaterThanZero(value) {
 
 function mobilePhoneNumber(value) {
     const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
-    return phoneNumber && phoneNumber.isValid() && (phoneNumber.getType().includes('MOBILE') || phoneNumber.getType() === 'PERSONAL_NUMBER');
+    return phoneNumber && phoneNumber.isValid() &&
+      (phoneNumber.getType().includes('MOBILE') || phoneNumber.getType() === 'PERSONAL_NUMBER');
 }
 
 function ukPhoneNumber(value) {
@@ -49,25 +58,18 @@ function emailAddress(value) {
 }
 
 function niNumber(value) {
-  return regex(stripSpaces(value.toUpperCase()), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/)
+  return regex(stripSpaces(value.toUpperCase()), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/);
 }
 
 function brpNumber(str) {
-    return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/)
+    return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/);
 }
 
 function postcode(str) {
-    const value = stripSpaces(str.toUpperCase())
-    //regex sourced from notify (https://github.com/alphagov/notifications-utils/blob/master/notifications_utils/postal_address.py)
-    return regex(value, /^([A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-BD-HJLNP-UW-Z]{2})$/)
-}
-
-function regex(value, match) {
-    return typeof value === 'string' && !!value.match(match)
-}
-
-function stripSpaces(str) {
-    return str.split(' ').join('')
+    const value = stripSpaces(str.toUpperCase());
+    // regex sourced from notify
+    // (https://github.com/alphagov/notifications-utils/blob/master/notifications_utils/postal_address.py)
+    return regex(value, /^([A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-BD-HJLNP-UW-Z]{2})$/);
 }
 
 module.exports = {
@@ -197,11 +199,11 @@ module.exports = {
   }),
   partnerFullName: {
    validate: 'required',
-   className: "govuk-input"
+   className: 'govuk-input'
   },
   partnerBrpNumber: {
    validate: ['required', brpNumber],
-   className: "govuk-input govuk-input--width-10"
+   className: 'govuk-input govuk-input--width-10'
   },
   partnerNiNumber: {
    validate: ['required', niNumber]
@@ -640,7 +642,7 @@ module.exports = {
   },
   savingsAmount: {
    validate: ['required', decimal, greaterThanZero],
-   attributes: [ {attribute: 'placeholder', value:'£'} ],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'savings',
      value: 'yes'
@@ -665,7 +667,7 @@ module.exports = {
   },
   combinedSavingsAmount: {
    validate: ['required', decimal, greaterThanZero],
-   attributes: [ {attribute: 'placeholder', value:'£'} ],
+   attributes: [{attribute: 'placeholder', value: '£'}],
    dependent: {
      field: 'combinedSavings',
      value: 'yes'
@@ -681,7 +683,13 @@ module.exports = {
   },
   purposeTypes: {
    mixin: 'checkbox-group',
-   options: ['housing', 'essential_items', 'basic_living_costs', 'training_or_retraining', 'work_clothing_and_equipment'],
+   options: [
+     'housing',
+     'essential_items',
+     'basic_living_costs',
+     'training_or_retraining',
+     'work_clothing_and_equipment'
+   ],
    validate: 'required',
    legend: {
      className: 'visuallyhidden'
@@ -718,7 +726,7 @@ module.exports = {
    }
   },
   email: {
-   validate: ['required', 'email'],
+   validate: ['required', emailAddress],
    dependent: {
      field: 'contactTypes',
      value: 'email'
@@ -812,7 +820,7 @@ module.exports = {
    validate: 'required'
   },
   helpEmail: {
-   validate: ['required', 'email'],
+   validate: ['required', emailAddress],
    dependent: {
      field: 'helpContactTypes',
      value: 'email'
@@ -825,4 +833,4 @@ module.exports = {
      value: 'phone'
    }
   }
-}
+};

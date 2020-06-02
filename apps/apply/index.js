@@ -4,8 +4,6 @@ const LoopBehaviour = require('hof-behaviour-loop');
 const Loop = LoopBehaviour.Loop;
 const LoopSummary = LoopBehaviour.SummaryWithLoopItems;
 const UploadPDF = require('./behaviours/upload-pdf');
-const UploadFeedback = require('hof-behaviour-feedback').SubmitFeedback
-const config = require('../../config')
 
 module.exports = {
   name: 'apply',
@@ -247,12 +245,29 @@ module.exports = {
       continueOnEdit: true
     },
     '/income': {
-      fields: ['incomeTypes', 'salaryAmount', 'universalCreditAmount', 'childBenefitAmount', 'housingBenefitAmount', 'otherIncomeAmount'],
+      fields: [
+        'incomeTypes',
+        'salaryAmount',
+        'universalCreditAmount',
+        'childBenefitAmount',
+        'housingBenefitAmount',
+        'otherIncomeAmount'
+      ],
       next: '/outgoings',
       continueOnEdit: true
     },
     '/outgoings': {
-      fields: ['outgoingTypes', 'rentAmount', 'householdBillsAmount', 'foodToiletriesAndCleaningSuppliesAmount', 'mobilePhoneAmount', 'travelAmount', 'clothingAndFootwearAmount', 'universalCreditDeductionsAmount', 'otherOutgoingAmount'],
+      fields: [
+        'outgoingTypes',
+        'rentAmount',
+        'householdBillsAmount',
+        'foodToiletriesAndCleaningSuppliesAmount',
+        'mobilePhoneAmount',
+        'travelAmount',
+        'clothingAndFootwearAmount',
+        'universalCreditDeductionsAmount',
+        'otherOutgoingAmount'
+      ],
       next: '/savings',
       continueOnEdit: true
     },
@@ -267,12 +282,29 @@ module.exports = {
       continueOnEdit: true
     },
     '/combined-income': {
-      fields: ['combinedIncomeTypes', 'combinedSalaryAmount', 'combinedUniversalCreditAmount', 'combinedChildBenefitAmount', 'combinedHousingBenefitAmount', 'combinedOtherIncomeAmount'],
+      fields: [
+        'combinedIncomeTypes',
+        'combinedSalaryAmount',
+        'combinedUniversalCreditAmount',
+        'combinedChildBenefitAmount',
+        'combinedHousingBenefitAmount',
+        'combinedOtherIncomeAmount'
+      ],
       next: '/combined-outgoings',
       continueOnEdit: true
     },
     '/combined-outgoings': {
-      fields: ['combinedOutgoingTypes', 'combinedRentAmount', 'combinedHouseholdBillsAmount', 'combinedFoodToiletriesAndCleaningSuppliesAmount', 'combinedMobilePhoneAmount', 'combinedTravelAmount', 'combinedClothingAndFootwearAmount', 'combinedUniversalCreditDeductionsAmount', 'combinedOtherOutgoingAmount'],
+      fields: [
+        'combinedOutgoingTypes',
+        'combinedRentAmount',
+        'combinedHouseholdBillsAmount',
+        'combinedFoodToiletriesAndCleaningSuppliesAmount',
+        'combinedMobilePhoneAmount',
+        'combinedTravelAmount',
+        'combinedClothingAndFootwearAmount',
+        'combinedUniversalCreditDeductionsAmount',
+        'combinedOtherOutgoingAmount'
+      ],
       next: '/combined-savings',
       continueOnEdit: true
     },
@@ -301,9 +333,8 @@ module.exports = {
       next: '/help',
       forks: [{
         target: '/outcome',
-        condition: function (req, res) {
-          return req.form.values['contactTypes'] && !(req.form.values['contactTypes'].includes('email'));
-        }
+        condition: (req) =>
+          req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
       }],
       continueOnEdit: true
     },
@@ -346,4 +377,4 @@ module.exports = {
       template: 'ineligible'
     }
   }
-}
+};

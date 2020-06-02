@@ -1,7 +1,7 @@
 'use strict';
 
-const UploadFeedback = require('hof-behaviour-feedback').SubmitFeedback
-const config = require('../../config')
+const UploadFeedback = require('hof-behaviour-feedback').SubmitFeedback;
+const config = require('../../config');
 
 module.exports = {
   name: 'common',
@@ -18,15 +18,15 @@ module.exports = {
             templateId: config.govukNotify.templateFormFeedback,
             emailAddress: config.govukNotify.feedbackEmail,
             fieldMappings: {
-                'feedbackText': 'feedback',
-                'feedbackName' : 'name',
-                'feedbackEmail' : ' email'
+                feedbackText: 'feedback',
+                feedbackName: 'name',
+                feedbackEmail: ' email'
             },
-            includeBaseUrlAs : "process",
-            includeSourcePathAs : "path"
+            includeBaseUrlAs: 'process',
+            includeSourcePathAs: 'path'
           }
         }
       }
     }
   }
-}
+};

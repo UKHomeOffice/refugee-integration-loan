@@ -1,7 +1,6 @@
 'use strict';
 
 const hof = require('hof');
-const path = require('path');
 
 const app = hof({
   build: {

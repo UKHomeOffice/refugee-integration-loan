@@ -2,16 +2,16 @@
 
 const dateComponent = require('hof-component-date');
 
-function brpNumber(str) {
-    return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/)
-}
-
 function regex(value, match) {
-    return typeof value === 'string' && !!value.match(match)
+    return typeof value === 'string' && !!value.match(match);
 }
 
 function stripSpaces(str) {
-    return str.split(' ').join('')
+    return str.split(' ').join('');
+}
+
+function brpNumber(str) {
+    return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/);
 }
 
 module.exports = {
@@ -24,4 +24,4 @@ module.exports = {
   dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', 'before']
   })
-}
+};

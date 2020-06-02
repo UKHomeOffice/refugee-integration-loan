@@ -30,25 +30,29 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     this.renderHTML(req, res)
       .then(html => {
         req.log('info', 'Creating PDF document from generated HTML');
-        return this.createPDF(html, pdfFileName);
+        return this.createPDF(req, html, pdfFileName);
       })
       .then(pdfFile => {
         req.log('info', 'PDF CREATION: File [' + pdfFile + ']');
 
         // Use Notify to upload files
-        fs.readFile(pdfFile, function (err, pdfFileContents) {
-          console.log(err)
+        fs.readFile(pdfFile, (err, pdfFileContents) => {
+          if (err) {
+            req.log('error', err);
+          }
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
               'form id': notifyClient.prepareUpload(pdfFileContents),
               'loan reference': req.sessionModel.get('loanReference')
             }
-          }).then(response => req.log('info', 'EMAIL: OK ' + response.body)).catch(err => req.log('info', 'EMAIL: ERROR ' + err))
+          })
+          .then(response => req.log('info', 'EMAIL: OK ' + response.body))
+          .catch(emailErr => req.log('info', 'EMAIL: ERROR ' + emailErr));
         });
         return pdfFile;
       })
       .then(pdfFile => {
-        fs.unlink(pdfFile, function (err) {
+        fs.unlink(pdfFile, (err) => {
           if (err) {
               req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
           } else {
@@ -56,7 +60,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           }
         });
         req.log('info', 'PDF Processing ** END **');
-        //req.form.values['pdf-upload'] = result.url;
+        // req.form.values['pdf-upload'] = result.url;
       })
       .then(() => {
         super.process(req, res, next);
@@ -91,7 +95,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
             if (err) {
               return reject(err);
             }
-            resolve(html);
+            return resolve(html);
           });
         });
       });
@@ -103,21 +107,23 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     return model.save();
   }
 
-  async createPDF(html, fileName) {
-    console.log('    tempLocation: ' + tempLocation);
-    console.log('    fileName: ' + fileName);
-    const file = await pdfPuppeteer.generate(html, tempLocation, fileName);
-    console.log('info', '**** PDF File created **** ' + file);
-    fs.stat(file, function(err, stats) {
-        if (stats.isFile()) {
-            console.log('    Type: file');
-        }
-        if (stats.isDirectory()) {
-            console.log('    Type: directory');
-        }
-    
-        console.log('    size: ' + stats["size"]);
-        console.log('    mode: ' + stats["mode"])
+  async createPDF(req, html, fileName) {
+    req.log('info', '**** Creating PDF File **** ' + fileName);
+    const file = await pdfPuppeteer(html, tempLocation, fileName);
+    req.log('info', '**** PDF File created **** ' + file);
+    fs.stat(file, (err, stats) => {
+      if (err) {
+        req.log('error', err);
+      }
+      if (stats.isFile()) {
+          req.log('info', '    Type: file');
+      }
+      if (stats.isDirectory()) {
+          req.log('info', '    Type: directory');
+      }
+
+      req.log('info', '    size: ' + stats.size);
+      req.log('info', '    mode: ' + stats.mode);
     });
 
     return file;
