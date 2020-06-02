@@ -13,6 +13,10 @@
       "label": "Email address (optional)"
     }
   },
+  "journey": {
+    "header": "Refugee integration loan service",
+    "phase": "beta"
+  },
   "pages": {
     "accessibility": {
       "header": "Accessibility statement for Apply for a Refugee Integration Loan",
