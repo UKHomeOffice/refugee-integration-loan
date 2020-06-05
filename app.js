@@ -1,7 +1,7 @@
 'use strict';
 
 const hof = require('hof');
-const health = require('./lib/health');
+const metrics = require('./lib/metrics');
 
 const app = hof({
   build: {
@@ -34,4 +34,4 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/health2', health());
+app.use('/insight', metrics());
