@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "express-healthcheck": "^0.1.0",
     "hof": "^16.0.0",
-    "hof-behaviour-feedback": "^2.0.1",
+    "hof-behaviour-feedback": "^2.0.2",
     "hof-behaviour-loop": "^1.0.2",
     "hof-behaviour-summary-page": "^3.2.1",
     "hof-build": "^2.0.0",
