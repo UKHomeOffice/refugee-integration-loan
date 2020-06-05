@@ -1,1 +1,1 @@
-docker build -t hof-form-example:latest .
+docker build -t refugee-integration-loans:latest .

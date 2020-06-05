@@ -15,7 +15,7 @@ spec:
       labels:
         name: {{ .NAME }}
         app: {{ .NAME }}
-        service: hof-form-example
+        service: refugee-integration-loan
     spec:
       containers:
         - name: {{ .NAME }}

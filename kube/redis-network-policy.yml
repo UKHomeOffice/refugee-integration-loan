@@ -7,7 +7,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          name: hof-form-example 
+          name: refugee-integration-loans
     ports:
     - port: 6379
       protocol: TCP
