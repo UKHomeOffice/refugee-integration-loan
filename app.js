@@ -34,4 +34,4 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/health2', health())
+app.use('/health2', health());
