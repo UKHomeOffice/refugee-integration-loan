@@ -17,9 +17,6 @@ const templateId = config.govukNotify.templateFormApply;
 const notifyApiKey = config.govukNotify.notifyApiKey;
 const NotifyClient = require('notifications-node-client').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
-const client = require('prom-client');
-const registry = client.register;
-const applicationErrorGauge = registry.getSingleMetric('ril_application_errors_gauge');
 
 const createTemporaryFileName = () => {
   return (`${uuid.v1()}.pdf`);
@@ -41,7 +38,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     const pdfFileName = createTemporaryFileName();
     this.renderHTML(req, res)
       .then(html => {
-        applicationErrorGauge.inc({ component: 'testing' }, 1.0);
         req.log('info', 'Creating PDF document from generated HTML');
         return this.createPDF(req, html, pdfFileName);
       })
@@ -52,7 +48,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         fs.readFile(pdfFile, (err, pdfFileContents) => {
           if (err) {
             req.log('error', err);
-            applicationErrorGauge.inc({ component: 'pdf' }, 1.0);
           }
           notifyClient.sendEmail(templateId, caseworkerEmail, {
             personalisation: {
@@ -61,8 +56,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
             }
           })
           .then(response => req.log('info', 'EMAIL: OK ' + response.body))
-          .catch(emailErr => req.log('error', 'EMAIL: ERROR ' + emailErr),
-            applicationErrorGauge.inc({ component: 'email' }, 1.0));
+          .catch(emailErr => req.log('error', 'EMAIL: ERROR ' + emailErr));
         });
         return pdfFile;
       })
@@ -70,7 +64,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         fs.unlink(pdfFile, (err) => {
           if (err) {
               req.log('error', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
-              applicationErrorGauge.inc({ component: 'pdf' }, 1.0);
           } else {
               req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
           }
@@ -83,7 +76,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       }, next)
       .catch((err) => {
         req.log('error', err);
-        applicationErrorGauge.inc({ component: 'email' }, 1.0);
         next(err);
       });
   }
@@ -112,7 +104,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         return new Promise((resolve, reject) => {
           res.render('pdf.html', locals, (err, html) => {
             if (err) {
-              applicationErrorGauge.inc({ component: 'pdf' }, 1.0);
               return reject(err);
             }
             return resolve(html);
@@ -133,7 +124,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     req.log('info', '**** PDF File created **** ' + file);
     fs.stat(file, (err, stats) => {
       if (err) {
-        applicationErrorGauge.inc({ component: 'pdf' }, 1.0);
         req.log('error', err);
       }
       if (stats.isFile()) {
