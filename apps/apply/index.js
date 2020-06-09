@@ -368,6 +368,7 @@ module.exports = {
     },
     '/confirm': {
       behaviours: ['complete', require('hof-behaviour-summary-page'), LoopSummary, UploadPDF],
+      pdfSections: require('./sections/pdf-data-sections'),
       next: '/complete'
     },
     '/complete': {

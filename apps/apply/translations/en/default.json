@@ -744,7 +744,56 @@
       "bullet2": "you will use the loan for its intended purpose",
       "bullet3": "you have read and understood the",
       "bullet3-link": "privacy policy",
-      "submit": "Submit my application"
+      "submit": "Submit my application",
+      "fields": {
+        "totalIncome": {
+          "label": "Total income"
+        },
+        "totalOutgoings": {
+          "label": "Total outgoings"
+        }
+      },
+      "sections": {
+        "pdf-applicant-details": {
+          "header": "Applicant’s details"
+        },
+        "pdf-partner-details": {
+          "header": "Partner’s details"
+        },
+        "pdf-bank-account-details": {
+          "header": "Bank account details"
+        },
+        "pdf-conviction-details": {
+          "header": "Criminal convictions"
+        },
+        "pdf-income": {
+          "header": "Income"
+        },
+        "pdf-outgoings": {
+          "header": "Outgoings"
+        },
+        "pdf-savings": {
+          "header": "Savings"
+        },
+        "pdf-loan-details": {
+          "header": "Loan details"
+        },
+        "pdf-address": {
+          "header": "Address"
+        },
+        "pdf-contact-details": {
+          "header": "Contact details"
+        },
+        "pdf-outcome": {
+          "header": "Outcome"
+        },
+        "pdf-help": {
+          "header": "Help with application"
+        },
+        "pdf-other": {
+          "header": "Other details"
+        }
+      }
     },
     "confirmation": {
       "confirmed": "Application sent",

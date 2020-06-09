@@ -3,45 +3,137 @@
 const moment = require('moment');
 const config = require('../../../config');
 
+const sumValues = (values) => values.map(it => Number(it)).reduce((a, b) => a + b, 0);
+
 module.exports = {
-  'key-details': [
-    'what',
+  'pdf-applicant-details': [
+    'brpNumber',
+    'niNumber',
+    'fullName',
     {
-      field: 'nldp-date',
+      field: 'dateOfBirth',
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     },
-    'property-address',
+    'homeOfficeReference',
+    'otherNames'
+  ],
+  'pdf-partner-details': [
+    'partnerBrpNumber',
+    'partnerNiNumber',
+    'partnerFullName',
     {
-      field: 'tenancy-start',
+      field: 'partnerDateOfBirth',
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
+    },
+    'partnerOtherNames'
+  ],
+  'pdf-bank-account-details': [
+    'accountName',
+    'sortCode',
+    'accountNumber',
+    'rollNumber'
+  ],
+  'pdf-conviction-details': [
+    'convicted',
+    'detailsOfCrime',
+    'convictedJoint',
+    'detailsOfCrimeJoint'
+  ],
+  'pdf-income': [
+    'incomeTypes',
+    'combinedIncomeTypes',
+    {
+      field:'totalIncome',
+      derivation: {
+        fromFields: [
+          'salaryAmount',
+          'universalCreditAmount',
+          'childBenefitAmount',
+          'housingBenefitAmount',
+          'otherIncomeAmount',
+          'combinedSalaryAmount',
+          'combinedUniversalCreditAmount',
+          'combinedChildBenefitAmount',
+          'combinedHousingBenefitAmount',
+          'combinedOtherIncomeAmount'
+        ],
+        combiner: sumValues
+      }
     }
   ],
-  'tenants-left': [
-    'name',
-    {
-      field: 'date-left',
-      parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
-    },
-    {
-      field: 'date-of-birth',
-      parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
-    },
-    'nationality',
-    'reference-number'
+  'pdf-outgoings': [
+    'outgoingTypes',
+    { 
+      field:'totalOutgoings',
+      derivation: {
+        fromFields: [
+          'rentAmount',
+          'householdBillsAmount',
+          'foodToiletriesAndCleaningSuppliesAmount',
+          'mobilePhoneAmount',
+          'travelAmount',
+          'clothingAndFootwearAmount',
+          'universalCreditDeductionsAmount',
+          'otherOutgoingAmount',
+          'combinedRentAmount',
+          'combinedHouseholdBillsAmount',
+          'combinedFoodToiletriesAndCleaningSuppliesAmount',
+          'combinedMobilePhoneAmount',
+          'combinedTravelAmount',
+          'combinedClothingAndFootwearAmount',
+          'combinedUniversalCreditDeductionsAmount',
+          'combinedOtherOutgoingAmount'
+        ],
+        combiner: sumValues
+      }
+    }
   ],
-  'landlord-details': [
-    'landlord-name',
-    'landlord-company',
-    'landlord-email-address',
-    'landlord-phone-number',
-    'landlord-address',
-    'landlord-name-agent'
+  'pdf-savings': [
+    'savings',
+    'savingsAmount',
+    'combinedSavings',
+    'combinedSavingsAmount'
   ],
-  'agent-details': [
-    'agent-company',
-    'agent-name',
-    'agent-email-address',
-    'agent-phone-number',
-    'agent-address'
+  'pdf-loan-details': [
+    'amount',
+    'amountJoint',
+    'purposeTypes',
+  ],
+  'pdf-address': [
+    'building',
+    'street',
+    'townOrCity',
+    'postcode'
+  ],
+  'pdf-contact-details': [
+    'email',
+    'phone'
+  ],
+  'dependent-details': [
+    'dependentFullName',
+    'dependentDateOfBirth',
+    'dependentRelationship'
+  ],
+  'pdf-outcome': [
+    'likelyToMove',
+    'outcomeBuilding',
+    'outcomeStreet',
+    'outcomeTownOrCity',
+    'outcomePostcode'
+  ],
+  'pdf-help': [
+    'hadHelp',
+    'helpReasons',
+    'helpFullName',
+    'helpRelationship',
+    'helpEmail',
+    'helpPhone'
+  ],
+  'pdf-other': [
+    'previouslyApplied',
+    'previouslyHadIntegrationLoan',
+    'whoReceivedPreviousLoan',
+    'partner',
+    'joint'
   ]
 };
