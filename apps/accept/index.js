@@ -16,6 +16,7 @@ module.exports = {
      },
      '/confirm': {
        behaviours: ['complete', UploadPDF],
+       pdfSections: require('./sections/pdf-data-sections'),
        next: '/complete'
      },
      '/complete': {

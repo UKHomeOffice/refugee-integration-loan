@@ -24,6 +24,16 @@ const createTemporaryFileName = () => {
 
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
+  pdfLocals(req, res) {
+    let sections = req.form.options.sections;
+    req.form.options.sections = req.form.options.pdfSections;
+    try {
+      return super.locals(req, res);
+    } finally {
+      req.form.options.sections = sections;
+    }
+  }
+
   process(req, res, next) {
 
     const pdfFileName = createTemporaryFileName();
@@ -71,7 +81,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   renderHTML(req, res) {
-    const locals = Object.assign({}, this.locals(req, res));
+    const locals = Object.assign({}, this.pdfLocals(req, res));
     locals.title = 'Request has been received';
     locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
     locals.values = req.sessionModel.toJSON();

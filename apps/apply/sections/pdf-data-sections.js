@@ -43,7 +43,7 @@ module.exports = {
     'incomeTypes',
     'combinedIncomeTypes',
     {
-      field:'totalIncome',
+      field: 'totalIncome',
       derivation: {
         fromFields: [
           'salaryAmount',
@@ -63,8 +63,8 @@ module.exports = {
   ],
   'pdf-outgoings': [
     'outgoingTypes',
-    { 
-      field:'totalOutgoings',
+    {
+      field: 'totalOutgoings',
       derivation: {
         fromFields: [
           'rentAmount',
