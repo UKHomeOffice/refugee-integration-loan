@@ -775,7 +775,7 @@ module.exports = {
    }
   },
   outcomePostcode: {
-   validate: ['required', 'postcode'],
+   validate: ['required', postcode],
    dependent: {
      field: 'likelyToMove',
      value: 'yes'

@@ -82,7 +82,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   renderHTML(req, res) {
     const locals = Object.assign({}, this.pdfLocals(req, res));
-    locals.title = 'Request has been received';
+    locals.title = 'Refugee integration loan acceptance';
     locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
     locals.values = req.sessionModel.toJSON();
     locals.htmlLang = res.locals.htmlLang || 'en';
