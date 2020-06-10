@@ -14,6 +14,8 @@ const tempLocation = path.resolve(config.pdf.tempLocation);
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
 const templateId = config.govukNotify.templateFormApply;
+const emailReceiptTemplateId = config.govukNotify.templateEmailReceipt;
+const textReceiptTemplateId = config.govukNotify.templateTextReceipt;
 const notifyApiKey = config.govukNotify.notifyApiKey;
 const NotifyClient = require('notifications-node-client').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
@@ -59,8 +61,12 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
               'name': req.sessionModel.get('fullName')
             }
           })
-          .then(response => req.log('info', 'EMAIL: OK ' + response.body))
+          .then(response => {
+              req.log('info', 'Application EMAIL: OK ' + response.body);
+              sendReceipt(req);
+          })
           .catch((emailErr) => {
+            this.sendReceipt(req);
             req.log('error', 'EMAIL: ERROR ' + emailErr);
             applicationErrorsGauge.inc({ component: 'email' }, 1.0);
           });
@@ -86,6 +92,30 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         req.log('error', err);
         next(err);
       });
+  }
+
+  sendReceipt(req) {
+    let applicantEmail = req.sessionModel.get('email');
+    let applicantPhone = req.sessionModel.get('phone');
+    if(applicantEmail) {
+      notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {})
+      .then(response => {
+          req.log('info', 'Receipt EMAIL: OK ' + response.body);
+      })
+      .catch((emailErr) => {
+        req.log('error', 'Receipt EMAIL: ERROR ' + emailErr);
+        applicationErrorsGauge.inc({ component: 'email' }, 1.0);
+      });
+    } else if(applicantPhone) {
+      notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {})
+      .then(response => {
+          req.log('info', 'Receipt Text: OK ' + response.body);
+      })
+      .catch((emailErr) => {
+        req.log('error', 'Receipt Text: ERROR ' + emailErr);
+        applicationErrorsGauge.inc({ component: 'text' }, 1.0);
+      });
+    }
   }
 
   renderHTML(req, res) {
@@ -118,12 +148,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           });
         });
       });
-  }
-
-  uploadPdf(file) {
-    const model = new UploadModel();
-    model.set(file);
-    return model.save();
   }
 
   async createPDF(req, html, fileName) {
