@@ -5,7 +5,6 @@ const path = require('path');
 const mix = require('mixwith').mix;
 const moment = require('moment');
 const config = require('../../../config');
-const UploadModel = require('../models/upload');
 
 const summaryData = require('hof-behaviour-loop').SummaryWithLoopItems;
 const pdfPuppeteer = require('./util/pdf-puppeteer');
@@ -96,7 +95,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   sendReceipt(req) {
     let applicantEmail = req.sessionModel.get('email');
     let applicantPhone = req.sessionModel.get('phone');
-    if(applicantEmail) {
+    if (applicantEmail) {
       notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {})
       .then(response => {
           req.log('info', 'Receipt EMAIL: OK ' + response.body);
@@ -105,7 +104,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         req.log('error', 'Receipt EMAIL: ERROR ' + emailErr);
         applicationErrorsGauge.inc({ component: 'email' }, 1.0);
       });
-    } else if(applicantPhone) {
+    } else if (applicantPhone) {
       notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {})
       .then(response => {
           req.log('info', 'Receipt Text: OK ' + response.body);
