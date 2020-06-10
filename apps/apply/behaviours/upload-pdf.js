@@ -63,10 +63,9 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           })
           .then(response => {
               req.log('info', 'Application EMAIL: OK ' + response.body);
-              sendReceipt(req);
+              this.sendReceipt(req);
           })
           .catch((emailErr) => {
-            this.sendReceipt(req);
             req.log('error', 'EMAIL: ERROR ' + emailErr);
             applicationErrorsGauge.inc({ component: 'email' }, 1.0);
           });
