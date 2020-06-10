@@ -18,6 +18,10 @@ const notifyApiKey = config.govukNotify.notifyApiKey;
 const NotifyClient = require('notifications-node-client').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
 
+const client = require('prom-client');
+const registry = client.register;
+const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
+
 const createTemporaryFileName = () => {
   return (`${uuid.v1()}.pdf`);
 };
@@ -56,13 +60,17 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
             }
           })
           .then(response => req.log('info', 'EMAIL: OK ' + response.body))
-          .catch(emailErr => req.log('error', 'EMAIL: ERROR ' + emailErr));
+          .catch((emailErr) => {
+            req.log('error', 'EMAIL: ERROR ' + emailErr);
+            applicationErrorsGauge.inc({ component: 'email' }, 1.0);
+          });
         });
         return pdfFile;
       })
       .then(pdfFile => {
         fs.unlink(pdfFile, (err) => {
           if (err) {
+              applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
               req.log('error', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
           } else {
               req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
