@@ -22,10 +22,6 @@ const client = require('prom-client');
 const registry = client.register;
 const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
 
-const createTemporaryFileName = () => {
-  return (`${uuid.v1()}.pdf`);
-};
-
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   pdfLocals(req, res) {
@@ -82,8 +78,8 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           return reject();
         })
         .finally(() => this.deleteFile(req, pdfFile));
-    })
-   })
+    });
+   });
   }
 
   deleteFile(req, fileToDelete) {
@@ -136,7 +132,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   createPDF(req, html) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
       req.log('info', '**** PDF File created **** ');
       return resolve(file);
