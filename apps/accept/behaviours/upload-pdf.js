@@ -38,48 +38,52 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     }
   }
 
-  process(req, res, next) {
-    const pdfFileName = createTemporaryFileName();
+  successHandler(req, res, next) {
+    req.log('info', 'Form Submission Processing');
     this.renderHTML(req, res)
-      .then(html => {
-        req.log('info', 'Creating PDF document from generated HTML');
-        return this.createPDF(req, html, pdfFileName);
-      })
-      .then(pdfFile => {
-        let isEmailSubmissionOk = this.sendEmailWithAttachment(req, pdfFile);
-        if (typeof isEmailSubmissionOk === 'undefined' || isEmailSubmissionOk === false) {
-          this.deleteFile(req, pdfFile);
-          next(Error('There was an error submitting your loan acceptance form. TODO: copy needed'));
-        } else {
-          this.deleteFile(req, pdfFile);
-          super.process(req, res, next);
-        }
+    .then(html => this.createPDF(req, html))
+    .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
+    .then(() => {
+      req.log('Processing of form submission OK');
+      super.successHandler(req, res, next);
+    })
+    .catch((err) => {
+      req.log('error', 'Issue with acceptance-form-submission ' + err);
+      applicationErrorsGauge.inc({ component: 'acceptance-form-submission' }, 1.0);
+      next(Error('There was an error sending your loan acceptance form'));
+    });
+  }
+
+  readPdf(pdfFile) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(pdfFile, (err, data) => {
+        return err ? reject(err) : resolve(data);
       });
+    });
   }
 
   sendEmailWithAttachment(req, pdfFile) {
-    fs.readFile(pdfFile, (err, pdfFileContents) => {
-      if (err) {
-        req.log('error', 'PDF Read: ERROR ' + err);
-        applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
-      } else {
-        notifyClient.sendEmail(templateId, caseworkerEmail, {
-          personalisation: {
-            'form id': notifyClient.prepareUpload(pdfFileContents),
-            'loan reference': req.sessionModel.get('loanReference')
+    return new Promise((resolve, reject) => {
+    this.readPdf(pdfFile)
+    .then(data => {
+      notifyClient.sendEmail(templateId, caseworkerEmail, {
+        personalisation: {
+          'form id': notifyClient.prepareUpload(data),
+          'loan reference': req.sessionModel.get('loanReference')
           }
         })
-        .then(response => {
-          req.log('info', 'EMAIL Submission with attachment: OK. Response: ' + response);
-          return true;
+        .then(() => {
+          req.log('info', 'Notify - Sending acceptance form email with attachment OK!');
+          return resolve();
         })
-        .catch((emailErr) => {
-          req.log('error', 'EMAIL: ERROR ' + emailErr);
+        .catch((err) => {
           applicationErrorsGauge.inc({ component: 'email' }, 1.0);
-          return false;
-        });
-      }
-    });
+          req.log('error', 'Notify - Sending acceptance form email with attachment error! reason: ' + err);
+          return reject();
+        })
+        .finally(() => this.deleteFile(req, pdfFile));
+    })
+   })
   }
 
   deleteFile(req, fileToDelete) {
@@ -131,26 +135,12 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     return model.save();
   }
 
-  async createPDF(req, html, fileName) {
-    req.log('info', '**** Creating PDF File **** ' + fileName);
-    const file = await pdfPuppeteer.generate(html, tempLocation, fileName);
-    req.log('info', '**** PDF File created **** ' + file);
-    fs.stat(file, (err, stats) => {
-      if (err) {
-        req.log('error', err);
-      }
-      if (stats.isFile()) {
-          req.log('info', '    Type: file');
-      }
-      if (stats.isDirectory()) {
-          req.log('info', '    Type: directory');
-      }
-
-      req.log('info', '    size: ' + stats.size);
-      req.log('info', '    mode: ' + stats.mode);
+  createPDF(req, html) {
+    return new Promise((resolve, reject) => {
+      const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
+      req.log('info', '**** PDF File created **** ');
+      return resolve(file);
     });
-
-    return file;
   }
 
   readCss() {
