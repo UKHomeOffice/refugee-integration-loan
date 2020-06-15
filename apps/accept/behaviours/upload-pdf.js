@@ -39,7 +39,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   process(req, res, next) {
-
     const pdfFileName = createTemporaryFileName();
     this.renderHTML(req, res)
       .then(html => {
@@ -47,45 +46,51 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         return this.createPDF(req, html, pdfFileName);
       })
       .then(pdfFile => {
-        req.log('info', 'PDF CREATION: File [' + pdfFile + ']');
-
-        // Use Notify to upload files
-        fs.readFile(pdfFile, (err, pdfFileContents) => {
-          if (err) {
-            req.log('error', err);
-          }
-          notifyClient.sendEmail(templateId, caseworkerEmail, {
-            personalisation: {
-              'form id': notifyClient.prepareUpload(pdfFileContents),
-              'loan reference': req.sessionModel.get('loanReference')
-            }
-          })
-          .then(response => req.log('info', 'EMAIL: OK ' + response.body))
-          .catch((emailErr) => {
-            req.log('error', 'EMAIL: ERROR ' + emailErr);
-            applicationErrorsGauge.inc({ component: 'email' }, 1.0);
-          });
-        });
-        return pdfFile;
-      })
-      .then(pdfFile => {
-        fs.unlink(pdfFile, (err) => {
-          if (err) {
-              applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
-              req.log('info', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
-          } else {
-              req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
-          }
-        });
-        req.log('info', 'PDF Processing ** END **');
-        // req.form.values['pdf-upload'] = result.url;
-      })
-      .then(() => {
-        super.process(req, res, next);
-      }, next)
-      .catch((err) => {
-        next(err);
+        let isEmailSubmissionOk = this.sendEmailWithAttachment(req, pdfFile);
+        if (typeof isEmailSubmissionOk === 'undefined' || isEmailSubmissionOk === false) {
+          this.deleteFile(req, pdfFile);
+          next(Error('There was an error submitting your loan acceptance form. TODO: copy needed'));
+        } else {
+          this.deleteFile(req, pdfFile);
+          super.process(req, res, next);
+        }
       });
+  }
+
+  sendEmailWithAttachment(req, pdfFile) {
+    fs.readFile(pdfFile, (err, pdfFileContents) => {
+      if (err) {
+        req.log('error', 'PDF Read: ERROR ' + err);
+        applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
+      } else {
+        notifyClient.sendEmail(templateId, caseworkerEmail, {
+          personalisation: {
+            'form id': notifyClient.prepareUpload(pdfFileContents),
+            'loan reference': req.sessionModel.get('loanReference')
+          }
+        })
+        .then(response => {
+          req.log('info', 'EMAIL Submission with attachment: OK. Response: ' + response);
+          return true;
+        })
+        .catch((emailErr) => {
+          req.log('error', 'EMAIL: ERROR ' + emailErr);
+          applicationErrorsGauge.inc({ component: 'email' }, 1.0);
+          return false;
+        });
+      }
+    });
+  }
+
+  deleteFile(req, fileToDelete) {
+    fs.unlink(fileToDelete, (err) => {
+      if (err) {
+          applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
+          req.log('error', 'DELETE: ERROR! PDF File [' + fileToDelete + '] NOT deleted! ' + err);
+      } else {
+          req.log('info', 'DELETE: OK! PDF File [' + fileToDelete + '] deleted!');
+      }
+    });
   }
 
   renderHTML(req, res) {
