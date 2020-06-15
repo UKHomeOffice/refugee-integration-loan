@@ -23,10 +23,6 @@ const client = require('prom-client');
 const registry = client.register;
 const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
 
-const createTemporaryFileName = () => {
-  return (`${uuid.v1()}.pdf`);
-};
-
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   pdfLocals(req, res) {
@@ -39,57 +35,64 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     }
   }
 
-  process(req, res, next) {
-    const pdfFileName = createTemporaryFileName();
+  successHandler(req, res, next) {
+    req.log('info', 'Application Form Submission Processing');
     this.renderHTML(req, res)
-      .then(html => {
-        req.log('info', 'Creating PDF document from generated HTML');
-        return this.createPDF(req, html, pdfFileName);
-      })
-      .then(pdfFile => {
-        req.log('info', 'PDF CREATION: File [' + pdfFile + ']');
+    .then(html => this.createPDF(req, html))
+    .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
+    .then(() => {
+      req.log('Processing of application form submission OK');
+      super.successHandler(req, res, next);
+    })
+    .catch((err) => {
+      req.log('error', 'Issue with application-form-submission ' + err);
+      applicationErrorsGauge.inc({ component: 'application-form-submission' }, 1.0);
+      next(Error('There was an error sending your loan application form'));
+    });
+  }
 
-        // Use Notify to upload files
-        fs.readFile(pdfFile, (err, pdfFileContents) => {
-          if (err) {
-            req.log('error', err);
+  sendEmailWithAttachment(req, pdfFile) {
+    return new Promise((resolve, reject) => {
+    this.readPdf(pdfFile)
+    .then(data => {
+      notifyClient.sendEmail(templateId, caseworkerEmail, {
+        personalisation: {
+          'form id': notifyClient.prepareUpload(data),
+          'loan reference': req.sessionModel.get('loanReference')
           }
-          notifyClient.sendEmail(templateId, caseworkerEmail, {
-            personalisation: {
-              'form id': notifyClient.prepareUpload(pdfFileContents),
-              'name': req.sessionModel.get('fullName')
-            }
-          })
-          .then(response => {
-              req.log('info', 'Application EMAIL: OK ' + response.body);
-              this.sendReceipt(req);
-          })
-          .catch((emailErr) => {
-            req.log('error', 'EMAIL: ERROR ' + emailErr);
-            applicationErrorsGauge.inc({ component: 'email' }, 1.0);
-          });
-        });
-        return pdfFile;
-      })
-      .then(pdfFile => {
-        fs.unlink(pdfFile, (err) => {
-          if (err) {
-              applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
-              req.log('error', 'DELETE: ERROR! PDF File [' + pdfFile + '] NOT deleted! ' + err);
-          } else {
-              req.log('info', 'DELETE: OK! PDF File [' + pdfFile + '] deleted!');
-          }
-        });
-        req.log('info', 'PDF Processing ** END **');
-        // req.form.values['pdf-upload'] = result.url;
-      })
-      .then(() => {
-        super.process(req, res, next);
-      }, next)
-      .catch((err) => {
-        req.log('error', err);
-        next(err);
+        })
+        .then(() => {
+          req.log('info', 'Notify - Sending application form email with attachment OK!');
+          this.sendReceipt(req);
+          return resolve();
+        })
+        .catch((err) => {
+          applicationErrorsGauge.inc({ component: 'application-form-email' }, 1.0);
+          req.log('error', 'Notify - Sending application form email with attachment error! reason: ' + err);
+          return reject();
+        })
+        .finally(() => this.deleteFile(req, pdfFile));
+    });
+   });
+  }
+
+  deleteFile(req, fileToDelete) {
+    fs.unlink(fileToDelete, (err) => {
+      if (err) {
+          applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
+          req.log('error', 'DELETE: ERROR! PDF File [' + fileToDelete + '] NOT deleted! ' + err);
+      } else {
+          req.log('info', 'DELETE: OK! PDF File [' + fileToDelete + '] deleted!');
+      }
+    });
+  }
+
+  readPdf(pdfFile) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(pdfFile, (err, data) => {
+        return err ? reject(err) : resolve(data);
       });
+    });
   }
 
   sendReceipt(req) {
@@ -102,7 +105,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       })
       .catch((emailErr) => {
         req.log('error', 'Receipt EMAIL: ERROR ' + emailErr);
-        applicationErrorsGauge.inc({ component: 'email' }, 1.0);
+        applicationErrorsGauge.inc({ component: 'receipt-email' }, 1.0);
       });
     } else if (applicantPhone) {
       notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {})
@@ -111,7 +114,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       })
       .catch((emailErr) => {
         req.log('error', 'Receipt Text: ERROR ' + emailErr);
-        applicationErrorsGauge.inc({ component: 'text' }, 1.0);
+        applicationErrorsGauge.inc({ component: 'receipt-text' }, 1.0);
       });
     }
   }
@@ -148,26 +151,12 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       });
   }
 
-  async createPDF(req, html, fileName) {
-    req.log('info', '**** Creating PDF File **** ' + fileName);
-    const file = await pdfPuppeteer.generate(html, tempLocation, fileName);
-    req.log('info', '**** PDF File created **** ' + file);
-    fs.stat(file, (err, stats) => {
-      if (err) {
-        req.log('error', err);
-      }
-      if (stats.isFile()) {
-          req.log('info', '    Type: file');
-      }
-      if (stats.isDirectory()) {
-          req.log('info', '    Type: directory');
-      }
-
-      req.log('info', '    size: ' + stats.size);
-      req.log('info', '    mode: ' + stats.mode);
+  createPDF(req, html) {
+    return new Promise((resolve) => {
+      const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
+      req.log('info', '**** Application Form PDF File created **** ');
+      return resolve(file);
     });
-
-    return file;
   }
 
   readCss() {

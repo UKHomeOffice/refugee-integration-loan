@@ -35,12 +35,12 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   successHandler(req, res, next) {
-    req.log('info', 'Form Submission Processing');
+    req.log('info', 'Acceptance Form Submission Processing');
     this.renderHTML(req, res)
     .then(html => this.createPDF(req, html))
     .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
     .then(() => {
-      req.log('Processing of form submission OK');
+      req.log('Processing of acceptance form submission OK');
       super.successHandler(req, res, next);
     })
     .catch((err) => {
@@ -134,7 +134,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   createPDF(req, html) {
     return new Promise((resolve) => {
       const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
-      req.log('info', '**** PDF File created **** ');
+      req.log('info', '**** Acceptance Form PDF File created **** ');
       return resolve(file);
     });
   }
