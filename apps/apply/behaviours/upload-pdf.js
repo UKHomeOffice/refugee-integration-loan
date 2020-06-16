@@ -58,7 +58,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       notifyClient.sendEmail(templateId, caseworkerEmail, {
         personalisation: {
           'form id': notifyClient.prepareUpload(data),
-          'loan reference': req.sessionModel.get('loanReference')
+          'name': req.sessionModel.get('fullName')
           }
         })
         .then(() => {
