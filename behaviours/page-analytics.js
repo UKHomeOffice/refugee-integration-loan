@@ -8,6 +8,8 @@ const visitorDeviceGauge = registry.getSingleMetric('ril_visitor_device_gauge');
 
 module.exports = superclass => class Behaviour extends superclass {
   locals(req, res) {
+    req.log('info', '"user-id"=' + req.sessionID
+    + ',"page"=' + req.path);
     pageHitGauge.inc({ page: req.path }, 1.0);
     visitorGauge.inc({ user: req.sessionID, page: req.path }, 1.0);
     if (req.path.includes('reference-number') || req.path.includes('previously-applied')) {
