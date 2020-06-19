@@ -63,12 +63,14 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         })
         .then(() => {
           req.log('info', 'Notify - Sending application form email with attachment OK!');
+          req.log('info', 'ril.application.submission.ok');
           this.sendReceipt(req);
           return resolve();
         })
         .catch((err) => {
           applicationErrorsGauge.inc({ component: 'application-form-email' }, 1.0);
           req.log('error', 'Notify - Sending application form email with attachment error! reason: ' + err);
+          req.log('error', 'ril.application.submission.error');
           return reject();
         })
         .finally(() => this.deleteFile(req, pdfFile));
