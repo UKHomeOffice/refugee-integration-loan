@@ -22,6 +22,7 @@ const notifyClient = new NotifyClient(notifyApiKey);
 const client = require('prom-client');
 const registry = client.register;
 const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
+const applicationFormDurationGauge = registry.getSingleMetric('ril_application_form_duration_gauge');
 
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
@@ -64,6 +65,10 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         .then(() => {
           req.log('info', 'Notify - Sending application form email with attachment OK!');
           req.log('info', 'ril.application.submission.ok');
+          var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
+          var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
+          applicationFormDurationGauge.inc(timeSpentOnForm);
+          req.log('info', 'ril.application.submission.duration=[' + timeSpentOnForm + '] seconds');
           this.sendReceipt(req);
           return resolve();
         })
@@ -76,6 +81,13 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         .finally(() => this.deleteFile(req, pdfFile));
     });
    });
+  }
+
+  secondsSince(startDate) {
+    var now = new Date();
+    var dif = now - startDate;
+    var secondsFromStartToNow = dif / 1000;
+    return Math.abs(secondsFromStartToNow);
   }
 
   deleteFile(req, fileToDelete) {

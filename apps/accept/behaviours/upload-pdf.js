@@ -21,6 +21,7 @@ const notifyClient = new NotifyClient(notifyApiKey);
 const client = require('prom-client');
 const registry = client.register;
 const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
+const acceptanceFormDurationGauge = registry.getSingleMetric('ril_acceptance_form_duration_gauge');
 
 module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
@@ -71,6 +72,10 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         .then(() => {
           req.log('info', 'Notify - Sending acceptance form email with attachment OK!');
           req.log('info', 'ril.acceptance.submission.ok');
+          var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
+          var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
+          acceptanceFormDurationGauge.inc(timeSpentOnForm);
+          req.log('info', 'ril.acceptance.submission.duration=[' + timeSpentOnForm + '] seconds');
           return resolve();
         })
         .catch((err) => {
