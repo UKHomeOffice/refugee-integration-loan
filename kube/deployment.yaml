@@ -12,10 +12,10 @@ spec:
       app: {{ .NAME }}
   template:
     metadata:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/port: "8080"
-          prometheus.io/path: "/insight/metrics"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/insight/metrics"
       labels:
         name: {{ .NAME }}
         app: {{ .NAME }}
