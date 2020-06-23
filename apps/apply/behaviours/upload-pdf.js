@@ -64,7 +64,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         })
         .then(() => {
           req.log('info', 'Notify - Sending application form email with attachment OK!');
-          req.log('info', 'ril.application.submission.ok');
+          req.log('info', 'ril.form.apply.completed');
           var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
           var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
           applicationFormDurationGauge.inc(timeSpentOnForm);
@@ -75,7 +75,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         .catch((err) => {
           applicationErrorsGauge.inc({ component: 'application-form-email' }, 1.0);
           req.log('error', 'Notify - Sending application form email with attachment error! reason: ' + err);
-          req.log('error', 'ril.application.submission.error');
+          req.log('info', 'ril.form.apply.error');
           return reject();
         })
         .finally(() => this.deleteFile(req, pdfFile));
