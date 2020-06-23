@@ -38,6 +38,9 @@ module.exports = superclass => class Behaviour extends superclass {
     if (req.path.includes('help-reasons')) {
       req.log('info', 'ril.form.apply.assistance');
     }
+    if (req.path.includes('feedback')) {
+      req.log('info', 'ril.form.feedback');
+    }
     req.sessionModel.set('ril.tracker.page', req.path);
     req.sessionModel.set('ril.tracker.milliseconds', Date.now());
     return super.locals(req, res);
