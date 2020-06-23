@@ -35,6 +35,9 @@ module.exports = superclass => class Behaviour extends superclass {
       visitorGauge.inc({ user: req.sessionID, page: trackedPage, duration: timeSpentOnPage }, 1.0);
       pageDurationGauge.set({page: trackedPage }, timeSpentOnPage);
     }
+    if (req.path.includes('help-reasons')) {
+      req.log('info', 'ril.form.apply.assistance');
+    }
     req.sessionModel.set('ril.tracker.page', req.path);
     req.sessionModel.set('ril.tracker.milliseconds', Date.now());
     return super.locals(req, res);
