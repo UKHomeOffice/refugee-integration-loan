@@ -24,7 +24,7 @@ module.exports = superclass => class Behaviour extends superclass {
       req.sessionModel.set('session.started.timestamp', Date.now());
       var formName = req.path.includes('previously-applied') ? 'apply' : 'accept';
       req.log('info', 'ril.form.' + formName + '.started');
-    } else if (req.path.indexOf('index') === -1) {
+    } else if (req.path.indexOf('index') === -1 && req.path.indexOf('feedback') === -1) {
       var trackedPageStartTime = Number(req.sessionModel.get('ril.tracker.milliseconds'));
       var trackedPage = req.sessionModel.get('ril.tracker.page');
       var timeSpentOnPage = this.secondsSince(trackedPageStartTime);
