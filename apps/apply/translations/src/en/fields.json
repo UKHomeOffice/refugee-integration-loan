@@ -198,7 +198,7 @@
     "changeLinkDescription": "Your current postcode"
   },
   "incomeTypes": {
-    "legend": "Your monthly income",
+    "legend": "How much money do you receive each month?",
     "hint": "Select all options that apply to you.",
     "options": {
       "salary": {

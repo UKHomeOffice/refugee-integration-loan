@@ -205,7 +205,7 @@
       "changeLinkDescription": "Your current postcode"
     },
     "incomeTypes": {
-      "legend": "Your monthly income",
+      "legend": "How much money do you receive each month?",
       "hint": "Select all options that apply to you.",
       "options": {
         "salary": {
@@ -690,7 +690,7 @@
       "intro": "If you have no fixed address, enter an address where we can contact you."
     },
     "income": {
-      "header": "Your monthly income"
+      "header": "How much money do you receive each month?"
     },
     "outgoings": {
       "header": "Your monthly outgoings"
