@@ -272,7 +272,7 @@
     "label": "Total other income amount per month"
   },
   "outgoingTypes": {
-    "legend": "Your monthly outgoings",
+    "legend": "How much money do you spend each month?",
     "hint": "Select all options that currently apply to you.",
     "options": {
       "rent": {
