@@ -18,7 +18,7 @@ module.exports = {
         waitUntil: 'networkidle0'
       });
 
-      await page.emulateMediaType('screen');
+      await page.emulateMedia('screen');
       await page.pdf({
         path: file,
         format: 'A4',

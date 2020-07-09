@@ -1,6 +1,7 @@
 'use strict';
 /* eslint-disable no-console */
 const puppeteer = require('puppeteer');
+const { stubTrue } = require('lodash');
 
 module.exports = {
   generate: async(html, destination, tempName) => {
@@ -8,7 +9,7 @@ module.exports = {
       const file = `${destination}/${tempName}`;
 
       const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--export-tagged-pdf']
       });
       const page = await browser.newPage();
@@ -18,7 +19,7 @@ module.exports = {
         waitUntil: 'networkidle0'
       });
 
-      await page.emulateMediaType('screen');
+      await page.emulateMedia('screen');
       await page.pdf({
         path: file,
         format: 'A4',
