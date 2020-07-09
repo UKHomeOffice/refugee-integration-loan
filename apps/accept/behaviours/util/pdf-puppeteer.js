@@ -1,7 +1,6 @@
 'use strict';
 /* eslint-disable no-console */
 const puppeteer = require('puppeteer');
-const { stubTrue } = require('lodash');
 
 module.exports = {
   generate: async(html, destination, tempName) => {
