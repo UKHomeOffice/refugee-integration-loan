@@ -8,7 +8,7 @@ module.exports = {
       const file = `${destination}/${tempName}`;
 
       const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--export-tagged-pdf']
       });
       const page = await browser.newPage();
@@ -18,7 +18,7 @@ module.exports = {
         waitUntil: 'networkidle0'
       });
 
-      await page.emulateMedia('screen');
+      await page.emulateMediaType('screen');
       await page.pdf({
         path: file,
         format: 'A4',
