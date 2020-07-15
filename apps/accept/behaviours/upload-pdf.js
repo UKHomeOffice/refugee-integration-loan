@@ -5,7 +5,6 @@ const path = require('path');
 const mix = require('mixwith').mix;
 const moment = require('moment');
 const config = require('../../../config');
-const UploadModel = require('../models/upload');
 
 const summaryData = require('hof-behaviour-loop').SummaryWithLoopItems;
 const pdfPuppeteer = require('./util/pdf-puppeteer');
@@ -131,13 +130,6 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         });
       });
   }
-
-  uploadPdf(file) {
-    const model = new UploadModel();
-    model.set(file);
-    return model.save();
-  }
-
   createPDF(req, html) {
     return new Promise((resolve) => {
       const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
