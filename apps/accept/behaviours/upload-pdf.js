@@ -35,16 +35,15 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   successHandler(req, res, next) {
-    req.log('info', 'Acceptance Form Submission Processing');
     this.renderHTML(req, res)
     .then(html => this.createPDF(req, html))
     .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
     .then(() => {
-      req.log('Processing of acceptance form submission OK');
+      req.log('info','ril.form.accept.submit_form.successful');
       super.successHandler(req, res, next);
     })
     .catch((err) => {
-      req.log('error', 'Issue with acceptance-form-submission ' + err);
+      req.log('error', 'ril.form.accept.submit_form.error ' + err);
       applicationErrorsGauge.inc({ component: 'acceptance-form-submission' }, 1.0);
       next(Error('There was an error sending your loan acceptance form'));
     });
@@ -69,7 +68,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           }
         })
         .then(() => {
-          req.log('info', 'Notify - Sending acceptance form email with attachment OK!');
+          req.log('info', 'ril.form.accept.submit_form.create_email_with_file_notify.successful');
           req.log('info', 'ril.form.accept.completed');
           var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
           var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
@@ -79,7 +78,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         })
         .catch((err) => {
           applicationErrorsGauge.inc({ component: 'email' }, 1.0);
-          req.log('error', 'Notify - Sending acceptance form email with attachment error! reason: ' + err);
+          req.log('error', 'ril.form.accept.submit_form.create_email_with_file_notify.error ' + err);
           req.log('info', 'ril.form.accept.error');
           return reject();
         })
@@ -92,9 +91,9 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     fs.unlink(fileToDelete, (err) => {
       if (err) {
           applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
-          req.log('error', 'DELETE: ERROR! PDF File [' + fileToDelete + '] NOT deleted! ' + err);
+          req.log('error', 'ril.form.accept.submit_form.delete_pdf.error [' + fileToDelete + ']', err);
       } else {
-          req.log('info', 'DELETE: OK! PDF File [' + fileToDelete + '] deleted!');
+          req.log('info', 'ril.form.accept.submit_form.delete_pdf.successful [' + fileToDelete + ']');
       }
     });
   }
@@ -133,7 +132,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   createPDF(req, html) {
     return new Promise((resolve) => {
       const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
-      req.log('info', '**** Acceptance Form PDF File created **** ');
+      req.log('info', 'ril.form.accept.submit_form.create_pdf.successful');
       return resolve(file);
     });
   }

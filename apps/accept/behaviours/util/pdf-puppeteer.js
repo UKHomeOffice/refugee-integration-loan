@@ -25,10 +25,11 @@ module.exports = {
         printBackground: true
       });
 
-      console.log('>>>>>>>>>>> pdf generated');
       await browser.close();
+      console.log('ril.form.accept.submit_form.save_pdf.successful');
       return file;
     } catch (e) {
+      console.log('ril.form.accept.submit_form.save_pdf.error', e);
       return Promise.reject(e);
     }
   }

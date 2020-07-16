@@ -37,16 +37,15 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   successHandler(req, res, next) {
-    req.log('info', 'Application Form Submission Processing');
     this.renderHTML(req, res)
     .then(html => this.createPDF(req, html))
     .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
     .then(() => {
-      req.log('Processing of application form submission OK');
+      req.log('info','ril.form.apply.submit_form.successful');
       super.successHandler(req, res, next);
     })
     .catch((err) => {
-      req.log('error', 'Issue with application-form-submission ' + err);
+      req.log('error', 'ril.form.apply.submit_form.error ' + err);
       applicationErrorsGauge.inc({ component: 'application-form-submission' }, 1.0);
       next(Error('There was an error sending your loan application form'));
     });
@@ -63,7 +62,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
           }
         })
         .then(() => {
-          req.log('info', 'Notify - Sending application form email with attachment OK!');
+          req.log('info', 'ril.form.apply.submit_form.create_email_with_file_notify.successful');
           req.log('info', 'ril.form.apply.completed');
           var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
           var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
@@ -74,7 +73,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         })
         .catch((err) => {
           applicationErrorsGauge.inc({ component: 'application-form-email' }, 1.0);
-          req.log('error', 'Notify - Sending application form email with attachment error! reason: ' + err);
+          req.log('error', 'ril.form.apply.submit_form.create_email_with_file_notify.error ' + err);
           req.log('info', 'ril.form.apply.error');
           return reject();
         })
@@ -94,9 +93,9 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     fs.unlink(fileToDelete, (err) => {
       if (err) {
           applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
-          req.log('error', 'DELETE: ERROR! PDF File [' + fileToDelete + '] NOT deleted! ' + err);
+          req.log('error', 'ril.form.apply.submit_form.delete_pdf.error [' + fileToDelete + ']', err);
       } else {
-          req.log('info', 'DELETE: OK! PDF File [' + fileToDelete + '] deleted!');
+          req.log('info', 'ril.form.apply.submit_form.delete_pdf.successful [' + fileToDelete + ']');
       }
     });
   }
@@ -115,19 +114,19 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     if (applicantEmail) {
       notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {})
       .then(response => {
-          req.log('info', 'Receipt EMAIL: OK ' + response.body);
+          req.log('info', 'ril.form.apply.send_receipt.create_email_notify.successful');
       })
       .catch((emailErr) => {
-        req.log('error', 'Receipt EMAIL: ERROR ' + emailErr);
+        req.log('error', 'ril.form.apply.send_receipt.create_email_notify.error', err);
         applicationErrorsGauge.inc({ component: 'receipt-email' }, 1.0);
       });
     } else if (applicantPhone) {
       notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {})
       .then(response => {
-          req.log('info', 'Receipt Text: OK ' + response.body);
+          req.log('info', 'ril.form.apply.send_receipt.create_text_notify.successful');
       })
       .catch((emailErr) => {
-        req.log('error', 'Receipt Text: ERROR ' + emailErr);
+        req.log('error', 'ril.form.apply.send_receipt.create_text_notify.error', emailErr);
         applicationErrorsGauge.inc({ component: 'receipt-text' }, 1.0);
       });
     }
@@ -168,7 +167,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   createPDF(req, html) {
     return new Promise((resolve) => {
       const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`);
-      req.log('info', '**** Application Form PDF File created **** ');
+      req.log('info', 'ril.form.apply.submit_form.create_pdf.successful');
       return resolve(file);
     });
   }
