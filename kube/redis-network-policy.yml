@@ -7,7 +7,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          name: refugee-integration-loans
+          name: {{ .NAME }}
     ports:
     - port: 6379
       protocol: TCP
