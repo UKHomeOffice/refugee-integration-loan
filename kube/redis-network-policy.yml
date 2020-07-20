@@ -8,6 +8,8 @@ spec:
     - podSelector:
         matchLabels:
           name: {{ .NAME }}
+    - podSelector:
+        matchLabels:
           name: refugee-loan
     ports:
     - port: 6379
