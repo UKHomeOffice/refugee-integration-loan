@@ -41,7 +41,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     .then(html => this.createPDF(req, html))
     .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
     .then(() => {
-      req.log('info','ril.form.apply.submit_form.successful');
+      req.log('info', 'ril.form.apply.submit_form.successful');
       super.successHandler(req, res, next);
     })
     .catch((err) => {
@@ -113,16 +113,16 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     let applicantPhone = req.sessionModel.get('phone');
     if (applicantEmail) {
       notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {})
-      .then(response => {
+      .then(() => {
           req.log('info', 'ril.form.apply.send_receipt.create_email_notify.successful');
       })
       .catch((emailErr) => {
-        req.log('error', 'ril.form.apply.send_receipt.create_email_notify.error', err);
+        req.log('error', 'ril.form.apply.send_receipt.create_email_notify.error', emailErr);
         applicationErrorsGauge.inc({ component: 'receipt-email' }, 1.0);
       });
     } else if (applicantPhone) {
       notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {})
-      .then(response => {
+      .then(() => {
           req.log('info', 'ril.form.apply.send_receipt.create_text_notify.successful');
       })
       .catch((emailErr) => {

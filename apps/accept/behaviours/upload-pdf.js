@@ -39,7 +39,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     .then(html => this.createPDF(req, html))
     .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
     .then(() => {
-      req.log('info','ril.form.accept.submit_form.successful');
+      req.log('info', 'ril.form.accept.submit_form.successful');
       super.successHandler(req, res, next);
     })
     .catch((err) => {
