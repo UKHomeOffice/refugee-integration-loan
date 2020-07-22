@@ -29,11 +29,12 @@ module.exports = superclass => class Behaviour extends superclass {
       var trackedPage = req.sessionModel.get('ril.tracker.page');
       var timeSpentOnPage = this.secondsSince(trackedPageStartTime);
       req.log('info', 'metrics page [' + trackedPage + '] duration [' + timeSpentOnPage + '] seconds');
-
-      pageDurationHistogram.labels(trackedPage).observe(timeSpentOnPage);
-      pageDurationSummary.labels(trackedPage).observe(timeSpentOnPage);
-      visitorGauge.inc({ user: req.sessionID, page: trackedPage, duration: timeSpentOnPage }, 1.0);
-      pageDurationGauge.set({page: trackedPage }, timeSpentOnPage);
+      if (trackedPage) {
+        pageDurationHistogram.labels(trackedPage).observe(timeSpentOnPage);
+        pageDurationSummary.labels(trackedPage).observe(timeSpentOnPage);
+        visitorGauge.inc({ user: req.sessionID, page: trackedPage, duration: timeSpentOnPage }, 1.0);
+        pageDurationGauge.set({page: trackedPage }, timeSpentOnPage);
+      }
     }
     if (req.path.includes('help-reasons')) {
       req.log('info', 'ril.form.apply.assistance');
