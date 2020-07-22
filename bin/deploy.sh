@@ -10,7 +10,7 @@ export KUBE_ENVIRONMENT=${KUBE_ENVIRONMENT:-${DRONE_DEPLOY_TO}}
 
 export KUBE_CERTIFICATE_AUTHORITY=https://raw.githubusercontent.com/UKHomeOffice/acp-ca/master/${DRONE_DEPLOY_TO}.crt
 
-export NAME="refugee-integration-loans"
+export NAME="refugee-loan"
 export REDIS_NAME="redis"
 export REPO="ssh://git@gitlab.digital.homeoffice.gov.uk:2222/cto/defra-form-example.git"
 
