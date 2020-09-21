@@ -4,12 +4,12 @@
 
 ### NPM Local Development Setup
 ```
-nvm install 10.0.0
-nvm use 10.0.0
+nvm install 10.12.0
+nvm use 10.12.0
 npm i
 brew install redis
 brew services start redis
-npm start #OR npm run start:dev 
+npm start #OR npm run start:dev
 ```
 
 ### Docker
