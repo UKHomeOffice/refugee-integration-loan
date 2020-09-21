@@ -1,5 +1,8 @@
 {
   "license": "MIT",
+  "engines": {
+    "node": "^10.12.0"
+  },
   "scripts": {
     "start": "node app.js",
     "start:dev": "hof-build watch",
@@ -10,7 +13,7 @@
   },
   "dependencies": {
     "aws-sdk": "2.167.0",
-    "debug": "^4.1.1",
+    "debug": "^4.2.0",
     "express": "^4.17.1",
     "express-healthcheck": "^0.1.0",
     "hof": "^16.0.0",
@@ -23,17 +26,17 @@
     "hof-template-mixins": "^5.2.1",
     "hof-template-partials": "^4.5.0",
     "hof-theme-govuk": "^4.5.0",
-    "libphonenumber-js": "^1.7.51",
-    "lodash": "^4.17.15",
+    "libphonenumber-js": "^1.7.58",
+    "lodash": "^4.17.20",
     "mixwith": "^0.1.1",
-    "moment": "^2.26.0",
-    "notifications-node-client": "^4.5.1",
+    "moment": "^2.28.0",
+    "notifications-node-client": "^4.9.0",
     "prom-client": "^12.0.0",
     "puppeteer": "^1.20.0",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^7.0.0",
+    "eslint": "^7.9.0",
     "eslint-config-homeoffice": "^2.2.0"
   },
   "name": "refugee-integration-loans",
