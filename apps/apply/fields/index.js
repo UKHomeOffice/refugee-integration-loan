@@ -19,11 +19,15 @@ function between(values, min, max) {
 }
 
 function regex(value, match) {
-    return typeof value === 'string' && !!value.match(match);
+  return typeof value === 'string' && !!value.match(match);
 }
 
 function stripSpaces(str) {
-    return str.split(' ').join('');
+  return str.split(' ').join('');
+}
+
+function stripHyphens(str) {
+  return str.split('-').join('');
 }
 
 function singleLoanAmount(values) {
@@ -43,14 +47,14 @@ function greaterThanZero(value) {
 }
 
 function mobilePhoneNumber(value) {
-    const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
-    return phoneNumber && phoneNumber.isValid() &&
+  const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
+  return phoneNumber && phoneNumber.isValid() &&
       (phoneNumber.getType().includes('MOBILE') || phoneNumber.getType() === 'PERSONAL_NUMBER');
 }
 
 function ukPhoneNumber(value) {
-    const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
-    return phoneNumber && phoneNumber.isValid() && phoneNumber.country === 'GB';
+  const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
+  return phoneNumber && phoneNumber.isValid() && phoneNumber.country === 'GB';
 }
 
 function emailAddress(value) {
@@ -59,6 +63,10 @@ function emailAddress(value) {
 
 function niNumber(value) {
   return regex(stripSpaces(value.toUpperCase()), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/);
+}
+
+function sortCode(value) {
+  return regex(stripHyphens(stripSpaces(value)), /^[0-9]{6}$/);
 }
 
 function brpNumber(str) {
@@ -699,7 +707,7 @@ module.exports = {
    validate: 'required'
   },
   sortCode: {
-   validate: ['required', 'numeric', {type: 'exactlength', arguments: 6}]
+    validate: ['required', sortCode]
   },
   accountNumber: {
    validate: ['required', 'numeric', {type: 'minlength', arguments: 6}, {type: 'maxlength', arguments: 8}]
