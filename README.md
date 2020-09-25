@@ -12,6 +12,11 @@ brew services start redis
 npm start #OR npm run start:dev
 ```
 
+or for redis
+```
+docker run --name some-redis -d redis
+```
+
 ### Docker
 ```
 npm i && docker-compose build && docker-compose up
