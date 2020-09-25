@@ -52,6 +52,12 @@ pipeline:
       environment: PROD
       event: deployment
 
+  sonar-scanner:
+    image: quay.io/ukhomeofficedigital/sonar-scanner-node:latest
+    when:
+      event: push
+      branch: master
+
   notify_slack_build:
     image: plugins/slack:1.1
     secrets:
