@@ -54,12 +54,14 @@ pipeline:
 
   sonar-scanner:
     image: quay.io/ukhomeofficedigital/sonar-scanner-node:latest
+    failure: ignore
     when:
       event: push
       branch: master
 
   notify_slack_build:
     image: plugins/slack:1.1
+    failure: ignore
     secrets:
       - SLACK_WEBHOOK
     channel: refugee-integration-loan-build
@@ -73,9 +75,15 @@ pipeline:
       {{else}}
         :x: :x: :x:
       {{/success}}
-      Author: {{build.author}}\n
+      Author: {{build.author}}
+
+
       Duration: {{since job.started}}\n
+
+
       Job: <{{build.link}}|#{{build.number}}>\n
+
+
       Commit: {{build.commit}}
     when:
       branch: master
@@ -83,6 +91,7 @@ pipeline:
 
   notify_slack_deploy:
     image: plugins/slack:1.1
+    failure: ignore
     secrets:
       - SLACK_WEBHOOK
     channel: refugee-integration-loan-build
@@ -96,9 +105,15 @@ pipeline:
       {{else}}
         :x: :x: :x:
       {{/success}}
-      Author: {{build.author}}\n
-      Duration: {{since job.started}}\n
-      Job: <{{build.link}}|#{{build.number}}>\n
+      Author: {{build.author}}
+
+
+      Duration: {{since job.started}}
+
+
+      Job: <{{build.link}}|#{{build.number}}>
+
+
       Commit: {{build.commit}}
     when:
       event: deployment
