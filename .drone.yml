@@ -52,7 +52,6 @@ pipeline:
       environment: PROD
       event: deployment
 
-  # SLACK WEBHOOK NOTIFICATIONS
   notify_slack:
     image: plugins/slack:1.1
     secrets:
@@ -62,14 +61,21 @@ pipeline:
     icon_url: http://readme.drone.io/0.5/logo_dark.svg
     icon.url: http://readme.drone.io/0.5/logo_dark.svg
     template: >
-      *{{build.event}} <SERVICE_NAME> to {{deploy.to}} has {{build.status}} - <{{build.link}}|#{{build.number}}>
-
+      {{#push build.event}}
+        BUILD on {{build.event}} of RIL has {{build.status}} - <{{build.link}}|#{{build.number}}>
+      {{else}}
+        DEPLOY to {{deploy.to}} of RIL has {{build.status}} - <{{build.link}}|#{{build.number}}>
+      {{/push}}
+      {{#success build.status}}
+        :thumbsup: :thumbsup: :thumbsup:
+      {{else}}
+        :x: :x: :x:
+      {{/success}}
       Author: {{build.author}}
-
       Duration: {{since job.started}}
       Job: <{{build.link}}|#{{build.number}}>
-
       Commit: {{build.commit}}
     when:
       branch: master
       event: [push, deployment]
+
