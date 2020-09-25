@@ -52,3 +52,24 @@ pipeline:
       environment: PROD
       event: deployment
 
+  # SLACK WEBHOOK NOTIFICATIONS
+  notify_slack:
+    image: plugins/slack:1.1
+    secrets:
+      - SLACK_WEBHOOK
+    channel: refugee-integration-loan-build
+    username: Drone
+    icon_url: http://readme.drone.io/0.5/logo_dark.svg
+    icon.url: http://readme.drone.io/0.5/logo_dark.svg
+    template: >
+      *{{build.event}} <SERVICE_NAME> to {{deploy.to}} has {{build.status}} - <{{build.link}}|#{{build.number}}>
+
+      Author: {{build.author}}
+
+      Duration: {{since job.started}}
+      Job: <{{build.link}}|#{{build.number}}>
+
+      Commit: {{build.commit}}
+    when:
+      branch: master
+      event: [push, deployment]
