@@ -46,19 +46,9 @@ function greaterThanZero(value) {
   return Number(value) > 0;
 }
 
-function mobilePhoneNumber(value) {
-  const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
-  return phoneNumber && phoneNumber.isValid() &&
-      (phoneNumber.getType().includes('MOBILE') || phoneNumber.getType() === 'PERSONAL_NUMBER');
-}
-
 function ukPhoneNumber(value) {
   const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
   return phoneNumber && phoneNumber.isValid() && phoneNumber.country === 'GB';
-}
-
-function emailAddress(value) {
-  return value && value.trim() !== '' ? regex(value, /^[\w-\.\+]+@([\w-]+\.)+[\w-]+$/) : true;
 }
 
 function niNumber(value) {
@@ -71,13 +61,6 @@ function sortCode(value) {
 
 function brpNumber(str) {
     return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/);
-}
-
-function postcode(str) {
-    const value = stripSpaces(str.toUpperCase());
-    // regex sourced from notify
-    // (https://github.com/alphagov/notifications-utils/blob/master/notifications_utils/postal_address.py)
-    return regex(value, /^([A-Z]{1,2}[0-9][0-9A-Z]?[0-9][A-BD-HJLNP-UW-Z]{2})$/);
 }
 
 module.exports = {
@@ -131,7 +114,8 @@ module.exports = {
    validate: ['required', brpNumber]
   },
   niNumber: {
-   validate: ['required', niNumber]
+   validate: ['required', niNumber],
+   formatter: ['trim', 'spaces']
   },
   hasOtherNames: {
    mixin: 'radio-group',
@@ -214,7 +198,8 @@ module.exports = {
    className: 'govuk-input govuk-input--width-10'
   },
   partnerNiNumber: {
-   validate: ['required', niNumber]
+   validate: ['required', niNumber],
+   formatter: ['trim', 'spaces']
   },
   partnerHasOtherNames: {
     mixin: 'radio-group',
@@ -255,7 +240,7 @@ module.exports = {
    validate: 'required'
   },
   postcode: {
-   validate: ['required', postcode]
+   validate: ['required', 'postcode']
   },
   incomeTypes: {
    mixin: 'checkbox-group',
@@ -707,7 +692,8 @@ module.exports = {
    validate: 'required'
   },
   sortCode: {
-    validate: ['required', sortCode]
+    validate: ['required', sortCode],
+    formatter: ['trim', 'hyphens', 'spaces']
   },
   accountNumber: {
    validate: ['required', 'numeric', {type: 'minlength', arguments: 6}, {type: 'maxlength', arguments: 8}]
@@ -734,14 +720,14 @@ module.exports = {
    }
   },
   email: {
-   validate: ['required', emailAddress],
+   validate: ['required', 'email'],
    dependent: {
      field: 'contactTypes',
      value: 'email'
    }
   },
   phone: {
-   validate: ['required', mobilePhoneNumber],
+   validate: ['required', 'ukmobilephone'],
    dependent: {
      field: 'contactTypes',
      value: 'phone'
@@ -783,7 +769,7 @@ module.exports = {
    }
   },
   outcomePostcode: {
-   validate: ['required', postcode],
+   validate: ['required', 'postcode'],
    dependent: {
      field: 'likelyToMove',
      value: 'yes'
@@ -828,7 +814,7 @@ module.exports = {
    validate: 'required'
   },
   helpEmail: {
-   validate: ['required', emailAddress],
+   validate: ['required', 'email'],
    dependent: {
      field: 'helpContactTypes',
      value: 'email'
