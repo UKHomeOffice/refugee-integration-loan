@@ -19,7 +19,8 @@ module.exports = {
     validate: 'required'
   },
   brpNumber: {
-   validate: ['required', brpNumber]
+   validate: ['required', brpNumber],
+   formatter: ['trim', 'spaces']
   },
   dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', 'before']
