@@ -13,7 +13,7 @@ pipeline:
     secrets:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
-    repo: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/cto/refugee-integration-loans
+    repo: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans
     tags:
       - latest
       - ${DRONE_COMMIT_SHA}
