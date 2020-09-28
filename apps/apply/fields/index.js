@@ -59,10 +59,6 @@ function sortCode(value) {
   return regex(stripHyphens(stripSpaces(value)), /^[0-9]{6}$/);
 }
 
-function brpNumber(str) {
-    return regex(stripSpaces(str.toUpperCase()), /^[A-Z0-9]{9}$/);
-}
-
 module.exports = {
   previouslyApplied: {
     mixin: 'radio-group',
@@ -111,7 +107,8 @@ module.exports = {
    validate: 'required'
   },
   brpNumber: {
-   validate: ['required', brpNumber]
+    validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
+    formatter: ['trim', 'spaces', 'uppercase']
   },
   niNumber: {
    validate: ['required', niNumber],
@@ -194,7 +191,8 @@ module.exports = {
    className: 'govuk-input'
   },
   partnerBrpNumber: {
-   validate: ['required', brpNumber],
+   validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
+   formatter: ['trim', 'spaces', 'uppercase'],
    className: 'govuk-input govuk-input--width-10'
   },
   partnerNiNumber: {
@@ -240,7 +238,8 @@ module.exports = {
    validate: 'required'
   },
   postcode: {
-   validate: ['required', 'postcode']
+   validate: ['required', 'postcode'],
+   formatter: ['trim', 'spaces', 'uppercase']
   },
   incomeTypes: {
    mixin: 'checkbox-group',
@@ -770,6 +769,7 @@ module.exports = {
   },
   outcomePostcode: {
    validate: ['required', 'postcode'],
+   formatter: ['trim', 'spaces', 'uppercase'],
    dependent: {
      field: 'likelyToMove',
      value: 'yes'
