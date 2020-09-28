@@ -26,7 +26,7 @@ pipeline:
     secrets:
       - kube_token_acp_notprod
     environment:
-      - IMAGE_URL=340268328991.dkr.ecr.eu-west-2.amazonaws.com/cto/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      - IMAGE_URL=340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
       - DRONE_DEPLOY_TO=acp-notprod
     commands:
       - apk update
