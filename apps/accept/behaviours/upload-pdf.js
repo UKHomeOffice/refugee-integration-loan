@@ -14,7 +14,8 @@ const tempLocation = path.resolve(config.pdf.tempLocation);
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
 const templateId = config.govukNotify.templateFormAccept;
 const notifyApiKey = config.govukNotify.notifyApiKey;
-const NotifyClient = require('notifications-node-client').NotifyClient;
+
+const NotifyClient = require('../../../lib/utilities').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
 
 const client = require('prom-client');

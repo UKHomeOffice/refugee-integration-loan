@@ -82,6 +82,13 @@ button.govuk-link {
     }
 }
 
+.alert-complete {
+  @media (min-width: 40em) {
+    margin-left: 28.33%;
+    margin-right: -28.33%;
+  }
+}
+
 .action-col {
     text-align: right;
     vertical-align: top
