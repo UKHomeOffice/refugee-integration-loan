@@ -11,6 +11,8 @@ brew install redis
 brew services start redis
 npm start #OR npm run start:dev
 ```
+To use the mock notification service locally, set the NOTIFY_KEY environment variable to USE-MOCK:
+```export NOTIFY_KEY=USE-MOCK```
 
 or for redis
 ```

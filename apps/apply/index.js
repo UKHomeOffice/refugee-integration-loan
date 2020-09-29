@@ -18,11 +18,11 @@ module.exports = {
       next: '/previous',
       forks: [{
         target: '/partner',
-          condition: {
-            field: 'previouslyApplied',
-            value: 'no'
-          }
-        }],
+        condition: {
+          field: 'previouslyApplied',
+          value: 'no'
+        }
+      }],
       continueOnEdit: true
     },
     '/previous': {
@@ -30,10 +30,10 @@ module.exports = {
       next: '/who-received-previous-loan',
       forks: [{
         target: '/partner',
-          condition: {
-            field: 'previouslyHadIntegrationLoan',
-            value: 'no'
-          }
+        condition: {
+          field: 'previouslyHadIntegrationLoan',
+          value: 'no'
+        }
       }],
       continueOnEdit: true
     },
@@ -42,10 +42,10 @@ module.exports = {
       next: '/ineligible',
       forks: [{
         target: '/partner',
-          condition: {
-            field: 'whoReceivedPreviousLoan',
-            value: 'someoneElse'
-          }
+        condition: {
+          field: 'whoReceivedPreviousLoan',
+          value: 'someoneElse'
+        }
       }],
       continueOnEdit: true
     },
@@ -54,10 +54,10 @@ module.exports = {
       next: '/joint',
       forks: [{
         target: '/brp',
-          condition: {
-            field: 'partner',
-            value: 'no'
-          }
+        condition: {
+          field: 'partner',
+          value: 'no'
+        }
       }],
       continueOnEdit: true
     },
@@ -194,10 +194,10 @@ module.exports = {
       next: '/address',
       forks: [{
         target: '/dependent-details',
-          condition: {
-            field: 'dependents',
-            value: 'yes'
-          }
+        condition: {
+          field: 'dependents',
+          value: 'yes'
+        }
       }],
       continueOnEdit: true
     },
@@ -237,10 +237,10 @@ module.exports = {
       next: '/income',
       forks: [{
         target: '/combined-income',
-          condition: {
-            field: 'joint',
-            value: 'yes'
-          }
+        condition: {
+          field: 'joint',
+          value: 'yes'
+        }
       }],
       continueOnEdit: true
     },
@@ -334,7 +334,7 @@ module.exports = {
       forks: [{
         target: '/outcome',
         condition: (req) =>
-          req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
+            req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
       }],
       continueOnEdit: true
     },

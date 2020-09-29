@@ -16,7 +16,9 @@ const templateId = config.govukNotify.templateFormApply;
 const emailReceiptTemplateId = config.govukNotify.templateEmailReceipt;
 const textReceiptTemplateId = config.govukNotify.templateTextReceipt;
 const notifyApiKey = config.govukNotify.notifyApiKey;
-const NotifyClient = require('notifications-node-client').NotifyClient;
+
+const NotifyClient = require('../../../lib/utilities').NotifyClient;
+
 const notifyClient = new NotifyClient(notifyApiKey);
 
 const client = require('prom-client');
