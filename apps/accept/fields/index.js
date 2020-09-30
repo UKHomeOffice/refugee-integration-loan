@@ -8,7 +8,7 @@ module.exports = {
   },
   brpNumber: {
     validate: ['required', 'alphanum', {type: 'exactlength', arguments: 9}],
-    formatter: ['trim', 'spaces', 'uppercase']
+    formatter: ['uppercase']
   },
   dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', 'before']

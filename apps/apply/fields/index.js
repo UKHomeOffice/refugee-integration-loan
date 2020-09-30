@@ -108,11 +108,11 @@ module.exports = {
   },
   brpNumber: {
     validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
-    formatter: ['trim', 'spaces', 'uppercase']
+    formatter: ['uppercase']
   },
   niNumber: {
     validate: ['required', niNumber],
-    formatter: ['trim', 'spaces']
+    formatter: ['removespaces']
   },
   hasOtherNames: {
     mixin: 'radio-group',
@@ -192,12 +192,12 @@ module.exports = {
   },
   partnerBrpNumber: {
     validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
-    formatter: ['trim', 'spaces', 'uppercase'],
+    formatter: ['removespaces', 'uppercase'],
     className: 'govuk-input govuk-input--width-10'
   },
   partnerNiNumber: {
     validate: ['required', niNumber],
-    formatter: ['trim', 'spaces']
+    formatter: ['removespaces']
   },
   partnerHasOtherNames: {
     mixin: 'radio-group',
@@ -239,7 +239,7 @@ module.exports = {
   },
   postcode: {
     validate: ['required', 'postcode'],
-    formatter: ['trim', 'spaces', 'uppercase']
+    formatter: ['removespaces', 'uppercase']
   },
   incomeTypes: {
     mixin: 'checkbox-group',
@@ -692,7 +692,7 @@ module.exports = {
   },
   sortCode: {
     validate: ['required', sortCode],
-    formatter: ['trim', 'hyphens', 'spaces']
+    formatter: ['removehyphens', 'removespaces']
   },
   accountNumber: {
     validate: ['required', 'numeric', { type: 'minlength', arguments: 6 }, { type: 'maxlength', arguments: 8 }]
@@ -769,7 +769,7 @@ module.exports = {
   },
   outcomePostcode: {
     validate: ['required', 'postcode'],
-    formatter: ['trim', 'spaces', 'uppercase'],
+    formatter: ['removespaces', 'uppercase'],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
