@@ -6,9 +6,6 @@ module.exports = {
   DATE_FORMAT: 'YYYY-MM-DD',
   PRETTY_DATE_FORMAT: 'Do MMMM YYYY',
   dateTimeFormat: 'DD MMM YYYY HH:MM:SS ZZ',
-  redis: {
-    password: process.env.REDIS_PASSWORD
-  },
   pdf: {
     tempLocation: 'pdf-form-submissions'
   },
