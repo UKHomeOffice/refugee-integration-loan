@@ -2,11 +2,11 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: ingress-network-policy-internal-{{.NAME}}
+  name: ingress-network-policy-internal-refugee-loan
 spec:
   podSelector:
     matchLabels:
-      name: {{ .NAME }}
+      name: refugee-loan
   ingress:
     - from:
         - namespaceSelector:

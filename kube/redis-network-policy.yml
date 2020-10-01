@@ -7,7 +7,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          name: {{ .NAME }}
+          name: refugee-loan
     - podSelector:
         matchLabels:
           name: refugee-loan

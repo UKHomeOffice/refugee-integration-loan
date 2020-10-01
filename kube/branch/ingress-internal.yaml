@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .NAME }}-internal
+  name: refugee-loan-internal
   labels:
     cert-manager.io/solver: route53
   annotations:
@@ -14,13 +14,13 @@ metadata:
 spec:
   tls:
     - hosts:
-        - {{ .NAME }}-dev.internal.cto-notprod.homeoffice.gov.uk
-      secretName: {{ .NAME }}-internal
+        - refugee-loan.branch.internal.sas-notprod.homeoffice.gov.uk
+      secretName: refugee-loan-internal
   rules:
-    - host: {{ .NAME }}-dev.internal.cto-notprod.homeoffice.gov.uk
+    - host: refugee-loan.branch.internal.sas-notprod.homeoffice.gov.uk
       http:
         paths:
           - path: /
             backend:
-              serviceName: {{ .NAME }}
+              serviceName: refugee-loan
               servicePort: 443

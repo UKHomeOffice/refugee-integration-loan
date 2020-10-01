@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: refugee-loan-configmap
+  namespace: {{ .KUBE_NAMESPACE }}
+  labels:
+    name: refugee-loan
+data:
+  ENVIRONMENT: "PROD"
+  GA_ID: "UA-666666-1"
+  NODE_ENV: "production"
+  CASEWORKER_EMAIL: "integrationloan@homeoffice.gov.uk"
+  FEEDBACK_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
+  TEMPLATE_APPLY: "1376a8f2-2157-42f3-b9a7-5008ba8f26c9"
+  TEMPLATE_ACCEPT: "21235643-6a96-426a-94d5-bc1a49c0b1d0"
+  TEMPLATE_FEEDBACK: "ccfb0d84-8bed-4749-8667-c7890cd1dcb1"
+  TEMPLATE_EMAIL_RECEIPT: "428f308d-228b-4b3f-a866-e389d122a212"
+  TEMPLATE_TEXT_RECEIPT: "03db3bde-be6c-4f54-888d-2c0bc0d76bca"

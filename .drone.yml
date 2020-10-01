@@ -1,4 +1,5 @@
 pipeline:
+
   unit_test:
     image: node
     commands:
@@ -6,7 +7,7 @@ pipeline:
       - npm test
     when:
       event: push
-      branch: master
+      branch: [ master, development ]
 
   create_artefact:
     image: quay.io/ukhomeofficedigital/ecr:latest
@@ -15,33 +16,74 @@ pipeline:
       - AWS_SECRET_ACCESS_KEY
     repo: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans
     tags:
-      - latest
+      - latest_${DRONE_BRANCH}
       - ${DRONE_COMMIT_SHA}
     when:
       event: push
-      branch: master
+      branch: [ master, development ]
 
   deploy_to_dev:
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
     secrets:
-      - kube_token_acp_notprod
+      - kube_token_ril_acp_notprod
     environment:
-      - IMAGE_URL=340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      - DRONE_DEPLOY_TO=acp-notprod
+      - KUBE_NAMESPACE=sas-ril-dev
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     commands:
-      - apk update
-      - apk add curl
-      - bin/deploy.sh
+      - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
+      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify -f kube/dev/configmap.yaml -f kube/dev/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
+      - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/dev/deployment.yaml
     when:
       event: push
       branch: master
 
+  deploy_to_branch:
+    image: quay.io/ukhomeofficedigital/kd:v1.14.0
+    secrets:
+      - kube_token_ril_acp_notprod
+    environment:
+      - KUBE_NAMESPACE=sas-ril-branch
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
+    commands:
+      - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
+      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify -f kube/branch/configmap.yaml -f kube/branch/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
+      - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/branch/deployment.yaml
+    when:
+      event: push
+      branch: development
+
   deploy_to_uat:
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
+    secrets:
+      - kube_token_ril_acp_notprod
+    environment:
+      - KUBE_NAMESPACE=sas-ril-uat
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     commands:
-      - echo "Deploy to UAT to be implemented"
+      - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
+      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify -f kube/uat/configmap.yaml -f kube/uat/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
+      - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/uat/deployment.yaml
     when:
       environment: UAT
+      event: deployment
+
+  manual_deploy_to_branch:
+    image: quay.io/ukhomeofficedigital/kd:v1.14.0
+    secrets:
+      - kube_token_ril_acp_notprod
+    environment:
+      - KUBE_NAMESPACE=sas-ril-branch
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
+    commands:
+      - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
+      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify -f kube/branch/configmap.yaml -f kube/branch/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
+      - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/branch/deployment.yaml
+    when:
+      environment: BRANCH
       event: deployment
 
   deploy_to_prod:
