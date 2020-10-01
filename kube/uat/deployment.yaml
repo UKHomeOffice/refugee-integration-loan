@@ -9,7 +9,7 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: refugee-loan
+      name: refugee-loan
   template:
     metadata:
       annotations:
