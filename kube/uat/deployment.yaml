@@ -9,7 +9,7 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: refugee-loan
+      name: refugee-loan
   template:
     metadata:
       annotations:
@@ -29,6 +29,9 @@ spec:
             runAsNonRoot: true
           ports:
             - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: refugee-loan-configmap
           env:
             - name: REDIS_PORT
               value: "6379"
