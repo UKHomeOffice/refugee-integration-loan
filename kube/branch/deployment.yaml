@@ -4,12 +4,12 @@ kind: Deployment
 metadata:
   annotations:
     downscaler/uptime: Mon-Fri 08:00-18:00 Europe/London
-  name: {{ .NAME }}
+  name: refugee-loan
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .NAME }}
+      app: refugee-loan
   template:
     metadata:
       annotations:
@@ -17,13 +17,13 @@ spec:
         prometheus.io/port: "8080"
         prometheus.io/path: "/insight/metrics"
       labels:
-        name: {{ .NAME }}
-        app: {{ .NAME }}
+        name: refugee-loan
+        app: refugee-loan
         service: refugee-integration-loan
     spec:
       containers:
-        - name: {{ .NAME }}
-          image: {{ .IMAGE_URL }}
+        - name: refugee-loan
+          image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans:{{.DRONE_COMMIT_SHA}}
           imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
@@ -39,4 +39,3 @@ spec:
                 secretKeyRef:
                   name: ril-notify-key
                   key: ril-notify-key
-

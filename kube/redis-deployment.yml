@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .REDIS_NAME }}
+  name: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .REDIS_NAME }}
+      app: redis
   template:
     metadata:
       labels:
-        name: {{ .REDIS_NAME }}
-        service: {{ .REDIS_NAME }}
-        app: {{ .REDIS_NAME }}
+        name: redis
+        service: redis
+        app: redis
     spec:
       containers:
-        - name: {{ .REDIS_NAME }}
+        - name: redis
           image: quay.io/ukhomeofficedigital/redis:v1.0.1
           ports:
             - containerPort: 6379

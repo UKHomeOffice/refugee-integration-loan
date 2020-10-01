@@ -1,0 +1,26 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: refugee-loan-internal
+  labels:
+    cert-manager.io/solver: route53
+  annotations:
+    cert-manager.io/enabled: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    kubernetes.io/ingress.class: "nginx-internal"
+    ingress.kubernetes.io/add-base-url: "true"
+    ingress.kubernetes.io/app-root: /apply
+spec:
+  tls:
+    - hosts:
+        - refugee-loan.uat.internal.sas-notprod.homeoffice.gov.uk
+      secretName: refugee-loan-internal
+  rules:
+    - host: refugee-loan.uat.internal.sas-notprod.homeoffice.gov.uk
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: refugee-loan
+              servicePort: 443

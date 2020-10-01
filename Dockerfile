@@ -2,7 +2,7 @@ FROM node:14
 
 RUN apt-get update && \
     # See https://crbug.com/795759
-    apt-get install -yq libgconf-2-4 && \
+    apt-get install -yq libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb libgbm-dev && \
     # Install latest chrome dev package, which installs the necessary libs to
     # make the bundled version of Chromium that Puppeteer installs work.
     apt-get install -y wget --no-install-recommends && \

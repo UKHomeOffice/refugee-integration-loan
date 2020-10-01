@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    downscaler/uptime: Mon-Fri 08:00-18:00 Europe/London
+  name: refugee-loan
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: refugee-loan
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/insight/metrics"
+      labels:
+        name: refugee-loan
+        app: refugee-loan
+        service: refugee-integration-loan
+    spec:
+      containers:
+        - name: refugee-loan
+          image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans:{{.DRONE_COMMIT_SHA}}
+          imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+          ports:
+            - containerPort: 8080
+          env:
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_HOST
+              value: redis
+            - name: NOTIFY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ril-notify-key
+                  key: ril-notify-key
