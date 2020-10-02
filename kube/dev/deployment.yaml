@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    downscaler/uptime: Mon-Fri 08:00-18:00 Europe/London
+    downscaler/uptime: Mon-Fri 07:00-21:00 Europe/London
   name: refugee-loan
 spec:
   replicas: 1
