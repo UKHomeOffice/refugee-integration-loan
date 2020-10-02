@@ -42,3 +42,15 @@ spec:
                 secretKeyRef:
                   name: ril-notify-key
                   key: ril-notify-key
+          livenessProbe:
+            httpGet:
+              path: /healthz/ping
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
