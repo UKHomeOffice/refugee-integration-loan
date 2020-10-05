@@ -180,8 +180,10 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   createPDF(req, html) {
     return new Promise((resolve) => {
-      const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`, 'apply');
-      logger.info('ril.form.apply.submit_form.create_pdf.successful', {sessionID: req.sessionID, path: req.path});
+      const applicationUuid = uuid.v1();
+      const file = pdfPuppeteer.generate(html, tempLocation, `${applicationUuid}.pdf`, 'apply');
+      logger.info(`ril.form.apply.submit_form.create_pdf.successful with uuid: ${applicationUuid}`,
+          {sessionID: req.sessionID, path: req.path});
       return resolve(file);
     });
   }
