@@ -1,7 +1,11 @@
 'use strict';
 
+const logger = require('./lib/logger');
+
 const hof = require('hof');
 const metrics = require('./lib/metrics');
+
+const config = require('./config');
 
 const app = hof({
   build: {
@@ -19,7 +23,8 @@ const app = hof({
     require('./apps/apply/'),
     require('./apps/accept/')
   ],
-  views: require('hof-behaviour-loop').views
+  views: require('hof-behaviour-loop').views,
+  loglevel: config.hofLogLevel
 });
 
 app.use((req, res, next) => {
@@ -35,3 +40,5 @@ app.use((req, res, next) => {
 });
 
 app.use('/insight', metrics());
+
+logger.info('RIL application started');

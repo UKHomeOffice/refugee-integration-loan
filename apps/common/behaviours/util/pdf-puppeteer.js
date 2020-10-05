@@ -1,9 +1,10 @@
 'use strict';
 /* eslint-disable no-console */
 const puppeteer = require('puppeteer');
+const logger = require('../../../../lib/logger');
 
 module.exports = {
-  generate: async(html, destination, tempName) => {
+  generate: async(html, destination, tempName, application) => {
     try {
       const file = `${destination}/${tempName}`;
 
@@ -26,10 +27,10 @@ module.exports = {
       });
 
       await browser.close();
-      console.log('ril.form.apply.submit_form.save_pdf.successful');
+      logger.info(`ril.form.${application}.submit_form.save_pdf.successful`);
       return file;
     } catch (e) {
-      console.log('ril.form.apply.submit_form.save_pdf.error', e);
+      logger.error(`ril.form.${application}.submit_form.save_pdf.error ${e}`);
       return Promise.reject(e);
     }
   }
