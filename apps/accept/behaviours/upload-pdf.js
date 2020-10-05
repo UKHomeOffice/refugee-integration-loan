@@ -43,12 +43,12 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     .then(html => this.createPDF(req, html))
     .then((pdfFile) => this.sendEmailWithAttachment(req, pdfFile))
     .then(() => {
-      logger.info('ril.form.apply.submit_form.successful');
+      logger.info('ril.form.accept.submit_form.successful', {sessionID: req.sessionID, path: req.path});
       super.successHandler(req, res, next);
     })
-    .catch((err) => {
-      logger.error(`ril.form.apply.submit_form.error ${err}`);
-      applicationErrorsGauge.inc({ component: 'acceptance-form-submission' }, 1.0);
+    .catch(() => {
+      logger.error('ril.form.accept.submit_form.error', {sessionID: req.sessionID, path: req.path});
+      applicationErrorsGauge.inc({component: 'acceptance-form-submission'}, 1.0);
       next(Error('There was an error sending your loan acceptance form'));
     });
   }
@@ -63,42 +63,47 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   sendEmailWithAttachment(req, pdfFile) {
     return new Promise((resolve, reject) => {
-    this.readPdf(pdfFile)
-    .then(data => {
-      notifyClient.sendEmail(templateId, caseworkerEmail, {
-        personalisation: {
-          'form id': notifyClient.prepareUpload(data),
-          'loan reference': req.sessionModel.get('loanReference')
+      this.readPdf(pdfFile)
+      .then(data => {
+        notifyClient.sendEmail(templateId, caseworkerEmail, {
+          personalisation: {
+            'form id': notifyClient.prepareUpload(data),
+            'loan reference': req.sessionModel.get('loanReference')
           }
         })
         .then(() => {
-          logger.info('ril.form.accept.submit_form.create_email_with_file_notify.successful');
-          logger.info('ril.form.accept.completed');
+          logger.info('ril.form.accept.submit_form.create_email_with_file_notify.successful',
+              {sessionID: req.sessionID, path: req.path});
+          logger.info('ril.form.accept.completed', {sessionID: req.sessionID, path: req.path});
           var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
           var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
           acceptanceFormDurationGauge.inc(timeSpentOnForm);
-          logger.info(`ril.acceptance.submission.duration=[${timeSpentOnForm}] seconds`);
+          logger.info(`ril.acceptance.submission.duration=[${timeSpentOnForm}] seconds`,
+              {sessionID: req.sessionID, path: req.path});
           return resolve();
         })
         .catch((err) => {
-          applicationErrorsGauge.inc({ component: 'email' }, 1.0);
+          applicationErrorsGauge.inc({component: 'email'}, 1.0);
 
-          logger.error(`ril.form.accept.submit_form.create_email_with_file_notify.error ${err}`);
-          logger.error('ril.form.accept.error');
+          logger.error('ril.form.accept.submit_form.create_email_with_file_notify.error',
+              {errorMessage: err.message, sessionID: req.sessionID, path: req.path});
+          logger.error('ril.form.accept.error', {errorMessage: err.message, sessionID: req.sessionID, path: req.path});
           return reject();
         })
         .finally(() => this.deleteFile(req, pdfFile));
+      });
     });
-   });
   }
 
   deleteFile(req, fileToDelete) {
     fs.unlink(fileToDelete, (err) => {
       if (err) {
-          applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
-          logger.error(`ril.form.accept.submit_form.delete_pdf.error [${fileToDelete}]`, err);
+        applicationErrorsGauge.inc({component: 'pdf'}, 1.0);
+        logger.error(`ril.form.accept.submit_form.delete_pdf.error [${fileToDelete}]`,
+            {errorMessage: err.message, sessionID: req.sessionID, path: req.path});
       } else {
-          logger.info(`ril.form.accept.submit_form.delete_pdf.successful [${fileToDelete}]`);
+        logger.info(`ril.form.accept.submit_form.delete_pdf.successful [${fileToDelete}]`,
+            {sessionID: req.sessionID, path: req.path});
       }
     });
   }
@@ -111,34 +116,34 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     locals.htmlLang = res.locals.htmlLang || 'en';
 
     return Promise.resolve()
-      .then(() => {
-        return this.readCss(req)
-          .then(css => {
-            locals.css = css;
-          });
-      })
-      .then(() => {
-        return this.readHOLogo()
-          .then(img => {
-            locals['ho-logo'] = img;
-          });
-      })
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          res.render('pdf.html', locals, (err, html) => {
-            if (err) {
-              return reject(err);
-            }
-            return resolve(html);
-          });
+    .then(() => {
+      return this.readCss(req)
+      .then(css => {
+        locals.css = css;
+      });
+    })
+    .then(() => {
+      return this.readHOLogo()
+      .then(img => {
+        locals['ho-logo'] = img;
+      });
+    })
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        res.render('pdf.html', locals, (err, html) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(html);
         });
       });
+    });
   }
 
   createPDF(req, html) {
     return new Promise((resolve) => {
       const file = pdfPuppeteer.generate(html, tempLocation, `${uuid.v1()}.pdf`, 'accept');
-      logger.info('ril.form.accept.submit_form.create_pdf.successful');
+      logger.info('ril.form.accept.submit_form.create_pdf.successful', {sessionID: req.sessionID, path: req.path});
       return resolve(file);
     });
   }
