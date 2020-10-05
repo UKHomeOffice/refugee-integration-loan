@@ -14,6 +14,12 @@ npm start #OR npm run start:dev
 To use the mock notification service locally, set the NOTIFY_KEY environment variable to USE-MOCK:
 ```export NOTIFY_KEY=USE-MOCK```
 
+To set the RIL logging level, set the LOG_LEVEL environment variable to either error, warn, or info:
+```export LOG_LEVEL="info"```
+
+To set the HOF logging level, set the LOG_LEVEL environment variable to either error, warn, or info:
+```export LOG_LEVEL="warn"```
+
 or for redis
 ```
 docker run --name some-redis -d redis

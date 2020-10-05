@@ -9,7 +9,8 @@ const pageDurationHistogram = registry.getSingleMetric('ril_application_page_dur
 const pageDurationSummary = registry.getSingleMetric('ril_application_page_duration_summary');
 const pageDurationGauge = registry.getSingleMetric('ril_page_duration_gauge');
 
-// var logger = require('../../lib/logger');
+const logger = require('../lib/logger');
+
 // Store a a fastest and slowest duration (time-on-page) for each page
 // Store the average duration for each page
 // Log pages and their fastest and slowest on every request
@@ -17,18 +18,18 @@ const pageDurationGauge = registry.getSingleMetric('ril_page_duration_gauge');
 
 module.exports = superclass => class Behaviour extends superclass {
   locals(req, res) {
-    req.log('info', 'user-id=' + req.sessionID + ' page=' + req.path);
+    logger.trace(`user-id=${req.sessionID} page=${req.path}`);
     pageHitGauge.inc({ page: req.path }, 1.0);
     if (req.path.includes('reference-number') || req.path.includes('previously-applied')) {
       visitorDeviceGauge.inc({ device: req.headers['user-agent'] }, 1.0);
       req.sessionModel.set('session.started.timestamp', Date.now());
       var formName = req.path.includes('previously-applied') ? 'apply' : 'accept';
-      req.log('info', 'ril.form.' + formName + '.started');
+      logger.info(`ril.form.${formName}.started`);
     } else if (req.path.indexOf('index') === -1 && req.path.indexOf('feedback') === -1) {
       var trackedPageStartTime = Number(req.sessionModel.get('ril.tracker.milliseconds'));
       var trackedPage = req.sessionModel.get('ril.tracker.page');
       var timeSpentOnPage = this.secondsSince(trackedPageStartTime);
-      req.log('info', 'metrics page [' + trackedPage + '] duration [' + timeSpentOnPage + '] seconds');
+      logger.trace(`metrics page [${trackedPage}] duration [${timeSpentOnPage}] seconds`);
       if (trackedPage) {
         pageDurationHistogram.labels(trackedPage).observe(timeSpentOnPage);
         pageDurationSummary.labels(trackedPage).observe(timeSpentOnPage);
@@ -37,10 +38,10 @@ module.exports = superclass => class Behaviour extends superclass {
       }
     }
     if (req.path.includes('help-reasons')) {
-      req.log('info', 'ril.form.apply.assistance');
+      logger.trace('ril.form.apply.assistance');
     }
     if (req.path.includes('feedback')) {
-      req.log('info', 'ril.form.feedback');
+      logger.trace('ril.form.feedback');
     }
     req.sessionModel.set('ril.tracker.page', req.path);
     req.sessionModel.set('ril.tracker.milliseconds', Date.now());

@@ -25,5 +25,7 @@ module.exports = {
     password: process.env.KEYCLOAK_PASSWORD,
     clientId: process.env.KEYCLOAK_CLIENT_ID,
     clientSecret: process.env.KEYCLOAK_CLIENT_SECRET
-  }
+  },
+  logLevel: process.env.LOG_LEVEL || 'info',
+  hofLogLevel: process.env.HOF_LOG_LEVEL || 'warn'
 };

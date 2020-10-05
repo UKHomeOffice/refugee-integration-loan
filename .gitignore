@@ -6,3 +6,4 @@ node_modules
 public/
 apps/apply/translations/en
 apps/accept/translations/en
+coverage
