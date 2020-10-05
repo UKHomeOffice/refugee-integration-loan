@@ -29,9 +29,9 @@ module.exports = {
       await browser.close();
       logger.info(`ril.form.${application}.submit_form.save_pdf.successful`);
       return file;
-    } catch (e) {
-      logger.error(`ril.form.${application}.submit_form.save_pdf.error ${e}`);
-      return Promise.reject(e);
+    } catch (err) {
+      logger.error(`ril.form.${application}.submit_form.save_pdf.error`, {errorMessage: err.message});
+      return Promise.reject(err);
     }
   }
 };
