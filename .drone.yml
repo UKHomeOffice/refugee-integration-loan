@@ -9,6 +9,30 @@ pipeline:
       event: push
       branch: [ master, development ]
 
+  build:
+    image: docker:17.09.0-ce
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker build -t sas/refugee-integration-loans:$${DRONE_BUILD_NUMBER} .
+    when:
+      event: push
+      branch: [ master, development ]
+
+  scan:
+    image: quay.io/ukhomeofficedigital/anchore-submission:latest
+    dockerfile: ./Dockerfile
+    image_name: sas/refugee-integration-loans:${DRONE_BUILD_NUMBER}
+    local_image: true
+    tolerate: medium
+    #whitelist: CVE_SOMENAME_1,CVE_SOMENAME_2
+    #whitelist_file: <PATH>
+    show_all_vulnerabilities: true
+    fail_on_detection: false
+    when:
+      event: push
+      branch: [ master, development ]
+
   create_artefact:
     image: quay.io/ukhomeofficedigital/ecr:latest
     secrets:
