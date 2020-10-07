@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer');
 const logger = require('../../../../lib/logger');
 
 module.exports = {
-  generate: async (html, destination, tempName, application) => {
+  generate: async(html, destination, tempName, application) => {
     try {
       const file = `${destination}/${tempName}`;
 
