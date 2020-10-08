@@ -10,7 +10,7 @@ module.exports = {
     tempLocation: 'pdf-form-submissions'
   },
   govukNotify: {
-    notifyApiKey: process.env.NOTIFY_KEY,
+    notifyApiKey: process.env.NOTIFY_KEY || 'USE_MOCK',
     caseworkerEmail: process.env.CASEWORKER_EMAIL,
     feedbackEmail: process.env.FEEDBACK_EMAIL,
     templateFormApply: process.env.TEMPLATE_APPLY,
