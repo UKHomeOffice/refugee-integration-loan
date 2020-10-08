@@ -6,7 +6,7 @@ metadata:
   labels:
     name: refugee-loan
 data:
-  ENVIRONMENT: "PROD"
+  ENVIRONMENT: "STG"
   GA_ID: "UA-666666-1"
   NODE_ENV: "production"
   #CASEWORKER_EMAIL: "integrationloan@homeoffice.gov.uk"
