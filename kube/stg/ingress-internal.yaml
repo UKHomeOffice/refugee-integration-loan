@@ -14,10 +14,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - refugee-loan.stg.internal.sas.homeoffice.gov.uk
+        - stg.internal.refugee-loan.sas.homeoffice.gov.uk
       secretName: refugee-loan-internal
   rules:
-    - host: refugee-loan.stg.internal.sas.homeoffice.gov.uk
+    - host: stg.internal.refugee-loan.sas.homeoffice.gov.uk
       http:
         paths:
           - path: /
