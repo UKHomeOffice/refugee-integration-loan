@@ -59,3 +59,10 @@ spec:
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 5
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "200Mi"
+            limits:
+              cpu: "400m"
+              memory: "400Mi"

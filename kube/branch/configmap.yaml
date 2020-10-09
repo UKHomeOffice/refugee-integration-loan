@@ -7,6 +7,7 @@ metadata:
     name: refugee-loan
 data:
   ENVIRONMENT: "DEV"
+  COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
   GA_ID: "UA-999999-1"
   NODE_ENV: "development"
   CASEWORKER_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"

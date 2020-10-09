@@ -32,3 +32,9 @@ npm i && docker-compose build && docker-compose up
 
 Then navigate to <http://localhost:8080/apply>
 or to <http://localhost:8080/accept>
+
+### Kubenetes
+Defaults in ACP are:
+
+            Requests - cpu: 50m, memory: 200Mi
+            Limits - cpu: 400m, memory: 400Mi
