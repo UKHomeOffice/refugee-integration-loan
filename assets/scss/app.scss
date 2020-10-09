@@ -1,4 +1,5 @@
 @import "$$theme";
+@import "./pdf.scss";
 
 .phase-banner {
   @include phase-banner(beta);
@@ -116,4 +117,3 @@ span.form-hint {
 }
 
 .error-summary ul li a { color: #B00E1F; }
-

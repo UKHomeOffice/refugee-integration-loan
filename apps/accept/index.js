@@ -19,7 +19,6 @@ module.exports = {
        pdfSections: require('./sections/pdf-data-sections'),
        next: '/complete-acceptance'
      },
-     '/complete-acceptance': {
-     }
+     '/complete-acceptance': {}
   }
 };
