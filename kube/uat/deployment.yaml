@@ -6,7 +6,7 @@ metadata:
     downscaler/uptime: Mon-Fri 07:00-21:00 Europe/London
   name: refugee-loan
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       name: refugee-loan
