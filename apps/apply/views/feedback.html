@@ -1,12 +1,12 @@
 {{<partials-page}}
-{{$page-content}}
-    <div class="govuk-form-group">
-        {{#renderField}}feedbackText{{/renderField}}
-        <h2>{{#t}}pages.feedback.detailsHeader{{/t}}</h2>
-            {{#renderField}}feedbackName{{/renderField}}
-        {{#renderField}}feedbackEmail{{/renderField}}
-    </div>
+  {{$page-content}}
+      <div class="govuk-form-group">
+          {{#renderField}}feedbackText{{/renderField}}
+          <h2>{{#t}}pages.feedback.detailsHeader{{/t}}</h2>
+              {{#renderField}}feedbackName{{/renderField}}
+          {{#renderField}}feedbackEmail{{/renderField}}
+      </div>
 
-    {{#input-submit}}continue{{/input-submit}}
-{{/page-content}}
+      {{#input-submit}}continue{{/input-submit}}
+  {{/page-content}}
 {{/partials-page}}

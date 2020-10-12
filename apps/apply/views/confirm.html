@@ -1,19 +1,17 @@
 {{<partials-page}}
-{{$page-content}}
+  {{$page-content}}
+    {{#rows}}
+        {{> partials-summary-table}}
+    {{/rows}}
 
-{{#rows}}
-    {{> partials-summary-table}}
-{{/rows}}
+    <h2 class="govuk-heading-m">{{#t}}pages.confirm.submittingHeader{{/t}}</h2>
+    <p>{{#t}}pages.confirm.text1{{/t}}</p>
+    <ul class="list list-bullet">
+        <li>{{#t}}pages.confirm.bullet1{{/t}}</li>
+        <li>{{#t}}pages.confirm.bullet2{{/t}}</li>
+        <li>{{#t}}pages.confirm.bullet3{{/t}} <a href="https://www.gov.uk/government/publications/personal-information-use-in-borders-immigration-and-citizenship">{{#t}}pages.confirm.bullet3-link{{/t}}</a></li>
+    </ul>
 
-<h2 class="govuk-heading-m">{{#t}}pages.confirm.submittingHeader{{/t}}</h2>
-<p>{{#t}}pages.confirm.text1{{/t}}</p>
-<ul class="list list-bullet">
-    <li>{{#t}}pages.confirm.bullet1{{/t}}</li>
-    <li>{{#t}}pages.confirm.bullet2{{/t}}</li>
-    <li>{{#t}}pages.confirm.bullet3{{/t}} <a href="https://www.gov.uk/government/publications/personal-information-use-in-borders-immigration-and-citizenship">{{#t}}pages.confirm.bullet3-link{{/t}}</a></li>
-</ul>
-
-<input type="submit" class="button" value="{{#t}}pages.confirm.submit{{/t}}"/>
-
-{{/page-content}}
+    <input type="submit" class="button" value="{{#t}}pages.confirm.submit{{/t}}"/>
+  {{/page-content}}
 {{/partials-page}}

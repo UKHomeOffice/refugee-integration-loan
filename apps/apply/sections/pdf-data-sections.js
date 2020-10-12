@@ -3,7 +3,7 @@
 const moment = require('moment');
 const config = require('../../../config');
 
-const sumValues = (values) => values.map(it => Number(it)).reduce((a, b) => a + b, 0);
+const sumValues = values => values.map(it => Number(it)).reduce((a, b) => a + b, 0);
 
 module.exports = {
   'pdf-applicant-details': [

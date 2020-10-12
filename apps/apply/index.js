@@ -333,7 +333,7 @@ module.exports = {
       next: '/help',
       forks: [{
         target: '/outcome',
-        condition: (req) =>
+        condition: req =>
             req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
       }],
       continueOnEdit: true

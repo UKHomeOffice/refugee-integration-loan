@@ -18,33 +18,47 @@ const logger = require('../lib/logger');
 
 module.exports = superclass => class Behaviour extends superclass {
   locals(req, res) {
-    logger.trace('Request from: ', {sessionID: req.sessionID, path: req.path});
-    pageHitGauge.inc({page: req.path}, 1.0);
-    if (req.path.includes('reference-number') || req.path.includes('previously-applied')) {
-      visitorDeviceGauge.inc({device: req.headers['user-agent']}, 1.0);
+    const path = req.path;
+    const sessionID = req.sessionID;
+    const loggerObj = { sessionID, path };
+
+    logger.trace('Request from: ', loggerObj);
+
+    pageHitGauge.inc({ page: path }, 1.0);
+
+    if (req.path.includes('reference-number') || path.includes('previously-applied')) {
+      visitorDeviceGauge.inc({ device: req.headers['user-agent'] }, 1.0);
+
       req.sessionModel.set('session.started.timestamp', Date.now());
-      var formName = req.path.includes('previously-applied') ? 'apply' : 'accept';
-      logger.info(`ril.form.${formName}.started`, {sessionID: req.sessionID, path: req.path});
-    } else if (req.path.indexOf('index') === -1 && req.path.indexOf('feedback') === -1) {
+      var formName = path.includes('previously-applied') ? 'apply' : 'accept';
+
+      logger.info(`ril.form.${formName}.started`, loggerObj);
+    } else if (path.indexOf('index') === -1 && path.indexOf('feedback') === -1) {
+
       var trackedPageStartTime = Number(req.sessionModel.get('ril.tracker.milliseconds'));
       var trackedPage = req.sessionModel.get('ril.tracker.page');
       var timeSpentOnPage = this.secondsSince(trackedPageStartTime);
-      logger.trace(`metrics page [${trackedPage}] duration [${timeSpentOnPage}] seconds`,
-          {sessionID: req.sessionID, path: req.path});
+
+      const metricsMsg = `metrics page [${trackedPage}] duration [${timeSpentOnPage}] seconds`;
+      logger.trace(metricsMsg, loggerObj);
+
       if (trackedPage) {
         pageDurationHistogram.labels(trackedPage).observe(timeSpentOnPage);
         pageDurationSummary.labels(trackedPage).observe(timeSpentOnPage);
-        visitorGauge.inc({user: req.sessionID, page: trackedPage, duration: timeSpentOnPage}, 1.0);
-        pageDurationGauge.set({page: trackedPage}, timeSpentOnPage);
+        visitorGauge.inc({ user: sessionID, page: trackedPage, duration: timeSpentOnPage }, 1.0);
+        pageDurationGauge.set({ page: trackedPage }, timeSpentOnPage);
       }
     }
-    if (req.path.includes('help-reasons')) {
-      logger.trace('ril.form.apply.assistance', {sessionID: req.sessionID, path: req.path});
+
+    if (path.includes('help-reasons')) {
+      logger.trace('ril.form.apply.assistance', loggerObj);
     }
-    if (req.path.includes('feedback')) {
-      logger.trace('ril.form.feedback', {sessionID: req.sessionID, path: req.path});
+
+    if (path.includes('feedback')) {
+      logger.trace('ril.form.feedback', loggerObj);
     }
-    req.sessionModel.set('ril.tracker.page', req.path);
+
+    req.sessionModel.set('ril.tracker.page', path);
     req.sessionModel.set('ril.tracker.milliseconds', Date.now());
     return super.locals(req, res);
   }
