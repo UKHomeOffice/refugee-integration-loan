@@ -30,9 +30,9 @@ module.exports = {
       logger.info(`ril.form.${application}.submit_form.save_pdf.successful with uuid: ${tempName}`);
       return file;
     } catch (err) {
-      logger.error(`ril.form.${application}.submit_form.save_pdf.error with uuid: ${tempName}`,
-          {errorMessage: err.message});
-      return Promise.reject(err);
+      const errObj = { errorMessage: err.message };
+      logger.error(`ril.form.${application}.submit_form.save_pdf.error with uuid: ${tempName}`, errObj);
+      return errorObj;
     }
   }
 };

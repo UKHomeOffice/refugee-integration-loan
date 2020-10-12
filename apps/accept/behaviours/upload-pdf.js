@@ -79,7 +79,7 @@ sendEmailWithAttachment(req, pdfFile) {
         logger.info('ril.form.accept.completed', loggerObj);
         logger.info(`ril.acceptance.submission.duration=[${timeSpentOnForm}] seconds`, loggerObj);
 
-        resolve();
+        return resolve();
 
       } catch (err) {
         const errorObj = Object.assign({}, loggerObj, { errorMessage: err.message });
@@ -87,7 +87,7 @@ sendEmailWithAttachment(req, pdfFile) {
 
         logger.error('ril.form.accept.submit_form.create_email_with_file_notify.error', errorObj);
         logger.error('ril.form.accept.error', errorObj);
-        reject();
+        return reject();
       } finally {
         this.deleteFile(req, pdfFile);
       }
@@ -123,12 +123,14 @@ sendEmailWithAttachment(req, pdfFile) {
   }
 
   createPDF(req, html) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const applicationUuid = uuid.v1();
       const file = pdfPuppeteer.generate(html, tempLocation, `${applicationUuid}.pdf`, 'accept');
       logger.info(`ril.form.accept.submit_form.create_pdf.successful with uuid: ${applicationUuid}`,
           { sessionID: req.sessionID, path: req.path });
-      return resolve(file);
+
+      const errorMessage = _.get(file, 'errorMessage');
+      return errorMessage ? reject(errorMessage) : resolve(file);
     });
   }
 

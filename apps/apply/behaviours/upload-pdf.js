@@ -77,15 +77,14 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
         logger.info(`ril.application.submission.duration=[${timeSpentOnForm}] seconds`, loggerObj);
 
         this.sendReceipt(req);
-        resolve();
-
+        return resolve();
       } catch (err) {
         const errorObj = Object.assign({}, loggerObj, { errorMessage: err.message });
         applicationErrorsGauge.inc({ component: 'application-form-email' }, 1.0);
 
         logger.error('ril.form.apply.submit_form.create_email_with_file_notify.error', errorObj);
         logger.error('ril.form.apply.error', errorObj);
-        reject();
+        return reject();
       } finally {
         this.deleteFile(req, pdfFile);
       }
@@ -115,9 +114,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
 
   readPdf(pdfFile) {
     return new Promise((resolve, reject) => {
-      fs.readFile(pdfFile, (err, data) => {
-        return err ? reject(err) : resolve(data);
-      });
+      fs.readFile(pdfFile, (err, data) => err ? reject(err) : resolve(data));
     });
   }
 
@@ -163,14 +160,15 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
   }
 
   createPDF(req, html) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const applicationUuid = uuid.v1();
       const file = pdfPuppeteer.generate(html, tempLocation, `${applicationUuid}.pdf`, 'apply');
 
       logger.info(`ril.form.apply.submit_form.create_pdf.successful with uuid: ${applicationUuid}`,
           { sessionID: req.sessionID, path: req.path });
 
-      resolve(file);
+      const errorMessage = _.get(file, 'errorMessage');
+      return errorMessage ? reject(errorMessage) : resolve(file);
     });
   }
 
