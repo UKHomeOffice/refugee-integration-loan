@@ -11,3 +11,10 @@ rules:
 
 parserOptions:
   ecmaVersion: 8
+
+overrides:
+  - files:
+      - "test/**/*.js"
+    rules:
+      implicit-dependencies/no-implicit: "off"
+      no-undef: "off"
