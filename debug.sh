@@ -7,4 +7,4 @@
 # sharing directiries between containers
 cp -r /app/public/* /public/
 
-node --inspect-brk=0.0.0.0 app.js
+node --inspect-brk=0.0.0.0 server.js
