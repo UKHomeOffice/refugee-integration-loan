@@ -19,13 +19,6 @@ module.exports = {
     templateEmailReceipt: process.env.TEMPLATE_EMAIL_RECEIPT,
     templateTextReceipt: process.env.TEMPLATE_TEXT_RECEIPT
   },
-  keycloak: {
-    tokenUrl: process.env.KEYCLOAK_TOKEN_URL,
-    username: process.env.KEYCLOAK_USERNAME,
-    password: process.env.KEYCLOAK_PASSWORD,
-    clientId: process.env.KEYCLOAK_CLIENT_ID,
-    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET
-  },
   logLevel: process.env.LOG_LEVEL || 'info',
   hofLogLevel: process.env.HOF_LOG_LEVEL || 'warn'
 };
