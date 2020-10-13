@@ -4,6 +4,7 @@ const LoopBehaviour = require('hof-behaviour-loop');
 const Loop = LoopBehaviour.Loop;
 const LoopSummary = LoopBehaviour.SummaryWithLoopItems;
 const UploadPDF = require('./behaviours/upload-pdf');
+const SummaryPage = require('hof-behaviour-summary-page');
 
 module.exports = {
   name: 'apply',
@@ -367,7 +368,7 @@ module.exports = {
       continueOnEdit: true
     },
     '/confirm': {
-      behaviours: ['complete', require('hof-behaviour-summary-page'), LoopSummary, UploadPDF],
+      behaviours: ['complete', SummaryPage, LoopSummary, UploadPDF],
       pdfSections: require('./sections/pdf-data-sections'),
       next: '/complete'
     },

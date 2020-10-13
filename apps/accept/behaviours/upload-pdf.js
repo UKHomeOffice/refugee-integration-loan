@@ -3,12 +3,10 @@
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
-const mix = require('mixwith').mix;
 const moment = require('moment');
 const config = require('../../../config');
 const logger = require('../../../lib/logger');
 const registry = require('prom-client').register;
-const summaryData = require('hof-behaviour-loop').SummaryWithLoopItems;
 const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
 const uuid = require('uuid');
 const NotifyClient = require('../../../lib/utilities').NotifyClient;
@@ -16,14 +14,14 @@ const NotifyClient = require('../../../lib/utilities').NotifyClient;
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
 const templateId = config.govukNotify.templateFormAccept;
 const notifyApiKey = config.govukNotify.notifyApiKey;
+const notifyClient = new NotifyClient(notifyApiKey);
 
-const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
+const acceptanceErrorsGauge = registry.getSingleMetric('ril_acceptance_errors_gauge');
 const acceptanceFormDurationGauge = registry.getSingleMetric('ril_acceptance_form_duration_gauge');
 
 const tempLocation = path.resolve(config.pdf.tempLocation);
-const notifyClient = new NotifyClient(notifyApiKey);
 
-module.exports = superclass => class extends mix(superclass).with(summaryData) {
+module.exports = superclass => class extends superclass {
 
   pdfLocals(req, res) {
     let sections = req.form.options.sections;
@@ -47,7 +45,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
       return super.successHandler(req, res, next);
     } catch (err) {
       logger.error('ril.form.accept.submit_form.error', loggerObj);
-      applicationErrorsGauge.inc({ component: 'acceptance-form-submission' }, 1.0);
+      acceptanceErrorsGauge.inc({ component: 'acceptance-form-submission' }, 1.0);
       return next(Error('There was an error sending your loan acceptance form'));
     }
   }
@@ -58,7 +56,7 @@ module.exports = superclass => class extends mix(superclass).with(summaryData) {
     });
   }
 
-sendEmailWithAttachment(req, pdfFile) {
+  sendEmailWithAttachment(req, pdfFile) {
     const loggerObj = { sessionID: req.sessionID, path: req.path };
 
     return new Promise(async(resolve, reject) => {
@@ -84,7 +82,7 @@ sendEmailWithAttachment(req, pdfFile) {
 
       } catch (err) {
         const errorObj = Object.assign({}, loggerObj, { errorMessage: err.message });
-        applicationErrorsGauge.inc({ component: 'email' }, 1.0);
+        acceptanceErrorsGauge.inc({ component: 'email' }, 1.0);
 
         logger.error('ril.form.accept.submit_form.create_email_with_file_notify.error', errorObj);
         logger.error('ril.form.accept.error', errorObj);
@@ -98,7 +96,7 @@ sendEmailWithAttachment(req, pdfFile) {
   deleteFile(req, fileToDelete) {
     fs.unlink(fileToDelete, (err) => {
       if (err) {
-        applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
+        acceptanceErrorsGauge.inc({ component: 'pdf' }, 1.0);
         logger.error(`ril.form.accept.submit_form.delete_pdf.error [${fileToDelete}]`,
           { errorMessage: err.message, sessionID: req.sessionID, path: req.path });
       } else {

@@ -7,10 +7,15 @@
     "start": "node app.js",
     "start:dev": "hof-build watch",
     "test": "npm run unit && npm run test:lint && npm audit --audit-level=high",
-    "unit": "LOG_LEVEL=error _mocha",
+    "unit": "NOTIFY_KEY=UNIT_TEST _mocha",
     "test:lint": "eslint .",
     "build": "hof-build",
     "postinstall": "npm run build"
+  },
+  "mocha": {
+    "reporter": "spec",
+    "require": "test/setup.js",
+    "recursive": "true"
   },
   "dependencies": {
     "aws-sdk": "2.167.0",
@@ -23,6 +28,7 @@
     "hof-behaviour-summary-page": "^3.3.0",
     "hof-build": "^2.0.0",
     "hof-component-date": "^1.4.0",
+    "hof-form-controller": "^6.1.2",
     "hof-model": "^3.1.0",
     "hof-template-mixins": "^5.2.1",
     "hof-template-partials": "^4.5.0",

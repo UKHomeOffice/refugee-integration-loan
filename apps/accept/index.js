@@ -1,6 +1,7 @@
 'use strict';
 
 const UploadPDF = require('./behaviours/upload-pdf');
+const LoopSummary = require('hof-behaviour-loop').SummaryWithLoopItems;
 
 module.exports = {
   name: 'accept',
@@ -15,7 +16,7 @@ module.exports = {
        next: '/confirm'
      },
      '/confirm': {
-       behaviours: ['complete', UploadPDF],
+       behaviours: ['complete', LoopSummary, UploadPDF],
        pdfSections: require('./sections/pdf-data-sections'),
        next: '/complete-acceptance'
      },

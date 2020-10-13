@@ -3,12 +3,10 @@
 const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
-const mix = require('mixwith').mix;
 const moment = require('moment');
 const registry = require('prom-client').register;
 const config = require('../../../config');
 const logger = require('../../../lib/logger');
-const summaryData = require('hof-behaviour-loop').SummaryWithLoopItems;
 const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
 const uuid = require('uuid');
 const NotifyClient = require('../../../lib/utilities').NotifyClient;
@@ -25,7 +23,7 @@ const notifyClient = new NotifyClient(notifyApiKey);
 const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
 const applicationFormDurationGauge = registry.getSingleMetric('ril_application_form_duration_gauge');
 
-module.exports = superclass => class extends mix(superclass).with(summaryData) {
+module.exports = superclass => class extends superclass {
 
   pdfLocals(req, res) {
     let sections = req.form.options.sections;
