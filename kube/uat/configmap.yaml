@@ -8,7 +8,7 @@ metadata:
 data:
   ENVIRONMENT: "UAT"
   COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
-  GA_ID: "UA-999999-1"
+  GA_TAG: "UA-178636922-1"
   NODE_ENV: "development"
   CASEWORKER_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
   FEEDBACK_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
