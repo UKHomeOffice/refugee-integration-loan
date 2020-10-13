@@ -28,7 +28,6 @@
     "hof-behaviour-summary-page": "^3.3.0",
     "hof-build": "^2.0.0",
     "hof-component-date": "^1.4.0",
-    "hof-form-controller": "^6.1.2",
     "hof-model": "^3.1.0",
     "hof-template-mixins": "^5.2.1",
     "hof-template-partials": "^4.5.0",
