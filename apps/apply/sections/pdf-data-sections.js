@@ -14,7 +14,9 @@ module.exports = {
       field: 'dateOfBirth',
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     },
-    'homeOfficeReference',
+    'homeOfficeReference'
+  ],
+  'other-names': [
     'otherNames'
   ],
   'pdf-partner-details': [
@@ -24,7 +26,9 @@ module.exports = {
     {
       field: 'partnerDateOfBirth',
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
-    },
+    }
+  ],
+  'partner-other-names': [
     'partnerOtherNames'
   ],
   'pdf-bank-account-details': [
@@ -96,7 +100,7 @@ module.exports = {
   ],
   'pdf-loan-details': [
     'amount',
-    'amountJoint',
+    'jointAmount',
     'purposeTypes',
   ],
   'pdf-address': [

@@ -61,7 +61,7 @@
     "header": "Has your partner been known by any other names?"
   },
   "partner-other-names": {
-    "header": "Other names",
+    "header": "Partner's other names",
     "delete-text": "Delete"
   },
   "partner-other-names-name": {
@@ -69,7 +69,7 @@
     "header": "Add another name"
   },
   "partner-other-names-add-another": {
-    "header": "Other names"
+    "header": "Partner's other names"
   },
   "convictions": {
     "header": "Have you ever been convicted of a crime in the UK?",
@@ -177,8 +177,17 @@
       "pdf-applicant-details": {
         "header" : "Applicant’s details"
       },
+      "other-names": {
+        "header": "Other names"
+      },
       "pdf-partner-details": {
         "header" : "Partner’s details"
+      },
+      "partner-other-names": {
+        "header": "Partner's other names"
+      },
+      "dependent-details": {
+        "header": "Your dependants"
       },
       "pdf-bank-account-details": {
         "header" : "Bank account details"

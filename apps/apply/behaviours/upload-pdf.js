@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const registry = require('prom-client').register;
+const translations = require('../translations/en/default.json');
 const config = require('../../../config');
 const logger = require('../../../lib/logger');
 const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
@@ -144,9 +145,11 @@ module.exports = superclass => class extends superclass {
   }
 
   async renderHTML(req, res) {
-    const locals = Object.assign({}, this.pdfLocals(req, res));
+    let locals = Object.assign({}, this.pdfLocals(req, res));
+    locals = this.sortSections(locals);
+
     locals.title = 'Refugee integration loan application';
-    locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
+    locals.dateTime = moment().format(config.dateTimeFormat);
     locals.values = req.sessionModel.toJSON();
     locals.htmlLang = res.locals.htmlLang || 'en';
 
@@ -156,6 +159,19 @@ module.exports = superclass => class extends superclass {
     return new Promise((resolve, reject) => {
       res.render('pdf.html', locals, (err, html) => err ? reject(err) : resolve(html));
     });
+  }
+
+  sortSections(locals) {
+    const sectionHeaders = Object.values(translations.pages.confirm.sections);
+    const orderedSections = _.map(sectionHeaders, obj => obj.header);
+    let rows = locals.rows;
+
+    rows = rows.slice().sort((a, b) => {
+      return orderedSections.indexOf(a.section) - orderedSections.indexOf(b.section);
+    });
+
+    locals.rows = rows;
+    return locals;
   }
 
   createPDF(req, html) {
