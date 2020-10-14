@@ -7,8 +7,12 @@ const moment = require('moment');
 const config = require('../../../config');
 const logger = require('../../../lib/logger');
 const registry = require('prom-client').register;
+<<<<<<< HEAD
 
 const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
+=======
+const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
+>>>>>>> cf9f821... RIL-153: Setup unit test file for puppeteer util
 const uuid = require('uuid');
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;

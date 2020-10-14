@@ -10,8 +10,12 @@ const config = require('../../../config');
 
 const DateUtilities = require('../../../lib/date-utilities');
 const logger = require('../../../lib/logger');
+<<<<<<< HEAD
 
 const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
+=======
+const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
+>>>>>>> cf9f821... RIL-153: Setup unit test file for puppeteer util
 const uuid = require('uuid');
 const NotifyClient = require('../../../lib/utilities').NotifyClient;
 
