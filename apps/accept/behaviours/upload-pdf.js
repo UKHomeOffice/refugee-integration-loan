@@ -109,7 +109,7 @@ module.exports = superclass => class extends superclass {
   async renderHTML(req, res) {
     const locals = Object.assign({}, this.pdfLocals(req, res));
     locals.title = 'Refugee integration loan acceptance';
-    locals.dateTime = moment().format(config.dateTimeFormat) + ' (GMT)';
+    locals.dateTime = moment().format(config.dateTimeFormat);
     locals.values = req.sessionModel.toJSON();
     locals.htmlLang = res.locals.htmlLang || 'en';
 
