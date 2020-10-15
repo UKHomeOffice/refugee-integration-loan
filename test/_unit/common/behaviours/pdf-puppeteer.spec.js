@@ -1,9 +1,10 @@
 /* eslint-disable max-nested-callbacks */
 'use strict';
 
+const { expect } = require('chai"';
+
 describe.only('pdf-puppeteer', () => {
   describe('generate', () => {
-    let puppeteerStub;
     let launchStub;
     let newPageStub;
     let setContentStub;
@@ -18,9 +19,11 @@ describe.only('pdf-puppeteer', () => {
     };
 
     const testHtml = '<html></html>';
+    const badHtml = '<p></p>';
     const testDestination = '.';
     const testTempName = 'Test.pdf';
     const testApplication = 'apply';
+    const errMsg = 'error';
 
     beforeEach(() => {
       closeStub = sinon.stub();
@@ -33,6 +36,10 @@ describe.only('pdf-puppeteer', () => {
       launchStub.withArgs(puppetLaunchArgs).resolves({
         newPage: newPageStub,
         close: closeStub});
+
+      setContentStub.withArgs(badHtml, {
+        waitUntil: 'networkidle0'
+      }).rejects({ message: errMsg });
 
       newPageStub.resolves({
         setContent: setContentStub,
@@ -92,7 +99,12 @@ describe.only('pdf-puppeteer', () => {
     it('returns file', async() => {
       const testFile = await pdfPuppeteerProxy.generate(testHtml, testDestination, testTempName, testApplication);
       expect(testFile).to.eql(`${testDestination}/${testTempName}`);
-    })
+    });
+
+    it('returns an object containing the error message if function fails', async() => {
+      const erroObj = await pdfPuppeteerProxy.generate(badHtml, testDestination, testTempName, testApplication);
+      expect(erroObj).to.eql({ errorMessage: errMsg });
+    });
 
   });
 });
