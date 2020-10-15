@@ -55,7 +55,7 @@ pipeline:
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
-      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/dev/configmap.yaml -f kube/dev/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/dev/deployment.yaml
     when:
@@ -71,7 +71,7 @@ pipeline:
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
-      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/branch/configmap.yaml -f kube/branch/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/branch/deployment.yaml
     when:
@@ -87,7 +87,7 @@ pipeline:
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
-      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/uat/configmap.yaml -f kube/uat/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/uat/deployment.yaml
     when:
@@ -103,7 +103,7 @@ pipeline:
       - KUBE_SERVER=https://kube-api-prod.prod.acp.homeoffice.gov.uk
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_PROD}
-      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/stg/configmap.yaml -f kube/stg/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/stg/deployment.yaml
     when:
@@ -119,7 +119,7 @@ pipeline:
       - KUBE_SERVER=https://kube-api-prod.prod.acp.homeoffice.gov.uk
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_PROD}
-      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/prod/configmap.yaml -f kube/prod/ingress-external.yaml -f kube/networkpolicy-external.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/prod/deployment.yaml
     when:
@@ -135,7 +135,7 @@ pipeline:
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
-      - kd --insecure-skip-tls-verify -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/branch/configmap.yaml -f kube/branch/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/branch/deployment.yaml
     when:
