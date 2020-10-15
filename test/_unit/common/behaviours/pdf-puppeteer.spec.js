@@ -1,9 +1,9 @@
 /* eslint-disable max-nested-callbacks */
 'use strict';
 
-const { expect } = require('chai"';
+const { expect } = require('chai');
 
-describe.only('pdf-puppeteer', () => {
+describe('pdf-puppeteer', () => {
   describe('generate', () => {
     let launchStub;
     let newPageStub;
