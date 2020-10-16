@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const registry = require('prom-client').register;
-const translations = require('../translations/en/default.json');
+const translations = require('../translations/en/default');
 const config = require('../../../config');
 
 const DateUtilities = require('../../../lib/date-utilities');
