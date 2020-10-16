@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions,max-nested-callbacks */
 'use strict';
 
-const Behaviour = require('../../../../../apps/accept/behaviours/upload-pdf.js');
+const Behaviour = require('../../../../../apps/apply/behaviours/upload-pdf.js');
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
 
@@ -11,13 +11,13 @@ const getProxyquireMixinInstance = (overrides, base) => {
 
     overrides['../../../lib/logger'] = {info: sinon.stub(), error: sinon.stub()};
 
-    const behaviour = proxyquire('../apps/accept/behaviours/upload-pdf', overrides);
+    const behaviour = proxyquire('../apps/apply/behaviours/upload-pdf', overrides);
 
     const Mixed = behaviour(base ? base : DefaultBase);
     return new Mixed();
 };
 
-describe('Accept Upload PDF Behaviour', () => {
+describe('apply Upload PDF Behaviour', () => {
     const mockData = '<html></html>';
     const mockPath = './pdf-form-submissions_test.pdf';
 
@@ -51,7 +51,7 @@ describe('Accept Upload PDF Behaviour', () => {
 
             const expectedTempName = 'abc123.pdf';
             result.should.eql(mockPath);
-            pdfPuppeteerMock.generate.withArgs(mockData, sinon.match.any, expectedTempName, 'accept')
+            pdfPuppeteerMock.generate.withArgs(mockData, sinon.match.any, expectedTempName, 'apply')
                 .calledOnce.should.be.true;
         });
 
@@ -73,7 +73,7 @@ describe('Accept Upload PDF Behaviour', () => {
         const configMock = {
             govukNotify: {
                 caseworkerEmail: 'mock-case-worker@example.org',
-                templateFormAccept: 'template-id',
+                templateFormApply: 'template-id',
                 notifyApiKey: 'mock-api-key'
             }
         };
@@ -112,7 +112,7 @@ describe('Accept Upload PDF Behaviour', () => {
         });
 
         it('should send the correct details to the email service and delete the pdf', async() => {
-            const req = request({ session: { loanReference: 'mockLoanReference' } });
+            const req = request({ session: { fullName: 'Jane Smith' } });
 
             const promClientMock = { register: { getSingleMetric: sinon.stub().returns({ inc: sinon.stub() }) } };
 
@@ -131,14 +131,14 @@ describe('Accept Upload PDF Behaviour', () => {
                         'file': 'base64-file',
                         'is_csv': false
                     },
-                    'name': 'mockLoanReference'
+                    'name': 'Jane Smith'
                 }
             };
 
             fsMock.readFile.withArgs(mockPath).should.be.calledOnce;
             prepareUploadStub.withArgs(mockData).should.be.calledOnce;
 
-            sendEmailStub.withArgs(configMock.govukNotify.templateFormAccept,
+            sendEmailStub.withArgs(configMock.govukNotify.templateFormApply,
                 configMock.govukNotify.caseworkerEmail,
                 expectedEmailContent).should.be.calledOnce;
 
@@ -152,9 +152,9 @@ describe('Accept Upload PDF Behaviour', () => {
             const durationGuageSpy = sinon.spy();
 
             const promClientMock = { register: { getSingleMetric: sinon.stub() } };
-            promClientMock.register.getSingleMetric.withArgs('ril_acceptance_errors_gauge')
+            promClientMock.register.getSingleMetric.withArgs('ril_application_errors_gauge')
                 .returns({ inc: errorsGuageSpy });
-            promClientMock.register.getSingleMetric.withArgs('ril_acceptance_form_duration_gauge').returns(
+            promClientMock.register.getSingleMetric.withArgs('ril_application_form_duration_gauge').returns(
                 { inc: durationGuageSpy });
 
             const instance = getProxyquireMixinInstance({
@@ -162,7 +162,9 @@ describe('Accept Upload PDF Behaviour', () => {
                 'prom-client': promClientMock,
                 '../../../lib/utilities': notifyClientMock,
                 '../../../config': configMock,
-                '../../../lib/date-utilities': { secondsBetween: sinon.stub().callsFake(a => a) }
+                '../../../lib/date-utilities': {
+                    secondsBetween: sinon.stub().callsFake(a => a)
+                }
             });
 
             await instance.sendEmailWithAttachment(req, mockPath);
@@ -178,7 +180,7 @@ describe('Accept Upload PDF Behaviour', () => {
 
             const errorsGuageSpy = sinon.spy();
             const promClientMock = { register: { getSingleMetric: sinon.stub() } };
-            promClientMock.register.getSingleMetric.withArgs('ril_acceptance_errors_gauge')
+            promClientMock.register.getSingleMetric.withArgs('ril_application_errors_gauge')
                 .returns({ inc: errorsGuageSpy });
 
             const instance = getProxyquireMixinInstance({
@@ -190,7 +192,7 @@ describe('Accept Upload PDF Behaviour', () => {
 
             await instance.sendEmailWithAttachment(req, mockPath).should.be.rejected;
 
-            errorsGuageSpy.withArgs({ component: 'email' }, 1.0).callCount.should.eql(1);
+            errorsGuageSpy.withArgs({ component: 'application-form-email' }, 1.0).callCount.should.eql(1);
         });
     });
 
@@ -208,7 +210,7 @@ describe('Accept Upload PDF Behaviour', () => {
         });
 
 
-        it('should send the correct locals to renderHTML', async() => {
+        it('should send the correct locals and ordered rows to renderHTML', async() => {
             const req = request({ form: { options: {} }, session: {} });
             const res = response({});
             res.render = sinon.stub().callsFake((template, values, cb) => {
@@ -216,30 +218,29 @@ describe('Accept Upload PDF Behaviour', () => {
                 }
             );
 
-            const expectedLocalsRows = [
+            const inputRows = [
                 {
-                    'section': 'pages.confirm.sections.pdf-applicant-details.header',
+                    'section': 'Criminal convictions',
                     'fields': [
                         {
-                            'label': 'Loan reference number',
-                            'changeLinkDescription': 'Loan reference number',
-                            'value': '12345',
-                            'step': '/reference-number',
-                            'field': 'loanReference'
-                        },
+                            'label': 'Have you ever been convicted of a crime in the UK?'
+                        }
+                    ]
+                },
+                {
+                    'section': 'Applicant’s details'
+                }
+            ];
+
+            const expectedRows = [
+                {
+                    'section': 'Applicant’s details'
+                },
+                {
+                    'section': 'Criminal convictions',
+                    'fields': [
                         {
-                            'label': 'Biometric residence permit (BRP) number',
-                            'changeLinkDescription': 'Biometric residence permit (BRP) number',
-                            'value': 'ZU1234567',
-                            'step': '/brp',
-                            'field': 'brpNumber'
-                        },
-                        {
-                            'label': 'Date of Birth',
-                            'changeLinkDescription': 'Date of Birth',
-                            'value': '1st January 1900',
-                            'step': '/brp',
-                            'field': 'dateOfBirth'
+                            'label': 'Have you ever been convicted of a crime in the UK?'
                         }
                     ]
                 }
@@ -248,13 +249,13 @@ describe('Accept Upload PDF Behaviour', () => {
             const mockLocals = {
                 'fields': [],
                 'route': 'confirm',
-                'baseUrl': '/accept',
-                'title': 'Accept your offer',
+                'baseUrl': '/apply',
+                'title': 'Check your answers before sending your application',
                 'intro': null,
-                'nextPage': '/accept/complete-acceptance',
-                'feedbackUrl': '/feedback?f_t=eyJiYXNlVXJsIjoiL2FjY2VwdCIsInBhdGgiOiIvY29uZmlybSIsInVybCI6Ii9hY2NlcHQ' +
-                    'vY29uZmlybSJ9',
-                'rows': expectedLocalsRows
+                'nextPage': '/apply/complete',
+                'feedbackUrl': '/feedback?f_t=eyJiYXNlVXJsIjoiL2FwcGx5IiwicGF0aCI6Ii9jb25maXJtIiwidXJsIjoiL2FwcGx5L2N' +
+                    'vbmZpcm0ifQ%3D%3D',
+                'rows': inputRows
             };
 
             const instance = getProxyquireMixinInstance({ 'fs': fsMock }, class {
@@ -270,26 +271,27 @@ describe('Accept Upload PDF Behaviour', () => {
             res.render.withArgs('pdf.html', sinon.match.object).should.be.calledOnce;
 
             const actualLocals = res.render.firstCall.args[1];
-            actualLocals.rows.should.eql(mockLocals.rows);
+            actualLocals.rows.should.eql(expectedRows);
             actualLocals.htmlLang.should.eql('en');
-            actualLocals.title.should.eql('Refugee integration loan acceptance');
+            actualLocals.title.should.eql('Refugee integration loan application');
         });
 
         it('should send the correct request details when getting locals', async() => {
             const req = request({
                 form: { options: {} }, session: {
-                    'csrf-secret': 'zRc1gk2KRlNhaZk2sBcyAMMJ',
-                    'session.started.timestamp': 1602671102496,
-                    'ril.tracker.page': '/confirm',
-                    'ril.tracker.milliseconds': 1602671277998,
-                    'errors': null,
-                    'loanReference': '12345',
-                    'steps': [
-                        '/reference-number',
-                        '/brp'
-                    ],
+                    'session.started.timestamp': 1602846406310,
+                    'previouslyApplied': 'no',
+                    'partner': 'no',
                     'brpNumber': 'ZU1234567',
-                    'dateOfBirth': '1980-02-01'
+                    'fullName': 'Fake Name',
+                    'dateOfBirth': '1920-12-20',
+                    'niNumber': 'JS123456C',
+                    'hasOtherNames': 'yes',
+                    'other-names-items': [
+                        {
+                            'otherNames': 'Jane Smith'
+                        }
+                    ],
                 }
             });
 
@@ -299,7 +301,7 @@ describe('Accept Upload PDF Behaviour', () => {
                 }
             );
 
-            const localsStub = sinon.stub().returns({});
+            const localsStub = sinon.stub().returns({'rows': []});
             const instance = getProxyquireMixinInstance({ 'fs': fsMock }, class {
                 locals(...args) {
                     return localsStub(...args);
@@ -363,7 +365,7 @@ describe('Accept Upload PDF Behaviour', () => {
             const errorsGuageSpy = sinon.spy();
 
             const promClientMock = { register: { getSingleMetric: sinon.stub() } };
-            promClientMock.register.getSingleMetric.withArgs('ril_acceptance_errors_gauge')
+            promClientMock.register.getSingleMetric.withArgs('ril_application_errors_gauge')
                 .returns({ inc: errorsGuageSpy });
 
             const instance = getProxyquireMixinInstance({ 'prom-client': promClientMock });
@@ -372,7 +374,7 @@ describe('Accept Upload PDF Behaviour', () => {
 
             await instance.successHandler({}, {}, next);
 
-            errorsGuageSpy.withArgs({ component: 'acceptance-form-submission' }, 1.0).should.be.calledOnce;
+            errorsGuageSpy.withArgs({ component: 'application-form-submission' }, 1.0).should.be.calledOnce;
             next.withArgs(sinon.match.instanceOf(Error)).should.be.calledOnce;
         });
     });
