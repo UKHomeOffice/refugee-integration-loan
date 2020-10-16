@@ -7,16 +7,18 @@ const moment = require('moment');
 const config = require('../../../config');
 const logger = require('../../../lib/logger');
 const registry = require('prom-client').register;
+
 const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
 const uuid = require('uuid');
-const NotifyClient = require('../../../lib/utilities').NotifyClient;
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;
 const templateId = config.govukNotify.templateFormAccept;
 const notifyApiKey = config.govukNotify.notifyApiKey;
+const NotifyClient = require('../../../lib/utilities').NotifyClient;
 const notifyClient = new NotifyClient(notifyApiKey);
 
 const acceptanceErrorsGauge = registry.getSingleMetric('ril_acceptance_errors_gauge');
+const DateUtilities = require('../../../lib/date-utilities');
 const acceptanceFormDurationGauge = registry.getSingleMetric('ril_acceptance_form_duration_gauge');
 
 const tempLocation = path.resolve(config.pdf.tempLocation);
@@ -37,8 +39,8 @@ module.exports = superclass => class extends superclass {
     const loggerObj = { sessionID: req.sessionID, path: req.path };
 
     try {
-      var html = await this.renderHTML(req, res);
-      var pdfFile = await this.createPDF(req, html);
+      const html = await this.renderHTML(req, res);
+      const pdfFile = await this.createPDF(req, html);
       await this.sendEmailWithAttachment(req, pdfFile);
 
       logger.info('ril.form.accept.submit_form.successful', loggerObj);
@@ -61,7 +63,7 @@ module.exports = superclass => class extends superclass {
 
     return new Promise(async(resolve, reject) => {
       try {
-        var data = await this.readPdf(pdfFile);
+        const data = await this.readPdf(pdfFile);
 
         await notifyClient.sendEmail(templateId, caseworkerEmail, {
           personalisation: {
@@ -70,8 +72,8 @@ module.exports = superclass => class extends superclass {
           }
         });
 
-        var trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
-        var timeSpentOnForm = this.secondsSince(trackedPageStartTime);
+        const trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
+        const timeSpentOnForm = DateUtilities.secondsBetween(trackedPageStartTime, new Date());
         acceptanceFormDurationGauge.inc(timeSpentOnForm);
 
         logger.info('ril.form.accept.submit_form.create_email_with_file_notify.successful', loggerObj);

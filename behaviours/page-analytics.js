@@ -10,6 +10,7 @@ const pageDurationSummary = registry.getSingleMetric('ril_application_page_durat
 const pageDurationGauge = registry.getSingleMetric('ril_page_duration_gauge');
 
 const logger = require('../lib/logger');
+const DateUtilities = require('../lib/date-utilities');
 
 // Store a a fastest and slowest duration (time-on-page) for each page
 // Store the average duration for each page
@@ -30,14 +31,15 @@ module.exports = superclass => class Behaviour extends superclass {
       visitorDeviceGauge.inc({ device: req.headers['user-agent'] }, 1.0);
 
       req.sessionModel.set('session.started.timestamp', Date.now());
-      var formName = path.includes('previously-applied') ? 'apply' : 'accept';
+
+      const formName = path.includes('previously-applied') ? 'apply' : 'accept';
 
       logger.info(`ril.form.${formName}.started`, loggerObj);
     } else if (path.indexOf('index') === -1 && path.indexOf('feedback') === -1) {
 
-      var trackedPageStartTime = Number(req.sessionModel.get('ril.tracker.milliseconds'));
-      var trackedPage = req.sessionModel.get('ril.tracker.page');
-      var timeSpentOnPage = this.secondsSince(trackedPageStartTime);
+      const trackedPageStartTime = Number(req.sessionModel.get('ril.tracker.milliseconds'));
+      const trackedPage = req.sessionModel.get('ril.tracker.page');
+      const timeSpentOnPage = DateUtilities.secondsBetween(trackedPageStartTime, new Date());
 
       const metricsMsg = `metrics page [${trackedPage}] duration [${timeSpentOnPage}] seconds`;
       logger.trace(metricsMsg, loggerObj);
@@ -61,12 +63,5 @@ module.exports = superclass => class Behaviour extends superclass {
     req.sessionModel.set('ril.tracker.page', path);
     req.sessionModel.set('ril.tracker.milliseconds', Date.now());
     return super.locals(req, res);
-  }
-
-  secondsSince(startDate) {
-    var now = new Date();
-    var dif = now - startDate;
-    var secondsFromStartToNow = dif / 1000;
-    return Math.abs(secondsFromStartToNow);
   }
 };
