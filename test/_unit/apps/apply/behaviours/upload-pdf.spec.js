@@ -9,7 +9,7 @@ const getProxyquireMixinInstance = (overrides, base) => {
     class DefaultBase {
     }
 
-    overrides['../../../lib/logger'] = {info: sinon.stub(), error: sinon.stub()};
+    overrides['../../../lib/logger'] = { info: sinon.stub(), error: sinon.stub() };
 
     const behaviour = proxyquire('../apps/apply/behaviours/upload-pdf', overrides);
 
@@ -246,6 +246,23 @@ describe('apply Upload PDF Behaviour', () => {
                 }
             ];
 
+            const orderedSections = {
+                translations: {
+                    pages: {
+                        confirm: {
+                            sections: {
+                                'pdf-applicant-det«ils': {
+                                    'header': 'Applicant’s details'
+                                },
+                                'pdf-conviction-details': {
+                                    'header': 'Criminal convictions'
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
             const mockLocals = {
                 'fields': [],
                 'route': 'confirm',
@@ -258,7 +275,9 @@ describe('apply Upload PDF Behaviour', () => {
                 'rows': inputRows
             };
 
-            const instance = getProxyquireMixinInstance({ 'fs': fsMock }, class {
+            const instance = getProxyquireMixinInstance({
+                'fs': fsMock,
+                '../translations/en/default.json': orderedSections}, class {
                 // eslint-disable-next-line no-unused-vars,no-shadow
                 locals(req, res) {
                     return mockLocals;
@@ -301,7 +320,7 @@ describe('apply Upload PDF Behaviour', () => {
                 }
             );
 
-            const localsStub = sinon.stub().returns({'rows': []});
+            const localsStub = sinon.stub().returns({ 'rows': [] });
             const instance = getProxyquireMixinInstance({ 'fs': fsMock }, class {
                 locals(...args) {
                     return localsStub(...args);
@@ -379,3 +398,5 @@ describe('apply Upload PDF Behaviour', () => {
         });
     });
 });
+
+
