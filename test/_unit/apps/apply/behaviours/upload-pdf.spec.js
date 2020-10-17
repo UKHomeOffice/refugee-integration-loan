@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions,max-nested-callbacks */
 'use strict';
 
-const Behaviour = require('../../../../../apps/apply/behaviours/upload-pdf.js');
+// const Behaviour = require('../../../../../apps/apply/behaviours/upload-pdf.js');
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
 
@@ -10,6 +10,9 @@ const getProxyquireMixinInstance = (overrides, base) => {
     }
 
     overrides['../../../lib/logger'] = { info: sinon.stub(), error: sinon.stub() };
+
+    overrides['../translations/en/default.json'] = overrides['../translations/en/default.json'] ||
+        { pages: { confirm: { sections: {} } }, '@noCallThru': true };
 
     const behaviour = proxyquire('../apps/apply/behaviours/upload-pdf', overrides);
 
@@ -22,15 +25,22 @@ describe('apply Upload PDF Behaviour', () => {
     const mockPath = './pdf-form-submissions_test.pdf';
 
     it('exports a function', () => {
-        expect(Behaviour).to.be.a('function');
+        expect(proxyquire('../apps/apply/behaviours/upload-pdf',
+            { '../translations/en/default.json': { pages: { confirm: { sections: {} } }, '@noCallThru': true } }
+        )).to.be.a('function');
     });
+
 
     describe('initialisation', () => {
         it('returns a mixin', () => {
             class Base {
             }
 
-            const Mixed = Behaviour(Base);
+            const proxiedBehaviour = proxyquire('../apps/apply/behaviours/upload-pdf',
+                { '../translations/en/default.json': { pages: { confirm: { sections: {} } }, '@noCallThru': true } }
+            );
+
+            const Mixed = proxiedBehaviour(Base);
             expect(new Mixed()).to.be.an.instanceOf(Base);
         });
     });
@@ -247,20 +257,19 @@ describe('apply Upload PDF Behaviour', () => {
             ];
 
             const orderedSections = {
-                translations: {
-                    pages: {
-                        confirm: {
-                            sections: {
-                                'pdf-applicant-det«ils': {
-                                    'header': 'Applicant’s details'
-                                },
-                                'pdf-conviction-details': {
-                                    'header': 'Criminal convictions'
-                                }
+                pages: {
+                    confirm: {
+                        sections: {
+                            'pdf-applicant-det«ils': {
+                                'header': 'Applicant’s details'
+                            },
+                            'pdf-conviction-details': {
+                                'header': 'Criminal convictions'
                             }
                         }
-                    }
-                }
+                    },
+                },
+                '@noCallThru': true
             };
 
             const mockLocals = {
@@ -277,7 +286,8 @@ describe('apply Upload PDF Behaviour', () => {
 
             const instance = getProxyquireMixinInstance({
                 'fs': fsMock,
-                '../translations/en/default.json': orderedSections}, class {
+                '../translations/en/default.json': orderedSections
+            }, class {
                 // eslint-disable-next-line no-unused-vars,no-shadow
                 locals(req, res) {
                     return mockLocals;
