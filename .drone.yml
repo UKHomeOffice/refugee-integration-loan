@@ -2,6 +2,8 @@ pipeline:
 
   unit_test:
     image: node
+    environment:
+      - NOTIFY_KEY=USE_MOCK
     commands:
       - npm install
       - npm test
