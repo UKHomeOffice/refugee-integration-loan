@@ -8,7 +8,7 @@ describe('pdf-puppeteer', () => {
     let launchStub;
     let newPageStub;
     let setContentStub;
-    let emulateMediaStub;
+    let emulateMediaTypeStub;
     let pdfStub;
     let pdfPuppeteerProxy;
     let closeStub;
@@ -28,7 +28,7 @@ describe('pdf-puppeteer', () => {
     beforeEach(() => {
       closeStub = sinon.stub();
       pdfStub = sinon.stub();
-      emulateMediaStub = sinon.stub();
+      emulateMediaTypeStub = sinon.stub();
       setContentStub = sinon.stub();
       newPageStub = sinon.stub();
       launchStub = sinon.stub();
@@ -43,7 +43,7 @@ describe('pdf-puppeteer', () => {
 
       newPageStub.resolves({
         setContent: setContentStub,
-        emulateMedia: emulateMediaStub,
+        emulateMediaType: emulateMediaTypeStub,
         pdf: pdfStub,
         });
 
@@ -76,9 +76,9 @@ describe('pdf-puppeteer', () => {
       });
     });
 
-    it('calls emulateMedia', async() => {
+    it('calls emulateMediaType', async() => {
       await pdfPuppeteerProxy.generate(testHtml, testDestination, testTempName, testApplication);
-      emulateMediaStub.should.have.been.calledOnce.calledWithExactly('screen');
+      emulateMediaTypeStub.should.have.been.calledOnce.calledWithExactly('screen');
     });
 
     it('calls pdf', async() => {
