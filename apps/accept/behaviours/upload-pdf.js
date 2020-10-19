@@ -7,8 +7,7 @@ const moment = require('moment');
 const config = require('../../../config');
 const logger = require('../../../lib/logger');
 const registry = require('prom-client').register;
-
-const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
+const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
 const uuid = require('uuid');
 
 const caseworkerEmail = config.govukNotify.caseworkerEmail;

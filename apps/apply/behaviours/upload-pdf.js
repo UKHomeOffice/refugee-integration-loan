@@ -10,8 +10,7 @@ const config = require('../../../config');
 
 const DateUtilities = require('../../../lib/date-utilities');
 const logger = require('../../../lib/logger');
-
-const pdfPuppeteer = require('../../common/behaviours/util/pdf-puppeteer');
+const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
 const uuid = require('uuid');
 const NotifyClient = require('../../../lib/utilities').NotifyClient;
 

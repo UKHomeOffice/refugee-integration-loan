@@ -1,7 +1,7 @@
 'use strict';
 /* eslint-disable no-console */
 const puppeteer = require('puppeteer');
-const logger = require('../../../../lib/logger');
+const logger = require('../../../lib/logger');
 
 module.exports = {
   generate: async(html, destination, tempName, application) => {
