@@ -1,8 +1,8 @@
+/* eslint no-process-env: 0 */
 'use strict';
 
-/* eslint no-process-env: 0 */
-
 module.exports = {
+  nodeEnv: process.env.NODE_ENV,
   DATE_FORMAT: 'YYYY-MM-DD',
   PRETTY_DATE_FORMAT: 'Do MMMM YYYY',
   dateTimeFormat: 'DD MMM YYYY HH:mm:ss',

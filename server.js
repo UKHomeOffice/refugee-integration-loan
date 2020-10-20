@@ -1,10 +1,8 @@
 'use strict';
 
 const logger = require('./lib/logger');
-
 const hof = require('hof');
 const metrics = require('./lib/metrics');
-
 const config = require('./config');
 
 const app = hof({
@@ -41,4 +39,22 @@ app.use((req, res, next) => {
 
 app.use('/insight', metrics());
 
+if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
+  app.use('/test/bootstrap-session', (req, res) => {
+    const appName = req.body.appName;
+
+    if (!req.session[`hof-wizard-${appName}`]) {
+      req.session[`hof-wizard-${appName}`] = {};
+    }
+
+    Object.keys(req.body.sessionProperties || {}).forEach((key) => {
+      req.session[`hof-wizard-${appName}`][key] = req.body.sessionProperties[key];
+    });
+
+    res.send('Session populate complete');
+  });
+}
+
 logger.info('RIL application started');
+
+module.exports = app;
