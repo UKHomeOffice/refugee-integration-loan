@@ -131,7 +131,7 @@ describe('Accept Upload PDF Behaviour', () => {
                         'file': 'base64-file',
                         'is_csv': false
                     },
-                    'name': 'mockLoanReference'
+                    'loan reference': 'mockLoanReference'
                 }
             };
 
