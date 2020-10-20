@@ -53,7 +53,7 @@ describe('apply Upload PDF Behaviour', () => {
 
             const instance = getProxyquireMixinInstance(
                 {
-                    '../../common/behaviours/util/pdf-puppeteer': pdfPuppeteerMock,
+                    '../../common/behaviours/pdf-puppeteer': pdfPuppeteerMock,
                     'uuid': { v1: sinon.stub().returns('abc123') }
                 });
 
@@ -408,5 +408,3 @@ describe('apply Upload PDF Behaviour', () => {
         });
     });
 });
-
-

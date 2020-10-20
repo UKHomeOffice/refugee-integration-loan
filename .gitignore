@@ -7,3 +7,4 @@ public/
 apps/apply/translations/en
 apps/accept/translations/en
 coverage
+.nyc_output
