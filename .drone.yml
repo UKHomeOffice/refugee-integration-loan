@@ -1,9 +1,14 @@
 pipeline:
+  services:
+    name: session
+    image: redis
+    detach: true
 
-  unit_test:
+  test:
     image: node
     environment:
       - NOTIFY_KEY=USE_MOCK
+      - REDIS_HOST=session
     commands:
       - npm install
       - npm test

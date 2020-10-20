@@ -4,6 +4,7 @@ const logger = require('./lib/logger');
 const hof = require('hof');
 const metrics = require('./lib/metrics');
 const config = require('./config');
+const _ = require('lodash');
 
 const app = hof({
   build: {
@@ -43,7 +44,10 @@ if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
   app.use('/test/bootstrap-session', (req, res) => {
     const appName = req.body.appName;
 
-    if (!req.session[`hof-wizard-${appName}`]) {
+    if (!_.get(req, 'session[`hof-wizard-${appName}`]')) {
+      if (!req.session) {
+        throw new Error('Redis is not running!');
+      }
       req.session[`hof-wizard-${appName}`] = {};
     }
 
