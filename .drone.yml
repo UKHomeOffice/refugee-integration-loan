@@ -5,7 +5,7 @@ type: kubernetes
 
 steps:
 
-  - name: unit_test
+  - name: test
     pull: if-not-exists
     image: node
     environment:
