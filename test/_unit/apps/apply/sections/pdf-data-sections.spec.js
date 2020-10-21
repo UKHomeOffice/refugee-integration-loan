@@ -4,8 +4,13 @@ const _ = require('lodash');
 const { expect } = require('chai');
 const pdfDataSections = require('../../../../../apps/apply/sections/pdf-data-sections');
 const pages = require('../../../../../apps/apply/translations/src/en/pages.json');
+const fields = require('../../../../../apps/apply/fields/index');
 
 describe('pdfDataSections', () => {
+  const containsAll = (arr1, arr2) => {
+    return arr2.every(i => arr1.includes(i));
+  };
+
   it('pdfDataSections and section keys within pages are identical', () => {
     const pdfDataSectionsKeys = Object.keys(pdfDataSections).sort();
     const pagesSectionsKeys = Object.keys(pages.confirm.sections).sort();
@@ -14,11 +19,6 @@ describe('pdfDataSections', () => {
   });
 
   describe('pdfDataSections has the correct fields', () => {
-    const containsAll = (currentFields, expectedFields) => {
-      return expectedFields.every(i => currentFields.includes(i));
-    };
-
-
     it('pdf-applicant-details', () => {
       expect(containsAll(
         pdfDataSections['pdf-applicant-details'],
@@ -218,6 +218,128 @@ describe('pdfDataSections', () => {
           'joint'
         ]
       )).to.eql(true);
+    });
+  });
+
+  describe('fields file contains the pdfDataSections fields', () => {
+    it('pdf-applicant-details', () => {
+      pdfDataSections['pdf-applicant-details'].every(i => {
+        if (typeof i === 'string') {
+          return Object.keys(fields).includes(i);
+        }
+          return Object.keys(fields).includes(i.field);
+      });
+    });
+
+    it('other-names', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['other-names'])
+        ).to.eql(true);
+    });
+
+    it('pdf-partner-details', () => {
+      pdfDataSections['pdf-partner-details'].every(i => {
+        if (typeof i === 'string') {
+          return Object.keys(fields).includes(i);
+        }
+        return Object.keys(fields).includes(i.field);
+      });
+    });
+
+    it('partner-other-names', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['partner-other-names'])
+      ).to.eql(true);
+    });
+
+    it('pdf-bank-account-details', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-bank-account-details'])
+      ).to.eql(true);
+    });
+
+    it('pdf-conviction-details', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-conviction-details'])
+      ).to.eql(true);
+    });
+
+    it('pdf-income', () => {
+      pdfDataSections['pdf-income'].every(i => {
+        if (typeof i === 'string') {
+          return Object.keys(fields).includes(i);
+        }
+        return Object.keys(fields).includes(i.derivation.fromFields);
+      });
+    });
+
+    it('pdf-outgoings', () => {
+      pdfDataSections['pdf-outgoings'].every(i => {
+        if (typeof i === 'string') {
+          return Object.keys(fields).includes(i);
+        }
+        return Object.keys(fields).includes(i.derivation.fromFields);
+      });
+    });
+
+    it('pdf-savings', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-savings'])
+      ).to.eql(true);
+    });
+
+    it('pdf-loan-details', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-loan-details'])
+      ).to.eql(true);
+    });
+
+    it('pdf-address', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-address'])
+      ).to.eql(true);
+    });
+
+    it('pdf-contact-details', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-contact-details'])
+      ).to.eql(true);
+    });
+
+    it('dependent-details', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['dependent-details'])
+      ).to.eql(true);
+    });
+
+    it('pdf-outcome', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-outcome'])
+      ).to.eql(true);
+    });
+
+    it('pdf-help', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-help'])
+      ).to.eql(true);
+    });
+
+    it('pdf-other', () => {
+      expect(containsAll(
+        Object.keys(fields),
+        pdfDataSections['pdf-other'])
+      ).to.eql(true);
     });
   });
 });
