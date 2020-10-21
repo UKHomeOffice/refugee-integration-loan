@@ -1,6 +1,7 @@
 /* eslint no-process-env: 0 */
 'use strict';
 
+process.env.PORT = 9080;
 process.env.NODE_ENV = 'test';
 process.env.NOTIFY_KEY = 'UNIT_TEST';
 

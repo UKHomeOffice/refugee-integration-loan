@@ -8,7 +8,7 @@ describe('the journey of a person who has previously applied', () => {
 
   const SUBAPP = 'apply';
 
-  beforeEach(function setup() {
+  before(function setup() {
     this.timeout(4000);
     testApp = utils.getSupertestApp();
 
