@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
 const registry = require('prom-client').register;
-const translations = require('../translations/en/default.json');
+const pages = require('../translations/src/en/pages.json');
 const config = require('../../../config');
 
 const DateUtilities = require('../../../lib/date-utilities');
@@ -157,7 +157,7 @@ module.exports = superclass => class extends superclass {
   }
 
   sortSections(locals) {
-    const sectionHeaders = Object.values(translations.pages.confirm.sections);
+    const sectionHeaders = Object.values(pages.confirm.sections);
     const orderedSections = _.map(sectionHeaders, obj => obj.header);
     let rows = locals.rows;
 

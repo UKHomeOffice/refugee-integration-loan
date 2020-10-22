@@ -67,7 +67,7 @@ module.exports = superclass => class extends superclass {
         await notifyClient.sendEmail(templateId, caseworkerEmail, {
           personalisation: {
             'form id': notifyClient.prepareUpload(data),
-            'name': req.sessionModel.get('loanReference')
+            'loan reference': req.sessionModel.get('loanReference')
           }
         });
 

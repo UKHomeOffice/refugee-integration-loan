@@ -1,11 +1,10 @@
 'use strict';
 
 const logger = require('./lib/logger');
-
 const hof = require('hof');
 const metrics = require('./lib/metrics');
-
 const config = require('./config');
+const _ = require('lodash');
 
 const app = hof({
   build: {
@@ -41,4 +40,25 @@ app.use((req, res, next) => {
 
 app.use('/insight', metrics());
 
+if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
+  app.use('/test/bootstrap-session', (req, res) => {
+    const appName = req.body.appName;
+
+    if (!_.get(req, 'session[`hof-wizard-${appName}`]')) {
+      if (!req.session) {
+        throw new Error('Redis is not running!');
+      }
+      req.session[`hof-wizard-${appName}`] = {};
+    }
+
+    Object.keys(req.body.sessionProperties || {}).forEach((key) => {
+      req.session[`hof-wizard-${appName}`][key] = req.body.sessionProperties[key];
+    });
+
+    res.send('Session populate complete');
+  });
+}
+
 logger.info('RIL application started');
+
+module.exports = app;
