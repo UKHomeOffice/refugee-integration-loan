@@ -184,7 +184,7 @@ steps:
       template: "BUILD on {{build.event}} of RIL - {{build.branch}} has {{build.status}} - <{{build.link}}|#{{build.number}}> {{#success build.status}}\n  :thumbsup: :thumbsup: :thumbsup:\n{{else}}\n  :x: :x: :x:\n{{/success}} Author: {{build.author}}\n\nDuration: {{since job.started}}\\n\n\nJob: <{{build.link}}|#{{build.number}}>\\n\n\nCommit: {{build.commit}}\n"
       username: Drone
       webhook:
-        from_secret: SLACK_WEBHOOK
+        from_secret: slack_webhook
     when:
       branch: master
       event: push
@@ -200,8 +200,8 @@ steps:
       icon.url: http://readme.drone.io/0.5/logo_dark.svg
       template: "DEPLOY to {{build.deployTo}} of RIL has {{build.status}} - <{{build.link}}|#{{build.number}}> {{#success build.status}}\n  :thumbsup: :thumbsup: :thumbsup:\n{{else}}\n  :x: :x: :x:\n{{/success}} Author: {{build.author}}\n\nDuration: {{since job.started}}\n\nJob: <{{build.link}}|#{{build.number}}>\n\nCommit: {{build.commit}}\n"
       username: Drone
-      webook:
-        from_secret: SLACK_WEBHOOK
+      webhook:
+        from_secret: slack_webhook
     when:
       event: promote
       status: [ success, failure ]
