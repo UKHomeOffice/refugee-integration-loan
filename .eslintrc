@@ -18,3 +18,4 @@ overrides:
     rules:
       implicit-dependencies/no-implicit: "off"
       no-undef: "off"
+      no-unused-expressions: "off"

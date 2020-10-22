@@ -10,10 +10,9 @@ describe('the journey of a joint apply application', () => {
 
   before(function setup() {
     this.timeout(4000);
-    testApp = utils.getSupertestApp();
-
-    passStep = (uri, data) => utils.passStep(testApp, `/${SUBAPP}${uri}`, data);
-    initSession = (uri, options) => utils.initSession(testApp, SUBAPP, uri, options);
+    testApp = getSupertestApp(SUBAPP);
+    passStep = testApp.passStep;
+    initSession = testApp.initSession;
   });
 
   it('has a happy path when the user starts on the index page', async() => {

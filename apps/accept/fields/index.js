@@ -2,6 +2,8 @@
 
 const dateComponent = require('hof-component-date');
 
+const after1900Validator = { type: 'after', arguments: ['1900'] };
+
 module.exports = {
   loanReference: {
     validate: 'required'
@@ -11,6 +13,6 @@ module.exports = {
     formatter: ['uppercase']
   },
   dateOfBirth: dateComponent('dateOfBirth', {
-    validate: ['required', 'before']
+    validate: ['required', 'before', after1900Validator]
   })
 };

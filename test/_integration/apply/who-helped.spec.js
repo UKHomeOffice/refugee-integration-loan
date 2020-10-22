@@ -10,10 +10,9 @@ describe('the journey of a single person with no dependents apply application', 
 
   before(function setup() {
     this.timeout(4000);
-    testApp = utils.getSupertestApp();
-
-    passStep = (uri, data) => utils.passStep(testApp, `/${SUBAPP}${uri}`, data);
-    initSession = (uri, options) => utils.initSession(testApp, SUBAPP, uri, options);
+    testApp = getSupertestApp(SUBAPP);
+    passStep = testApp.passStep;
+    initSession = testApp.initSession;
   });
 
   it('goes to the Confirm page if a user has not had help', async() => {

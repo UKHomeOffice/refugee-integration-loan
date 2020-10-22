@@ -10,10 +10,9 @@ describe('the journey of a person who has previously applied', () => {
 
   before(function setup() {
     this.timeout(4000);
-    testApp = utils.getSupertestApp();
-
-    passStep = (uri, data) => utils.passStep(testApp, `/${SUBAPP}${uri}`, data);
-    initSession = (uri, options) => utils.initSession(testApp, SUBAPP, uri, options);
+    testApp = getSupertestApp(SUBAPP);
+    passStep = testApp.passStep;
+    initSession = testApp.initSession;
   });
 
   it('goes to the previously applied page after the index page', async() => {

@@ -10,10 +10,9 @@ describe('the journey of a single or joint accept application', () => {
 
   before(function setup() {
     this.timeout(4000);
-    testApp = utils.getSupertestApp();
-
-    passStep = (uri, data) => utils.passStep(testApp, `/${SUBAPP}${uri}`, data);
-    initSession = (uri, options) => utils.initSession(testApp, SUBAPP, uri, options);
+    testApp = getSupertestApp(SUBAPP);
+    passStep = testApp.passStep;
+    initSession = testApp.initSession;
   });
 
   it('goes to the BRP page when a user submits a loan reference number', async() => {
