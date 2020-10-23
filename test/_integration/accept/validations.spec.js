@@ -13,7 +13,7 @@ describe('validation checks of the accept journey', () => {
   const SUBAPP = 'accept';
   const now = moment();
 
-  beforeEach(function setup() {
+  before(function setup() {
     this.timeout(4000);
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
