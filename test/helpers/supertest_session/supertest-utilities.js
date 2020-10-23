@@ -116,9 +116,16 @@ function getRedirection(app, expectedStatus, previousResponse) {
   return getUrl(app, parse302(previousResponse), expectedStatus);
 }
 
-function getSupertestApp() {
+function getSupertestApp(subAppName) {
   const app = require('../../../server');
-  return supertestSession(app.server);
+  const testApp = supertestSession(app.server);
+
+  return {
+    passStep: (uri, data) => passStep(testApp, `/${subAppName}${uri}`, data),
+    getUrl: uri => getUrl(testApp, `/${subAppName}${uri}`, 200),
+    parseHtml: res => parseHtml(res),
+    initSession: (uri, options) => initSession(testApp, subAppName, uri, options)
+  };
 }
 
 module.exports = {

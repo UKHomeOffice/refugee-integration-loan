@@ -171,7 +171,7 @@
     "default": "Enter total Universal Credit deductions amount per month"
   },
   "combinedUniversalCreditDeductionsAmount": {
-    "default": "Enter total Universal Credit deductions per month"
+    "default": "Enter total Universal Credit deductions amount per month"
   },
   "otherOutgoingAmount": {
     "default": "Enter total other outgoings per month"

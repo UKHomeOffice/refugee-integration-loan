@@ -16,7 +16,9 @@ global.proxyquire = require('proxyquire');
 global.path = require('path');
 global.config = require('../config');
 global._ = require('lodash');
-global.utils = require('./helpers/supertest_session/supertest-utilities.js');
+
+const utils = require('./helpers/supertest_session/supertest-utilities.js');
+global.getSupertestApp = subApp => utils.getSupertestApp(subApp);
 
 process.setMaxListeners(0);
 process.stdout.setMaxListeners(0);
