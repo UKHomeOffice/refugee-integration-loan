@@ -12,6 +12,7 @@ steps:
       NOTIFY_KEY: USE_MOCK
     commands:
       - npm install
+      - npm run build
       - npm test
     when:
       branch: [ master, development ]
