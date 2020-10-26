@@ -9,7 +9,6 @@ describe('the journey of a single or joint accept application', () => {
   const SUBAPP = 'accept';
 
   before(function setup() {
-    this.timeout(4000);
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
     initSession = testApp.initSession;

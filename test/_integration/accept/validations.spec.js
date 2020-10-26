@@ -14,7 +14,6 @@ describe('validation checks of the accept journey', () => {
   const now = moment();
 
   before(function setup() {
-    this.timeout(4000);
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
     initSession = testApp.initSession;

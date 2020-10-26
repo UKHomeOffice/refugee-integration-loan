@@ -11,15 +11,15 @@ module.exports = {
       fields: ['loanReference'],
       next: '/brp'
     },
-     '/brp': {
-       fields: ['brpNumber', 'dateOfBirth'],
-       next: '/confirm'
-     },
-     '/confirm': {
-       behaviours: ['complete', LoopSummary, UploadPDF],
-       pdfSections: require('./sections/pdf-data-sections'),
-       next: '/complete-acceptance'
-     },
-     '/complete-acceptance': {}
+    '/brp': {
+      fields: ['brpNumber', 'dateOfBirth'],
+      next: '/confirm'
+    },
+    '/confirm': {
+      behaviours: ['complete', LoopSummary, UploadPDF],
+      pdfSections: require('./sections/pdf-data-sections'),
+      next: '/complete-acceptance'
+    },
+    '/complete-acceptance': {}
   }
 };
