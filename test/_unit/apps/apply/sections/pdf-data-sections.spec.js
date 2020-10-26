@@ -4,7 +4,7 @@ const pdfDataSections = require('../../../../../apps/apply/sections/pdf-data-sec
 const pages = require('../../../../../apps/apply/translations/src/en/pages.json');
 const fields = require('../../../../../apps/apply/fields/index');
 
-describe.only('pdfDataSections', () => {
+describe('pdfDataSections', () => {
   const containsAll = (arr1, arr2) => {
     return arr2.every(i => arr1.includes(i));
   };
