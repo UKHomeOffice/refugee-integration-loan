@@ -9,7 +9,6 @@ describe('the journey of a person who has previously applied', () => {
   const SUBAPP = 'apply';
 
   before(function setup() {
-    this.timeout(4000);
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
     initSession = testApp.initSession;

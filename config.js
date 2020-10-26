@@ -13,8 +13,10 @@ module.exports = {
     notifyApiKey: process.env.NOTIFY_KEY,
     caseworkerEmail: process.env.CASEWORKER_EMAIL,
     feedbackEmail: process.env.FEEDBACK_EMAIL,
-    templateFormApply: process.env.TEMPLATE_APPLY,
-    templateFormAccept: process.env.TEMPLATE_ACCEPT,
+    templateForm: {
+      apply: process.env.TEMPLATE_APPLY,
+      accept: process.env.TEMPLATE_ACCEPT
+    },
     templateFormFeedback: process.env.TEMPLATE_FEEDBACK,
     templateEmailReceipt: process.env.TEMPLATE_EMAIL_RECEIPT,
     templateTextReceipt: process.env.TEMPLATE_TEXT_RECEIPT

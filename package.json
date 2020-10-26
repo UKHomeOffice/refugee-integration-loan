@@ -16,7 +16,8 @@
   "mocha": {
     "reporter": "spec",
     "require": "test/setup.js",
-    "recursive": "true"
+    "recursive": "true",
+    "timeout": "4000"
   },
   "dependencies": {
     "aws-sdk": "2.167.0",

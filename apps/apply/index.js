@@ -335,7 +335,7 @@ module.exports = {
       forks: [{
         target: '/outcome',
         condition: req =>
-            req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
+          req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
       }],
       continueOnEdit: true
     },

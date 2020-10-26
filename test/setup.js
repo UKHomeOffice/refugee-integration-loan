@@ -6,8 +6,8 @@ process.env.NODE_ENV = 'test';
 process.env.NOTIFY_KEY = 'UNIT_TEST';
 
 global.chai = require('chai')
-    .use(require('sinon-chai'))
-    .use(require('chai-as-promised'));
+  .use(require('sinon-chai'))
+  .use(require('chai-as-promised'));
 global.should = chai.should();
 global.expect = chai.expect;
 global.assert = require('assert');
