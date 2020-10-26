@@ -5,6 +5,7 @@ const hof = require('hof');
 const metrics = require('./lib/metrics');
 const config = require('./config');
 const _ = require('lodash');
+const path = require('path');
 
 const app = hof({
   build: {
@@ -23,7 +24,7 @@ const app = hof({
     require('./apps/apply/'),
     require('./apps/accept/')
   ],
-  views: require('hof-behaviour-loop').views,
+  views: [path.resolve(__dirname, './apps/common/views'), require('hof-behaviour-loop').views],
   loglevel: config.hofLogLevel
 });
 

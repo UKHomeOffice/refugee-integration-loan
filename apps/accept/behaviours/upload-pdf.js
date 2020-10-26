@@ -5,6 +5,7 @@ const UploadPdfShared = require('../../common/behaviours/upload-pdf-base');
 const config = require('../../../config');
 
 const confirmStep = config.routes.confirmStep;
+const SubmissionError = require('../../common/behaviours/submission-error');
 
 module.exports = superclass => class extends superclass {
 
@@ -60,14 +61,16 @@ module.exports = superclass => class extends superclass {
         await uploadPdfShared.sendEmailWithAttachment(req, pdfFile);
 
         this.options.steps[confirmStep].submitted = true;
-
         logger.info('ril.form.accept.submit_form.successful', loggerObj);
         return super.successHandler(req, res, next);
       }
       return await this.pollPdf(req, res, next, 0);
     } catch (err) {
       logger.error('ril.form.accept.submit_form.error', loggerObj, err);
-      return next(Error('There was an error sending your loan acceptance form'));
+      return next(new SubmissionError('submissionError', {
+        type: 'submissionFailed',
+        message: 'Error submitting acceptance form'
+      }));
     }
   }
 };
