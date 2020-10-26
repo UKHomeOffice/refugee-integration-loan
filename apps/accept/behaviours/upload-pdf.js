@@ -10,11 +10,10 @@ module.exports = superclass => class extends superclass {
     let sections = req.form.options.sections;
     req.form.options.sections = req.form.options.pdfSections;
 
-    try {
-      return super.locals(req, res);
-    } finally {
-      req.form.options.sections = sections;
-    }
+    const superLocals = super.locals(req, res);
+    req.form.options.sections = sections;
+
+    return superLocals;
   }
 
   async successHandler(req, res, next) {

@@ -13,6 +13,9 @@ describe('Accept Upload PDF Behaviour', () => {
   let registerStub;
   let incStub;
   let superStub;
+  let superLocalsStub;
+  let req;
+  let res;
 
   const pdfConfig = {
     app: 'accept',
@@ -36,10 +39,12 @@ describe('Accept Upload PDF Behaviour', () => {
     sendEmailWithAttachmentStub = sinon.stub();
     incStub = sinon.stub();
     superStub = sinon.stub();
+    superLocalsStub = sinon.stub();
 
     registerStub.withArgs('ril_acceptance_errors_gauge').returns({ inc: incStub });
     renderHTMLStub.resolves(testHTMLString);
     createPDFStub.resolves(testPDFFilePath);
+    superLocalsStub.returns({ superlocals: 'superlocals' });
 
     pdfBaseStub.withArgs(pdfConfig).returns({
       renderHTML: renderHTMLStub,
@@ -47,6 +52,7 @@ describe('Accept Upload PDF Behaviour', () => {
       sendEmailWithAttachment: sendEmailWithAttachmentStub
     });
 
+    Base.prototype.locals = superLocalsStub;
     Base.prototype.successHandler = superStub;
 
     Behaviour = proxyquire('../apps/accept/behaviours/upload-pdf', {
@@ -65,9 +71,27 @@ describe('Accept Upload PDF Behaviour', () => {
     });
   });
 
-  describe('#successHandler', async() => {
-    let req;
-    let res;
+  describe('#pdfLocals', () => {
+    let result;
+
+    beforeEach(() => {
+      req = request();
+      res = response();
+
+      req.form = { options: { sections: {}, pdfSections: 'pdfSections' } };
+      result = behaviour.pdfLocals(req, res);
+    });
+
+    it('should call super locals once', () => {
+      superLocalsStub.should.have.been.calledOnce.calledWithExactly(req, res);
+    });
+
+    it('returns super locals', () => {
+      expect(result).to.eql({ superlocals: 'superlocals' });
+    });
+  });
+
+  describe('#successHandler', () => {
     let badReq;
     let sandbox;
     let BehaviourStub;
@@ -82,12 +106,12 @@ describe('Accept Upload PDF Behaviour', () => {
       renderHTMLStub.withArgs(badReq, res, { fakeLocals: 'badLocals' }).rejects('LocalsError');
 
       sandbox = sinon.createSandbox();
-      const superLocalsStub = sandbox.stub(Behaviour.prototype, 'pdfLocals');
+      const pdfLocalsStub = sandbox.stub(Behaviour.prototype, 'pdfLocals');
 
-      superLocalsStub.withArgs(req, res).returns({ fakeLocals: 'fakeLocals' });
-      superLocalsStub.withArgs(badReq, res).returns({ fakeLocals: 'badLocals' });
+      pdfLocalsStub.withArgs(req, res).returns({ fakeLocals: 'fakeLocals' });
+      pdfLocalsStub.withArgs(badReq, res).returns({ fakeLocals: 'badLocals' });
 
-      BehaviourStub = superLocalsStub;
+      BehaviourStub = pdfLocalsStub;
 
       await behaviour.successHandler(req, res, sinon.stub());
     });
