@@ -2,16 +2,19 @@
 
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
+const config = require('../../../../../config');
+const moment = require('moment');
+
+const confirmStep = config.routes.confirmStep;
 
 describe('Apply Upload PDF Behaviour', () => {
   let behaviour;
   let Behaviour;
   let pdfBaseStub;
+  let pdfBaseInstanceStub;
   let renderHTMLStub;
   let createPDFStub;
   let sendEmailWithAttachmentStub;
-  let registerStub;
-  let incStub;
   let superStub;
   let superLocalsStub;
   let req;
@@ -32,37 +35,44 @@ describe('Apply Upload PDF Behaviour', () => {
   class Base {}
 
   beforeEach(() => {
-    registerStub = sinon.stub();
     pdfBaseStub = sinon.stub();
     renderHTMLStub = sinon.stub();
     createPDFStub = sinon.stub();
     sendEmailWithAttachmentStub = sinon.stub();
-    incStub = sinon.stub();
     superStub = sinon.stub();
     superLocalsStub = sinon.stub();
 
-    registerStub.withArgs('ril_application_errors_gauge').returns({ inc: incStub });
     renderHTMLStub.resolves(testHTMLString);
     createPDFStub.resolves(testPDFFilePath);
     superLocalsStub.returns({ superlocals: 'superlocals' });
 
-    pdfBaseStub.withArgs(pdfConfig).returns({
+    pdfBaseInstanceStub = {
       renderHTML: renderHTMLStub,
       createPDF: createPDFStub,
       sendEmailWithAttachment: sendEmailWithAttachmentStub
-    });
+    };
+
+    pdfBaseStub.withArgs(pdfConfig).returns(pdfBaseInstanceStub);
 
     Base.prototype.locals = superLocalsStub;
     Base.prototype.successHandler = superStub;
 
     Behaviour = proxyquire('../apps/apply/behaviours/upload-pdf', {
-      '../../common/behaviours/upload-pdf-base': pdfBaseStub,
-      'prom-client': { register: { getSingleMetric: registerStub } }
+      '../../common/behaviours/upload-pdf-base': pdfBaseStub
     });
 
     Behaviour = Behaviour(Base);
 
     behaviour = new Behaviour();
+
+    behaviour.options = {
+      steps: {
+        [confirmStep]: {
+          uploadPdfShared: false,
+          submitted: false
+        }
+      }
+    };
   });
 
   describe('initialisation', () => {
@@ -91,14 +101,73 @@ describe('Apply Upload PDF Behaviour', () => {
     });
   });
 
+  describe('#sleep', () => {
+    it('creates a timed delay', async() => {
+      const then = moment();
+      await behaviour.sleep(200);
+      const diffTo100Mills = Math.round((moment() - then) / 100) * 100;
+      expect(diffTo100Mills).to.eql(200);
+    });
+  });
+
+  describe('#pollPdf', () => {
+    let sandbox;
+    let sleepStub;
+    let next;
+
+    beforeEach(async() => {
+      next = sinon.stub();
+      sandbox = sinon.createSandbox();
+      sleepStub = sandbox.stub(Behaviour.prototype, 'sleep');
+      sleepStub.resolves();
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it('should call super successHandler if submitted set to true', async() => {
+      behaviour.options.steps[confirmStep].submitted = true;
+      await behaviour.pollPdf(req, res, next, 0);
+      superStub.should.have.been.calledOnce.calledWithExactly(req, res, next);
+    });
+
+    it('should not call anything after 5 tries', () => {
+      behaviour.pollPdf(req, res, next, 6)
+        .catch(() => {
+          sleepStub.should.have.not.been.called;
+          superStub.should.have.not.been.called;
+        });
+    });
+
+    it('should fail with error after 5 tries', () => {
+      behaviour.pollPdf(req, res, next, 6)
+        .catch(err => {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal('Error in generating/sending pdf!');
+        });
+    });
+
+    it('calls the sleep function at 2 second intervals 6 times until fail', () => {
+      behaviour.pollPdf(req, res, next, 0)
+        .catch(() => {
+          expect(sleepStub.callCount).to.eql(6);
+          sleepStub.should.have.been.calledWithExactly(2000);
+        });
+    });
+  });
+
   describe('#successHandler', () => {
     let badReq;
     let sandbox;
-    let BehaviourStub;
+    let pdfPollStub;
+    let pdfLocalsStub;
+    let next;
 
     beforeEach(async() => {
       req = request();
       res = response();
+      next = sinon.stub();
       badReq = request();
       badReq.sessionID = 'bad';
 
@@ -106,14 +175,14 @@ describe('Apply Upload PDF Behaviour', () => {
       renderHTMLStub.withArgs(badReq, res, { fakeLocals: 'badLocals' }).rejects('LocalsError');
 
       sandbox = sinon.createSandbox();
-      const pdfLocalsStub = sandbox.stub(Behaviour.prototype, 'pdfLocals');
+      pdfLocalsStub = sandbox.stub(Behaviour.prototype, 'pdfLocals');
+      pdfPollStub = sandbox.stub(Behaviour.prototype, 'pollPdf');
 
       pdfLocalsStub.withArgs(req, res).returns({ fakeLocals: 'fakeLocals' });
       pdfLocalsStub.withArgs(badReq, res).returns({ fakeLocals: 'badLocals' });
+      pdfPollStub.resolves();
 
-      BehaviourStub = pdfLocalsStub;
-
-      await behaviour.successHandler(req, res, sinon.stub());
+      await behaviour.successHandler(req, res, next);
     });
 
     afterEach(() => {
@@ -125,7 +194,7 @@ describe('Apply Upload PDF Behaviour', () => {
     });
 
     it('calls pdfLocals method once', () => {
-      BehaviourStub.should.have.been.calledOnce.calledWithExactly(req, res);
+      pdfLocalsStub.should.have.been.calledOnce.calledWithExactly(req, res);
     });
 
     it('calls the renderHTML method of the pdf instance once', () => {
@@ -140,19 +209,24 @@ describe('Apply Upload PDF Behaviour', () => {
       sendEmailWithAttachmentStub.should.have.been.calledOnce.calledWithExactly(req, testPDFFilePath);
     });
 
-    it('should not call the registry error gauge if there is no error', () => {
-      registerStub.should.not.have.been.called;
-      incStub.should.not.have.been.called;
+    it('sets uploadPdfShared to pdf base instance and submitted to true', async() => {
+      const confirmOptions = behaviour.options.steps[confirmStep];
+      expect(confirmOptions.uploadPdfShared).to.eql(pdfBaseInstanceStub);
+      expect(confirmOptions.submitted).to.be.true;
     });
 
-    it('should call the registry error gauge if there is an error', async() => {
-      await behaviour.successHandler(badReq, res, sinon.stub());
-      registerStub.should.have.been.calledOnce.calledWithExactly('ril_application_errors_gauge');
-      incStub.should.have.been.calledOnce.calledWithExactly({ component: 'application-form-submission' }, 1.0);
+    it('calls pollPdf when method invoked multiple times', async() => {
+      await behaviour.successHandler(req, res, next);
+      await behaviour.successHandler(req, res, next);
+      pdfPollStub.should.have.been.calledTwice.calledWithExactly(req, res, next, 0);
     });
 
     it('should call the callback with an Error if there is an error', async() => {
-      const next = sinon.stub();
+      behaviour.options.steps[confirmStep] = {
+        uploadPdfShared: false,
+        submitted: false
+      };
+
       await behaviour.successHandler(badReq, res, next);
 
       const errArg = next.firstCall.args[0];

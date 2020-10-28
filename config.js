@@ -21,6 +21,9 @@ module.exports = {
     templateEmailReceipt: process.env.TEMPLATE_EMAIL_RECEIPT,
     templateTextReceipt: process.env.TEMPLATE_TEXT_RECEIPT
   },
+  routes: {
+    confirmStep: '/confirm'
+  },
   logLevel: process.env.LOG_LEVEL || 'info',
   hofLogLevel: process.env.HOF_LOG_LEVEL || 'warn'
 };

@@ -1,10 +1,30 @@
 'use strict';
 
-const registry = require('prom-client').register;
 const logger = require('../../../lib/logger');
 const UploadPdfShared = require('../../common/behaviours/upload-pdf-base');
+const config = require('../../../config');
+
+const confirmStep = config.routes.confirmStep;
 
 module.exports = superclass => class extends superclass {
+
+  sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  async pollPdf(req, res, next, tries) {
+    if (tries > 5) {
+      throw new Error('Error in generating/sending pdf!');
+    }
+    await this.sleep(2000);
+
+    if (this.options.steps[confirmStep].submitted) {
+      return super.successHandler(req, res, next);
+    }
+    return await this.pollPdf(req, res, next, tries + 1);
+  }
 
   pdfLocals(req, res) {
     let sections = req.form.options.sections;
@@ -19,31 +39,34 @@ module.exports = superclass => class extends superclass {
   async successHandler(req, res, next) {
     const loggerObj = { sessionID: req.sessionID, path: req.path };
 
-    const sharedBehaviourInstance = new UploadPdfShared({
-      app: 'accept',
-      component: 'acceptance',
-      sendReceipt: false,
-      sortSections: false,
-      notifyPersonalisations: {
-        'loan reference': req.sessionModel.get('loanReference')
-      }
-    });
-
-    const locals = Object.assign({}, this.pdfLocals(req, res));
-
     try {
-      const html = await sharedBehaviourInstance.renderHTML(req, res, locals);
-      const pdfFile = await sharedBehaviourInstance.createPDF(req, html);
-      await sharedBehaviourInstance.sendEmailWithAttachment(req, pdfFile);
+      if (!this.options.steps[confirmStep].uploadPdfShared) {
+        const uploadPdfShared = new UploadPdfShared({
+          app: 'accept',
+          component: 'acceptance',
+          sendReceipt: false,
+          sortSections: false,
+          notifyPersonalisations: {
+            'loan reference': req.sessionModel.get('loanReference')
+          }
+        });
 
-      logger.info('ril.form.accept.submit_form.successful', loggerObj);
-      return super.successHandler(req, res, next);
+        this.options.steps[confirmStep].uploadPdfShared = uploadPdfShared;
+
+        const locals = Object.assign({}, this.pdfLocals(req, res));
+
+        const html = await uploadPdfShared.renderHTML(req, res, locals);
+        const pdfFile = await uploadPdfShared.createPDF(req, html);
+        await uploadPdfShared.sendEmailWithAttachment(req, pdfFile);
+
+        this.options.steps[confirmStep].submitted = true;
+
+        logger.info('ril.form.accept.submit_form.successful', loggerObj);
+        return super.successHandler(req, res, next);
+      }
+      return await this.pollPdf(req, res, next, 0);
     } catch (err) {
-      logger.error('ril.form.accept.submit_form.error', loggerObj);
-
-      const acceptanceErrorsGauge = registry.getSingleMetric('ril_acceptance_errors_gauge');
-      acceptanceErrorsGauge.inc({ component: 'acceptance-form-submission' }, 1.0);
-
+      logger.error('ril.form.accept.submit_form.error', loggerObj, err);
       return next(Error('There was an error sending your loan acceptance form'));
     }
   }
