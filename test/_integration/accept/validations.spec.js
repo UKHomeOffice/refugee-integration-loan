@@ -174,4 +174,41 @@ describe('validation checks of the accept journey', () => {
     });
   });
 
+  describe('Contact Validations', () => {
+    it('does not pass the Contact page if nothing entered', async() => {
+      const URI = '/contact';
+      await initSession(URI);
+      await passStep(URI, {});
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.contain('Select how we can contact you');
+    });
+
+    it('does not pass the Contact page if email and phone selected but not entered', async() => {
+      const URI = '/contact';
+      await initSession(URI);
+      await passStep(URI, {
+        contactTypes: [
+          'email',
+          'phone'
+        ]
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.contain('Enter your email address in the correct format');
+      expect(validationSummary.html())
+        .to.contain('Enter your mobile phone number in the correct format');
+    });
+  });
+
 });

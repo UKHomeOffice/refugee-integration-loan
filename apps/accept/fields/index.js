@@ -12,5 +12,38 @@ module.exports = {
   },
   dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', { type: 'after', arguments: ['1900'] }, 'before', 'over18']
-  })
+  }),
+  contactTypes: {
+    mixin: 'checkbox-group',
+    options: [
+      {
+        value: 'email',
+        toggle: 'email',
+        child: 'partials/details-summary'
+      },
+      {
+        value: 'phone',
+        toggle: 'phone',
+        child: 'partials/details-summary'
+      }
+    ],
+    validate: 'required',
+    legend: {
+      className: 'visuallyhidden'
+    }
+  },
+  email: {
+    validate: ['required', 'email'],
+    dependent: {
+      field: 'contactTypes',
+      value: 'email'
+    }
+  },
+  phone: {
+    validate: ['required', 'ukmobilephone'],
+    dependent: {
+      field: 'contactTypes',
+      value: 'phone'
+    }
+  }
 };

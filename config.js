@@ -19,7 +19,9 @@ module.exports = {
     },
     templateFormFeedback: process.env.TEMPLATE_FEEDBACK,
     templateEmailReceipt: process.env.TEMPLATE_EMAIL_RECEIPT,
-    templateTextReceipt: process.env.TEMPLATE_TEXT_RECEIPT
+    templateTextReceipt: process.env.TEMPLATE_TEXT_RECEIPT,
+    templateAcceptEmailReceipt: process.env.TEMPLATE_ACCEPT_EMAIL_RECEIPT,
+    templateAcceptTextReceipt: process.env.TEMPLATE_ACCEPT_TEXT_RECEIPT
   },
   routes: {
     confirmStep: '/confirm'
