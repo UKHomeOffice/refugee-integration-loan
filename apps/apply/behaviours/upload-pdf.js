@@ -66,7 +66,7 @@ module.exports = superclass => class extends superclass {
       }
       return await this.pollPdf(req, res, next, 0);
     } catch (err) {
-      logger.error('ril.form.apply.submit_form.error', loggerObj);
+      logger.error('ril.form.apply.submit_form.error', loggerObj, err);
       return next(Error('There was an error sending your loan application form'));
     }
   }
