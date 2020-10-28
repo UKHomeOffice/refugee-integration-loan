@@ -19,3 +19,4 @@ overrides:
       implicit-dependencies/no-implicit: "off"
       no-undef: "off"
       no-unused-expressions: "off"
+      max-nested-callbacks: "off"

@@ -13,6 +13,7 @@ const app = hof({
     }
   },
   behaviours: [
+    require('./behaviours/clear-session'),
     require('./behaviours/fields-filter'),
     require('./behaviours/page-analytics'),
     require('hof-behaviour-feedback').SetFeedbackReturnUrl
