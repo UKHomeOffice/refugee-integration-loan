@@ -259,6 +259,10 @@ describe('shared Upload PDF Behaviour', () => {
 
     it('should send the correct details to the email service and delete the pdf', async() => {
       const req = request({ session: { fullName: 'Jane Smith' } });
+      const emailReceiptTemplateId = 'test';
+      const applicantEmail = 'test@example.org';
+      const appName = 'testApp';
+      const loggerObj = { info: sinon.stub(), error: sinon.stub() };
 
       const promClientMock = { register: { getSingleMetric: sinon.stub().returns({ inc: sinon.stub() }) } };
 
@@ -270,6 +274,7 @@ describe('shared Upload PDF Behaviour', () => {
       });
 
       instance.sendReceipt = sinon.stub().resolves();
+      instance.notifyByEmail = sinon.stub().resolves();
 
       await instance.sendEmailWithAttachment(req, mockPath);
 
@@ -290,6 +295,7 @@ describe('shared Upload PDF Behaviour', () => {
         expectedEmailContent);
 
       instance.sendReceipt.withArgs(req).should.be.calledOnce;
+      instance.notifyByEmail.withArgs(emailReceiptTemplateId, applicantEmail, appName, loggerObj);
 
       fsMock.unlink.calledOnce.should.be.true;
     });

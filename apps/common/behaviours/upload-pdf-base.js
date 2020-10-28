@@ -120,7 +120,7 @@ module.exports = class UploadPDFBase {
         logger.info(
           `ril.${appComponent}.submission.duration=[${timeSpentOnForm}] seconds`, loggerObj);
 
-        return this.sendReceipt(req).then(resolve).catch(reject);
+        return await this.sendReceipt(req).then(resolve).catch(reject);
       } catch (err) {
         const errorObj = Object.assign({}, loggerObj, { errorMessage: err.message });
         applicationErrorsGauge.inc({ component: `${appComponent}-form-email` }, 1.0);
@@ -129,13 +129,15 @@ module.exports = class UploadPDFBase {
           `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, errorObj);
         logger.error(`ril.form.${appName}.error`, errorObj);
         return reject();
-      } finally {
-        this.deleteFile(req, pdfFile);
       }
+    }).catch(() => {
+      return Promise.reject();
+    }).finally(() => {
+      this.deleteFile(req, pdfFile);
     });
   }
 
-  sendReceipt(req) {
+  async sendReceipt(req) {
     return new Promise(async(resolve, reject) => {
       if (!this.behaviourConfig.sendReceipt) {
         return resolve();
@@ -149,32 +151,54 @@ module.exports = class UploadPDFBase {
       const emailReceiptTemplateId = config.govukNotify.templateEmailReceipt;
       const textReceiptTemplateId = config.govukNotify.templateTextReceipt;
 
-      if (applicantEmail) {
-        try {
-          await notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {});
-          logger.info(`ril.form.${appName}.send_receipt.create_email_notify.successful`, loggerObj);
-          return resolve();
-        } catch (emailErr) {
-          logger.error(`ril.form.${appName}.send_receipt.create_email_notify.error`,
-            Object.assign({}, loggerObj, { errorMessage: emailErr.message }));
-          applicationErrorsGauge.inc({ component: 'receipt-email' }, 1.0);
-          return reject(emailErr);
+      try {
+        if (applicantEmail) {
+          await this.notifyByEmail(emailReceiptTemplateId, applicantEmail, appName, loggerObj)
+                    .catch(() => {
+                      return reject('Error sending email notification!');
+                    });
         }
-      } else if (applicantPhone) {
-        try {
-          await notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {});
-          logger.info(`ril.form.${appName}.send_receipt.create_text_notify.successful`, loggerObj);
-          return resolve();
-        } catch (textErr) {
-          logger.error(`ril.form.${appName}.send_receipt.create_text_notify.error`,
-            Object.assign({}, loggerObj, { errorMessage: textErr.message }));
-          applicationErrorsGauge.inc({ component: 'receipt-text' }, 1.0);
-          return reject(textErr);
+
+        if (applicantPhone) {
+          await this.notifyBySms(textReceiptTemplateId, applicantPhone, appName, loggerObj)
+                    .catch(() => {
+                      return reject('Error sending sms notification!');
+                    });
         }
+      } catch (err) {
+        return reject(err);
       }
 
-      return reject('No configuration for communication type set!');
+      return resolve();
+    }).catch(() => {
+      return Promise.reject();
     });
+  }
+
+  async notifyBySms(textReceiptTemplateId, applicantPhone, appName, loggerObj) {
+    try {
+      await notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {});
+      logger.info(`ril.form.${appName}.send_receipt.create_text_notify.successful`, loggerObj);
+      return Promise.resolve();
+    } catch (textErr) {
+      logger.error(`ril.form.${appName}.send_receipt.create_text_notify.error`,
+        Object.assign({}, loggerObj, {errorMessage: textErr.message}));
+      applicationErrorsGauge.inc({component: 'receipt-text'}, 1.0);
+      return Promise.reject(textErr);
+    }
+  }
+
+  async notifyByEmail(emailReceiptTemplateId, applicantEmail, appName, loggerObj) {
+    try {
+      await notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {});
+      logger.info(`ril.form.${appName}.send_receipt.create_email_notify.successful`, loggerObj);
+      return Promise.resolve();
+    } catch (emailErr) {
+      logger.error(`ril.form.${appName}.send_receipt.create_email_notify.error`,
+        Object.assign({}, loggerObj, {errorMessage: emailErr.message}));
+      applicationErrorsGauge.inc({component: 'receipt-email'}, 1.0);
+      return Promise.reject(emailErr);
+    }
   }
 
   sortSections(locals) {
