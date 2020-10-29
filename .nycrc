@@ -1,0 +1,11 @@
+{
+  "reporter": [
+    "lcov",
+    "text-summary"
+  ],
+  "exclude": [
+    "test/**/*.js",
+    "apps/**/sections/**/*.js",
+    "apps/**/fields/**/*.js"
+  ]
+}
