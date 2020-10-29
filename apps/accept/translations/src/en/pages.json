@@ -17,7 +17,12 @@
     "hiddenHelpLink": "If you don't understand your loan agreement",
     "hiddenHelp1": "You can contact the integration loan team at",
     "hiddenHelpEmail": "Integrationloan@homeoffice.gov.uk",
-    "hiddenHelp2": "before accepting the terms. You will be able to return to this form."
+    "hiddenHelp2": "before accepting the terms. You will be able to return to this form.",
+    "sections": {
+      "pdf-applicant-details": {
+        "header" : "Applicant’s details"
+      }
+    }
   },
   "complete": {
     "confirmed": "Offer accepted",
