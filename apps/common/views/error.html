@@ -1,0 +1,14 @@
+{{<layout}}
+    {{$header}}
+        {{content.title}}
+    {{/header}}
+    {{$content}}
+        <p class="govuk-body">{{content.text1}} <a href="mailto:{{content.helpEmail}}">{{content.helpEmail}}</a>.</p>
+        <a href="" class="button" role="button">{{#t}}buttons.try-again{{/t}}</a>
+        {{#showStack}}
+        <pre>
+            {{error.stack}}
+        </pre>
+        {{/showStack}}
+    {{/content}}
+{{/layout}}

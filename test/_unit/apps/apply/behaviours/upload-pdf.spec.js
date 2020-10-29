@@ -232,7 +232,7 @@ describe('Apply Upload PDF Behaviour', () => {
       const errArg = next.firstCall.args[0];
       next.should.have.been.calledOnce;
       expect(errArg).to.be.instanceof(Error);
-      expect(errArg.message).to.equal('There was an error sending your loan application form');
+      expect(errArg.message).to.equal('Error submitting application form');
     });
   });
 });
