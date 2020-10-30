@@ -6,6 +6,7 @@ const config = require('../../../config');
 
 const confirmStep = config.routes.confirmStep;
 const SubmissionError = require('../../common/behaviours/submission-error');
+const errorTranslations = require('../../common/translations/src/en/errors.json');
 
 module.exports = superclass => class extends superclass {
 
@@ -70,7 +71,8 @@ module.exports = superclass => class extends superclass {
       logger.error('ril.form.apply.submit_form.error', loggerObj);
       return next(new SubmissionError('submissionError', {
         type: 'submissionFailed',
-        message: 'Error submitting application form'
+        message: 'Error submitting application form',
+        translations: errorTranslations
       }));
     }
   }
