@@ -2,7 +2,6 @@
 
 const logger = require('./lib/logger');
 const hof = require('hof');
-const metrics = require('./lib/metrics');
 const config = require('./config');
 const _ = require('lodash');
 const path = require('path');
@@ -14,9 +13,8 @@ const app = hof({
     }
   },
   behaviours: [
-    require('./behaviours/clear-session'),
-    require('./behaviours/fields-filter'),
-    require('./behaviours/page-analytics'),
+    require('./apps/common/behaviours/clear-session'),
+    require('./apps/common/behaviours/fields-filter'),
     require('hof-behaviour-feedback').SetFeedbackReturnUrl
   ],
   routes: [
@@ -39,8 +37,6 @@ app.use((req, res, next) => {
   ];
   next();
 });
-
-app.use('/insight', metrics());
 
 if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
   app.use('/test/bootstrap-session', (req, res) => {

@@ -264,11 +264,8 @@ describe('shared Upload PDF Behaviour', () => {
       const appName = 'testApp';
       const loggerObj = { info: sinon.stub(), error: sinon.stub() };
 
-      const promClientMock = { register: { getSingleMetric: sinon.stub().returns({ inc: sinon.stub() }) } };
-
       const instance = getProxyquiredInstance({
         'fs': fsMock,
-        'prom-client': promClientMock,
         '../../../lib/utilities': notifyClientMock,
         '../../../config': configMock
       });
@@ -300,56 +297,18 @@ describe('shared Upload PDF Behaviour', () => {
       fsMock.unlink.calledOnce.should.be.true;
     });
 
-    it('should increment the duration guage', async() => {
-      const req = request({ session: { 'session.started.timestamp': '7357' } });
-
-      const errorsGuageSpy = sinon.spy();
-      const durationGuageSpy = sinon.spy();
-
-      const promClientMock = { register: { getSingleMetric: sinon.stub() } };
-      promClientMock.register.getSingleMetric.withArgs('ril_application_errors_gauge')
-        .returns({ inc: errorsGuageSpy });
-      promClientMock.register.getSingleMetric.withArgs('ril_application_form_duration_gauge').returns(
-        { inc: durationGuageSpy });
-
-      const instance = getProxyquiredInstance({
-        'fs': fsMock,
-        'prom-client': promClientMock,
-        '../../../lib/utilities': notifyClientMock,
-        '../../../config': configMock,
-        '../../../lib/date-utilities': {
-          secondsBetween: sinon.stub().callsFake(a => a)
-        }
-      });
-
-      instance.sendReceipt = sinon.stub().resolves();
-
-      await instance.sendEmailWithAttachment(req, mockPath);
-
-      durationGuageSpy.withArgs(7357).calledOnce.should.be.true;
-      errorsGuageSpy.notCalled.should.be.true;
-    });
-
-    it('should reject and increment error guage on send email error', async() => {
+    it('should reject on send email error', async() => {
       sendEmailStub.callsFake(() => Promise.reject({}));
 
       const req = request({ session: { 'session.started.timestamp': '7357' } });
 
-      const errorsGuageSpy = sinon.spy();
-      const promClientMock = { register: { getSingleMetric: sinon.stub() } };
-      promClientMock.register.getSingleMetric.withArgs('ril_application_errors_gauge')
-        .returns({ inc: errorsGuageSpy });
-
       const instance = getProxyquiredInstance({
         'fs': fsMock,
-        'prom-client': promClientMock,
         '../../../lib/utilities': notifyClientMock,
         '../../../config': configMock
       });
 
       await instance.sendEmailWithAttachment(req, mockPath).should.be.rejected;
-
-      errorsGuageSpy.withArgs({ component: 'application-form-email' }, 1.0).callCount.should.eql(1);
     });
   });
 });

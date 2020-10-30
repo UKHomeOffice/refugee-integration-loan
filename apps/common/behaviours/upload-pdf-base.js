@@ -7,15 +7,12 @@ const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
 const uuid = require('uuid');
 const logger = require('../../../lib/logger');
 const config = require('../../../config');
-const DateUtilities = require('../../../lib/date-utilities');
+const utilities = require('../../../lib/utilities');
 const _ = require('lodash');
-const registry = require('prom-client').register;
-const NotifyClient = require('../../../lib/utilities').NotifyClient;
+const NotifyClient = utilities.NotifyClient;
 
 const notifyClient = new NotifyClient(config.govukNotify.notifyApiKey);
 const tempLocation = path.resolve(config.pdf.tempLocation);
-
-const applicationErrorsGauge = registry.getSingleMetric('ril_application_errors_gauge');
 
 module.exports = class UploadPDFBase {
   constructor(behaviourConfig) {
@@ -43,7 +40,6 @@ module.exports = class UploadPDFBase {
 
     fs.unlink(fileToDelete, (err) => {
       if (err) {
-        applicationErrorsGauge.inc({ component: 'pdf' }, 1.0);
         logger.error(`ril.form.${appName}.submit_form.delete_pdf.error [${fileToDelete}]`,
           Object.assign({}, loggerObj, { errorMessage: err.message }));
       } else {
@@ -111,8 +107,7 @@ module.exports = class UploadPDFBase {
         });
 
         const trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
-        const timeSpentOnForm = DateUtilities.secondsBetween(trackedPageStartTime, new Date());
-        registry.getSingleMetric(`ril_${appComponent}_form_duration_gauge`).inc(timeSpentOnForm);
+        const timeSpentOnForm = utilities.secondsBetween(trackedPageStartTime, new Date());
 
         logger.info(
           `ril.form.${appName}.submit_form.create_email_with_file_notify.successful`, loggerObj);
@@ -123,7 +118,6 @@ module.exports = class UploadPDFBase {
         return await this.sendReceipt(req).then(resolve).catch(reject);
       } catch (err) {
         const errorObj = Object.assign({}, loggerObj, { errorMessage: err.message });
-        applicationErrorsGauge.inc({ component: `${appComponent}-form-email` }, 1.0);
 
         logger.error(
           `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, errorObj);
@@ -154,16 +148,16 @@ module.exports = class UploadPDFBase {
       try {
         if (applicantEmail) {
           await this.notifyByEmail(emailReceiptTemplateId, applicantEmail, appName, loggerObj)
-                    .catch(() => {
-                      return reject('Error sending email notification!');
-                    });
+            .catch(() => {
+              return reject('Error sending email notification!');
+            });
         }
 
         if (applicantPhone) {
           await this.notifyBySms(textReceiptTemplateId, applicantPhone, appName, loggerObj)
-                    .catch(() => {
-                      return reject('Error sending sms notification!');
-                    });
+            .catch(() => {
+              return reject('Error sending sms notification!');
+            });
         }
       } catch (err) {
         return reject(err);
@@ -183,7 +177,6 @@ module.exports = class UploadPDFBase {
     } catch (textErr) {
       logger.error(`ril.form.${appName}.send_receipt.create_text_notify.error`,
         Object.assign({}, loggerObj, {errorMessage: textErr.message}));
-      applicationErrorsGauge.inc({component: 'receipt-text'}, 1.0);
       return Promise.reject(textErr);
     }
   }
@@ -196,7 +189,6 @@ module.exports = class UploadPDFBase {
     } catch (emailErr) {
       logger.error(`ril.form.${appName}.send_receipt.create_email_notify.error`,
         Object.assign({}, loggerObj, {errorMessage: emailErr.message}));
-      applicationErrorsGauge.inc({component: 'receipt-email'}, 1.0);
       return Promise.reject(emailErr);
     }
   }
