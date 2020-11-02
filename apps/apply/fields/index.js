@@ -1,63 +1,15 @@
 'use strict';
 
-const _ = require('lodash');
-const dateComponent = require('hof-component-date');
-const libPhoneNumber = require('libphonenumber-js/max');
 const moment = require('moment');
 const config = require('../../../config');
+const dateComponent = require('hof-component-date');
 
 const after1900Validator = { type: 'after', arguments: ['1900'] };
-const olderThan18Validator = { type: 'before', arguments: ['18', 'years'] };
 
-function between(values, min, max) {
-  values = _.castArray(values);
-  if (values.length === 1) {
-    const value = Number(values[0]);
-    return value >= min && value <= max;
-  }
-  return true;
-}
-
-function regex(value, match) {
-  return typeof value === 'string' && !!value.match(match);
-}
-
-function stripSpaces(str) {
-  return str.split(' ').join('');
-}
-
-function stripHyphens(str) {
-  return str.split('-').join('');
-}
-
-function singleLoanAmount(values) {
-  return between(values, 100, 500);
-}
-
-function jointLoanAmount(values) {
-  return between(values, 100, 780);
-}
-
-function decimal(value) {
-  return regex(value, /^[\d]*\.?\d{0,2}$/);
-}
-
-function greaterThanZero(value) {
-  return Number(value) > 0;
-}
-
-function ukPhoneNumber(value) {
-  const phoneNumber = libPhoneNumber.parsePhoneNumberFromString(value, 'GB');
-  return phoneNumber && phoneNumber.isValid() && phoneNumber.country === 'GB';
-}
-
-function niNumber(value) {
-  return regex(stripSpaces(value.toUpperCase()), /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/);
-}
-
-function sortCode(value) {
-  return regex(stripHyphens(stripSpaces(value)), /^[0-9]{6}$/);
-}
+const niNumber = {
+  type: 'regex',
+  arguments: /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/
+};
 
 module.exports = {
   previouslyApplied: {
@@ -101,10 +53,10 @@ module.exports = {
     }
   },
   dateOfBirth: dateComponent('dateOfBirth', {
-    validate: ['required', after1900Validator, olderThan18Validator]
+    validate: ['required', after1900Validator, 'before', 'over18']
   }),
   fullName: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   brpNumber: {
     validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
@@ -112,7 +64,7 @@ module.exports = {
   },
   niNumber: {
     validate: ['required', niNumber],
-    formatter: ['removespaces']
+    formatter: ['removespaces', 'uppercase']
   },
   hasOtherNames: {
     mixin: 'radio-group',
@@ -123,7 +75,7 @@ module.exports = {
     }
   },
   otherNames: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   addAnotherDependant: {
     omitFromSummary: true
@@ -144,9 +96,9 @@ module.exports = {
       toggle: 'detailsOfCrime',
       child: 'partials/details-summary'
     },
-    {
-      value: 'no'
-    }
+      {
+        value: 'no'
+      }
     ],
     validate: 'required',
     legend: {
@@ -167,9 +119,9 @@ module.exports = {
       toggle: 'detailsOfCrimeJoint',
       child: 'partials/details-summary'
     },
-    {
-      value: 'no'
-    }
+      {
+        value: 'no'
+      }
     ],
     validate: 'required',
     legend: {
@@ -184,20 +136,20 @@ module.exports = {
     }
   },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
-    validate: ['required', 'before', after1900Validator]
+    validate: ['required', after1900Validator, 'before', 'over18']
   }),
   partnerFullName: {
-    validate: 'required',
+    validate: ['required', { type: 'maxlength', arguments: 200 }],
     className: 'govuk-input'
   },
   partnerBrpNumber: {
-    validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
     formatter: ['removespaces', 'uppercase'],
-    className: 'govuk-input govuk-input--width-10'
+    className: 'govuk-input govuk-input--width-10',
+    validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
   },
   partnerNiNumber: {
     validate: ['required', niNumber],
-    formatter: ['removespaces']
+    formatter: ['removespaces', 'uppercase']
   },
   partnerHasOtherNames: {
     mixin: 'radio-group',
@@ -208,7 +160,7 @@ module.exports = {
     }
   },
   partnerOtherNames: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   dependents: {
     mixin: 'radio-group',
@@ -219,23 +171,24 @@ module.exports = {
     }
   },
   dependentFullName: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   dependentDateOfBirth: dateComponent('dependentDateOfBirth', {
     validate: ['required', 'before', after1900Validator],
     parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
   }),
   dependentRelationship: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 100 }]
   },
   building: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 100 }]
   },
   street: {
+    validate: [{ type: 'maxlength', arguments: 50 }],
     labelClassName: 'visuallyhidden'
   },
   townOrCity: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 100 }]
   },
   postcode: {
     validate: ['required', 'postcode'],
@@ -247,7 +200,7 @@ module.exports = {
       {
         value: 'salary',
         toggle: 'salaryAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary',
       },
       {
         value: 'universal_credit',
@@ -273,18 +226,18 @@ module.exports = {
     legend: {
       className: 'visuallyhidden'
     },
-    validate: 'required'
+    validate: ['required']
   },
   salaryAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'incomeTypes',
-      value: 'salary'
+      value: 'salary',
     }
   },
   universalCreditAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'incomeTypes',
@@ -292,7 +245,7 @@ module.exports = {
     }
   },
   childBenefitAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'incomeTypes',
@@ -300,7 +253,7 @@ module.exports = {
     }
   },
   housingBenefitAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'incomeTypes',
@@ -308,7 +261,7 @@ module.exports = {
     }
   },
   otherIncomeAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'incomeTypes',
@@ -350,7 +303,7 @@ module.exports = {
     validate: 'required'
   },
   combinedSalaryAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
@@ -358,7 +311,7 @@ module.exports = {
     }
   },
   combinedUniversalCreditAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
@@ -366,7 +319,7 @@ module.exports = {
     }
   },
   combinedChildBenefitAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
@@ -374,7 +327,7 @@ module.exports = {
     }
   },
   combinedHousingBenefitAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
@@ -382,7 +335,7 @@ module.exports = {
     }
   },
   combinedOtherIncomeAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
@@ -439,7 +392,7 @@ module.exports = {
     validate: 'required'
   },
   rentAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -447,7 +400,7 @@ module.exports = {
     }
   },
   householdBillsAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -455,15 +408,15 @@ module.exports = {
     }
   },
   foodToiletriesAndCleaningSuppliesAmount: {
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
-    validate: ['required', decimal, greaterThanZero],
     dependent: {
       field: 'outgoingTypes',
       value: 'food_toiletries_cleaning_supplies'
     }
   },
   mobilePhoneAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -471,7 +424,7 @@ module.exports = {
     }
   },
   travelAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -479,7 +432,7 @@ module.exports = {
     }
   },
   clothingAndFootwearAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -487,7 +440,7 @@ module.exports = {
     }
   },
   universalCreditDeductionsAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -495,7 +448,7 @@ module.exports = {
     }
   },
   otherOutgoingAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'outgoingTypes',
@@ -552,7 +505,7 @@ module.exports = {
     validate: 'required'
   },
   combinedRentAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -560,7 +513,7 @@ module.exports = {
     }
   },
   combinedHouseholdBillsAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -569,14 +522,14 @@ module.exports = {
   },
   combinedFoodToiletriesAndCleaningSuppliesAmount: {
     attributes: [{ attribute: 'placeholder', value: '£' }],
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'food_toiletries_cleaning_supplies'
     }
   },
   combinedMobilePhoneAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -584,7 +537,7 @@ module.exports = {
     }
   },
   combinedTravelAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -592,7 +545,7 @@ module.exports = {
     }
   },
   combinedClothingAndFootwearAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -600,7 +553,7 @@ module.exports = {
     }
   },
   combinedUniversalCreditDeductionsAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -608,7 +561,7 @@ module.exports = {
     }
   },
   combinedOtherOutgoingAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -633,7 +586,7 @@ module.exports = {
     }
   },
   savingsAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'savings',
@@ -658,7 +611,7 @@ module.exports = {
     }
   },
   combinedSavingsAmount: {
-    validate: ['required', decimal, greaterThanZero],
+    validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'combinedSavings',
@@ -666,12 +619,12 @@ module.exports = {
     }
   },
   amount: {
-    validate: ['required', decimal, singleLoanAmount],
+    validate: ['required', 'decimal', { type: 'between', arguments: [100, 500] }],
     attributes: [{ attribute: 'placeholder', value: '£' }]
   },
   jointAmount: {
     attributes: [{ attribute: 'placeholder', value: '£' }],
-    validate: ['required', decimal, jointLoanAmount]
+    validate: ['required', 'decimal', { type: 'between', arguments: [100, 780] }]
   },
   purposeTypes: {
     mixin: 'checkbox-group',
@@ -688,17 +641,16 @@ module.exports = {
     }
   },
   accountName: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 100 }]
   },
   sortCode: {
-    validate: ['required', sortCode],
+    validate: ['required', { type: 'regex', arguments: /^[0-9]{6}$/ }],
     formatter: ['removehyphens', 'removespaces']
   },
   accountNumber: {
     validate: ['required', 'numeric', { type: 'minlength', arguments: 6 }, { type: 'maxlength', arguments: 8 }]
   },
-  rollNumber: {
-  },
+  rollNumber: {},
   contactTypes: {
     mixin: 'checkbox-group',
     options: [
@@ -747,13 +699,14 @@ module.exports = {
     validate: 'required'
   },
   outcomeBuilding: {
-    validate: 'required',
+    validate: ['required', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
     }
   },
   outcomeStreet: {
+    validate: [{ type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
@@ -761,7 +714,7 @@ module.exports = {
     labelClassName: 'visuallyhidden'
   },
   outcomeTownOrCity: {
-    validate: 'required',
+    validate: ['required', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
@@ -792,10 +745,10 @@ module.exports = {
     }
   },
   helpFullName: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   helpRelationship: {
-    validate: 'required'
+    validate: ['required', { type: 'maxlength', arguments: 100 }]
   },
   helpContactTypes: {
     mixin: 'checkbox-group',
@@ -821,7 +774,7 @@ module.exports = {
     }
   },
   helpPhone: {
-    validate: ['required', ukPhoneNumber],
+    validate: ['required', 'ukPhoneNumber'],
     dependent: {
       field: 'helpContactTypes',
       value: 'phone'

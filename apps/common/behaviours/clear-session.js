@@ -11,7 +11,8 @@ module.exports = superclass => class extends superclass {
       if (err) {
         return callback(err, values);
       }
-      if (req.path !== confirmStep) {
+
+      if (req.path !== confirmStep && _.get(this, `options.steps[${confirmStep}]`)) {
         this.options.steps[confirmStep].uploadPdfShared = false;
         this.options.steps[confirmStep].submitted = false;
       }
