@@ -16,6 +16,10 @@ module.exports = {
     },
     '/brp': {
       fields: ['brpNumber', 'dateOfBirth'],
+      next: '/contact'
+    },
+    '/contact': {
+      fields: ['contactTypes', 'email', 'phone'],
       next: '/confirm'
     },
     [confirmStep]: {

@@ -64,6 +64,85 @@ describe('shared Upload PDF Behaviour', () => {
     });
   });
 
+  describe('getEmailReceiptTemplateId', () => {
+    const configMock = {
+      govukNotify: {
+        templateEmailReceipt: 'templateEmailReceipt',
+        templateAcceptEmailReceipt: 'templateAcceptEmailReceipt',
+        notifyApiKey: 'mock-api-key'
+      }
+    };
+
+    it('should return the correct email template for the apply journey', () => {
+      const fsMock = {
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+      };
+
+      const instance = getProxyquiredInstance({
+        'fs': fsMock,
+        '../../../config': configMock
+      });
+
+      const result = instance.getEmailReceiptTemplateId('apply');
+
+      result.should.equal('templateEmailReceipt');
+    });
+
+    it('should return the correct email template for the accept journey', () => {
+      const fsMock = {
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+      };
+
+      const instance = getProxyquiredInstance({
+        'fs': fsMock,
+        '../../../config': configMock
+      });
+
+      const result = instance.getEmailReceiptTemplateId('accept');
+
+      result.should.equal('templateAcceptEmailReceipt');
+    });
+  });
+
+  describe('getTextReceiptTemplateId', () => {
+    const configMock = {
+      govukNotify: {
+        templateTextReceipt: 'templateTextReceipt',
+        templateAcceptTextReceipt: 'templateAcceptTextReceipt',
+        notifyApiKey: 'mock-api-key'
+      }
+    };
+
+    it('should return the correct text template for the apply journey', () => {
+      const fsMock = {
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+      };
+
+      const instance = getProxyquiredInstance({
+        'fs': fsMock,
+        '../../../config': configMock
+      });
+
+      const result = instance.getTextReceiptTemplateId('apply');
+
+      result.should.equal('templateTextReceipt');
+    });
+
+    it('should return the correct text template for the accept journey', () => {
+      const fsMock = {
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+      };
+
+      const instance = getProxyquiredInstance({
+        'fs': fsMock,
+        '../../../config': configMock
+      });
+
+      const result = instance.getTextReceiptTemplateId('accept');
+
+      result.should.equal('templateAcceptTextReceipt');
+    });
+  });
 
   describe('renderHtml', () => {
     let fsMock;

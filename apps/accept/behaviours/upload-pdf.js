@@ -46,7 +46,7 @@ module.exports = superclass => class extends superclass {
         const uploadPdfShared = new UploadPdfShared({
           app: 'accept',
           component: 'acceptance',
-          sendReceipt: false,
+          sendReceipt: true,
           sortSections: false,
           notifyPersonalisations: {
             'loan reference': req.sessionModel.get('loanReference')

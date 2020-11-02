@@ -3,5 +3,6 @@
 module.exports = [
   '/',
   '/reference-number',
-  '/brp'
+  '/brp',
+  '/contact'
 ];

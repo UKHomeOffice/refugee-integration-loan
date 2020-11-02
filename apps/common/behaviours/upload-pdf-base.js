@@ -83,7 +83,6 @@ module.exports = class UploadPDFBase {
 
     locals.css = await this.readCss(req);
     locals['ho-logo'] = await this.readHOLogo();
-
     return new Promise((resolve, reject) => {
       res.render('pdf.html', locals, (err, html) => err ? reject(err) : resolve(html));
     });
@@ -142,8 +141,8 @@ module.exports = class UploadPDFBase {
       let applicantPhone = req.sessionModel.get('phone');
       const appName = this.behaviourConfig.app;
 
-      const emailReceiptTemplateId = config.govukNotify.templateEmailReceipt;
-      const textReceiptTemplateId = config.govukNotify.templateTextReceipt;
+      const emailReceiptTemplateId = this.getEmailReceiptTemplateId(appName);
+      const textReceiptTemplateId = this.getTextReceiptTemplateId(appName);
 
       try {
         if (applicantEmail) {
@@ -191,6 +190,26 @@ module.exports = class UploadPDFBase {
         Object.assign({}, loggerObj, {errorMessage: emailErr.message}));
       return Promise.reject(emailErr);
     }
+  }
+
+  getEmailReceiptTemplateId(appName) {
+    if (appName === 'apply') {
+      return config.govukNotify.templateEmailReceipt;
+    } else if (appName === 'accept') {
+      return config.govukNotify.templateAcceptEmailReceipt;
+    }
+
+    return '';
+  }
+
+  getTextReceiptTemplateId(appName) {
+    if (appName === 'apply') {
+      return config.govukNotify.templateTextReceipt;
+    } else if (appName === 'accept') {
+      return config.govukNotify.templateAcceptTextReceipt;
+    }
+
+    return '';
   }
 
   sortSections(locals) {

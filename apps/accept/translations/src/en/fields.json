@@ -10,5 +10,26 @@
   "dateOfBirth": {
     "legend": "Date of Birth",
     "hint": "For example, 31 3 1980"
+  },
+  "contactTypes": {
+    "legend": "How would you like us to contact you?",
+    "hint": "Select at least one option.",
+    "options": {
+      "email": {
+        "label": "Email"
+      },
+      "phone": {
+        "label": "Phone"
+      }
+    }
+  },
+  "email": {
+    "label": "Email address",
+    "changeLinkDescription": "Your email address"
+  },
+  "phone": {
+    "label": "Mobile phone number",
+    "hint":"For international numbers include the country code",
+    "changeLinkDescription": "Your phone number"
   }
 }

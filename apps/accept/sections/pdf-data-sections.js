@@ -11,5 +11,9 @@ module.exports = {
       field: 'dateOfBirth',
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     }
+  ],
+  'pdf-contact-details': [
+    'email',
+    'phone'
   ]
 };

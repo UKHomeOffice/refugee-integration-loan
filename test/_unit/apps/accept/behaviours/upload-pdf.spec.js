@@ -23,7 +23,7 @@ describe('Accept Upload PDF Behaviour', () => {
   const pdfConfig = {
     app: 'accept',
     component: 'acceptance',
-    sendReceipt: false,
+    sendReceipt: true,
     sortSections: false,
     notifyPersonalisations: {
       'loan reference': '12345'

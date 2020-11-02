@@ -10,5 +10,14 @@
     "after": "Enter a date after 1 1 1900",
     "over18": "Enter a valid date of birth. You must be over 18 to accept",
     "before": "Enter a date that is in the past"
+  },
+  "contactTypes": {
+    "default": "Select how we can contact you"
+  },
+  "email": {
+    "default": "Enter your email address in the correct format"
+  },
+  "phone": {
+    "default": "Enter your mobile phone number in the correct format"
   }
 }
