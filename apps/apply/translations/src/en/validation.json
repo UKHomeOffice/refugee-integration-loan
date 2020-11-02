@@ -18,14 +18,16 @@
     "default": "Enter your full name"
   },
   "dateOfBirth": {
-    "default": "Enter your date of birth in the correct format",
-    "before": "Enter a valid date of birth. You must be over 18 to apply"
+    "default": "Enter your date of birth in the correct format; for example, 31 3 1980",
+    "after": "Enter a date after 1 1 1900",
+    "over18": "Enter a valid date of birth. You must be over 18 to apply",
+    "before": "Enter a date that is in the past"
   },
   "brpNumber": {
-    "default": "Enter your BRP number in the correct format"
+    "default": "Enter your BRP number in the correct format; for example, ‘ZU1234567’"
   },
   "niNumber": {
-    "default": "Enter your National Insurance number in the correct format"
+    "default": "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'"
   },
   "hasOtherNames": {
     "default": "Select if you have been known by any other names"
@@ -34,20 +36,22 @@
     "default": "Enter a full name"
   },
   "homeOfficeReference": {
-    "default": "Enter a Home Office reference number in the correct format"
+    "default": "Enter a Home Office reference number in the correct format; for example, ‘A1234567’ or ‘VPR1234’"
   },
   "partnerBrpNumber": {
-    "default": "Enter your partner's BRP number in the correct format"
+    "default": "Enter your partner's BRP number in the correct format; for example, ‘ZU1234567’"
   },
   "partnerFullName": {
     "default": "Enter your partner's full name"
   },
   "partnerDateOfBirth": {
-    "default": "Enter your partner's date of birth in the correct format",
+    "default": "Enter your partner's date of birth in the correct format; for example, 31 3 1980",
+    "after": "Enter a date after 1 1 1900",
+    "over18": "Enter a valid date of birth. You must be over 18 to apply",
     "before": "Enter a date that is in the past"
   },
   "partnerNiNumber": {
-    "default": "Enter your partner's National Insurance number in the correct format"
+    "default": "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'"
   },
   "partnerHasOtherNames": {
     "default": "Select if your partner has been known by any other names"
@@ -96,108 +100,166 @@
     "default": "Select options for you and your partner's monthly income"
   },
   "salaryAmount": {
-    "default": "Enter total salary amount per month"
+    "default": "Enter total salary amount per month",
+    "min": "Salary amount must be greater than zero",
+    "decimal":"Salary must be in pounds and pence; for example £100.00"
   },
   "combinedSalaryAmount": {
-    "default": "Enter total salary amount per month"
+    "default": "Enter total salary amount per month",
+    "min": "Salary amount must be greater than zero",
+    "decimal":"Salary must be in pounds and pence; for example £100.00"
   },
   "universalCreditAmount": {
-    "default": "Enter total Universal Credit amount per month"
+    "default": "Enter total Universal Credit amount per month",
+    "min": "Universal Credit amount must be greater than zero",
+    "decimal":"Universal Credit must be in pounds and pence; for example £100.00"
   },
   "combinedUniversalCreditAmount": {
-    "default": "Enter total Universal Credit amount per month"
+    "default": "Enter total Universal Credit amount per month",
+    "min": "Universal Credit amount must be greater than zero",
+    "decimal":"Universal Credit must be in pounds and pence; for example £100.00"
   },
   "childBenefitAmount": {
-    "default": "Enter total child benefit amount per month"
+    "default": "Enter total child benefit amount per month",
+    "min": "Child benefit amount must be greater than zero",
+    "decimal":"Child benefit must be in pounds and pence; for example £100.00"
   },
   "combinedChildBenefitAmount": {
-    "default": "Enter total child benefit amount per month"
+    "default": "Enter total child benefit amount per month",
+    "min": "Child benefit amount must be greater than zero",
+    "decimal":"Child benefit must be in pounds and pence; for example £100.00"
   },
   "housingBenefitAmount": {
-    "default": "Enter total housing benefit amount per month"
+    "default": "Enter total housing benefit amount per month",
+    "min": "Housing benefit amount must be greater than zero",
+    "decimal":"Housing benefit must be in pounds and pence; for example £100.00"
   },
   "combinedHousingBenefitAmount": {
-    "default": "Enter total housing benefit amount per month"
+    "default": "Enter total housing benefit amount per month",
+    "min": "Housing benefit amount must be greater than zero",
+    "decimal":"Housing benefit must be in pounds and pence; for example £100.00"
   },
   "otherIncomeAmount": {
-    "default": "Enter total other income amount per month"
+    "default": "Enter total other income amount per month",
+    "min": "Other income amount must be greater than zero",
+    "decimal":"Other income must be in pounds and pence; for example £100.00"
   },
   "combinedOtherIncomeAmount": {
-    "default": "Enter total other income amount per month"
+    "default": "Enter total other income amount per month",
+    "min": "Other income amount must be greater than zero",
+    "decimal":"Other income must be in pounds and pence; for example £100.00"
   },
   "outgoingTypes": {
-    "default": "Select options for your monthly outgoings"
+    "default": "Select at least one option for your monthly outgoings"
   },
   "combinedOutgoingTypes": {
     "default": "Select options for you and your partner's monthly outgoings"
   },
   "rentAmount": {
-    "default": "Enter total rent amount per month"
+    "default": "Enter total rent amount per month",
+    "min": "Rent amount must be greater than zero",
+    "decimal":"Rent must be in pounds and pence; for example £100.00"
   },
   "combinedRentAmount": {
-    "default": "Enter total rent amount per month"
+    "default": "Enter total rent amount per month",
+    "min": "Rent amount must be greater than zero",
+    "decimal":"Rent must be in pounds and pence; for example £100.00"
   },
   "householdBillsAmount": {
-    "default": "Enter total utility bills amount per month"
+    "default": "Enter total utility bills amount per month",
+    "min": "Household bills amount must be greater than zero",
+    "decimal":"Household bills amount must be in pounds and pence; for example £100.00"
   },
   "combinedHouseholdBillsAmount": {
-    "default": "Enter total utility bills amount per month"
+    "default": "Enter total utility bills amount per month",
+    "min": "Household bills amount must be greater than zero",
+    "decimal":"Household bills amount must be in pounds and pence; for example £100.00"
   },
   "foodToiletriesAndCleaningSuppliesAmount": {
-    "default": "Enter total food, toiletries and cleaning supplies amount per month"
+    "default": "Enter total food, toiletries and cleaning supplies amount per month",
+    "min": "Food, toiletries and cleaning supplies amount must be greater than zero",
+    "decimal":"Food, toiletries and cleaning supplies amount must be in pounds and pence; for example £100.00"
   },
   "combinedFoodToiletriesAndCleaningSuppliesAmount": {
-    "default": "Enter total food, toiletries and cleaning supplies amount per month"
+    "default": "Enter total food, toiletries and cleaning supplies amount per month",
+    "min": "Food, toiletries and cleaning supplies amount must be greater than zero",
+    "decimal":"Food, toiletries and cleaning supplies amount must be in pounds and pence; for example £100.00"
   },
   "mobilePhoneAmount": {
-    "default": "Enter total mobile phone amount per month"
+    "default": "Enter total mobile phone amount per month",
+    "min": "Mobile phone amount must be greater than zero",
+    "decimal":"Mobile phone amount must be in pounds and pence; for example £100.00"
   },
   "combinedMobilePhoneAmount": {
-    "default": "Enter total mobile phone amount per month"
+    "default": "Enter total mobile phone amount per month",
+    "min": "Mobile phone amount must be greater than zero",
+    "decimal":"Mobile phone amount must be in pounds and pence; for example £100.00"
   },
   "travelAmount": {
-    "default": "Enter total travel amount per month"
+    "default": "Enter total travel amount per month",
+    "min": "Travel amount must be greater than zero",
+    "decimal":"Travel amount must be in pounds and pence; for example £100.00"
   },
   "combinedTravelAmount": {
-    "default": "Enter total travel amount per month"
+    "default": "Enter total travel amount per month",
+    "min": "Travel amount must be greater than zero",
+    "decimal":"Travel amount must be in pounds and pence; for example £100.00"
   },
   "clothingAndFootwearAmount": {
-    "default": "Enter total clothing and footwear amount per month"
+    "default": "Enter total clothing and footwear amount per month",
+    "min": "Clothing and footwear amount must be greater than zero",
+    "decimal":"Clothing and footwear amount must be in pounds and pence; for example £100.00"
   },
   "combinedClothingAndFootwearAmount": {
-    "default": "Enter total clothing and footwear amount per month"
+    "default": "Enter total clothing and footwear amount per month",
+    "min": "Clothing and footwear amount must be greater than zero",
+    "decimal":"Clothing and footwear amount must be in pounds and pence; for example £100.00"
   },
   "universalCreditDeductionsAmount": {
-    "default": "Enter total Universal Credit deductions amount per month"
+    "default": "Enter total Universal Credit deductions amount per month",
+    "min": "Universal Credit deductions must be greater than zero",
+    "decimal":"Universal Credit deductions must be in pounds and pence; for example £100.00"
   },
   "combinedUniversalCreditDeductionsAmount": {
-    "default": "Enter total Universal Credit deductions amount per month"
+    "default": "Enter total Universal Credit deductions amount per month",
+    "min": "Universal Credit deductions must be greater than zero",
+    "decimal":"Universal Credit deductions must be in pounds and pence; for example £100.00"
   },
   "otherOutgoingAmount": {
-    "default": "Enter total other outgoings per month"
+    "default": "Enter total other outgoings per month",
+    "min": "Other outgoings amount must be greater than zero",
+    "decimal":"Other outgoings amount must be in pounds and pence; for example £100.00"
   },
   "combinedOtherOutgoingAmount": {
-    "default": "Enter total other outgoings per month"
+    "default": "Enter total other outgoings per month",
+    "min": "Other outgoings amount must be greater than zero",
+    "decimal":"Other outgoings amount must be in pounds and pence; for example £100.00"
   },
   "savings": {
     "default": "Select if you have any savings"
   },
+  "savingsAmount": {
+    "default": "Enter total amount of savings",
+    "min":  "Total amount of savings must be greater than zero",
+    "decimal": "Total amount of savings must be in pounds and pence; for example £100.00"
+  },
   "combinedSavings": {
     "default": "Select if you or your partner have any savings"
   },
-  "savingsAmount": {
-    "default": "Enter total amount of savings"
-  },
   "combinedSavingsAmount": {
-    "default": "Enter total amount of savings"
+    "default": "Enter total amount of savings",
+    "min":  "Total amount of savings must be greater than zero",
+    "decimal": "Total amount of savings must be in pounds and pence; for example £100.00"
   },
   "amount": {
     "default": "Enter loan amount",
-    "singleLoanAmount": "Enter loan amount within given range"
+    "between": "Enter loan amount between £100.00 and £500.00 in pounds and pence",
+    "decimal": "Enter loan amount between £100.00 and £500.00 in pounds and pence"
   },
   "jointAmount": {
     "default": "Enter loan amount",
-    "jointLoanAmount": "Enter loan amount within given range"
+    "between": "Enter loan amount between £100.00 and £780.00 in pounds and pence",
+    "decimal": "Enter loan amount between £100.00 and £780.00 in pounds and pence"
   },
   "purposeTypes": {
     "default": "Select what you will use the loan for"
@@ -206,19 +268,19 @@
     "default": "Enter the name on your account"
   },
   "sortCode": {
-    "default": "Enter your sort code in the correct format"
+    "default": "Enter your sort code in the correct format; for example 010101"
   },
   "accountNumber": {
-    "default": "Enter your account number in the correct format"
+    "default": "Enter your 6 to 8 digit account number"
   },
   "contactTypes": {
     "default": "Select how we can contact you"
   },
   "email": {
-    "default": "Enter your email address in the correct format"
+    "default": "Enter your email address"
   },
   "phone": {
-    "default": "Enter your mobile phone number in the correct format"
+    "default": "Enter your mobile phone number"
   },
   "likelyToMove": {
     "default": "Select if you are likely to move to another address in the next 4 weeks"
@@ -248,9 +310,9 @@
     "default": "Select how we can contact the person who helped you"
   },
   "helpEmail": {
-    "default": "Enter the person's email address in the correct format"
+    "default": "Enter the person's email address"
   },
   "helpPhone": {
-    "default": "Enter the person's mobile phone number in the correct format"
+    "default": "Enter the person's mobile phone number"
   }
 }

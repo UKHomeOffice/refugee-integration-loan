@@ -11,7 +11,7 @@ describe('validation checks of the apply journey', () => {
   let parseHtml;
 
   const SUBAPP = 'apply';
-  const now = moment();
+  let now;
 
   before(function setup() {
     testApp = getSupertestApp(SUBAPP);
@@ -19,6 +19,10 @@ describe('validation checks of the apply journey', () => {
     initSession = testApp.initSession;
     getUrl = testApp.getUrl;
     parseHtml = testApp.parseHtml;
+  });
+
+  beforeEach(() => {
+    now = moment();
   });
 
   describe('Previously Applied Validations', () => {
@@ -113,11 +117,11 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your full name/);
       expect(validationSummary.html())
-        .to.match(/Enter your date of birth in the correct format/);
+        .to.match(/Enter your date of birth in the correct format; for example, 31 3 1980/);
     });
 
     it('does not pass the BRP page if DOB younger than 18 years old', async() => {
@@ -169,7 +173,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your date of birth in the correct format/);
+        .to.match(/Enter a date after 1 1 1900/);
     });
 
     it('does pass the BRP page if DOB later than 1900-01-02', async() => {
@@ -188,6 +192,25 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
+    it('does not pass the BRP page if DOB is in the future', async() => {
+      const URI = '/brp';
+      await initSession(URI);
+      await passStep(URI, {
+        brpNumber: 'ZU1234567',
+        fullName: 'Joe Bloggs',
+        dateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter a date that is in the past/);
+    });
+
+
     it('does not pass the BRP page if the BRP number is less than 9 characters', async() => {
       const URI = '/brp';
       await initSession(URI);
@@ -203,7 +226,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
     });
 
     it('does not pass the BRP page if the BRP number is more than 9 characters', async() => {
@@ -221,7 +244,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
     });
   });
 
@@ -237,7 +260,51 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your National Insurance number in the correct format/);
+        .to.match(/Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
+    });
+
+    it('does not pass the NI Number page if in the wrong format', async() => {
+      const URI = '/ni-number';
+      await initSession(URI);
+      await passStep(URI, {
+        niNumber: 'qq111111z'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
+    });
+
+    it('does pass the NI Number page if in the correct format', async() => {
+      const URI = '/ni-number';
+      await initSession(URI);
+      await passStep(URI, {
+        niNumber: 'jy111111d'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.false;
+    });
+
+    it('does pass the NI Number page if the number is mixed case', async() => {
+      const URI = '/ni-number';
+      await initSession(URI);
+      await passStep(URI, {
+        niNumber: 'JY111111d'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.false;
     });
   });
 
@@ -269,7 +336,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter a Home Office reference number in the correct format/);
+        .to.match(/Enter a Home Office reference number in the correct format; for example, ‘A1234567’ or ‘VPR1234’/);
     });
   });
 
@@ -317,14 +384,14 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s BRP number in the correct format/);
+        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU1234567’/);
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s full name/);
+        .to.match(/Enter your partner's full name/);
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s date of birth in the correct format/);
+        .to.match(/Enter your partner's date of birth in the correct format; for example, 31 3 1980/);
     });
 
-    it('does pass the Partner BRP page if DOB younger than 18 years old', async() => {
+    it('does not pass the Partner BRP page if DOB younger than 18 years old', async() => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -337,7 +404,9 @@ describe('validation checks of the apply journey', () => {
       const docu = await parseHtml(res);
       const validationSummary = docu.find('.validation-summary');
 
-      expect(validationSummary.length === 1).to.be.false;
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter a valid date of birth. You must be over 18 to apply/);
     });
 
     it('does pass the Partner BRP page if DOB is 18 years old or older', async() => {
@@ -356,6 +425,24 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
+    it('does not pass the BRP page if partner DOB is in the future', async() => {
+      const URI = '/partner-brp';
+      await initSession(URI);
+      await passStep(URI, {
+        partnerBrpNumber: 'ZU1234567',
+        partnerFullName: 'Joe Bloggs',
+        partnerDateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter a date that is in the past/);
+    });
+
     it('does not pass the Partner BRP page if DOB earlier than 1900-01-01', async() => {
       const URI = '/partner-brp';
       await initSession(URI);
@@ -371,7 +458,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s date of birth in the correct format/);
+        .to.match(/Enter a date after 1 1 1900/);
     });
 
     it('does pass the Partner BRP page if DOB later than 1900-01-02', async() => {
@@ -405,7 +492,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s BRP number in the correct format/);
+        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU1234567’/);
     });
 
     it('does not pass the Partner BRP page if the BRP number is more than 9 characters', async() => {
@@ -423,7 +510,67 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s BRP number in the correct format/);
+        .to.match(/Enter your partner\'s BRP number in the correct format; for example, ‘ZU1234567’/);
+    });
+  });
+
+  describe('Partner NI Number Validations', () => {
+    it('does not pass the Partner NI Number page if nothing entered', async() => {
+      const URI = '/partner-ni-number';
+      await initSession(URI);
+      await passStep(URI, {});
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
+    });
+
+    it('does not pass the Partner NI Number page if in the wrong format', async() => {
+      const URI = '/partner-ni-number';
+      await initSession(URI);
+      await passStep(URI, {
+        partnerNiNumber: 'qq111111z'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
+    });
+
+    it('does pass the Partner NI Number page if in the correct format', async() => {
+      const URI = '/partner-ni-number';
+      await initSession(URI);
+      await passStep(URI, {
+        partnerNiNumber: 'jy111111d'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.false;
+    });
+
+    it('does pass the Partner NI Number page if the number is mixed case', async() => {
+      const URI = '/partner-ni-number';
+      await initSession(URI);
+      await passStep(URI, {
+        partnerNiNumber: 'JY111111d'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.false;
     });
   });
 
@@ -550,15 +697,15 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total salary amount per month/);
+        .to.match(/Salary amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit amount per month/);
+        .to.match(/Universal Credit amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total child benefit amount per month/);
+        .to.match(/Child benefit amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total housing benefit amount per month/);
+        .to.match(/Housing benefit amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total other income amount per month/);
+        .to.match(/Other income amount must be greater than zero/);
     });
 
     it('does not pass the Income page if numbers entered are more than 2 decimal places', async() => {
@@ -585,15 +732,15 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total salary amount per month/);
+        .to.match(/Salary must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit amount per month/);
+        .to.match(/Universal Credit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total child benefit amount per month/);
+        .to.match(/Child benefit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total housing benefit amount per month/);
+        .to.match(/Housing benefit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total other income amount per month/);
+        .to.match(/Other income must be in pounds and pence; for example £100.00/);
     });
 
     it('does not pass the Income page if income types selected with no amounts', async() => {
@@ -639,7 +786,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Select options for your monthly outgoings/);
+        .to.match(/Select at least one option for your monthly outgoings/);
     });
 
     it('does not pass the Outgoings page if numbers entered are negative', async() => {
@@ -672,21 +819,21 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total rent amount per month/);
+        .to.match(/Rent amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total utility bills amount per month/);
+        .to.match(/Household bills amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total food, toiletries and cleaning supplies amount per month/);
+        .to.match(/Food, toiletries and cleaning supplies amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total mobile phone amount per month/);
+        .to.match(/Mobile phone amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total travel amount per month/);
+        .to.match(/Travel amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total clothing and footwear amount per month/);
+        .to.match(/Clothing and footwear amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit deductions amount per month/);
+        .to.match(/Universal Credit deductions must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total other outgoings per month/);
+        .to.match(/Other outgoings amount must be greater than zero/);
     });
 
     it('does not pass the Outgoings page if numbers entered are more than 2 decimal places', async() => {
@@ -719,21 +866,21 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total rent amount per month/);
+        .to.match(/Rent must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total utility bills amount per month/);
+        .to.match(/Household bills amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total food, toiletries and cleaning supplies amount per month/);
+        .to.match(/Food, toiletries and cleaning supplies amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total mobile phone amount per month/);
+        .to.match(/Mobile phone amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total travel amount per month/);
+        .to.match(/Travel amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total clothing and footwear amount per month/);
+        .to.match(/Clothing and footwear amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit deductions amount per month/);
+        .to.match(/Universal Credit deductions must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total other outgoings per month/);
+        .to.match(/Other outgoings amount must be in pounds and pence; for example £100.00/);
     });
 
     it('does not pass the Outgoings page if outgoings types selected with no amounts', async() => {
@@ -821,7 +968,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total amount of savings/);
+        .to.match(/Total amount of savings must be greater than zero/);
     });
 
     it('does not pass the Savings page if savings amount entered are more than 2 decimal places', async() => {
@@ -838,7 +985,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total amount of savings/);
+        .to.match(/Total amount of savings must be in pounds and pence; for example £100.00/);
     });
   });
 
@@ -870,7 +1017,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter loan amount/);
+        .to.match(/Enter loan amount between £100.00 and £500.00 in pounds and pence/);
     });
 
     it('does pass the Amount page if amount entered is 100 or more', async() => {
@@ -900,7 +1047,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter loan amount/);
+        .to.match(/Enter loan amount between £100.00 and £500.00 in pounds and pence/);
     });
 
     it('does pass the Amount page if amount entered is less than 500', async() => {
@@ -930,7 +1077,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter loan amount/);
+        .to.match(/Enter loan amount between £100.00 and £500.00 in pounds and pence/);
     });
   });
 
@@ -973,15 +1120,15 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total salary amount per month/);
+        .to.match(/Salary amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit amount per month/);
+        .to.match(/Universal Credit amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total child benefit amount per month/);
+        .to.match(/Child benefit amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total housing benefit amount per month/);
+        .to.match(/Housing benefit amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total other income amount per month/);
+        .to.match(/Other income amount must be greater than zero/);
     });
 
     it('does not pass the Combined Income page if numbers entered are more than 2 decimal places', async() => {
@@ -1008,15 +1155,15 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total salary amount per month/);
+        .to.match(/Salary must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit amount per month/);
+        .to.match(/Universal Credit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total child benefit amount per month/);
+        .to.match(/Child benefit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total housing benefit amount per month/);
+        .to.match(/Housing benefit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total other income amount per month/);
+        .to.match(/Other income must be in pounds and pence; for example £100.00/);
     });
 
     it('does not pass the Combined Income page if income types selected with no amounts', async() => {
@@ -1095,21 +1242,21 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total rent amount per month/);
+        .to.match(/Rent amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total utility bills amount per month/);
+        .to.match(/Household bills amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total food, toiletries and cleaning supplies amount per month/);
+        .to.match(/Food, toiletries and cleaning supplies amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total mobile phone amount per month/);
+        .to.match(/Mobile phone amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total travel amount per month/);
+        .to.match(/Travel amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total clothing and footwear amount per month/);
+        .to.match(/Clothing and footwear amount must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit deductions amount per month/);
+        .to.match(/Universal Credit deductions must be greater than zero/);
       expect(validationSummary.html())
-        .to.match(/Enter total other outgoings per month/);
+        .to.match(/Other outgoings amount must be greater than zero/);
     });
 
     it('does not pass the Combined Outgoings page if numbers entered are more than 2 decimal places', async() => {
@@ -1142,21 +1289,21 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total rent amount per month/);
+        .to.match(/Rent must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total utility bills amount per month/);
+        .to.match(/Household bills amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total food, toiletries and cleaning supplies amount per month/);
+        .to.match(/Food, toiletries and cleaning supplies amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total mobile phone amount per month/);
+        .to.match(/Mobile phone amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total travel amount per month/);
+        .to.match(/Travel amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total clothing and footwear amount per month/);
+        .to.match(/Clothing and footwear amount must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total Universal Credit deductions amount per month/);
+        .to.match(/Universal Credit deductions must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
-        .to.match(/Enter total other outgoings per month/);
+        .to.match(/Other outgoings amount must be in pounds and pence; for example £100.00/);
     });
 
     it('does not pass the Combined Outgoings page if outgoings types selected with no amounts', async() => {
@@ -1244,7 +1391,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total amount of savings/);
+        .to.match(/Total amount of savings must be greater than zero/);
     });
 
     it('does not pass the Combined Savings page if savings amount entered are more than 2 decimal places', async() => {
@@ -1261,7 +1408,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter total amount of savings/);
+        .to.match(/Total amount of savings must be in pounds and pence; for example £100.00/);
     });
   });
 
@@ -1293,7 +1440,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter loan amount/);
+        .to.match(/Enter loan amount between £100.00 and £780.00 in pounds and pence/);
     });
 
     it('does pass the Combined Amount page if amount entered is 100 or more', async() => {
@@ -1323,7 +1470,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter loan amount/);
+        .to.match(/Enter loan amount between £100.00 and £780.00 in pounds and pence/);
     });
 
     it('does pass the Combined Amount page if amount entered is less than 780', async() => {
@@ -1353,7 +1500,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter loan amount/);
+        .to.match(/Enter loan amount between £100.00 and £780.00 in pounds and pence/);
     });
   });
 
@@ -1423,9 +1570,9 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Enter the name on your account/);
       expect(validationSummary.html())
-        .to.match(/Enter your sort code in the correct format/);
+        .to.match(/Enter your sort code in the correct format; for example 010101/);
       expect(validationSummary.html())
-        .to.match(/Enter your account number in the correct format/);
+        .to.match(/Enter your 6 to 8 digit account number/);
     });
 
     it('does not pass the Bank Details page if sort code and account numbers too short', async() => {
@@ -1444,9 +1591,9 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your sort code in the correct format/);
+        .to.match(/Enter your sort code in the correct format; for example 010101/);
       expect(validationSummary.html())
-        .to.match(/Enter your account number in the correct format/);
+        .to.match(/Enter your 6 to 8 digit account number/);
     });
 
     it('does not pass the Bank Details page if sort code and account numbers too long', async() => {
@@ -1465,9 +1612,9 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your sort code in the correct format/);
+        .to.match(/Enter your sort code in the correct format; for example 010101/);
       expect(validationSummary.html())
-        .to.match(/Enter your account number in the correct format/);
+        .to.match(/Enter your 6 to 8 digit account number/);
     });
 
     it('does pass the Bank Details page if account number 8 digits long', async() => {
@@ -1536,9 +1683,9 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your email address in the correct format/);
+        .to.match(/Enter your email address/);
       expect(validationSummary.html())
-        .to.match(/Enter your mobile phone number in the correct format/);
+        .to.match(/Enter your mobile phone number/);
     });
   });
 
@@ -1685,9 +1832,9 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter the person\'s email address in the correct format/);
+        .to.match(/Enter the person\'s email address/);
       expect(validationSummary.html())
-        .to.match(/Enter the person\'s mobile phone number in the correct format/);
+        .to.match(/Enter the person\'s mobile phone number/);
     });
   });
 

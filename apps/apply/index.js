@@ -9,6 +9,7 @@ const config = require('../../config');
 
 const confirmStep = config.routes.confirmStep;
 
+
 module.exports = {
   name: 'apply',
   params: '/:action?/:id?/:edit?',

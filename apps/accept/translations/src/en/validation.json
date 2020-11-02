@@ -3,10 +3,12 @@
     "default": "Enter your loan reference number in the correct format"
   },
   "brpNumber": {
-    "default": "Enter your BRP number in the correct format"
+    "default": "Enter your BRP number in the correct format; for example, ‘ZU1234567’"
   },
   "dateOfBirth": {
-    "default": "Enter your date of birth in the correct format",
+    "default": "Enter your date of birth in the correct format; for example, 31 3 1980",
+    "after": "Enter a date after 1 1 1900",
+    "over18": "Enter a valid date of birth. You must be over 18 to accept",
     "before": "Enter a date that is in the past"
   }
 }
