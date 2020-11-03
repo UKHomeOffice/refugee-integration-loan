@@ -3,7 +3,7 @@
 const config = require('../../config');
 const proxyquire = require('proxyquire').noCallThru();
 
-describe.only('app', () => {
+describe('app', () => {
   let appProxy;
   let hofStub;
   let useStub;
