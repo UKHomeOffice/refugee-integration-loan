@@ -6,6 +6,7 @@ metadata:
   labels:
     name: refugee-loan
 data:
+  APP_NAME: "Refugee Integration Loan Application Service"
   ENVIRONMENT: "STG"
   COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
   GA_TAG: "UA-145652997-2"

@@ -6,6 +6,7 @@ const Model = require('hof-model');
 module.exports = function request(opts) {
   opts = opts || {};
   const req = reqres.req(opts);
+  req.log = () => {};
   req.form = req.form || {};
   req.form.values = req.form.values || {};
   req.sessionModel = new Model(opts.session);

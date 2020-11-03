@@ -1,6 +1,5 @@
 'use strict';
 
-const logger = require('./lib/logger');
 const hof = require('hof');
 const config = require('./config');
 const _ = require('lodash');
@@ -22,8 +21,7 @@ const app = hof({
     require('./apps/apply/'),
     require('./apps/accept/')
   ],
-  views: [path.resolve(__dirname, './apps/common/views'), require('hof-behaviour-loop').views],
-  loglevel: config.hofLogLevel
+  views: [path.resolve(__dirname, './apps/common/views'), require('hof-behaviour-loop').views]
 });
 
 app.use((req, res, next) => {
@@ -56,7 +54,5 @@ if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
     res.send('Session populate complete');
   });
 }
-
-logger.info('RIL application started');
 
 module.exports = app;

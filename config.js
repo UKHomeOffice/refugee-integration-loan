@@ -25,7 +25,5 @@ module.exports = {
   },
   routes: {
     confirmStep: '/confirm'
-  },
-  logLevel: process.env.LOG_LEVEL || 'info',
-  hofLogLevel: process.env.HOF_LOG_LEVEL || 'warn'
+  }
 };

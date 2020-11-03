@@ -5,13 +5,11 @@ const path = require('path');
 const moment = require('moment');
 const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
 const uuid = require('uuid');
-const logger = require('../../../lib/logger');
 const config = require('../../../config');
 const utilities = require('../../../lib/utilities');
 const _ = require('lodash');
 const NotifyClient = utilities.NotifyClient;
 
-const notifyClient = new NotifyClient(config.govukNotify.notifyApiKey);
 const tempLocation = path.resolve(config.pdf.tempLocation);
 
 module.exports = class UploadPDFBase {
@@ -23,11 +21,9 @@ module.exports = class UploadPDFBase {
     return new Promise((resolve, reject) => {
       const applicationUuid = uuid.v1();
       const appName = this.behaviourConfig.app;
-      const file = pdfPuppeteer.generate(html, tempLocation, `${applicationUuid}.pdf`, appName);
+      const file = pdfPuppeteer.generate(req, html, tempLocation, `${applicationUuid}.pdf`, appName);
 
-      logger.info(
-        `ril.form.${appName}.submit_form.create_pdf.successful with uuid: ${applicationUuid}`,
-        { sessionID: req.sessionID, path: req.path });
+      req.log('info', `ril.form.${appName}.submit_form.create_pdf.successful with uuid: ${applicationUuid}`);
 
       const errorMessage = _.get(file, 'errorMessage');
       return errorMessage ? reject(errorMessage) : resolve(file);
@@ -35,16 +31,14 @@ module.exports = class UploadPDFBase {
   }
 
   deleteFile(req, fileToDelete) {
-    const loggerObj = { sessionID: req.sessionID, path: req.path };
     const appName = this.behaviourConfig.app;
 
     fs.unlink(fileToDelete, (err) => {
       if (err) {
-        logger.error(`ril.form.${appName}.submit_form.delete_pdf.error [${fileToDelete}]`,
-          Object.assign({}, loggerObj, { errorMessage: err.message }));
+        req.log('error', `ril.form.${appName}.submit_form.delete_pdf.error [${fileToDelete}]`,
+          { errorMessage: err.message });
       } else {
-        logger.info(
-          `ril.form.${appName}.submit_form.delete_pdf.successful [${fileToDelete}]`, loggerObj);
+        req.log('info', `ril.form.${appName}.submit_form.delete_pdf.successful [${fileToDelete}]`);
       }
     });
   }
@@ -89,11 +83,12 @@ module.exports = class UploadPDFBase {
   }
 
   sendEmailWithAttachment(req, pdfFile) {
-    const loggerObj = { sessionID: req.sessionID, path: req.path };
     const personalisations = this.behaviourConfig.notifyPersonalisations;
     const appName = this.behaviourConfig.app;
     const appComponent = this.behaviourConfig.component;
     const caseworkerEmail = config.govukNotify.caseworkerEmail;
+
+    const notifyClient = new NotifyClient(config.govukNotify.notifyApiKey, req.log);
 
     return new Promise(async(resolve, reject) => {
       try {
@@ -108,19 +103,13 @@ module.exports = class UploadPDFBase {
         const trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
         const timeSpentOnForm = utilities.secondsBetween(trackedPageStartTime, new Date());
 
-        logger.info(
-          `ril.form.${appName}.submit_form.create_email_with_file_notify.successful`, loggerObj);
-        logger.info(`ril.form.${appName}.completed`, loggerObj);
-        logger.info(
-          `ril.${appComponent}.submission.duration=[${timeSpentOnForm}] seconds`, loggerObj);
+        req.log('info', `ril.form.${appName}.submit_form.create_email_with_file_notify.successful`);
+        req.log('info', `ril.${appComponent}.submission.duration=[${timeSpentOnForm}] seconds`);
 
-        return await this.sendReceipt(req).then(resolve).catch(reject);
+        return await this.sendReceipt(req, notifyClient).then(resolve).catch(reject);
       } catch (err) {
-        const errorObj = Object.assign({}, loggerObj, { errorMessage: err.message });
-
-        logger.error(
-          `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, errorObj);
-        logger.error(`ril.form.${appName}.error`, errorObj);
+        const errorObj = { errorMessage: err.message };
+        req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, errorObj);
         return reject();
       }
     }).catch(() => {
@@ -130,13 +119,12 @@ module.exports = class UploadPDFBase {
     });
   }
 
-  async sendReceipt(req) {
+  async sendReceipt(req, notifyClient) {
     return new Promise(async(resolve, reject) => {
       if (!this.behaviourConfig.sendReceipt) {
         return resolve();
       }
 
-      const loggerObj = { sessionID: req.sessionID, path: req.path };
       let applicantEmail = req.sessionModel.get('email');
       let applicantPhone = req.sessionModel.get('phone');
       const appName = this.behaviourConfig.app;
@@ -146,14 +134,14 @@ module.exports = class UploadPDFBase {
 
       try {
         if (applicantEmail) {
-          await this.notifyByEmail(emailReceiptTemplateId, applicantEmail, appName, loggerObj)
+          await this.notifyByEmail(req, notifyClient, emailReceiptTemplateId, applicantEmail, appName)
             .catch(() => {
               return reject('Error sending email notification!');
             });
         }
 
         if (applicantPhone) {
-          await this.notifyBySms(textReceiptTemplateId, applicantPhone, appName, loggerObj)
+          await this.notifyBySms(req, notifyClient, textReceiptTemplateId, applicantPhone, appName)
             .catch(() => {
               return reject('Error sending sms notification!');
             });
@@ -168,26 +156,26 @@ module.exports = class UploadPDFBase {
     });
   }
 
-  async notifyBySms(textReceiptTemplateId, applicantPhone, appName, loggerObj) {
+  async notifyBySms(req, notifyClient, textReceiptTemplateId, applicantPhone, appName) {
     try {
       await notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {});
-      logger.info(`ril.form.${appName}.send_receipt.create_text_notify.successful`, loggerObj);
+      req.log('info', `ril.form.${appName}.send_receipt.create_text_notify.successful`);
       return Promise.resolve();
     } catch (textErr) {
-      logger.error(`ril.form.${appName}.send_receipt.create_text_notify.error`,
-        Object.assign({}, loggerObj, {errorMessage: textErr.message}));
+      req.log('error', `ril.form.${appName}.send_receipt.create_text_notify.error`,
+        { errorMessage: textErr.message });
       return Promise.reject(textErr);
     }
   }
 
-  async notifyByEmail(emailReceiptTemplateId, applicantEmail, appName, loggerObj) {
+  async notifyByEmail(req, notifyClient, emailReceiptTemplateId, applicantEmail, appName) {
     try {
       await notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {});
-      logger.info(`ril.form.${appName}.send_receipt.create_email_notify.successful`, loggerObj);
+      req.log('info', `ril.form.${appName}.send_receipt.create_email_notify.successful`);
       return Promise.resolve();
     } catch (emailErr) {
-      logger.error(`ril.form.${appName}.send_receipt.create_email_notify.error`,
-        Object.assign({}, loggerObj, {errorMessage: emailErr.message}));
+      req.log('error', `ril.form.${appName}.send_receipt.create_email_notify.error`,
+        { errorMessage: emailErr.message });
       return Promise.reject(emailErr);
     }
   }

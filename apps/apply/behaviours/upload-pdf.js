@@ -1,6 +1,5 @@
 'use strict';
 
-const logger = require('../../../lib/logger');
 const UploadPdfShared = require('../../common/behaviours/upload-pdf-base');
 const config = require('../../../config');
 
@@ -39,8 +38,6 @@ module.exports = superclass => class extends superclass {
   }
 
   async successHandler(req, res, next) {
-    const loggerObj = { sessionID: req.sessionID, path: req.path };
-
     try {
       if (!this.options.steps[confirmStep].uploadPdfShared) {
         const uploadPdfShared = new UploadPdfShared({
@@ -63,12 +60,12 @@ module.exports = superclass => class extends superclass {
 
         this.options.steps[confirmStep].submitted = true;
 
-        logger.info('ril.form.apply.submit_form.successful', loggerObj);
+        req.log('info', 'ril.form.apply.submit_form.successful');
         return super.successHandler(req, res, next);
       }
       return await this.pollPdf(req, res, next, 0);
     } catch (err) {
-      logger.error('ril.form.apply.submit_form.error', loggerObj);
+      req.log('error', 'ril.form.apply.submit_form.error', err);
       return next(new SubmissionError('submissionError', {
         type: 'submissionFailed',
         message: 'Error submitting application form',
