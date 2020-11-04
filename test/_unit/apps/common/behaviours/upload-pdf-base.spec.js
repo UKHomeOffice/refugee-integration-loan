@@ -4,13 +4,12 @@
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
 
-describe('shared Upload PDF Behaviour', () => {
+describe('Base Upload PDF Behaviour', () => {
   const mockData = '<html></html>';
   const mockPath = './pdf-form-submissions_test.pdf';
 
 
   const getProxyquiredInstance = (overrides, behaviourConfig) => {
-    overrides['../../../lib/logger'] = { info: sinon.stub(), error: sinon.stub() };
     overrides['../translations/src/en/pages.json'] = overrides['../translations/src/en/pages.json'] ||
       { pages: { confirm: { sections: {} } }, '@noCallThru': true };
 
@@ -46,7 +45,7 @@ describe('shared Upload PDF Behaviour', () => {
 
       const expectedTempName = 'abc123.pdf';
       result.should.eql(mockPath);
-      pdfPuppeteerMock.generate.withArgs(mockData, sinon.match.any, expectedTempName, 'apply')
+      pdfPuppeteerMock.generate.withArgs(req, mockData, sinon.match.any, expectedTempName, 'apply')
         .calledOnce.should.be.true;
     });
 
@@ -341,7 +340,6 @@ describe('shared Upload PDF Behaviour', () => {
       const emailReceiptTemplateId = 'test';
       const applicantEmail = 'test@example.org';
       const appName = 'testApp';
-      const loggerObj = { info: sinon.stub(), error: sinon.stub() };
 
       const instance = getProxyquiredInstance({
         'fs': fsMock,
@@ -371,7 +369,7 @@ describe('shared Upload PDF Behaviour', () => {
         expectedEmailContent);
 
       instance.sendReceipt.withArgs(req).should.be.calledOnce;
-      instance.notifyByEmail.withArgs(emailReceiptTemplateId, applicantEmail, appName, loggerObj);
+      instance.notifyByEmail.withArgs(emailReceiptTemplateId, applicantEmail, appName);
 
       fsMock.unlink.calledOnce.should.be.true;
     });
