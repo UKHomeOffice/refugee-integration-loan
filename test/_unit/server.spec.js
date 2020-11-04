@@ -1,219 +1,165 @@
-/* eslint-disable max-nested-callbacks */
 'use strict';
-const config = require('../../config');
-const proxyquire = require('proxyquire').noCallThru();
 
-describe('app', () => {
-  let appProxy;
+const path = require('path');
+const request = require('../helpers/request');
+const response = require('../helpers/response');
+
+describe('Server.js app file', () => {
   let hofStub;
   let useStub;
+  let sendStub;
   let behavioursFieldFilterStub;
-  let behavioursPageAnalyticsStub;
-  let SetFeedbackReturnUrlStub;
+  let setFeedbackReturnUrlStub;
   let appsCommonStub;
   let appsApplyStub;
   let appsAcceptStub;
   let hofBehaviourLoopViewsStub;
-  let metricsStub;
+  let behavioursClearSessionStub;
+  let req;
+  let res;
+  let next;
 
   beforeEach(() => {
+    req = request();
+    req.session = {};
+    req.body = {
+      appName: 'testApp',
+      sessionProperties: {
+        testProp1: 'test',
+        testProp2: 'test'
+      }
+    };
+
+    res = response();
+    sendStub = sinon.stub();
+    res.send = sendStub;
+
+    next = sinon.stub();
     hofStub = sinon.stub();
     useStub = sinon.stub();
     behavioursFieldFilterStub = sinon.stub();
-    behavioursPageAnalyticsStub = sinon.stub();
-    SetFeedbackReturnUrlStub = sinon.stub();
+    setFeedbackReturnUrlStub = sinon.stub();
     appsCommonStub = sinon.stub();
     appsApplyStub = sinon.stub();
     appsAcceptStub = sinon.stub();
     hofBehaviourLoopViewsStub = sinon.stub();
-    metricsStub = sinon.stub().returns('metricStubReturn');
+    behavioursClearSessionStub = sinon.stub();
 
-    hofStub.returns({
-      use: useStub
+    useStub.onCall(0).yields(req, res, next);
+    useStub.onCall(1).yields(req, res);
+    hofStub.returns({ use: useStub });
+
+    proxyquire('../server', {
+      'hof': hofStub,
+      './apps/common/behaviours/clear-session': behavioursClearSessionStub,
+      './apps/common/behaviours/fields-filter': behavioursFieldFilterStub,
+      'hof-behaviour-feedback': {
+        SetFeedbackReturnUrl: setFeedbackReturnUrlStub
+      },
+      './apps/common': appsCommonStub,
+      './apps/apply/': appsApplyStub,
+      './apps/accept/': appsAcceptStub,
+      'hof-behaviour-loop': {
+        views: hofBehaviourLoopViewsStub
+      },
+      './config': { nodeEnv: 'test' }
     });
-
   });
 
-  afterEach(() => {
-    sinon.restore();
-  });
-
-  describe('hof', () => {
-    beforeEach(() => {
-      appProxy = proxyquire('../../server', {
-        'hof': hofStub,
-        './lib/metrics': metricsStub,
-        './behaviours/fields-filter': behavioursFieldFilterStub,
-        './behaviours/page-analytics': behavioursPageAnalyticsStub,
-        'hof-behaviour-feedback': {
-          SetFeedbackReturnUrl: SetFeedbackReturnUrlStub
-        },
-        './apps/common': appsCommonStub,
-        './apps/apply/': appsApplyStub,
-        './apps/accept/': appsAcceptStub,
-        'hof-behaviour-loop': {
-          views: hofBehaviourLoopViewsStub
-        },
-      });
-    });
-
-    it('calls hof once', () => {
-      hofStub.should.have.been.calledOnce;
-    });
-
+  describe('Setup HOF Configuration', () => {
     it('calls hof with behaviours and routes', () => {
-      hofStub.should.have.been.calledWith({
+      hofStub.should.have.been.calledOnce.calledWithExactly({
         build: {
           translate: {
             shared: './apps/common/translations/src'
           }
         },
         behaviours: [
+          behavioursClearSessionStub,
           behavioursFieldFilterStub,
-          behavioursPageAnalyticsStub,
-          SetFeedbackReturnUrlStub
+          setFeedbackReturnUrlStub
         ],
         routes: [
           appsCommonStub,
           appsApplyStub,
           appsAcceptStub,
         ],
-        views: hofBehaviourLoopViewsStub,
-        loglevel: config.hofLogLevel
+        views: [path.resolve(__dirname, '../../apps/common/views'), hofBehaviourLoopViewsStub]
       });
+    });
+
+    it('should call the app use method twice if nodeEnv set to test', () => {
+      useStub.should.have.been.calledTwice;
+    });
+
+    it('should call the app use method twice if nodeEnv set to development', () => {
+      const use = sinon.stub();
+      const hof = () => {
+        return { use };
+      };
+
+      proxyquire('../server', {
+        'hof': hof,
+        './config': { nodeEnv: 'development' }
+      });
+
+      use.should.have.been.calledTwice;
+    });
+
+    it('should call the app use method once if nodeEnv set to anything else', () => {
+      const use = sinon.stub();
+      const hof = () => {
+        return { use };
+      };
+
+      proxyquire('../server', {
+        'hof': hof,
+        './config': { nodeEnv: 'production' }
+      });
+
+      use.should.have.been.calledOnce;
     });
   });
 
-  describe('use', () => {
-    let res = {
-      locals: {}
-    };
-    let req;
-    let nextStub;
-    let testRes;
-    let testReq;
-    let sendStub;
-
-    beforeEach(() => {
-      nextStub = sinon.stub();
-      sendStub = sinon.stub();
-      useStub.onCall(0).yields(req, res, nextStub);
-      testRes = {
-        send: sendStub
-      };
-    });
-
-    it('is called 3 times in the test environment', () => {
-      appProxy = proxyquire('../../server', {
-        'hof': hofStub
-      });
-
-      useStub.should.have.been.calledThrice;
-    });
-
-    describe('first call', () => {
-      it('should take a callback that sets properties on res then calls next()', () => {
-        appProxy = proxyquire('../../server', {
-          'hof': hofStub
-        });
-        res.should.eql({
-          locals: {
-            htmlLang: 'en',
-            feedbackUrl: '/feedback',
-            footerSupportLinks: [
-              { path: '/cookies', property: 'base.cookies' },
-              { path: '/terms-and-conditions', property: 'base.terms' },
-              { path: '/accessibility', property: 'base.accessibility' },
-            ]
-          }
-        });
-        nextStub.should.have.been.calledOnce;
+  describe('Use Locals', () => {
+    it('should set locals on the response', () => {
+      res.locals.should.eql({
+        htmlLang: 'en',
+        feedbackUrl: '/feedback',
+        footerSupportLinks: [
+          { path: '/cookies', property: 'base.cookies' },
+          { path: '/terms-and-conditions', property: 'base.terms' },
+          { path: '/accessibility', property: 'base.accessibility' },
+        ]
       });
     });
 
-    describe('second call', () => {
-      it('should take /insight and metrics() as arguments', () => {
-        appProxy = proxyquire('../../server', {
-          'hof': hofStub,
-          './lib/metrics': metricsStub,
-        });
-        const useArgs = useStub.getCall(1).args;
-        useArgs.should.eql(['/insight', 'metricStubReturn']);
-        metricsStub.should.have.been.calledOnce;
-      });
+    it('should call next once', () => {
+      next.should.have.been.calledOnce;
+    });
+  });
+
+  describe('Use Test Endpoint', () => {
+    it('it should take /test/bootstrap-session as the first argument', () => {
+      const useArgs = useStub.getCall(1).args[0];
+      useArgs.should.eql('/test/bootstrap-session');
     });
 
-    describe('third call', () => {
-      it('it should take /test/bootstrap-session as the first argument', () => {
-        appProxy = proxyquire('../../server', {
-          'hof': hofStub
-        });
-        const useArgs = useStub.getCall(2).args[0];
-        useArgs.should.eql('/test/bootstrap-session');
-      });
+    it('the send method on res should be called', () => {
+      sendStub.should.have.been.calledOnce.calledWithExactly('Session populate complete');
+    });
 
-      it('the send method on res should be called', () => {
-        testReq = {
-          session: {
-            'hof-wizard-testApp': {}
-          },
-          body: {
-            appName: 'testApp'
-          }
-        };
-        useStub.onCall(2).yields(testReq, testRes);
-        appProxy = proxyquire('../../server', {
-          'hof': hofStub
-        });
+    it('if no app name key set but a redis session is available set the app name key to an empty object', () => {
+      expect(req.session['hof-wizard-testApp']).to.exist;
+    });
 
-        sendStub.should.have.been.calledOnce.calledWith('Session populate complete');
-      });
-
-      it('if no app nam key set but a redis session is available set the app name key to an empty object', () => {
-        testReq = {
-          session: {
-            testSession: 'test'
-          },
-          body: {
-            appName: 'testApp'
-          }
-        };
-        useStub.onCall(2).yields(testReq, testRes);
-        appProxy = proxyquire('../../server', {
-          'hof': hofStub
-        });
-
-        testReq.session.should.eql({
-          testSession: 'test',
-          'hof-wizard-testApp': {}
-        });
-      });
-
-      it('if session properties are set in the body they are set on hof-wizard-appName', () => {
-        testReq = {
-          session: {
-            'hof-wizard-testApp': {}
-          },
-          body: {
-            appName: 'testApp',
-            sessionProperties: {
-              testProp1: 'test',
-              testProp2: 'test'
-            }
-          }
-        };
-        useStub.onCall(2).yields(testReq, testRes);
-        appProxy = proxyquire('../../server', {
-          'hof': hofStub
-        });
-
-        testReq.session['hof-wizard-testApp'].should.eql(
-          {
-            testProp1: 'test',
-            testProp2: 'test'
-          }
-        );
-      });
+    it('if session properties are set in the body they are set on hof-wizard-appName', () => {
+      req.session['hof-wizard-testApp'].should.eql(
+        {
+          testProp1: 'test',
+          testProp2: 'test'
+        }
+      );
     });
   });
 });
