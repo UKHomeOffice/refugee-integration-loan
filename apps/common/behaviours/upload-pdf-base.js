@@ -92,7 +92,7 @@ module.exports = class UploadPDFBase {
     return new Promise(async(resolve, reject) => {
       try {
         const data = await this.readPdf(pdfFile);
-        
+
         await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
           personalisation: Object.assign({}, personalisations, {
             'form id': notifyClient.prepareUpload(data)
