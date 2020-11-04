@@ -87,13 +87,12 @@ module.exports = class UploadPDFBase {
     const appName = this.behaviourConfig.app;
     const appComponent = this.behaviourConfig.component;
     const caseworkerEmail = config.govukNotify.caseworkerEmail;
-
-    const notifyClient = new NotifyClient(config.govukNotify.notifyApiKey, req.log);
+    const notifyClient = new NotifyClient(config.govukNotify.notifyApiKey);
 
     return new Promise(async(resolve, reject) => {
       try {
         const data = await this.readPdf(pdfFile);
-
+        
         await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
           personalisation: Object.assign({}, personalisations, {
             'form id': notifyClient.prepareUpload(data)
@@ -108,8 +107,7 @@ module.exports = class UploadPDFBase {
 
         return await this.sendReceipt(req, notifyClient).then(resolve).catch(reject);
       } catch (err) {
-        const errorObj = { errorMessage: err.message };
-        req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, errorObj);
+        req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, err);
         return reject();
       }
     }).catch(() => {
