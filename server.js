@@ -25,7 +25,6 @@ const app = hof({
 });
 
 app.use((req, res, next) => {
-  // Set HTML Language
   res.locals.htmlLang = 'en';
   res.locals.feedbackUrl = '/feedback';
   res.locals.footerSupportLinks = [
@@ -44,6 +43,7 @@ if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
       if (!req.session) {
         throw new Error('Redis is not running!');
       }
+
       req.session[`hof-wizard-${appName}`] = {};
     }
 
