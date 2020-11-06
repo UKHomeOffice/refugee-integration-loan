@@ -50,5 +50,9 @@
   "feedback": {
     "header": "Feedback",
     "detailsHeader": "Leave your details so we can contact you if we need to"
+  },
+  "feedback-submitted": {
+    "confirmed": "Thank you",
+    "submitted": "Your feedback has been submitted."
   }
 }

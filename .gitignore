@@ -4,7 +4,8 @@ node_modules
 .vscode
 *.iml
 public/
-apps/apply/translations/en
-apps/accept/translations/en
+apps/**/translations/**/*
+!apps/**/translations/src/
+!apps/**/translations/src/**/*
 coverage
 .nyc_output

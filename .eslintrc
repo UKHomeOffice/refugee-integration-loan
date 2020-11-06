@@ -20,3 +20,4 @@ overrides:
       no-undef: "off"
       no-unused-expressions: "off"
       max-nested-callbacks: "off"
+      no-warning-comments: "off"

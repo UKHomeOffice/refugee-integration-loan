@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions,max-nested-callbacks */
 'use strict';
 
 const request = require('../../../../helpers/request');

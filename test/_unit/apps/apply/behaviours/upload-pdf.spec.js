@@ -172,7 +172,6 @@ describe('Apply Upload PDF Behaviour', () => {
       badReq.sessionID = 'bad';
 
       req.sessionModel.set('fullName', pdfConfig.notifyPersonalisations.name);
-      renderHTMLStub.withArgs(badReq, res, { fakeLocals: 'badLocals' }).rejects('LocalsError');
 
       sandbox = sinon.createSandbox();
       pdfLocalsStub = sandbox.stub(Behaviour.prototype, 'pdfLocals');
@@ -181,6 +180,7 @@ describe('Apply Upload PDF Behaviour', () => {
       pdfLocalsStub.withArgs(req, res).returns({ fakeLocals: 'fakeLocals' });
       pdfLocalsStub.withArgs(badReq, res).returns({ fakeLocals: 'badLocals' });
       pdfPollStub.resolves();
+      pdfPollStub.withArgs(badReq, res, next, 0).rejects('PollError');
 
       await behaviour.successHandler(req, res, next);
     });
@@ -223,8 +223,7 @@ describe('Apply Upload PDF Behaviour', () => {
 
     it('should call the callback with an Error if there is an error', async() => {
       behaviour.options.steps[confirmStep] = {
-        uploadPdfShared: false,
-        submitted: false
+        uploadPdfShared: true
       };
 
       await behaviour.successHandler(badReq, res, next);
@@ -232,7 +231,7 @@ describe('Apply Upload PDF Behaviour', () => {
       const errArg = next.firstCall.args[0];
       next.should.have.been.calledOnce;
       expect(errArg).to.be.instanceof(Error);
-      expect(errArg.message).to.equal('Error submitting application form');
+      expect(errArg.name).to.equal('PollError');
     });
   });
 });
