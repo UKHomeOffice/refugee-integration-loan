@@ -1,8 +1,7 @@
 {
   "default": {
-    "title": "Default error title",
-    "text1": "Default error text 1",
-    "helpEmail": "Integrationloan@homeoffice.gov.uk"
+    "title": "Sorry, something went wrong",
+    "message": "A server exception occurred. Please try again."
   },
   "submissionFailed": {
     "title": "Sorry, something went wrong",

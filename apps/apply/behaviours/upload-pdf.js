@@ -2,10 +2,7 @@
 
 const UploadPdfShared = require('../../common/behaviours/upload-pdf-base');
 const config = require('../../../config');
-
 const confirmStep = config.routes.confirmStep;
-const SubmissionError = require('../../common/behaviours/submission-error');
-const errorTranslations = require('../../common/translations/src/en/errors.json');
 
 module.exports = superclass => class extends superclass {
 
@@ -66,11 +63,7 @@ module.exports = superclass => class extends superclass {
       return await this.pollPdf(req, res, next, 0);
     } catch (err) {
       req.log('error', 'ril.form.apply.submit_form.error', err);
-      return next(new SubmissionError('submissionError', {
-        type: 'submissionFailed',
-        message: 'Error submitting application form',
-        translations: errorTranslations
-      }));
+      return next(err);
     }
   }
 };

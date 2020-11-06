@@ -87,7 +87,12 @@ module.exports = class UploadPDFBase {
     const appName = this.behaviourConfig.app;
     const appComponent = this.behaviourConfig.component;
     const caseworkerEmail = config.govukNotify.caseworkerEmail;
-    const notifyClient = new NotifyClient(config.govukNotify.notifyApiKey);
+    const notifyKey = config.govukNotify.notifyApiKey;
+    const notifyClient = new NotifyClient(notifyKey);
+
+    if (notifyKey === 'USE-MOCK') {
+      req.log('warn', '*** Notify API Key set to USE-MOCK. Ensure disabled in production! ***');
+    }
 
     return new Promise(async(resolve, reject) => {
       try {

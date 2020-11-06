@@ -1,0 +1,11 @@
+{
+  "default": {
+    "title": "Sorry, something went wrong",
+    "message": "A server exception occurred. Please try again."
+  },
+  "submissionFailed": {
+    "title": "Sorry, something went wrong",
+    "text1": "Please try again. If the problem persists, you can contact the integration loan team at ",
+    "helpEmail": "Integrationloan@homeoffice.gov.uk"
+  }
+}

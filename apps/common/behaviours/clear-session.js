@@ -7,7 +7,7 @@ const confirmStep = config.routes.confirmStep;
 
 module.exports = superclass => class extends superclass {
   getValues(req, res, callback) {
-    super.getValues(req, res, (err, values) => {
+    return super.getValues(req, res, (err, values) => {
       if (err) {
         return callback(err, values);
       }

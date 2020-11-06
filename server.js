@@ -6,16 +6,11 @@ const _ = require('lodash');
 const path = require('path');
 
 const app = hof({
-  build: {
-    translate: {
-      shared: './apps/common/translations/src'
-    }
-  },
   behaviours: [
     require('./apps/common/behaviours/clear-session'),
-    require('./apps/common/behaviours/fields-filter'),
-    require('hof-behaviour-feedback').SetFeedbackReturnUrl
+    require('./apps/common/behaviours/fields-filter')
   ],
+  translations: './apps/common/translations',
   routes: [
     require('./apps/common'),
     require('./apps/apply/'),

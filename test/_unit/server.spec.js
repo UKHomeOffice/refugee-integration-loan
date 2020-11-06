@@ -9,7 +9,6 @@ describe('Server.js app file', () => {
   let useStub;
   let sendStub;
   let behavioursFieldFilterStub;
-  let setFeedbackReturnUrlStub;
   let appsCommonStub;
   let appsApplyStub;
   let appsAcceptStub;
@@ -38,7 +37,6 @@ describe('Server.js app file', () => {
     hofStub = sinon.stub();
     useStub = sinon.stub();
     behavioursFieldFilterStub = sinon.stub();
-    setFeedbackReturnUrlStub = sinon.stub();
     appsCommonStub = sinon.stub();
     appsApplyStub = sinon.stub();
     appsAcceptStub = sinon.stub();
@@ -53,9 +51,6 @@ describe('Server.js app file', () => {
       'hof': hofStub,
       './apps/common/behaviours/clear-session': behavioursClearSessionStub,
       './apps/common/behaviours/fields-filter': behavioursFieldFilterStub,
-      'hof-behaviour-feedback': {
-        SetFeedbackReturnUrl: setFeedbackReturnUrlStub
-      },
       './apps/common': appsCommonStub,
       './apps/apply/': appsApplyStub,
       './apps/accept/': appsAcceptStub,
@@ -69,16 +64,11 @@ describe('Server.js app file', () => {
   describe('Setup HOF Configuration', () => {
     it('calls hof with behaviours and routes', () => {
       hofStub.should.have.been.calledOnce.calledWithExactly({
-        build: {
-          translate: {
-            shared: './apps/common/translations/src'
-          }
-        },
         behaviours: [
           behavioursClearSessionStub,
-          behavioursFieldFilterStub,
-          setFeedbackReturnUrlStub
+          behavioursFieldFilterStub
         ],
+        translations: './apps/common/translations',
         routes: [
           appsCommonStub,
           appsApplyStub,
