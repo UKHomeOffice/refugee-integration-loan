@@ -29,9 +29,8 @@ module.exports = {
       req.log('info', `ril.form.${application}.submit_form.save_pdf.successful with uuid: ${tempName}`);
       return file;
     } catch (err) {
-      const errObj = { errorMessage: err.message };
-      req.log('error', `ril.form.${application}.submit_form.save_pdf.error with uuid: ${tempName}`, errObj);
-      return errObj;
+      req.log('error', `ril.form.${application}.submit_form.save_pdf.error with uuid: ${tempName}`, err.message || err);
+      throw err;
     }
   }
 };

@@ -61,7 +61,7 @@ module.exports = superclass => class extends superclass {
       }
       return await this.pollPdf(req, res, next, 0);
     } catch (err) {
-      req.log('error', 'ril.form.accept.submit_form.error', err);
+      req.log('error', 'ril.form.accept.submit_form.error', err.message || err);
       return next(err);
     }
   }
