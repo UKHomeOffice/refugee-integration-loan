@@ -15,9 +15,6 @@ module.exports = {
   params: '/:action?/:id?/:edit?',
   baseUrl: '/apply',
   steps: {
-    '/index': {
-      next: '/previously-applied'
-    },
     '/previously-applied': {
       fields: ['previouslyApplied'],
       next: '/previous',

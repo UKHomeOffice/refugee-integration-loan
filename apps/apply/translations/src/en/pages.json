@@ -1,15 +1,4 @@
 {
-  "index": {
-    "header": "Apply for a refugee integration loan",
-    "text1": "If you are a refugee or have been given humanitarian protection, you can apply for a loan to help you settle into UK society.",
-    "text2": "To apply, you will need your:",
-    "bullet1": "biometric residence permit (BRP)",
-    "bullet2": "Home Office reference number",
-    "bullet3": "bank account details",
-    "text3": "If you are applying together with a partner, you will also need their BRP details.",
-    "applicationTime": "Applying takes around 15 minutes.",
-    "start": "Start now"
-  },
   "previously-applied": {
     "header": "Have you or anyone currently living at your address applied for an integration loan before?"
   },
