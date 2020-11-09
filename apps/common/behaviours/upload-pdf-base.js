@@ -17,26 +17,26 @@ module.exports = class UploadPDFBase {
     this.behaviourConfig = behaviourConfig;
   }
 
-  createPDF(req, html) {
-    return new Promise((resolve, reject) => {
+  async createPDF(req, html) {
+    try {
       const applicationUuid = uuid.v1();
       const appName = this.behaviourConfig.app;
-      const file = pdfPuppeteer.generate(req, html, tempLocation, `${applicationUuid}.pdf`, appName);
+      const file = await pdfPuppeteer.generate(req, html, tempLocation, `${applicationUuid}.pdf`, appName);
 
       req.log('info', `ril.form.${appName}.submit_form.create_pdf.successful with uuid: ${applicationUuid}`);
 
-      const errorMessage = _.get(file, 'errorMessage');
-      return errorMessage ? reject(errorMessage) : resolve(file);
-    });
+      return file;
+    } catch (err) {
+      throw err;
+    }
   }
 
   deleteFile(req, fileToDelete) {
     const appName = this.behaviourConfig.app;
 
-    fs.unlink(fileToDelete, (err) => {
+    fs.unlink(fileToDelete, err => {
       if (err) {
-        req.log('error', `ril.form.${appName}.submit_form.delete_pdf.error [${fileToDelete}]`,
-          { errorMessage: err.message });
+        req.log('error', `ril.form.${appName}.submit_form.delete_pdf.error [${fileToDelete}]`, err.message || err);
       } else {
         req.log('info', `ril.form.${appName}.submit_form.delete_pdf.successful [${fileToDelete}]`);
       }
@@ -82,92 +82,72 @@ module.exports = class UploadPDFBase {
     });
   }
 
-  sendEmailWithAttachment(req, pdfFile) {
+  async sendEmailWithAttachment(req, pdfFile) {
     const personalisations = this.behaviourConfig.notifyPersonalisations;
     const appName = this.behaviourConfig.app;
     const appComponent = this.behaviourConfig.component;
     const caseworkerEmail = config.govukNotify.caseworkerEmail;
     const notifyKey = config.govukNotify.notifyApiKey;
-    const notifyClient = new NotifyClient(notifyKey);
 
-    if (notifyKey === 'USE-MOCK') {
-      req.log('warn', '*** Notify API Key set to USE-MOCK. Ensure disabled in production! ***');
-    }
+    try {
+      const notifyClient = new NotifyClient(notifyKey);
 
-    return new Promise(async(resolve, reject) => {
-      try {
-        const data = await this.readPdf(pdfFile);
-
-        await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
-          personalisation: Object.assign({}, personalisations, {
-            'form id': notifyClient.prepareUpload(data)
-          })
-        });
-
-        const trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
-        const timeSpentOnForm = utilities.secondsBetween(trackedPageStartTime, new Date());
-
-        req.log('info', `ril.form.${appName}.submit_form.create_email_with_file_notify.successful`);
-        req.log('info', `ril.${appComponent}.submission.duration=[${timeSpentOnForm}] seconds`);
-
-        return await this.sendReceipt(req, notifyClient).then(resolve).catch(reject);
-      } catch (err) {
-        req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, err);
-        return reject();
+      if (notifyKey === 'USE-MOCK') {
+        req.log('warn', '*** Notify API Key set to USE-MOCK. Ensure disabled in production! ***');
       }
-    }).catch(() => {
-      return Promise.reject();
-    }).finally(() => {
+
+      const data = await this.readPdf(pdfFile);
+
+      await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
+        personalisation: Object.assign({}, personalisations, {
+          'form id': notifyClient.prepareUpload(data)
+        })
+      });
+
+      const trackedPageStartTime = Number(req.sessionModel.get('session.started.timestamp'));
+      const timeSpentOnForm = utilities.secondsBetween(trackedPageStartTime, new Date());
+
+      req.log('info', `ril.form.${appName}.submit_form.create_email_with_file_notify.successful`);
+      req.log('info', `ril.${appComponent}.submission.duration=[${timeSpentOnForm}] seconds`);
+
+      return await this.sendReceipt(req, notifyClient);
+    } catch (err) {
+      req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, err.message || err);
+      // **Important** - this is here to ensure no accidental logging of file data in production
+      throw new Error(err.message || err);
+    } finally {
       this.deleteFile(req, pdfFile);
-    });
+    }
   }
 
   async sendReceipt(req, notifyClient) {
-    return new Promise(async(resolve, reject) => {
-      if (!this.behaviourConfig.sendReceipt) {
-        return resolve();
-      }
+    if (!this.behaviourConfig.sendReceipt) {
+      return;
+    }
 
-      let applicantEmail = req.sessionModel.get('email');
-      let applicantPhone = req.sessionModel.get('phone');
-      const appName = this.behaviourConfig.app;
+    let applicantEmail = req.sessionModel.get('email');
+    let applicantPhone = req.sessionModel.get('phone');
+    const appName = this.behaviourConfig.app;
 
-      const emailReceiptTemplateId = this.getEmailReceiptTemplateId(appName);
-      const textReceiptTemplateId = this.getTextReceiptTemplateId(appName);
+    const emailReceiptTemplateId = this.getEmailReceiptTemplateId(appName);
+    const textReceiptTemplateId = this.getTextReceiptTemplateId(appName);
 
-      try {
-        if (applicantEmail) {
-          await this.notifyByEmail(req, notifyClient, emailReceiptTemplateId, applicantEmail, appName)
-            .catch(() => {
-              return reject('Error sending email notification!');
-            });
-        }
+    if (applicantEmail) {
+      await this.notifyByEmail(req, notifyClient, emailReceiptTemplateId, applicantEmail, appName);
+    }
 
-        if (applicantPhone) {
-          await this.notifyBySms(req, notifyClient, textReceiptTemplateId, applicantPhone, appName)
-            .catch(() => {
-              return reject('Error sending sms notification!');
-            });
-        }
-      } catch (err) {
-        return reject(err);
-      }
-
-      return resolve();
-    }).catch(() => {
-      return Promise.reject();
-    });
+    if (applicantPhone) {
+      await this.notifyBySms(req, notifyClient, textReceiptTemplateId, applicantPhone, appName);
+    }
   }
 
   async notifyBySms(req, notifyClient, textReceiptTemplateId, applicantPhone, appName) {
     try {
       await notifyClient.sendSms(textReceiptTemplateId, applicantPhone, {});
       req.log('info', `ril.form.${appName}.send_receipt.create_text_notify.successful`);
-      return Promise.resolve();
-    } catch (textErr) {
-      req.log('error', `ril.form.${appName}.send_receipt.create_text_notify.error`,
-        { errorMessage: textErr.message });
-      return Promise.reject(textErr);
+    } catch (err) {
+      req.log('error', `ril.form.${appName}.send_receipt.create_text_notify.error`, err.message || err);
+      throw err;
     }
   }
 
@@ -175,11 +155,9 @@ module.exports = class UploadPDFBase {
     try {
       await notifyClient.sendEmail(emailReceiptTemplateId, applicantEmail, {});
       req.log('info', `ril.form.${appName}.send_receipt.create_email_notify.successful`);
-      return Promise.resolve();
-    } catch (emailErr) {
-      req.log('error', `ril.form.${appName}.send_receipt.create_email_notify.error`,
-        { errorMessage: emailErr.message });
-      return Promise.reject(emailErr);
+    } catch (err) {
+      req.log('error', `ril.form.${appName}.send_receipt.create_email_notify.error`, err.message || err);
+      throw err;
     }
   }
 
@@ -189,7 +167,6 @@ module.exports = class UploadPDFBase {
     } else if (appName === 'accept') {
       return config.govukNotify.templateAcceptEmailReceipt;
     }
-
     return '';
   }
 
@@ -199,7 +176,6 @@ module.exports = class UploadPDFBase {
     } else if (appName === 'accept') {
       return config.govukNotify.templateAcceptTextReceipt;
     }
-
     return '';
   }
 

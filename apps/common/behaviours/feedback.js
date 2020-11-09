@@ -52,7 +52,7 @@ module.exports = superclass => class extends superclass {
 
       return super.successHandler(req, res, next);
     } catch (err) {
-      req.log('error', 'ril.form.feedback.submit_form.error', err);
+      req.log('error', 'ril.form.feedback.submit_form.error', err.message || err);
       return next(err);
     }
   }

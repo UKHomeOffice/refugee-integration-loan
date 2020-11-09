@@ -24,7 +24,6 @@ describe('pdf-puppeteer', () => {
     const testDestination = '.';
     const testTempName = 'Test.pdf';
     const testApplication = 'apply';
-    const errMsg = 'error';
 
     beforeEach(async() => {
       req = request();
@@ -41,7 +40,7 @@ describe('pdf-puppeteer', () => {
 
       setContentStub.withArgs(badHtml, {
         waitUntil: 'networkidle0'
-      }).rejects({ message: errMsg });
+      }).rejects(new Error('error'));
 
       newPageStub.resolves({
         setContent: setContentStub,
@@ -98,8 +97,11 @@ describe('pdf-puppeteer', () => {
     });
 
     it('returns an object containing the error message if function fails', async() => {
-      const erroObj = await pdfPuppeteerProxy.generate(req, badHtml, testDestination, testTempName, testApplication);
-      expect(erroObj).to.eql({ errorMessage: errMsg });
+      await pdfPuppeteerProxy.generate(req, badHtml, testDestination, testTempName, testApplication)
+        .catch(err => {
+          expect(err).to.be.instanceof(Error);
+          expect(err.message).to.equal('error');
+        });
     });
 
   });
