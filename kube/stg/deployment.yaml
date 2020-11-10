@@ -12,10 +12,6 @@ spec:
       name: refugee-loan
   template:
     metadata:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
-        prometheus.io/path: "/insight/metrics"
       labels:
         name: refugee-loan
         app: refugee-loan
