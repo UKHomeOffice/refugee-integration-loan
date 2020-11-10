@@ -11,8 +11,7 @@ data:
   COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
   GA_TAG: "UA-145652997-2"
   NODE_ENV: "production"
-  #CASEWORKER_EMAIL: "integrationloan@homeoffice.gov.uk"
-  CASEWORKER_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
+  CASEWORKER_EMAIL: "integrationloan@homeoffice.gov.uk"
   FEEDBACK_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
   TEMPLATE_APPLY: "1376a8f2-2157-42f3-b9a7-5008ba8f26c9"
   TEMPLATE_ACCEPT: "21235643-6a96-426a-94d5-bc1a49c0b1d0"
