@@ -14,14 +14,6 @@ describe('the journey of a single apply application', () => {
     initSession = testApp.initSession;
   });
 
-  it('has a happy path when the user starts on the index page', async() => {
-    const URI = '/index';
-    await initSession(URI);
-    const response = await passStep(URI, {});
-
-    expect(response.text).to.contain('Found. Redirecting to /apply/previously-applied');
-  });
-
   it('goes to the partner page when the user has not previously applied', async() => {
     const URI = '/previously-applied';
     await initSession(URI);
