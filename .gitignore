@@ -7,5 +7,7 @@ public/
 apps/**/translations/**/*
 !apps/**/translations/src/
 !apps/**/translations/src/**/*
+pdf-form-submissions/*.pdf
+!pdf-form-submissions/pdf-form-submissions-test.pdf
 coverage
 .nyc_output
