@@ -36,6 +36,11 @@ spec:
                 secretKeyRef:
                   name: ril-notify-key
                   key: ril-notify-key
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: session_secret
           livenessProbe:
             httpGet:
               path: /healthz/ping
