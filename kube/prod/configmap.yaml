@@ -9,7 +9,7 @@ data:
   APP_NAME: "Refugee Integration Loan Application Service"
   ENVIRONMENT: "PROD"
   COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
-  GA_TAG: "UA-145652997-2"
+  GA_TAG: "UA-145652997-1"
   NODE_ENV: "production"
   CASEWORKER_EMAIL: "integrationloan@homeoffice.gov.uk"
   FEEDBACK_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
