@@ -14,10 +14,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - apply-for-refugee-integration-loan.homeoffice.gov.uk
+        - www.apply-for-refugee-integration-loan.homeoffice.gov.uk
       secretName: refugee-loan-external
   rules:
-    - host: apply-for-refugee-integration-loan.homeoffice.gov.uk
+    - host: www.apply-for-refugee-integration-loan.homeoffice.gov.uk
       http:
         paths:
           - path: /
