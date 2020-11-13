@@ -4,7 +4,6 @@ const hof = require('hof');
 const config = require('./config');
 const _ = require('lodash');
 const path = require('path');
-
 const app = hof({
   behaviours: [
     require('./apps/common/behaviours/clear-session'),
@@ -16,7 +15,19 @@ const app = hof({
     require('./apps/apply/'),
     require('./apps/accept/')
   ],
-  views: [path.resolve(__dirname, './apps/common/views'), require('hof-behaviour-loop').views]
+  views: [path.resolve(__dirname, './apps/common/views'), require('hof-behaviour-loop').views],
+  getTerms: false,
+  getCookies: false
+});
+
+app.use('/terms-and-conditions', (req, res, next) => {
+  res.locals = Object.assign({}, res.locals, req.translate('terms'));
+  next();
+});
+
+app.use('/cookies', (req, res, next) => {
+  res.locals = Object.assign({}, res.locals, req.translate('cookies'));
+  next();
 });
 
 app.use((req, res, next) => {

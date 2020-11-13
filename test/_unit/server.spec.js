@@ -8,6 +8,7 @@ describe('Server.js app file', () => {
   let hofStub;
   let useStub;
   let sendStub;
+  let translateStub;
   let behavioursFieldFilterStub;
   let appsCommonStub;
   let appsApplyStub;
@@ -32,6 +33,8 @@ describe('Server.js app file', () => {
     res = response();
     sendStub = sinon.stub();
     res.send = sendStub;
+    translateStub = sinon.stub();
+    req.translate = translateStub;
 
     next = sinon.stub();
     hofStub = sinon.stub();
@@ -43,8 +46,10 @@ describe('Server.js app file', () => {
     hofBehaviourLoopViewsStub = sinon.stub();
     behavioursClearSessionStub = sinon.stub();
 
-    useStub.onCall(0).yields(req, res, next);
-    useStub.onCall(1).yields(req, res);
+    useStub.onCall(0);
+    useStub.onCall(1);
+    useStub.onCall(2).yields(req, res, next);
+    useStub.onCall(3).yields(req, res);
     hofStub.returns({ use: useStub });
 
     proxyquire('../server', {
@@ -74,15 +79,17 @@ describe('Server.js app file', () => {
           appsApplyStub,
           appsAcceptStub,
         ],
-        views: [path.resolve(__dirname, '../../apps/common/views'), hofBehaviourLoopViewsStub]
+        views: [path.resolve(__dirname, '../../apps/common/views'), hofBehaviourLoopViewsStub],
+        getTerms: false,
+        getCookies: false
       });
     });
 
-    it('should call the app use method twice if nodeEnv set to test', () => {
-      useStub.should.have.been.calledTwice;
+    it('should call the app use method four times if nodeEnv set to test', () => {
+      useStub.callCount.should.equal(4);
     });
 
-    it('should call the app use method twice if nodeEnv set to development', () => {
+    it('should call the app use method four times if nodeEnv set to development', () => {
       const use = sinon.stub();
       const hof = () => {
         return { use };
@@ -93,10 +100,10 @@ describe('Server.js app file', () => {
         './config': { nodeEnv: 'development' }
       });
 
-      use.should.have.been.calledTwice;
+      useStub.callCount.should.equal(4);
     });
 
-    it('should call the app use method once if nodeEnv set to anything else', () => {
+    it('should call the app use method three times if nodeEnv set to anything else', () => {
       const use = sinon.stub();
       const hof = () => {
         return { use };
@@ -107,7 +114,7 @@ describe('Server.js app file', () => {
         './config': { nodeEnv: 'production' }
       });
 
-      use.should.have.been.calledOnce;
+      use.should.have.been.calledThrice;
     });
   });
 
@@ -131,7 +138,7 @@ describe('Server.js app file', () => {
 
   describe('Use Test Endpoint', () => {
     it('it should take /test/bootstrap-session as the first argument', () => {
-      const useArgs = useStub.getCall(1).args[0];
+      const useArgs = useStub.getCall(3).args[0];
       useArgs.should.eql('/test/bootstrap-session');
     });
 
