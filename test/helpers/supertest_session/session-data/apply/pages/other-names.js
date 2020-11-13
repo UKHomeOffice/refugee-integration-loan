@@ -2,6 +2,6 @@
 
 module.exports = {
   'other-names-items': [{
-    otherNames: 'Max Bloggs'
+    otherName: 'Max Bloggs'
   }]
 };

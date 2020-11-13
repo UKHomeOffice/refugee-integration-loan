@@ -1,0 +1,20 @@
+{{#hasItems}}
+<div class="loop-summary-table">
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+        {{#items}}
+        <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header data-col" colspan="2">{{itemTitle}}</th>
+            <th scope="col" class="govuk-table__header action-col">
+                <a href="?edit={{id}}">{{#t}}buttons.edit{{/t}}<span class="visuallyhidden"> {{itemTitle}}</span></a>
+            </th>
+            <th scope="col" class="govuk-table__header action-col">
+                <a href="?delete={{id}}">{{#t}}buttons.delete{{/t}}<span
+                        class="visuallyhidden"> {{itemTitle}}</span></a>
+            </th>
+        </tr>
+        {{/items}}
+        </thead>
+    </table>
+</div>
+{{/hasItems}}

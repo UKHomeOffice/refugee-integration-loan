@@ -74,7 +74,7 @@ module.exports = {
       className: 'visuallyhidden'
     }
   },
-  otherNames: {
+  otherName: {
     validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   addAnotherDependant: {

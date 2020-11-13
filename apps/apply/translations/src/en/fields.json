@@ -87,7 +87,7 @@
       }
     }
   },
-  "otherNames": {
+  "otherName": {
     "label": "Full name",
     "changeLinkDescription": "other name"
   },

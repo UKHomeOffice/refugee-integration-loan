@@ -2,6 +2,7 @@
 
 const LoopBehaviour = require('hof-behaviour-loop');
 const Loop = LoopBehaviour.Loop;
+const newLoop = require('../common/behaviours/loop');
 const LoopSummary = LoopBehaviour.SummaryWithLoopItems;
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
@@ -82,7 +83,7 @@ module.exports = {
       fields: ['hasOtherNames'],
       next: '/home-office-reference',
       forks: [{
-        target: '/other-names',
+        target: '/add-other-name',
         condition: {
           field: 'hasOtherNames',
           value: 'yes'
@@ -90,30 +91,17 @@ module.exports = {
       }],
       continueOnEdit: true
     },
+    '/add-other-name': {
+      fields: ['otherName'],
+      continueOnEdit: true,
+      next: '/other-names',
+    },
     '/other-names': {
-      behaviours: Loop,
-      loop: {
-        subSteps: {
-          name: {
-            fields: ['otherNames'],
-            next: 'add-another'
-          },
-          'add-another': {
-            fields: ['addAnotherName'],
-            template: 'other-names-add-another'
-          }
-        },
-        loopCondition: {
-          field: 'addAnotherName',
-          value: 'yes'
-        },
-        itemTable: {
-          headerField: 'otherNames'
-        },
-        summary: {
-          applySpacer: false
-        }
-      },
+      behaviours: [newLoop, require('../common/behaviours/log_locals')],
+      aggregateTo: 'otherNames',
+      aggregateField: 'otherName',
+      returnTo: 'add-other-name',
+      template: 'other-names-add-another',
       next: '/home-office-reference',
       continueOnEdit: true
     },
