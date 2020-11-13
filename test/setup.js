@@ -18,7 +18,7 @@ global.config = require('../config');
 global._ = require('lodash');
 
 const utils = require('./helpers/supertest_session/supertest-utilities.js');
-global.getSupertestApp = subApp => utils.getSupertestApp(subApp);
+global.getSupertestApp = (subApp, subAppPath) => utils.getSupertestApp(subApp, subAppPath);
 
 process.setMaxListeners(0);
 process.stdout.setMaxListeners(0);

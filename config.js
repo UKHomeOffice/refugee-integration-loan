@@ -25,5 +25,6 @@ module.exports = {
   },
   routes: {
     confirmStep: '/confirm'
-  }
+  },
+  govukLandingPageUrl: new URL('https://www.gov.uk/apply-refugee-integration-loan')
 };
