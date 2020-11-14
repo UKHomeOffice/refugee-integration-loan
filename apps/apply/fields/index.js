@@ -159,10 +159,10 @@ module.exports = {
       className: 'visuallyhidden'
     }
   },
-  partnerOtherNames: {
+  partnerOtherName: {
     validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
-  dependents: {
+  hasDependents: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
     validate: 'required',

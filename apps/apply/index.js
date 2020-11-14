@@ -3,7 +3,6 @@
 const LoopBehaviour = require('hof-behaviour-loop');
 const Loop = LoopBehaviour.Loop;
 const newLoop = require('../common/behaviours/loop');
-const LoopSummary = LoopBehaviour.SummaryWithLoopItems;
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 
@@ -83,7 +82,7 @@ module.exports = {
       fields: ['hasOtherNames'],
       next: '/home-office-reference',
       forks: [{
-        target: '/add-other-name',
+        target: '/other-names',
         condition: {
           field: 'hasOtherNames',
           value: 'yes'
@@ -97,9 +96,10 @@ module.exports = {
       next: '/other-names',
     },
     '/other-names': {
+      backLink: 'has-other-names',
       behaviours: [newLoop, require('../common/behaviours/log_locals')],
       aggregateTo: 'otherNames',
-      aggregateField: 'otherName',
+      aggregateFrom: ['otherName'],
       returnTo: 'add-other-name',
       template: 'other-names-add-another',
       next: '/home-office-reference',
@@ -146,30 +146,18 @@ module.exports = {
       }],
       continueOnEdit: true
     },
+    '/partner-add-other-name': {
+      fields: ['partnerOtherName'],
+      continueOnEdit: true,
+      next: '/partner-other-names',
+    },
     '/partner-other-names': {
-      behaviours: Loop,
-      loop: {
-        subSteps: {
-          name: {
-            fields: ['partnerOtherNames'],
-            next: 'add-another'
-          },
-          'add-another': {
-            fields: ['partnerAddAnotherName'],
-            template: 'partner-other-names-add-another'
-          }
-        },
-        loopCondition: {
-          field: 'partnerAddAnotherName',
-          value: 'yes'
-        },
-        itemTable: {
-          headerField: 'partnerOtherNames'
-        },
-        summary: {
-          applySpacer: false
-        }
-      },
+      behaviours: [newLoop, require('../common/behaviours/log_locals')],
+      backLink: 'partner-has-other-names',
+      aggregateTo: 'partnerOtherNames',
+      aggregateFrom: ['partnerOtherName'],
+      returnTo: 'partner-add-other-name',
+      template: 'other-names-add-another',
       next: '/convictions-joint',
       continueOnEdit: true
     },
@@ -179,45 +167,37 @@ module.exports = {
       continueOnEdit: true
     },
     '/dependents': {
-      fields: ['dependents'],
+      fields: ['hasDependents'],
       next: '/address',
       forks: [{
         target: '/dependent-details',
         condition: {
-          field: 'dependents',
+          field: 'hasDependents',
           value: 'yes'
         }
       }],
       continueOnEdit: true
     },
+    '/add-dependent': {
+      fields: [
+        'dependentFullName',
+        'dependentDateOfBirth',
+        'dependentRelationship'
+      ],
+      continueOnEdit: true,
+      next: '/dependent-details'
+    },
     '/dependent-details': {
-      behaviours: Loop,
-      loop: {
-        itemTable: {
-          headerField: 'dependentFullName',
-          editFieldsIndividually: false
-        },
-        subSteps: {
-          dependent: {
-            fields: [
-              'dependentFullName',
-              'dependentDateOfBirth',
-              'dependentRelationship'
-            ],
-            next: 'add-another'
-          },
-          'add-another': {
-            fields: [
-              'addAnotherDependant'
-            ],
-            template: 'dependents-add-another'
-          }
-        },
-        loopCondition: {
-          field: 'addAnotherDependant',
-          value: 'yes'
-        }
-      },
+      backLink: 'dependents',
+      behaviours: [newLoop, require('../common/behaviours/log_locals')],
+      aggregateTo: 'dependents',
+      aggregateFrom: [
+        'dependentFullName',
+        'dependentDateOfBirth',
+        'dependentRelationship'
+      ],
+      returnTo: 'add-dependent',
+      template: 'dependents-add-another',
       next: '/address',
       continueOnEdit: true
     },
@@ -356,7 +336,8 @@ module.exports = {
       continueOnEdit: true
     },
     [confirmStep]: {
-      behaviours: [LoopSummary, UploadPDF],
+      behaviours: [require('../common/behaviours/confirm'), require('../common/behaviours/log_locals'), UploadPDF],
+      sections: require('./sections/pdf-data-sections'),
       pdfSections: require('./sections/pdf-data-sections'),
       uploadPdfShared: false,
       submitted: false,

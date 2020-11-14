@@ -16,8 +16,16 @@ module.exports = {
     },
     'homeOfficeReference'
   ],
-  'other-names': [
-    'otherNames'
+  'other-names': [  // todo: remove from pdf
+    {
+      step: '/has-other-names',
+      field: 'hasOtherNames',
+    },
+    {
+      step: '/other-names',
+      field: 'otherNames',
+      dependsOn: 'hasOtherNames'
+    },
   ],
   'pdf-partner-details': [
     'partnerBrpNumber',
@@ -28,8 +36,19 @@ module.exports = {
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     }
   ],
-  'partner-other-names': [
-    'partnerOtherNames'
+  'partner-other-names': [  // todo: remove from pdf
+    {
+      step: '/partner-has-other-names',
+      field: 'partnerHasOtherNames',
+    },
+    {
+      step: '/partner-other-names',
+      field: 'partnerOtherNames',
+      dependsOn: 'partnerHasOtherNames',
+      parse: (value) => value.map(a => {
+        return a.itemTitle;
+      })
+    },
   ],
   'pdf-bank-account-details': [
     'accountName',
@@ -114,9 +133,10 @@ module.exports = {
     'phone'
   ],
   'dependent-details': [
-    'dependentFullName',
-    'dependentDateOfBirth',
-    'dependentRelationship'
+    {
+      step: '/dependent-details',
+      field: 'dependents'
+    }
   ],
   'pdf-outcome': [
     'likelyToMove',

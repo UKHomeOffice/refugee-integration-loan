@@ -1,23 +1,27 @@
 'use strict';
 
 const _ = require('lodash');
-const uuid = require('uuid/v1');
 module.exports = superclass => class LoopController extends superclass {
 
   constructor(options) {
     if (!options.aggregateTo) {
       throw new Error('options.aggregateTo is required for loops');
     }
-    if (!options.aggregateField || !options.aggregateField.length) {
+    if (!options.aggregateFrom) {
       throw new Error('options.aggregateField is required for loops');
     }
     super(options);
   }
 
-  removeItem(req) {
-    const id = req.query.delete;
-    const items = req.sessionModel.get(req.form.options.aggregateTo).filter(item => item.id !== id);
-    req.sessionModel.set(req.form.options.aggregateTo, items);
+  removeItem(req, res, id) {
+    const aggregateArray = this.getAggregateArray(req);
+    aggregateArray.splice(id, 1);
+
+    if (aggregateArray.length === 0) {
+      res.redirect(`${req.baseUrl}/${req.form.options.backLink}`);
+    } else {
+      res.redirect(`${req.baseUrl}/${req.form.options.route}`);
+    }
   }
 
   updateItem(req) {
@@ -25,50 +29,90 @@ module.exports = superclass => class LoopController extends superclass {
     req.sessionModel.unset('itemToReplaceId');
 
     const items = req.sessionModel.get(req.form.options.aggregateTo);
-    const itemIndex = items.findIndex(item => item.id === id);
 
-    items[itemIndex].itemTitle = req.sessionModel.get(req.form.options.aggregateField);
+
+    req.form.options.aggregateFrom.forEach(aggregateFromField => {
+      items[id].fields.find((field) => field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
+      req.sessionModel.unset(aggregateFromField);
+    });
+
+    items[id].itemTitle = items[id].fields[0].value;
 
     req.sessionModel.set(req.form.options.aggregateTo, items);
   }
 
-  editItem(req, res) {
-    const id = req.query.edit;
-    const items = req.sessionModel.get(req.form.options.aggregateTo);
-    const itemIndex = items.findIndex(item => item.id === id)
+  editItem(req, res, id) {
+    const items = this.getAggregateArray(req);
 
     req.sessionModel.set('itemToReplaceId', id);
-    req.sessionModel.set(req.form.options.aggregateField, items[itemIndex].itemTitle);
-    res.redirect(req.form.options.returnTo);
+
+    req.form.options.aggregateFrom.forEach(aggregateFromField => {
+      req.sessionModel.set(aggregateFromField, items[id].fields.find((field) => field.field === aggregateFromField).value);
+    });
+
+
+    res.redirect(`${req.baseUrl}/${req.form.options.returnTo}`);
   }
 
   addItem(req) {
-    const aggregate = req.sessionModel.get(req.form.options.aggregateTo) || [];
-    const newField = req.sessionModel.get(req.form.options.aggregateField);
+    const items = this.getAggregateArray(req);
+    const fields = [];
 
-    if (newField) {
-      aggregate.push({ id: uuid(), itemTitle: newField });
-      req.sessionModel.unset(req.form.options.aggregateField);
-    }
+    req.form.options.aggregateFrom.forEach(aggregateFromField => {
+      fields.push({ field: aggregateFromField, value: req.sessionModel.get(aggregateFromField) });
+      req.sessionModel.unset(aggregateFromField);
+    });
 
-    req.sessionModel.set(req.form.options.aggregateTo, aggregate);
+    items.push({ itemTitle: fields[0].value, fields });
+
+    req.sessionModel.set(req.form.options.aggregateTo, items);
+  }
+
+  getAggregateArray(req) {
+    return req.sessionModel.get(req.form.options.aggregateTo) || [];
+  }
+
+  newFieldsProvided(req) {
+    let fieldsProvided = false;
+
+    req.form.options.aggregateFrom.forEach(aggregateFromField => {
+      if (req.sessionModel.get(aggregateFromField)) {
+        fieldsProvided = true;
+      }
+    });
+
+    return fieldsProvided;
   }
 
   getValues(req, res, next) {
-    if (req.query.delete) {
-      this.removeItem(req);
-    } else if (req.query.edit) {
-      this.editItem(req, res);
-    } else if (req.sessionModel.get('itemToReplaceId')) {
+    const id = req.params.id;
+    const action = req.params.action;
+
+    if (req.sessionModel.get('itemToReplaceId')) {
       this.updateItem(req);
-    } else {
+    } else if (action === 'delete' && id) {
+      this.removeItem(req, res, id);
+      return {};
+    } else if (action === 'edit' && id) {
+      this.editItem(req, res, id);
+      return {};
+    } else if (this.newFieldsProvided(req)) {
       this.addItem(req, res);
+    } else if (this.getAggregateArray(req).length === 0) {
+      res.redirect(`${req.baseUrl}/${req.form.options.returnTo}`);
+      return {};
     }
+
     return super.getValues(req, res, next);
   }
 
   locals(req, res) {
-    const items = req.form.values[req.form.options.aggregateTo] || [];
+    const items = this.getAggregateArray(req);
+
+    items.forEach((element, index) => {
+      element.index = index;
+    });
+
     return Object.assign({}, super.locals(req, res), {
       items,
       hasItems: items.length > 0,

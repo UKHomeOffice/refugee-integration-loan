@@ -89,7 +89,10 @@
   },
   "otherName": {
     "label": "Full name",
-    "changeLinkDescription": "other name"
+    "changeLinkDescription": "Other name"
+  },
+  "otherNames": {
+    "label": "Full name"
   },
   "homeOfficeReference": {
     "label": "Home Office reference number",
@@ -139,9 +142,12 @@
       }
     }
   },
-  "partnerOtherNames": {
+  "partnerOtherName": {
     "label": "Full name",
     "changeLinkDescription": "Partner other name"
+  },
+  "partnerOtherNames": {
+    "label": "Full name"
   },
   "convictedJoint": {
     "legend": "Have you or your partner ever been convicted of a crime in the UK?",
@@ -157,7 +163,7 @@
   "detailsOfCrimeJoint": {
     "label": "Enter details of the crime(s)"
   },
-  "dependents": {
+  "hasDependents": {
     "legend": "Do you have any dependants living with you?",
     "options":{
       "yes": {

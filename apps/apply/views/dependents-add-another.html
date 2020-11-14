@@ -1,7 +1,7 @@
 {{<partials-page}}
   {{$page-content}}
     {{> partials-items-table}}
-    <button class="govuk-link" name="addAnotherDependant" type="submit" value="yes">Add another dependant</button>
+      <p><a href="{{returnTo}}" class="govuk-link" name="addAnotherName">Add another dependant</a></p>
     {{#input-submit}}continue{{/input-submit}}
   {{/page-content}}
 {{/partials-page}}
