@@ -5,14 +5,22 @@
   <tbody>
   {{#fields}}
   <tr>
-    <td>{{label}}</td>
-    <td data-value="{{value}}">{{value}}</td>
-    {{#changeLink}}
+    {{#isSeparator}}
+      <tr class="spacer">
+        <td colspan="3"></td>
+      </tr>
+    {{/isSeparator}}
+    {{^isSeparator}}
+      <td>{{label}}</td>
+      <td data-value="{{value}}">{{value}}</td>
+      {{#changeLink}}
       <td><span class="link"><a href="{{changeLink}}" id="{{field}}-change">{{#t}}buttons.change{{/t}}</a></span></td>
-    {{/changeLink}}
-    {{^changeLink}}
+      {{/changeLink}}
+      {{^changeLink}}
       <td><span class="link"><a href="{{baseUrl}}{{step}}/edit#{{field}}" id="{{field}}-change">{{#t}}buttons.change{{/t}}</a></span></td>
-    {{/changeLink}}
+      {{/changeLink}}
+    {{/isSeparator}}
+
   </tr>
   {{/fields}}
   </tbody>

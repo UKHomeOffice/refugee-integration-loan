@@ -60,12 +60,25 @@ module.exports = superclass => class LoopController extends superclass {
     const items = this.getAggregateArray(req);
     const fields = [];
 
+    let itemTitle = '';
+
     req.form.options.aggregateFrom.forEach(aggregateFromField => {
-      fields.push({ field: aggregateFromField, value: req.sessionModel.get(aggregateFromField) });
+      const isTitleField = req.form.options.titleField === aggregateFromField;
+      const value = req.sessionModel.get(aggregateFromField);
+
+      if (isTitleField) {
+        itemTitle = value;
+      }
+
+      fields.push({
+        field: aggregateFromField,
+        value,
+        showInSummary: !isTitleField
+      });
       req.sessionModel.unset(aggregateFromField);
     });
 
-    items.push({ itemTitle: fields[0].value, fields });
+    items.push({ itemTitle, fields });
 
     req.sessionModel.set(req.form.options.aggregateTo, items);
   }

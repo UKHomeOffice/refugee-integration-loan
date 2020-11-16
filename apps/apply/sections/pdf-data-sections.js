@@ -135,7 +135,8 @@ module.exports = {
   'dependent-details': [
     {
       step: '/dependent-details',
-      field: 'dependents'
+      field: 'dependents',
+      addElementSeparators: true
     }
   ],
   'pdf-outcome': [

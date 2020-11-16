@@ -30,10 +30,16 @@ module.exports = superclass => class extends superclass {
 
   expandAggregatedFields(obj, req) {
     return obj.value.flatMap((element, index) => {
-      return element.fields.map(inner => {
+      const fields = element.fields.map(inner => {
         const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${inner.field}`;
         return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink };
       });
+
+      if (obj.addElementSeparators && index < obj.value.length - 1) {
+        fields.push({label: '', value: 'separator', changeLink: '', isSeparator: true});
+      }
+
+      return fields;
     });
   }
 
@@ -92,6 +98,8 @@ module.exports = superclass => class extends superclass {
       if (typeof key.parse === 'function') {
         obj.value = key.parse(obj.value);
       }
+
+      obj.addElementSeparators = key.addElementSeparators;
 
       return obj;
     }

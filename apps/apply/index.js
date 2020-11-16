@@ -99,8 +99,9 @@ module.exports = {
       behaviours: [newLoop, require('../common/behaviours/log_locals')],
       aggregateTo: 'otherNames',
       aggregateFrom: ['otherName'],
+      titleField: 'otherName',
       returnTo: 'add-other-name',
-      template: 'other-names-add-another',
+      template: 'add-another',
       next: '/home-office-reference',
       continueOnEdit: true
     },
@@ -156,7 +157,8 @@ module.exports = {
       aggregateTo: 'partnerOtherNames',
       aggregateFrom: ['partnerOtherName'],
       returnTo: 'partner-add-other-name',
-      template: 'other-names-add-another',
+      titleField: 'partnerOtherName',
+      template: 'add-another',
       next: '/convictions-joint',
       continueOnEdit: true
     },
@@ -195,8 +197,9 @@ module.exports = {
         'dependentDateOfBirth',
         'dependentRelationship'
       ],
+      titleField: 'dependentFullName',
       returnTo: 'add-dependent',
-      template: 'dependents-add-another',
+      template: 'add-another',
       next: '/address',
       continueOnEdit: true
     },
