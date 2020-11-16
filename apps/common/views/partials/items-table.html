@@ -6,10 +6,10 @@
         <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header data-col" colspan="2">{{itemTitle}}</th>
             <th scope="col" class="govuk-table__header action-col">
-                <a href="{{action}}/edit/{{index}}">{{#t}}buttons.edit{{/t}}<span class="visuallyhidden"> {{itemTitle}}</span></a>
+                <a href="{{baseUrl}}/{{route}}/edit/{{index}}">{{#t}}buttons.edit{{/t}}<span class="visuallyhidden"> {{itemTitle}}</span></a>
             </th>
             <th scope="col" class="govuk-table__header action-col">
-                <a href="{{action}}/delete/{{index}}">{{#t}}buttons.delete{{/t}}<span
+                <a href="{{baseUrl}}/{{route}}/delete/{{index}}">{{#t}}buttons.delete{{/t}}<span
                         class="visuallyhidden"> {{itemTitle}}</span></a>
             </th>
         </tr>

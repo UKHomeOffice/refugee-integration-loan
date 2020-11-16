@@ -1,7 +1,6 @@
 'use strict';
 
 const LoopBehaviour = require('hof-behaviour-loop');
-const Loop = LoopBehaviour.Loop;
 const newLoop = require('../common/behaviours/loop');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');

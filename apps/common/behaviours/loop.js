@@ -32,7 +32,8 @@ module.exports = superclass => class LoopController extends superclass {
 
 
     req.form.options.aggregateFrom.forEach(aggregateFromField => {
-      items[id].fields.find((field) => field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
+      items[id].fields.find((field) =>
+        field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
       req.sessionModel.unset(aggregateFromField);
     });
 
@@ -47,11 +48,12 @@ module.exports = superclass => class LoopController extends superclass {
     req.sessionModel.set('itemToReplaceId', id);
 
     req.form.options.aggregateFrom.forEach(aggregateFromField => {
-      req.sessionModel.set(aggregateFromField, items[id].fields.find((field) => field.field === aggregateFromField).value);
+      req.sessionModel.set(aggregateFromField,
+        items[id].fields.find((field) => field.field === aggregateFromField).value);
     });
 
-
-    res.redirect(`${req.baseUrl}/${req.form.options.returnTo}`);
+    const editPath = req.params.edit ? `/edit#${req.params.edit}` : '';
+    res.redirect(`${req.baseUrl}/${req.form.options.returnTo}${editPath}`);
   }
 
   addItem(req) {
@@ -94,7 +96,7 @@ module.exports = superclass => class LoopController extends superclass {
       this.removeItem(req, res, id);
       return {};
     } else if (action === 'edit' && id) {
-      this.editItem(req, res, id);
+      this.editItem(req, res, id, req.params.edit);
       return {};
     } else if (this.newFieldsProvided(req)) {
       this.addItem(req, res);

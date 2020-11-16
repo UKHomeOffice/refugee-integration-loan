@@ -9,16 +9,32 @@ module.exports = superclass => class extends superclass {
     return Object.keys(sections)
       .map(section => {
         const fields = sections[section] || [];
+        const populatedFields =
+          _.flatten(fields.map(field => {
+                const processed = this.processDataSectionsField(field, req);
+                return Array.isArray(processed.value) ? this.expandAggregatedFields(processed, req) : processed;
+              }
+            )
+          ).filter(f => f.value);
 
         return {
           section: req.translate([
             `pages.confirm.sections.${section}.header`,
             `pages.${section}.header`
           ]),
-          fields: _.flatten(fields.map(field => this.getFieldData(field, req))).filter(f => f.value)
+          fields: populatedFields
         };
       })
       .filter(section => section.fields.length);
+  }
+
+  expandAggregatedFields(obj, req) {
+    return obj.value.flatMap((element, index) => {
+      return element.fields.map(inner => {
+        const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${inner.field}`;
+        return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink };
+      });
+    });
   }
 
   getSectionSettings(settings) {
@@ -50,21 +66,20 @@ module.exports = superclass => class extends superclass {
   }
 
   getFieldData(key, req) {
-
-    if (key === 'dependents') {
-      console.log('hi');
-    }
     const settings = req.form.options;
-    if (typeof key === 'string') {
-      return {
-        label: this.translateLabel(key, req),
-        value: req.sessionModel.get(key) || settings.nullValue,
-        step: this.getStepForField(key, settings.steps),
-        field: key
-      };
-    } else if (typeof key.field === 'string') {
-      let obj = Object.assign(this.getFieldData(key.field, req), key);
 
+    return {
+      label: this.translateLabel(key, req),
+      value: req.sessionModel.get(key) || settings.nullValue,
+      step: this.getStepForField(key, settings.steps),
+      field: key
+    };
+  }
+
+  processDataSectionsField(key, req) {
+    if (typeof key === 'string') {
+      return this.getFieldData(key, req);
+    } else if (typeof key.field === 'string') {
       if (key.dependsOn) {
         const dependencyValue = req.sessionModel.get(key.dependsOn);
         if (!dependencyValue || dependencyValue === 'no') {
@@ -72,18 +87,10 @@ module.exports = superclass => class extends superclass {
         }
       }
 
+      let obj = Object.assign(this.getFieldData(key.field, req), key);
+
       if (typeof key.parse === 'function') {
         obj.value = key.parse(obj.value);
-      }
-
-      if (Array.isArray(obj.value)) {
-
-        obj = obj.value.flatMap((element, index) => {
-          return element.fields.map(inner => {
-            const changeLink = `${req.baseUrl}${obj.step}/edit/${index}`;
-            return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink };
-          });
-        });
       }
 
       return obj;
@@ -98,5 +105,4 @@ module.exports = superclass => class extends superclass {
       rows
     });
   }
-
 };
