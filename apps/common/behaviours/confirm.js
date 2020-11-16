@@ -31,7 +31,8 @@ module.exports = superclass => class extends superclass {
   expandAggregatedFields(obj, req) {
     return obj.value.flatMap((element, index) => {
       const fields = element.fields.map(inner => {
-        const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${inner.field}`;
+        const changeField = inner.changeField || inner.field;
+        const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${changeField}`;
         return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink };
       });
 

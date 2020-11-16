@@ -1,7 +1,7 @@
 'use strict';
 
 const LoopBehaviour = require('hof-behaviour-loop');
-const newLoop = require('../common/behaviours/loop');
+const aggregator = require('../common/behaviours/aggregator');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 
@@ -96,11 +96,12 @@ module.exports = {
     },
     '/other-names': {
       backLink: 'has-other-names',
-      behaviours: [newLoop, require('../common/behaviours/log_locals')],
+      behaviours: [aggregator, require('../common/behaviours/log_locals')],
       aggregateTo: 'otherNames',
       aggregateFrom: ['otherName'],
       titleField: 'otherName',
       returnTo: 'add-other-name',
+      addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/home-office-reference',
       continueOnEdit: true
@@ -152,12 +153,13 @@ module.exports = {
       next: '/partner-other-names',
     },
     '/partner-other-names': {
-      behaviours: [newLoop, require('../common/behaviours/log_locals')],
+      behaviours: [aggregator, require('../common/behaviours/log_locals')],
       backLink: 'partner-has-other-names',
       aggregateTo: 'partnerOtherNames',
       aggregateFrom: ['partnerOtherName'],
       returnTo: 'partner-add-other-name',
       titleField: 'partnerOtherName',
+      addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/convictions-joint',
       continueOnEdit: true
@@ -190,15 +192,16 @@ module.exports = {
     },
     '/dependent-details': {
       backLink: 'dependents',
-      behaviours: [newLoop, require('../common/behaviours/log_locals')],
+      behaviours: [aggregator, require('../common/behaviours/log_locals')],
       aggregateTo: 'dependents',
       aggregateFrom: [
         'dependentFullName',
-        'dependentDateOfBirth',
+        {field: 'dependentDateOfBirth', changeField: 'dependentDateOfBirth-day'},
         'dependentRelationship'
       ],
       titleField: 'dependentFullName',
       returnTo: 'add-dependent',
+      addAnotherLinkText: 'dependent',
       template: 'add-another',
       next: '/address',
       continueOnEdit: true
