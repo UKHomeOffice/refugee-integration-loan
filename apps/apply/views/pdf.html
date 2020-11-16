@@ -16,25 +16,27 @@
       <h1>{{title}}</h1>
       <h2>Time and date: {{dateTime}}</h2>
       {{#rows}}
+        {{^fields.0.omitFromPdf}}
         <h2>{{section}}</h2>
         <table data-section="{{section}}" class="table-details">
           <caption class="visuallyhidden">{{section}}</caption>
           <tbody{{#name}} data-group="{{name}}"{{/name}}>
           {{#fields}}
-            {{#spacer}}
+            {{#isSeparator}}
               <tr class="spacer">
                 <td colspan="2"></td>
               </tr>
-            {{/spacer}}
-            {{^spacer}}
+            {{/isSeparator}}
+            {{^isSeparator}}
               <tr data-id="{{field}}"{{#className}} class="{{className}}"{{/className}}>
                 <td data-label="{{label}}">{{label}}</td>
                 <td data-value="{{value}}">{{value}}</td>
               </tr>
-            {{/spacer}}
+            {{/isSeparator}}
           {{/fields}}
           </tbody>
         </table>
+      {{/fields.0.omitFromPdf}}
       {{/rows}}
     </main>
   {{/main}}

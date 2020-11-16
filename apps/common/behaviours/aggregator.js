@@ -56,7 +56,7 @@ module.exports = superclass => class LoopController extends superclass {
     });
 
     const editPath = req.params.edit ? `/edit#${req.params.edit}` : '';
-    res.redirect(`${req.baseUrl}/${req.form.options.returnTo}${editPath}`);
+    res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}${editPath}`);
   }
 
   addItem(req) {
@@ -119,7 +119,7 @@ module.exports = superclass => class LoopController extends superclass {
     } else if (this.newFieldsProvided(req)) {
       this.addItem(req, res);
     } else if (this.getAggregateArray(req).length === 0) {
-      res.redirect(`${req.baseUrl}/${req.form.options.returnTo}`);
+      res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}`);
       return {};
     }
 
@@ -136,7 +136,7 @@ module.exports = superclass => class LoopController extends superclass {
     return Object.assign({}, super.locals(req, res), {
       items,
       hasItems: items.length > 0,
-      returnTo: req.form.options.returnTo,
+      sourceStep: req.form.options.sourceStep,
       field: req.form.options.aggregateTo,
       addAnotherLinkText: req.form.options.addAnotherLinkText
     });

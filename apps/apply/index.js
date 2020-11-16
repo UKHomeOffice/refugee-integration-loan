@@ -100,7 +100,7 @@ module.exports = {
       aggregateTo: 'otherNames',
       aggregateFrom: ['otherName'],
       titleField: 'otherName',
-      returnTo: 'add-other-name',
+      sourceStep: 'add-other-name',
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/home-office-reference',
@@ -120,7 +120,7 @@ module.exports = {
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
-      next: '/dependents',
+      next: '/has-dependents',
       continueOnEdit: true
     },
     '/partner-brp': {
@@ -157,7 +157,7 @@ module.exports = {
       backLink: 'partner-has-other-names',
       aggregateTo: 'partnerOtherNames',
       aggregateFrom: ['partnerOtherName'],
-      returnTo: 'partner-add-other-name',
+      sourceStep: 'partner-add-other-name',
       titleField: 'partnerOtherName',
       addAnotherLinkText: 'name',
       template: 'add-another',
@@ -166,10 +166,10 @@ module.exports = {
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
-      next: '/dependents',
+      next: '/has-dependents',
       continueOnEdit: true
     },
-    '/dependents': {
+    '/has-dependents': {
       fields: ['hasDependents'],
       next: '/address',
       forks: [{
@@ -191,7 +191,7 @@ module.exports = {
       next: '/dependent-details'
     },
     '/dependent-details': {
-      backLink: 'dependents',
+      backLink: 'has-dependents',
       behaviours: [aggregator, require('../common/behaviours/log_locals')],
       aggregateTo: 'dependents',
       aggregateFrom: [
@@ -200,7 +200,7 @@ module.exports = {
         'dependentRelationship'
       ],
       titleField: 'dependentFullName',
-      returnTo: 'add-dependent',
+      sourceStep: 'add-dependent',
       addAnotherLinkText: 'dependent',
       template: 'add-another',
       next: '/address',
@@ -341,9 +341,9 @@ module.exports = {
       continueOnEdit: true
     },
     [confirmStep]: {
-      behaviours: [require('../common/behaviours/confirm'), require('../common/behaviours/log_locals'), UploadPDF],
-      sections: require('./sections/pdf-data-sections'),
-      pdfSections: require('./sections/pdf-data-sections'),
+      behaviours: [require('../common/behaviours/confirm'), UploadPDF, require('../common/behaviours/log_locals')],
+      sections: require('./sections/summary-data-sections'),
+      pdfSections: require('./sections/summary-data-sections'),
       uploadPdfShared: false,
       submitted: false,
       next: '/complete'

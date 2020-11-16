@@ -12,7 +12,8 @@ module.exports = superclass => class extends superclass {
         const populatedFields =
           _.flatten(fields.map(field => {
                 const processed = this.processDataSectionsField(field, req);
-                return Array.isArray(processed.value) ? this.expandAggregatedFields(processed, req) : processed;
+                return Array.isArray(processed.value) && processed.value[0].fields ?
+                  this.expandAggregatedFields(processed, req) : processed;
               }
             )
           ).filter(f => f.value);
@@ -72,12 +73,28 @@ module.exports = superclass => class extends superclass {
     ]);
   }
 
+  translateCheckBoxOptions(key, value, req) {
+    return req.translate(`fields[${key}].options.[${value}]`);
+  }
+
   getFieldData(key, req) {
     const settings = req.form.options;
 
+    const fieldIsCheckbox = req.form.options.fieldsConfig[key] &&
+      req.form.options.fieldsConfig[key].mixin === 'checkbox-group';
+    let value = req.sessionModel.get(key);
+
+    if (fieldIsCheckbox && value) {
+      if (Array.isArray(value)) {
+        value = value.map(val => this.translateCheckBoxOptions(key, val, req));
+      } else {
+        value = this.translateCheckBoxOptions(key, value, req);
+      }
+    }
+
     return {
       label: this.translateLabel(key, req),
-      value: req.sessionModel.get(key) || settings.nullValue,
+      value: value || settings.nullValue,
       step: this.getStepForField(key, settings.steps),
       field: key
     };
@@ -110,8 +127,10 @@ module.exports = superclass => class extends superclass {
   locals(req, res) {
     const rows = this.parseSections(req);
 
-    return Object.assign({}, super.locals(req, res), {
+    const locals = Object.assign({}, super.locals(req, res), {
       rows
     });
+
+    return locals;
   }
 };

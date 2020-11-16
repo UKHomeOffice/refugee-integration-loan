@@ -175,6 +175,9 @@
       "partner-other-names": {
         "header": "Partner's other names"
       },
+      "has-dependents": {
+        "header": "Do you have any dependants living with you?"
+      },
       "dependent-details": {
         "header": "Your dependants"
       },
