@@ -71,10 +71,10 @@
   "detailsOfCrimeJoint": {
     "default": "Enter details of the crime(s)"
   },
-  "dependents": {
+  "hasDependants": {
     "default": "Select if you have any dependants living with you"
   },
-  "/dependantFullName": {
+  "dependantFullName": {
     "default": "Enter dependant's full name"
   },
   "dependantDateOfBirth": {

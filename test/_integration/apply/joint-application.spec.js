@@ -148,7 +148,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/partner-other-names');
   });
 
-  it('goes to the Dependents page when join convictions are submitted', async() => {
+  it('goes to the Dependants page when join convictions are submitted', async() => {
     const URI = '/convictions-joint';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -156,24 +156,24 @@ describe('the journey of a joint apply application', () => {
       detailsOfCrimeJoint: 'Joint Burglary'
     });
 
-    expect(response.text).to.contain('Found. Redirecting to /apply/dependents');
+    expect(response.text).to.contain('Found. Redirecting to /apply/has-dependants');
   });
 
-  it('goes to the Address page if a user has no dependents', async() => {
-    const URI = '/dependents';
+  it('goes to the Address page if a user has no dependants', async() => {
+    const URI = '/has-dependants';
     await initSession(URI);
     const response = await passStep(URI, {
-      dependents: 'no'
+      hasDependants: 'no'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/address');
   });
 
-  it('goes to the Dependents Details page if a user has dependents', async() => {
-    const URI = '/dependents';
+  it('goes to the dependants Details page if a user has dependants', async() => {
+    const URI = '/has-dependants';
     await initSession(URI);
     const response = await passStep(URI, {
-      dependents: 'yes'
+      hasDependants: 'yes'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/dependant-details');

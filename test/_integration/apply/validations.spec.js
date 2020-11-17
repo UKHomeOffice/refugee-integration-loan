@@ -624,7 +624,7 @@ describe('validation checks of the apply journey', () => {
 
   describe('Dependents Validations', () => {
     it('does not pass the Dependents page if nothing entered', async() => {
-      const URI = '/dependents';
+      const URI = '/has-dependants';
       await initSession(URI);
       await passStep(URI, {});
 

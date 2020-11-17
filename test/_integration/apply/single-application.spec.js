@@ -86,17 +86,17 @@ describe('the journey of a single apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/convictions');
   });
 
-  it('goes to the Dependents page if a user has no conviction', async() => {
+  it('goes to the Dependants page if a user has no conviction', async() => {
     const URI = '/convictions';
     await initSession(URI);
     const response = await passStep(URI, {
       convicted: 'no'
     });
 
-    expect(response.text).to.contain('Found. Redirecting to /apply/dependents');
+    expect(response.text).to.contain('Found. Redirecting to /apply/has-dependants');
   });
 
-  it('goes to the Dependents page if a user has a conviction with details', async() => {
+  it('goes to the Dependants page if a user has a conviction with details', async() => {
     const URI = '/convictions';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -104,24 +104,24 @@ describe('the journey of a single apply application', () => {
       detailsOfCrime: 'Burglary'
     });
 
-    expect(response.text).to.contain('Found. Redirecting to /apply/dependents');
+    expect(response.text).to.contain('Found. Redirecting to /apply/has-dependants');
   });
 
   it('goes to the Address page if a user has no dependents', async() => {
-    const URI = '/dependents';
+    const URI = '/has-dependants';
     await initSession(URI);
     const response = await passStep(URI, {
-      dependents: 'no'
+      hasDependants: 'no'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/address');
   });
 
   it('goes to the Dependents Details page if a user has dependents', async() => {
-    const URI = '/dependents';
+    const URI = '/has-dependants';
     await initSession(URI);
     const response = await passStep(URI, {
-      dependents: 'yes'
+      hasDependants: 'yes'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/dependant-details');

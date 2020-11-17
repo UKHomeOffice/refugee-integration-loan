@@ -65,7 +65,7 @@ module.exports = superclass => class extends superclass {
     let itemTitle = '';
 
     req.form.options.aggregateFrom.forEach(aggregateFromElement => {
-      const aggregateFromField = aggregateFromElement.field || aggregateFromElement
+      const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
       const isTitleField = req.form.options.titleField === aggregateFromField;
       const value = req.sessionModel.get(aggregateFromField);
 
@@ -125,7 +125,7 @@ module.exports = superclass => class extends superclass {
     return super.getValues(req, res, next);
   }
 
-  runFieldParsers(req, res) {
+  runFieldParsers(req) {
     const items = this.getAggregateArray(req);
 
     items.forEach((item) => {
@@ -141,7 +141,7 @@ module.exports = superclass => class extends superclass {
   locals(req, res) {
     const items = this.getAggregateArray(req);
 
-    this.runFieldParsers(req,res);
+    this.runFieldParsers(req);
 
     items.forEach((element, index) => {
       element.index = index;
