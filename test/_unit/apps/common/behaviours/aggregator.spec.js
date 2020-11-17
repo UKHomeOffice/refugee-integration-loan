@@ -15,7 +15,7 @@ describe('aggregator behaviour', () => {
   let res;
   let next;
 
-  describe.only('#getValues', () => {
+  describe('#getValues', () => {
     let superGetValuesStub;
     let redirectStub;
 
@@ -28,7 +28,7 @@ describe('aggregator behaviour', () => {
         aggregateFrom: ['otherName'],
         aggregateTo: 'otherNames',
         sourceStep: 'add-other-name',
-        route: 'other-names'};
+        route: '/other-names'};
       req.baseUrl = '/test';
 
       superGetValuesStub = sinon.stub();
