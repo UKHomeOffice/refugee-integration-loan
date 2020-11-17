@@ -15,8 +15,10 @@ module.exports = superclass => class extends superclass {
   deleteItem(req, res, id) {
     const aggregateArray = this.getAggregateArray(req);
     aggregateArray.splice(id, 1);
+    req.sessionModel.set('otherNames', aggregateArray);
 
     if (aggregateArray.length === 0) {
+      //todo: is this needed?
       res.redirect(`${req.baseUrl}/${req.form.options.backLink}`);
     } else {
       res.redirect(`${req.baseUrl}/${req.form.options.route}`);
