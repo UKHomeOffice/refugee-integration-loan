@@ -88,6 +88,7 @@ module.exports = {
       continueOnEdit: true
     },
     '/add-other-name': {
+      backLink: 'has-other-names',
       fields: ['otherName'],
       continueOnEdit: true,
       next: '/other-names',
@@ -146,6 +147,7 @@ module.exports = {
       continueOnEdit: true
     },
     '/partner-add-other-name': {
+      backLink: 'partner-has-other-names',
       fields: ['partnerOtherName'],
       continueOnEdit: true,
       next: '/partner-other-names',
@@ -180,6 +182,7 @@ module.exports = {
       continueOnEdit: true
     },
     '/add-dependent': {
+      backLink: 'has-dependants',
       fields: [
         'dependantFullName',
         'dependantDateOfBirth',

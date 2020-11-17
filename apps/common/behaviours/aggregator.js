@@ -15,19 +15,13 @@ module.exports = superclass => class extends superclass {
   deleteItem(req, res, id) {
     const aggregateArray = this.getAggregateArray(req);
     aggregateArray.splice(id, 1);
-    req.sessionModel.set('otherNames', aggregateArray);
-
-    if (aggregateArray.length === 0) {
-      //todo: is this needed?
-      res.redirect(`${req.baseUrl}/${req.form.options.backLink}`);
-    } else {
-      res.redirect(`${req.baseUrl}/${req.form.options.route}`);
-    }
+    req.sessionModel.set(req.form.options.aggregateTo, aggregateArray);
+    res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }
 
-  updateItem(req) {
-    const id = req.sessionModel.get('itemToReplaceId');
-    req.sessionModel.unset('itemToReplaceId');
+  updateItem(req, res) {
+    const id = req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`);
+    req.sessionModel.unset(`${req.form.options.aggregateTo}-itemToReplaceId`);
 
     const items = req.sessionModel.get(req.form.options.aggregateTo);
 
@@ -35,20 +29,20 @@ module.exports = superclass => class extends superclass {
       const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
 
       items[id].fields.find((field) =>
-        field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField); // todo : review this
+        field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
       req.sessionModel.unset(aggregateFromField);
     });
 
     items[id].itemTitle = items[id].fields[0].value;
 
     req.sessionModel.set(req.form.options.aggregateTo, items);
+    res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }
 
   editItem(req, res, id) {
     const items = this.getAggregateArray(req);
 
-    // todo: make sure this is correctly unset when the user leaves the page manually
-    req.sessionModel.set('itemToReplaceId', id);
+    req.sessionModel.set(`${req.form.options.aggregateTo}-itemToReplaceId`, id);
 
     req.form.options.aggregateFrom.forEach(aggregateFromElement => {
       const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
@@ -57,11 +51,11 @@ module.exports = superclass => class extends superclass {
         items[id].fields.find((field) => field.field === aggregateFromField).value);
     });
 
-    const editPath = req.params.edit ? `/edit#${req.params.edit}` : '';
+    const editPath = req.params.edit ? `/edit#${req.params.edit}` : '/edit';
     res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}${editPath}`);
   }
 
-  addItem(req) {
+  addItem(req, res) {
     const items = this.getAggregateArray(req);
     const fields = [];
 
@@ -88,6 +82,7 @@ module.exports = superclass => class extends superclass {
     items.push({ itemTitle, fields });
 
     req.sessionModel.set(req.form.options.aggregateTo, items);
+    res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }
 
   getAggregateArray(req) {
@@ -110,16 +105,19 @@ module.exports = superclass => class extends superclass {
     const id = req.params.id;
     const action = req.params.action;
 
+
     if (action === 'delete' && id) {
       this.deleteItem(req, res, id);
       return {};
     } else if (action === 'edit' && id) {
       this.editItem(req, res, id, req.params.edit);
       return {};
-    } else if (req.sessionModel.get('itemToReplaceId')) {
-      this.updateItem(req);
+    } else if (action === 'edit' && req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`)) {
+      this.updateItem(req, res);
+      return {};
     } else if (this.newFieldsProvided(req)) {
       this.addItem(req, res);
+      return {};
     } else if (this.getAggregateArray(req).length === 0) {
       res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}`);
       return {};
@@ -155,7 +153,7 @@ module.exports = superclass => class extends superclass {
       hasItems: items.length > 0,
       sourceStep: req.form.options.sourceStep,
       field: req.form.options.aggregateTo,
-      addAnotherLinkText: req.form.options.addAnotherLinkText
+      addAnotherLinkText: req.form.options.addAnotherLinkText,
     });
   }
 };
