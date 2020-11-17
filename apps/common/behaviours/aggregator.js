@@ -1,7 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
-module.exports = superclass => class LoopController extends superclass {
+module.exports = superclass => class extends superclass {
 
   constructor(options) {
     if (!options.aggregateTo) {
@@ -34,7 +33,7 @@ module.exports = superclass => class LoopController extends superclass {
       const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
 
       items[id].fields.find((field) =>
-        field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
+        field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField); // todo : review this
       req.sessionModel.unset(aggregateFromField);
     });
 
@@ -126,8 +125,23 @@ module.exports = superclass => class LoopController extends superclass {
     return super.getValues(req, res, next);
   }
 
+  runFieldParsers(req, res) {
+    const items = this.getAggregateArray(req);
+
+    items.forEach((item) => {
+      item.fields.forEach(field => {
+        const parser = req.form.options.fieldsConfig[field.field].parse;
+        if (parser) {
+          field.parsed = parser(field.value);
+        }
+      });
+    });
+  }
+
   locals(req, res) {
     const items = this.getAggregateArray(req);
+
+    this.runFieldParsers(req,res);
 
     items.forEach((element, index) => {
       element.index = index;

@@ -135,19 +135,19 @@ module.exports = {
     'email',
     'phone'
   ],
-  'has-dependents': [
+  'has-dependants': [
     {
-      step: '/has-dependents',
-      field: 'hasDependents',
+      step: '/has-dependants',
+      field: 'hasDependants',
       omitFromPdf: true
     },
   ],
   'dependent-details': [
     {
-      step: '/dependent-details',
-      field: 'dependents',
+      step: '/dependant-details',
+      field: 'dependants',
       addElementSeparators: true,
-      dependsOn: 'hasDependents'
+      dependsOn: 'hasDependants',
     }
   ],
   'pdf-outcome': [

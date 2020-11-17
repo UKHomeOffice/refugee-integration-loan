@@ -163,7 +163,7 @@
   "detailsOfCrimeJoint": {
     "label": "Enter details of the crime(s)"
   },
-  "hasDependents": {
+  "hasDependants": {
     "legend": "Do you have any dependants living with you?",
     "options":{
       "yes": {
@@ -174,16 +174,16 @@
       }
     }
   },
-  "dependentFullName": {
+  "dependantFullName": {
     "label": "Full name",
     "changeLinkDescription": "Dependant full name"
   },
-  "dependentDateOfBirth": {
+  "dependantDateOfBirth": {
     "legend": "Date of Birth",
     "hint": "For example, 31 3 1980",
     "changeLinkDescription": "Dependant date of birth"
   },
-  "dependentRelationship": {
+  "dependantRelationship": {
     "label": "Relationship to you",
     "changeLinkDescription": "Dependant relationship to you"
   },

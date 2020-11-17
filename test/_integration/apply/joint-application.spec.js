@@ -176,7 +176,7 @@ describe('the journey of a joint apply application', () => {
       dependents: 'yes'
     });
 
-    expect(response.text).to.contain('Found. Redirecting to /apply/dependent-details');
+    expect(response.text).to.contain('Found. Redirecting to /apply/dependant-details');
   });
 
   it('goes to the Combined Income page when they submit their address', async() => {

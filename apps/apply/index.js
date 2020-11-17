@@ -1,10 +1,8 @@
 'use strict';
 
-const LoopBehaviour = require('hof-behaviour-loop');
 const aggregator = require('../common/behaviours/aggregator');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
-
 const confirmStep = config.routes.confirmStep;
 
 
@@ -120,7 +118,7 @@ module.exports = {
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
-      next: '/has-dependents',
+      next: '/has-dependants',
       continueOnEdit: true
     },
     '/partner-brp': {
@@ -166,16 +164,16 @@ module.exports = {
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
-      next: '/has-dependents',
+      next: '/has-dependants',
       continueOnEdit: true
     },
-    '/has-dependents': {
-      fields: ['hasDependents'],
+    '/has-dependants': {
+      fields: ['hasDependants'],
       next: '/address',
       forks: [{
-        target: '/dependent-details',
+        target: '/dependant-details',
         condition: {
-          field: 'hasDependents',
+          field: 'hasDependants',
           value: 'yes'
         }
       }],
@@ -183,25 +181,25 @@ module.exports = {
     },
     '/add-dependent': {
       fields: [
-        'dependentFullName',
-        'dependentDateOfBirth',
-        'dependentRelationship'
+        'dependantFullName',
+        'dependantDateOfBirth',
+        'dependantRelationship'
       ],
       continueOnEdit: true,
-      next: '/dependent-details'
+      next: '/dependant-details'
     },
-    '/dependent-details': {
-      backLink: 'has-dependents',
+    '/dependant-details': {
+      backLink: 'has-dependants',
       behaviours: [aggregator, require('../common/behaviours/log_locals')],
-      aggregateTo: 'dependents',
+      aggregateTo: 'dependants',
       aggregateFrom: [
-        'dependentFullName',
-        {field: 'dependentDateOfBirth', changeField: 'dependentDateOfBirth-day'},
-        'dependentRelationship'
+        'dependantFullName',
+        {field: 'dependantDateOfBirth', changeField: 'dependantDateOfBirth-day'},
+        'dependantRelationship'
       ],
-      titleField: 'dependentFullName',
+      titleField: 'dependantFullName',
       sourceStep: 'add-dependent',
-      addAnotherLinkText: 'dependent',
+      addAnotherLinkText: 'dependant',
       template: 'add-another',
       next: '/address',
       continueOnEdit: true
@@ -341,7 +339,7 @@ module.exports = {
       continueOnEdit: true
     },
     [confirmStep]: {
-      behaviours: [require('../common/behaviours/confirm'), UploadPDF, require('../common/behaviours/log_locals')],
+      behaviours: [require('../common/behaviours/summary'), UploadPDF, require('../common/behaviours/log_locals')],
       sections: require('./sections/summary-data-sections'),
       pdfSections: require('./sections/summary-data-sections'),
       uploadPdfShared: false,

@@ -124,7 +124,7 @@ describe('the journey of a single apply application', () => {
       dependents: 'yes'
     });
 
-    expect(response.text).to.contain('Found. Redirecting to /apply/dependent-details');
+    expect(response.text).to.contain('Found. Redirecting to /apply/dependant-details');
   });
 
   it('goes to the Income page when a single user submits their address', async() => {

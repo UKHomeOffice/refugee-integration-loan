@@ -30,7 +30,7 @@
             {{^isSeparator}}
               <tr data-id="{{field}}"{{#className}} class="{{className}}"{{/className}}>
                 <td data-label="{{label}}">{{label}}</td>
-                <td data-value="{{value}}">{{value}}</td>
+                <td data-value="{{#parsed}}{{parsed}}{{/parsed}}{{^parsed}}{{value}}{{/parsed}}">{{#parsed}}{{parsed}}{{/parsed}}{{^parsed}}{{value}}{{/parsed}}</td>
               </tr>
             {{/isSeparator}}
           {{/fields}}

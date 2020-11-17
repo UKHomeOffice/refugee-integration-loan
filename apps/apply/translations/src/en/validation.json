@@ -74,14 +74,14 @@
   "dependents": {
     "default": "Select if you have any dependants living with you"
   },
-  "dependentFullName": {
+  "/dependantFullName": {
     "default": "Enter dependant's full name"
   },
-  "dependentDateOfBirth": {
+  "dependantDateOfBirth": {
     "default": "Enter dependant's date of birth in the correct format",
     "before": "Enter a date that is in the past"
   },
-  "dependentRelationship": {
+  "dependantRelationship": {
     "default": "Enter the dependant's relationship to you"
   },
   "building": {

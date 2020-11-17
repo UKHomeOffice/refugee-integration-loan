@@ -81,7 +81,7 @@
       "default" : "Delete"
     }
   },
-  "dependent-details-dependent": {
+  "add-dependent": {
     "header": "Enter details of your dependant",
     "intro": "You can add more dependants later."
   },
@@ -175,7 +175,7 @@
       "partner-other-names": {
         "header": "Partner's other names"
       },
-      "has-dependents": {
+      "has-dependants": {
         "header": "Do you have any dependants living with you?"
       },
       "dependent-details": {

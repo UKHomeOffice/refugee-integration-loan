@@ -20,7 +20,7 @@ module.exports = [
   '/partner-other-names',
   '/convictions-joint',
   '/dependents',
-  '/dependent-details',
+  '/dependant-details',
   '/address',
   '/income',
   '/outgoings',

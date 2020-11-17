@@ -11,10 +11,10 @@ module.exports = superclass => class extends superclass {
         const fields = sections[section] || [];
         const populatedFields =
           _.flatten(fields.map(field => {
-                const processed = this.processDataSectionsField(field, req);
-                return Array.isArray(processed.value) && processed.value[0].fields ?
-                  this.expandAggregatedFields(processed, req) : processed;
-              }
+              const processed = this.processDataSectionsField(field, req);
+              return Array.isArray(processed.value) && processed.value[0].fields ?
+                this.expandAggregatedFields(processed, req) : processed;
+            }
             )
           ).filter(f => f.value);
 
@@ -34,11 +34,11 @@ module.exports = superclass => class extends superclass {
       const fields = element.fields.map(inner => {
         const changeField = inner.changeField || inner.field;
         const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${changeField}`;
-        return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink };
+        return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink, parsed: inner.parsed };
       });
 
       if (obj.addElementSeparators && index < obj.value.length - 1) {
-        fields.push({label: '', value: 'separator', changeLink: '', isSeparator: true});
+        fields.push({ label: '', value: 'separator', changeLink: '', isSeparator: true });
       }
 
       return fields;
@@ -92,7 +92,10 @@ module.exports = superclass => class extends superclass {
       }
     }
 
+    const parsed = value ? value.parsed : undefined;
+
     return {
+      parsed,
       label: this.translateLabel(key, req),
       value: value || settings.nullValue,
       step: this.getStepForField(key, settings.steps),
