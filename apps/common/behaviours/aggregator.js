@@ -12,7 +12,7 @@ module.exports = superclass => class extends superclass {
     super(options);
   }
 
-  removeItem(req, res, id) {
+  deleteItem(req, res, id) {
     const aggregateArray = this.getAggregateArray(req);
     aggregateArray.splice(id, 1);
 
@@ -45,6 +45,7 @@ module.exports = superclass => class extends superclass {
   editItem(req, res, id) {
     const items = this.getAggregateArray(req);
 
+    // todo: make sure this is correctly unset when the user leaves the page manually
     req.sessionModel.set('itemToReplaceId', id);
 
     req.form.options.aggregateFrom.forEach(aggregateFromElement => {
@@ -108,7 +109,7 @@ module.exports = superclass => class extends superclass {
     const action = req.params.action;
 
     if (action === 'delete' && id) {
-      this.removeItem(req, res, id);
+      this.deleteItem(req, res, id);
       return {};
     } else if (action === 'edit' && id) {
       this.editItem(req, res, id, req.params.edit);
