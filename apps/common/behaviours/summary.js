@@ -34,7 +34,13 @@ module.exports = superclass => class extends superclass {
       const fields = element.fields.map(inner => {
         const changeField = inner.changeField || inner.field;
         const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${changeField}`;
-        return { 'label': this.translateLabel(inner.field, req), value: inner.value, changeLink, parsed: inner.parsed };
+        return {
+          'label': this.translateLabel(inner.field, req),
+          value: inner.value,
+          changeLink,
+          parsed: inner.parsed,
+          field: inner.field
+        };
       });
 
       if (obj.addElementSeparators && index < obj.value.length - 1) {
@@ -82,7 +88,7 @@ module.exports = superclass => class extends superclass {
 
     const fieldIsCheckbox = req.form.options.fieldsConfig[key] &&
       (req.form.options.fieldsConfig[key].mixin === 'checkbox-group' ||
-      req.form.options.fieldsConfig[key].mixin === 'radio-group');
+        req.form.options.fieldsConfig[key].mixin === 'radio-group');
     let value = req.sessionModel.get(key);
 
     if (fieldIsCheckbox && value) {
