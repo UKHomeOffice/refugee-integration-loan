@@ -17,7 +17,6 @@ describe('aggregator behaviour', () => {
 
   describe('#getValues', () => {
     let superGetValuesStub;
-    let redirectStub;
 
     beforeEach(() => {
       req = request();
@@ -75,45 +74,86 @@ describe('aggregator behaviour', () => {
 
     describe('edit item', () => {
       beforeEach(() => {
+        req.form.options.aggregateFrom = ['firstName', 'surname'];
+
         req.sessionModel.set('otherNames', [
-          {itemTitle: 'John', fields: {value: 'John'}},
-          {itemTitle: 'Steve', fields: {value: 'Steve'}},
-          {itemTitle: 'Jane', fields: {value: 'Jane'}}
+          {itemTitle: 'John', fields: [{field: 'firstName', value: 'John'}, {field: 'surname', value: 'Smith'}]},
+          {itemTitle: 'Steve', fields: [{field: 'firstName', value: 'Steve'}, {field: 'surname', value: 'Adams'}]},
+          {itemTitle: 'Jane', fields: [{field: 'firstName', value: 'Jane'}, {field: 'surname', value: 'Doe'}]}
         ]);
         req.params.id = '1';
         req.params.action = 'edit';
+
+        behaviour.getValues(req, res, next);
       });
 
       it('populates the source form fields when the action is edit and an id is provided', () => {
-        // behaviour.getValues(req, res, next);
-        //res.redirect.should.be.calledOnceWithExactly('/test/add-other-name');
+        req.sessionModel.get('firstName').should.eql('Steve');
+        req.sessionModel.get('surname').should.eql('Adams');
       });
 
       it('redirects to the source form', () => {
+        res.redirect.should.be.calledOnceWithExactly('/test/add-other-name/edit');
       });
     });
 
     describe('update item', () => {
       beforeEach(() => {
+        req.form.options.aggregateFrom = ['firstName', 'surname'];
 
+        req.sessionModel.set('otherNames', [
+          {itemTitle: 'John', fields: [{field: 'firstName', value: 'John'}, {field: 'surname', value: 'Smith'}]},
+          {itemTitle: 'Steve', fields: [{field: 'firstName', value: 'Steve'}, {field: 'surname', value: 'Adams'}]},
+          {itemTitle: 'Jane', fields: [{field: 'firstName', value: 'Jane'}, {field: 'surname', value: 'Doe'}]}
+        ]);
+        req.params.action = 'edit';
+        req.sessionModel.set('otherNames-itemToReplaceId', 1);
+
+        req.sessionModel.set('firstName', 'Sam');
+        req.sessionModel.set('surname', 'Baker');
+
+        behaviour.getValues(req, res, next);
       });
 
-      it('calls updateItem when itemToReplaceId is present in the session', () => {
-      });
+      it('replaces an item with the source step fields when itemToReplaceId is present in the session and action is edit', () => {
+        const updatedElement = req.sessionModel.get('otherNames')[1];
 
-      it('replaces an item with the source step fields when itemToReplaceId is present in the session', () => {
+        updatedElement.should.be.eql({
+          itemTitle: 'Sam',
+          fields: [
+          {field: 'firstName', value: 'Sam'},
+          {field: 'surname', value: 'Baker'},
+        ]});
       });
     });
 
     describe('add item', () => {
       beforeEach(() => {
+        req.form.options.aggregateFrom = ['firstName', 'surname'];
+        req.form.options.titleField = 'firstName';
 
-      });
+        req.sessionModel.set('otherNames', [
+          {itemTitle: 'John', fields: [{field: 'firstName', value: 'John'}, {field: 'surname', value: 'Smith'}]},
+          {itemTitle: 'Steve', fields: [{field: 'firstName', value: 'Steve'}, {field: 'surname', value: 'Adams'}]},
+          {itemTitle: 'Jane', fields: [{field: 'firstName', value: 'Jane'}, {field: 'surname', value: 'Doe'}]}
+        ]);
 
-      it('calls addItem when no fields are provided but new fields are present in the source step', () => {
+        req.sessionModel.set('firstName', 'Sam');
+        req.sessionModel.set('surname', 'Baker');
+
+        behaviour.getValues(req, res, next);
       });
 
       it('adds a new item when no fields are provided but new fields are present in the source step', () => {
+        const addedElement = req.sessionModel.get('otherNames')[3];
+
+        addedElement.should.be.eql({
+          itemTitle: 'Sam',
+          fields: [
+          {field: 'firstName', value: 'Sam', changeField: undefined, showInSummary: false},
+          {field: 'surname', value: 'Baker', changeField: undefined, showInSummary: true},
+        ]
+        });
       });
     });
   });
