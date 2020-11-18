@@ -1,6 +1,7 @@
-let request = require('../../../../helpers/request');
-let response = require('../../../../helpers/response');
-let SummaryBehaviour = require('../../../../../apps/common/behaviours/summary');
+const request = require('../../../../helpers/request');
+const response = require('../../../../helpers/response');
+const SummaryBehaviour = require('../../../../../apps/common/behaviours/summary');
+const mockTranslations = require('./translations/en/default');
 const Model = require('hof-model');
 
 describe('aggregator behaviour', () => {
@@ -13,18 +14,20 @@ describe('aggregator behaviour', () => {
   let res;
   let next;
   let lastResult;
-
   let superLocalsStub;
-
+  let translateMock;
 
   beforeEach(() => {
     req = request();
     res = response();
 
+    translateMock = sinon.stub();
+    translateMock.callsFake(itemName => _.get(mockTranslations, 'pages.has-other-names.header', itemName));
+    req.translate = translateMock;
+
     superLocalsStub = sinon.stub();
     superLocalsStub.returns({ superlocals: 'superlocals' });
     Base.prototype.locals = superLocalsStub;
-
 
     req.sessionModel = new Model({});
     req.sessionModel.set('hasOtherNames', 'yes');
@@ -75,7 +78,7 @@ describe('aggregator behaviour', () => {
 
   it('should work', () => {
     console.log(lastResult);
-
-    last.result.rows()
+    const temp = mockTranslations;
+    last.result.rows();
   });
 });
