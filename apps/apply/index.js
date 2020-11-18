@@ -6,7 +6,6 @@ const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 const confirmStep = config.routes.confirmStep;
 
-
 module.exports = {
   name: 'apply',
   params: '/:action?/:id?/:edit?',
@@ -96,7 +95,7 @@ module.exports = {
     },
     '/other-names': {
       backLink: 'has-other-names',
-      behaviours: [Aggregate, require('../common/behaviours/log_locals')],
+      behaviours: [Aggregate],
       aggregateTo: 'otherNames',
       aggregateFrom: ['otherName'],
       titleField: 'otherName',
@@ -154,7 +153,7 @@ module.exports = {
       next: '/partner-other-names',
     },
     '/partner-other-names': {
-      behaviours: [Aggregate, require('../common/behaviours/log_locals')],
+      behaviours: [Aggregate],
       backLink: 'partner-has-other-names',
       aggregateTo: 'partnerOtherNames',
       aggregateFrom: ['partnerOtherName'],
@@ -194,7 +193,7 @@ module.exports = {
     },
     '/dependant-details': {
       backLink: 'has-dependants',
-      behaviours: [Aggregate, require('../common/behaviours/log_locals')],
+      behaviours: [Aggregate],
       aggregateTo: 'dependants',
       aggregateFrom: [
         'dependantFullName',
@@ -343,7 +342,7 @@ module.exports = {
       continueOnEdit: true
     },
     [confirmStep]: {
-      behaviours: [Summary, UploadPDF, require('../common/behaviours/log_locals')],
+      behaviours: [Summary, UploadPDF],
       sections: require('./sections/summary-data-sections'),
       pdfSections: require('./sections/summary-data-sections'),
       uploadPdfShared: false,

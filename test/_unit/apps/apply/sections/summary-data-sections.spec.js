@@ -9,16 +9,16 @@ const mappedSections = utilities.mapSections(sections);
 const areOrderedEqual = utilities.areOrderedEqual;
 const containsAll = utilities.containsAll;
 
-describe('Apply PDF Data Sections', () => {
+describe('Apply Summary Data Sections', () => {
 
-  // describe('Sections and Pages', () => { // todo: fix this
-  //   it('should have sections and page translations that correlate', () => {
-  //     const sectionsKeys = Object.keys(sections).sort();
-  //     const pagesSectionsKeys = Object.keys(pages.confirm.sections).sort();
-  //
-  //     expect(_.isEqual(sectionsKeys, pagesSectionsKeys)).to.be.true;
-  //   });
-  // });
+  describe('Sections and Pages', () => {
+    it('should have sections and page translations that correlate', () => {
+      const sectionsKeys = Object.keys(sections).sort();
+      const pagesSectionsKeys = Object.keys(pages.confirm.sections).sort();
+
+      sectionsKeys.should.deep.equal(pagesSectionsKeys);
+    });
+  });
 
   describe('Section Primary Fields', () => {
     it('pdf-applicant-details', () => {
@@ -29,16 +29,6 @@ describe('Apply PDF Data Sections', () => {
         'fullName',
         'dateOfBirth',
         'homeOfficeReference'
-      ];
-
-      const result = areOrderedEqual(sectionFields, expectedFields);
-      expect(result).to.be.true;
-    });
-
-    it('other-names', () => {
-      const sectionFields = mappedSections['other-names'];
-      const expectedFields = [
-        'otherNames'
       ];
 
       const result = areOrderedEqual(sectionFields, expectedFields);
@@ -325,26 +315,12 @@ describe('Apply PDF Data Sections', () => {
       });
     });
 
-    // it('other-names', () => { // todo: fix
-    //   expect(containsAll(
-    //     Object.keys(fields),
-    //     mappedSections['other-names'])
-    //     ).to.be.true;
-    // });
-
     it('pdf-partner-details', () => {
       mappedSections['pdf-partner-details'].every(i => {
         const item = i.field || i;
         return Object.keys(fields).includes(item);
       });
     });
-
-    // it('partner-other-names', () => { // todo : fix
-    //   expect(containsAll(
-    //     Object.keys(fields),
-    //     mappedSections['partner-other-names'])
-    //   ).to.be.true;
-    // });
 
     it('pdf-bank-account-details', () => {
       expect(containsAll(
@@ -405,13 +381,6 @@ describe('Apply PDF Data Sections', () => {
         mappedSections['pdf-contact-details'])
       ).to.be.true;
     });
-
-    // it('dependant-details', () => { // todo: fix
-    //   expect(containsAll(
-    //     Object.keys(fields),
-    //     mappedSections['dependant-details'])
-    //   ).to.be.true;
-    // });
 
     it('pdf-outcome', () => {
       expect(containsAll(

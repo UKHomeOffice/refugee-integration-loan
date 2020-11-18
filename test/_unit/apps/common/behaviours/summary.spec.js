@@ -1,3 +1,5 @@
+'use strict';
+
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
 const SummaryBehaviour = require('../../../../../apps/common/behaviours/summary');
@@ -24,7 +26,7 @@ describe('summary behaviour', () => {
     translateMock = sinon.stub();
     translateMock.callsFake(itemNames => {
       if (Array.isArray(itemNames)) {
-        for (index in itemNames) {
+        for (const index in itemNames) {
           const item = _.get(mockTranslations, itemNames[index]);
           if (item) {
             return item;
