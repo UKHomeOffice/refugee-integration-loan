@@ -1,7 +1,7 @@
 'use strict';
 
+const Summary = require('../common/behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
-const LoopSummary = require('hof-behaviour-loop').SummaryWithLoopItems;
 const config = require('../../config');
 
 const confirmStep = config.routes.confirmStep;
@@ -23,8 +23,8 @@ module.exports = {
       next: '/confirm'
     },
     [confirmStep]: {
-      behaviours: [LoopSummary, UploadPDF],
-      pdfSections: require('./sections/pdf-data-sections'),
+      behaviours: [Summary, UploadPDF],
+      pdfSections: require('./sections/summary-data-sections'),
       uploadPdfShared: false,
       submitted: false,
       next: '/complete-acceptance'

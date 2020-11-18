@@ -1,6 +1,6 @@
 'use strict';
 
-const sections = require('../../../../../apps/accept/sections/pdf-data-sections');
+const sections = require('../../../../../apps/accept/sections/summary-data-sections');
 const pages = require('../../../../../apps/accept/translations/src/en/pages.json');
 const fields = require('../../../../../apps/accept/fields/index');
 const utilities = require('../../../../helpers/utilities');

@@ -1,6 +1,7 @@
 'use strict';
 
-const aggregator = require('../common/behaviours/aggregator');
+const Aggregate = require('../common/behaviours/aggregator');
+const Summary = require('../common/behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 const confirmStep = config.routes.confirmStep;
@@ -95,7 +96,7 @@ module.exports = {
     },
     '/other-names': {
       backLink: 'has-other-names',
-      behaviours: [aggregator, require('../common/behaviours/log_locals')],
+      behaviours: [Aggregate, require('../common/behaviours/log_locals')],
       aggregateTo: 'otherNames',
       aggregateFrom: ['otherName'],
       titleField: 'otherName',
@@ -153,7 +154,7 @@ module.exports = {
       next: '/partner-other-names',
     },
     '/partner-other-names': {
-      behaviours: [aggregator, require('../common/behaviours/log_locals')],
+      behaviours: [Aggregate, require('../common/behaviours/log_locals')],
       backLink: 'partner-has-other-names',
       aggregateTo: 'partnerOtherNames',
       aggregateFrom: ['partnerOtherName'],
@@ -193,7 +194,7 @@ module.exports = {
     },
     '/dependant-details': {
       backLink: 'has-dependants',
-      behaviours: [aggregator, require('../common/behaviours/log_locals')],
+      behaviours: [Aggregate, require('../common/behaviours/log_locals')],
       aggregateTo: 'dependants',
       aggregateFrom: [
         'dependantFullName',
@@ -342,7 +343,7 @@ module.exports = {
       continueOnEdit: true
     },
     [confirmStep]: {
-      behaviours: [require('../common/behaviours/summary'), UploadPDF, require('../common/behaviours/log_locals')],
+      behaviours: [Summary, UploadPDF, require('../common/behaviours/log_locals')],
       sections: require('./sections/summary-data-sections'),
       pdfSections: require('./sections/summary-data-sections'),
       uploadPdfShared: false,
