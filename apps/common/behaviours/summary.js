@@ -35,7 +35,8 @@ module.exports = superclass => class extends superclass {
         const changeField = inner.changeField || inner.field;
         const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${changeField}`;
         return {
-          'label': this.translateLabel(inner.field, req),
+          changeLinkDescription: this.translateChangeLink(inner.field, req),
+          label: this.translateLabel(inner.field, req),
           value: inner.value,
           changeLink,
           parsed: inner.parsed,
@@ -79,6 +80,10 @@ module.exports = superclass => class extends superclass {
     ]);
   }
 
+  translateChangeLink(key, req) {
+    return req.translate([`fields.${key}.changeLinkDescription`]);
+  }
+
   translateCheckBoxOptions(key, value, req) {
     return req.translate(`fields[${key}].options.[${value}]`);
   }
@@ -99,10 +104,9 @@ module.exports = superclass => class extends superclass {
       }
     }
 
-    const parsed = value ? value.parsed : undefined;
-
     return {
-      parsed,
+      changeLinkDescription: this.translateChangeLink(key, req),
+      parsed: value ? value.parsed : undefined,
       label: this.translateLabel(key, req),
       value: value || settings.nullValue,
       step: this.getStepForField(key, settings.steps),

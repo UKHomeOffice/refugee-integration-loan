@@ -33,10 +33,12 @@
       "changeLinkDescription": "Your date of birth"
     },
     "surname": {
-      "label": "Surname"
+      "label": "Surname",
+      "changeLinkDescription": "A surname"
     },
     "firstName": {
-      "label": "First name"
+      "label": "First name",
+      "changeLinkDescription": "A first name"
     }
   }
 }

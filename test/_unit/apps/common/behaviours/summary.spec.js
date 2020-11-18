@@ -99,19 +99,39 @@ describe('summary behaviour', () => {
         'section': 'Applicant’s details',
         'fields': [
           {
-            'label': 'Biometric residence permit (BRP) number',
-            'value': '12345678',
-            'field': 'brpNumber'
-          },
-          {
-            'label': 'Date of Birth',
-            'value': '1st January 1980',
-            'field': 'dateOfBirth'
+            'value': '1st January 1980'
           }
         ]
       }
     ]);
   });
+
+  it('should supply translated changeLinkDescriptions', () => {
+      lastResult.rows.should.containSubset([
+        {
+          'fields': [
+            {
+              'changeLinkDescription': 'Your date of birth'
+            },
+          ]
+        },
+        {
+          'fields': [
+            {
+              'changeLinkDescription': 'A first name'
+            },
+          ]
+        },
+        {
+          'fields': [
+            {
+              'changeLinkDescription': 'A surname'
+            }
+          ]
+        }
+      ]);
+    }
+  );
 
   it('should translate the value for a radio button group', () => {
     lastResult.rows.should.containSubset([{ 'fields': [{ 'value': 'Yes' }] }]);
