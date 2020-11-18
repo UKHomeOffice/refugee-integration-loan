@@ -73,7 +73,7 @@ module.exports = superclass => class extends superclass {
     ]);
   }
 
-  translateCheckBoxOptions(key, value, req) { // todo: handle radio buttons
+  translateCheckBoxOptions(key, value, req) {
     return req.translate(`fields[${key}].options.[${value}]`);
   }
 
@@ -81,7 +81,8 @@ module.exports = superclass => class extends superclass {
     const settings = req.form.options;
 
     const fieldIsCheckbox = req.form.options.fieldsConfig[key] &&
-      req.form.options.fieldsConfig[key].mixin === 'checkbox-group';
+      (req.form.options.fieldsConfig[key].mixin === 'checkbox-group' ||
+      req.form.options.fieldsConfig[key].mixin === 'radio-group');
     let value = req.sessionModel.get(key);
 
     if (fieldIsCheckbox && value) {
