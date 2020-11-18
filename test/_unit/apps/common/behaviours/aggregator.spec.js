@@ -100,6 +100,7 @@ describe('aggregator behaviour', () => {
     describe('update item', () => {
       beforeEach(() => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
+        req.form.options.titleField = 'firstName';
 
         req.sessionModel.set('otherNames', [
           {itemTitle: 'John', fields: [{field: 'firstName', value: 'John'}, {field: 'surname', value: 'Smith'}]},
@@ -115,7 +116,8 @@ describe('aggregator behaviour', () => {
         behaviour.getValues(req, res, next);
       });
 
-      it('replaces an item with the source step fields when itemToReplaceId is present in the session and action is edit', () => {
+      it('replaces an item with the source step fields when itemToReplaceId is present ' +
+        'in the session and action is edit', () => {
         const updatedElement = req.sessionModel.get('otherNames')[1];
 
         updatedElement.should.be.eql({

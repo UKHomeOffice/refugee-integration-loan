@@ -25,15 +25,22 @@ module.exports = superclass => class extends superclass {
 
     const items = req.sessionModel.get(req.form.options.aggregateTo);
 
+    let itemTitle = '';
+
     req.form.options.aggregateFrom.forEach(aggregateFromElement => {
       const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
+
+      const isTitleField = req.form.options.titleField === aggregateFromField;
+      if (isTitleField) {
+        itemTitle = req.sessionModel.get(aggregateFromField);
+      }
 
       items[id].fields.find((field) =>
         field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
       req.sessionModel.unset(aggregateFromField);
     });
 
-    items[id].itemTitle = items[id].fields[0].value;
+    items[id].itemTitle = itemTitle;
 
     req.sessionModel.set(req.form.options.aggregateTo, items);
     res.redirect(`${req.baseUrl}${req.form.options.route}`);
@@ -104,7 +111,6 @@ module.exports = superclass => class extends superclass {
   getValues(req, res, next) {
     const id = req.params.id;
     const action = req.params.action;
-
 
     if (action === 'delete' && id) {
       this.deleteItem(req, res, id);

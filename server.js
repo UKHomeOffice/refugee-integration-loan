@@ -15,7 +15,7 @@ const app = hof({
     require('./apps/apply/'),
     require('./apps/accept/')
   ],
-  views: [path.resolve(__dirname, './apps/common/views'), require('hof-behaviour-loop').views],
+  views: [path.resolve(__dirname, './apps/common/views')],
   getTerms: false,
   getCookies: false
 });

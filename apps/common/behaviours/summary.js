@@ -73,7 +73,7 @@ module.exports = superclass => class extends superclass {
     ]);
   }
 
-  translateCheckBoxOptions(key, value, req) {
+  translateCheckBoxOptions(key, value, req) { // todo: handle radio buttons
     return req.translate(`fields[${key}].options.[${value}]`);
   }
 
