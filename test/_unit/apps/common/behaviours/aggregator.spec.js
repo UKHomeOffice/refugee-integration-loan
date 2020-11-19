@@ -63,7 +63,10 @@ describe('aggregator behaviour', () => {
 
       it('deletes the item with the given id when the action is delete and an id is provide', () => {
         behaviour.getValues(req, res, next);
-        req.sessionModel.get('otherNames').length.should.eql(2);
+        req.sessionModel.get('otherNames').should.eql([
+          {itemTitle: 'John', fields: {value: 'John'}},
+          {itemTitle: 'Jane', fields: {value: 'Jane'}}
+        ]);
       });
 
       it('redirects back to step after deletion', () => {

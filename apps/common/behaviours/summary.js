@@ -38,7 +38,7 @@ module.exports = superclass => class extends superclass {
           label: this.translateLabel(inner.field, req),
           value: inner.value,
           changeLink,
-          parsed: inner.parsed,
+          parsed: inner.parsed || false,
           field: inner.field
         };
       });

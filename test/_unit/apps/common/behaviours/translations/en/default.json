@@ -22,6 +22,10 @@
         "no": "No"
       }
     },
+    "otherName": {
+      "label": "Other name",
+      "changeLinkDescription": "Your other name"
+    },
     "brpNumber": {
       "label": "Biometric residence permit (BRP) number",
       "hint": "For example, ‘ZU1234567’.",

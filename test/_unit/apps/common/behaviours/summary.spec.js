@@ -8,191 +8,265 @@ const Model = require('hof-model');
 const moment = require('moment');
 
 describe('summary behaviour', () => {
-  class Base {
-  }
-
-  let behaviour;
-  let Behaviour;
-  let req;
-  let res;
-  let lastResult;
-  let superLocalsStub;
-  let translateMock;
-
-  beforeEach(() => {
-    req = request();
-    res = response();
-
-    translateMock = sinon.stub();
-    translateMock.callsFake(itemNames => {
-      if (Array.isArray(itemNames)) {
-        for (const index in itemNames) {
-          const item = _.get(mockTranslations, itemNames[index]);
-          if (item) {
-            return item;
-          }
-        }
-        return itemNames[0];
-      }
-      return _.get(mockTranslations, itemNames, itemNames);
-    });
-    req.translate = translateMock;
-
-    superLocalsStub = sinon.stub();
-    superLocalsStub.returns({ superlocals: 'superlocals' });
-    Base.prototype.locals = superLocalsStub;
-
-    req.sessionModel = new Model({});
-
-    req.form.options = {
-      fieldsConfig: {
-        'hasOtherNames': { mixin: 'radio-group' }
-      },
-      sections: {
-        'pdf-applicant-details': [
-          'brpNumber',
-          {
-            field: 'dateOfBirth',
-            parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
-          }
-        ],
-        'has-other-names': [
-          {
-            step: 'has-other-names',
-            field: 'hasOtherNames',
-            omitFromPdf: true
-          },
-        ],
-        'other-names': [
-          {
-            step: 'other-names',
-            field: 'otherNames',
-            dependsOn: 'hasOtherNames',
-            addElementSeparators: true
-          },
-        ]
-      },
-      steps: {}
-    };
-
-    // applicant details
-    req.sessionModel.set('brpNumber', '12345678');
-    req.sessionModel.set('dateOfBirth', '1980-01-01');
-    // other names radio button
-    req.sessionModel.set('hasOtherNames', 'yes');
-    // other names values
-    req.sessionModel.set('otherNames', [
-      { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Smith' }] },
-      { itemTitle: 'Steve', fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }] }
-    ]);
-
-
-    Behaviour = SummaryBehaviour(Base);
-    behaviour = new Behaviour(req.form.options);
-
-    lastResult = behaviour.locals(req, res);
-  });
-
-  it('should trigger parser functions provided in sections.js', () => {
-    lastResult.rows.should.containSubset([
-      {
-        'section': 'Applicant’s details',
-        'fields': [
-          {
-            'value': '1st January 1980'
-          }
-        ]
-      }
-    ]);
-  });
-
-  it('should supply translated changeLinkDescriptions', () => {
-      lastResult.rows.should.containSubset([
-        {
-          'fields': [
-            {
-              'changeLinkDescription': 'Your date of birth'
-            },
-          ]
-        },
-        {
-          'fields': [
-            {
-              'changeLinkDescription': 'A first name'
-            },
-          ]
-        },
-        {
-          'fields': [
-            {
-              'changeLinkDescription': 'A surname'
-            }
-          ]
-        }
-      ]);
+    class Base {
     }
-  );
 
-  it('should translate the value for a radio button group', () => {
-    lastResult.rows.should.containSubset([{ 'fields': [{ 'value': 'Yes' }] }]);
-  });
+    let behaviour;
+    let Behaviour;
+    let req;
+    let res;
+    let lastResult;
+    let superLocalsStub;
+    let translateMock;
 
-  it('should output the correct value for a yes/no radio button group', () => {
-    lastResult.rows.should.containSubset(
-      [{
-        'fields': [
-          {
-            'addElementSeparators': false,
-            'field': 'hasOtherNames',
-            'label': 'Have you been known by any other names?',
-            'omitFromPdf': true,
-            'parsed': undefined,
-            'step': 'has-other-names',
-            'value': 'Yes',
-          }
-        ],
-        'section': 'Have you been known by any other names?'
-      }]
+    beforeEach(() => {
+        req = request();
+        res = response();
+
+        translateMock = sinon.stub();
+        translateMock.callsFake(itemNames => {
+            if (Array.isArray(itemNames)) {
+                for (const index in itemNames) {
+                    const item = _.get(mockTranslations, itemNames[index]);
+                    if (item) {
+                        return item;
+                    }
+                }
+                return itemNames[0];
+            }
+            return _.get(mockTranslations, itemNames, itemNames);
+        });
+        req.translate = translateMock;
+
+        superLocalsStub = sinon.stub();
+        superLocalsStub.returns({superlocals: 'superlocals'});
+        Base.prototype.locals = superLocalsStub;
+
+        req.sessionModel = new Model({});
+        req.baseUrl = 'test';
+
+        req.form.options = {
+            fieldsConfig: {
+                'hasOtherNames': {mixin: 'radio-group'}
+            },
+            sections: {
+                'pdf-applicant-details': [
+                    'brpNumber',
+                    {
+                        field: 'dateOfBirth',
+                        parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
+                    }
+                ],
+                'has-other-names': [
+                    {
+                        step: '/has-other-names',
+                        field: 'hasOtherNames',
+                        omitFromPdf: true
+                    },
+                ],
+                'other-names': [
+                    {
+                        step: '/other-names',
+                        field: 'otherNames',
+                        dependsOn: 'hasOtherNames',
+                        addElementSeparators: true
+                    },
+                ]
+            },
+            steps: {
+                '/pdf-applicant-details':
+                    {'fields': ['brpNumber', 'dateOfBirth']},
+                '/has-other-names':
+                    {'fields': ['hasOtherNames']},
+                '/other-names':
+                    {'fields': ['otherNames']}
+            }
+        };
+
+        // applicant details
+        req.sessionModel.set('brpNumber', '12345678');
+        req.sessionModel.set('dateOfBirth', '1980-01-01');
+        // other names radio button
+        req.sessionModel.set('hasOtherNames', 'yes');
+        // other names values
+        req.sessionModel.set('otherNames', [
+            {itemTitle: 'Jane', fields: [{field: 'firstName', value: 'Jane'}, {field: 'surname', value: 'Smith'}]},
+            {itemTitle: 'Steve', fields: [{field: 'firstName', value: 'Steve'}, {field: 'surname', value: 'Adams'}]}
+        ]);
+
+
+        Behaviour = SummaryBehaviour(Base);
+        behaviour = new Behaviour(req.form.options);
+
+        lastResult = behaviour.locals(req, res);
+    });
+
+    describe('getStepForField', () => {
+        it('returns the correct step', () => {
+            behaviour.getStepForField('hasOtherNames', req.form.options.steps)
+                .should.be.eql('/has-other-names');
+        });
+    });
+
+    describe('expandAggregatedFields', () => {
+        it('returns expanded fields', () => {
+            const inputObj = [
+                {
+                    'changeLinkDescription': 'Other name',
+                    'label': 'Full name',
+                    'value': [
+                        {
+                            'itemTitle': 'John',
+                            'fields': [
+                                {
+                                    'field': 'otherName',
+                                    'value': 'John',
+                                    'showInSummary': false
+                                }
+                            ],
+                            'index': 0
+                        },
+                        {
+                            'itemTitle': 'Jane',
+                            'fields': [
+                                {
+                                    'field': 'otherName',
+                                    'value': 'Jane',
+                                    'showInSummary': false
+                                }
+                            ],
+                            'index': 1
+                        }
+                    ],
+                    'step': '/other-names',
+                    'field': 'otherNames',
+                }
+            ];
+
+            behaviour.expandAggregatedFields(inputObj, req)
+                .should.be.eql([
+                {
+                    'changeLinkDescription': 'Your other name',
+                    'label': 'Other name',
+                    'parsed': false,
+                    'value': 'John',
+                    'changeLink': 'test/other-names/edit/0/otherName',
+                    'field': 'otherName'
+                },
+                {
+                    'changeLinkDescription': 'Your other name',
+                    'label': 'Other name',
+                    'parsed': false,
+                    'value': 'Jane',
+                    'changeLink': 'test/other-names/edit/1/otherName',
+                    'field': 'otherName'
+                }
+             ]);
+        });
+    });
+
+
+    it('should trigger parser functions provided in sections.js', () => {
+        lastResult.rows.should.containSubset([
+            {
+                'section': 'Applicant’s details',
+                'fields': [
+                    {
+                        'value': '1st January 1980'
+                    }
+                ]
+            }
+        ]);
+    });
+
+    it('should supply translated changeLinkDescriptions', () => {
+            lastResult.rows.should.containSubset([
+                {
+                    'fields': [
+                        {
+                            'changeLinkDescription': 'Your date of birth'
+                        },
+                    ]
+                },
+                {
+                    'fields': [
+                        {
+                            'changeLinkDescription': 'A first name'
+                        },
+                    ]
+                },
+                {
+                    'fields': [
+                        {
+                            'changeLinkDescription': 'A surname'
+                        }
+                    ]
+                }
+            ]);
+        }
     );
-  });
 
-  it('expands aggregated fields into individual entries for summary display', () => {
-    lastResult.rows.should.containSubset(
-      [{
-        'section': 'Does the applicant have other names?',
-        'fields': [
-          {
-            'label': 'First name',
-            'value': 'Jane',
-            'changeLink': '/other-names/edit/0/firstName'
-          },
-          {
-            'label': 'Surname',
-            'value': 'Smith',
-            'changeLink': '/other-names/edit/0/surname'
-          },
-          {
-            'label': 'First name',
-            'value': 'Steve',
-            'changeLink': '/other-names/edit/1/firstName'
-          }
-        ]
-      }]
-    );
-  });
+    it('should translate the value for a radio button group', () => {
+        lastResult.rows.should.containSubset([{'fields': [{'value': 'Yes'}]}]);
+    });
 
-  it('should add separators when specified', () => {
-    lastResult.rows.should.containSubset([
-      {
-        'fields': [
-          {
-            'label': '',
-            'value': 'separator',
-            'changeLink': '',
-            'isSeparator': true
-          }
-        ]
-      }
-    ]);
-  });
-});
+    it('should output the correct value for a yes/no radio button group', () => {
+        lastResult.rows.should.containSubset(
+            [{
+                'fields': [
+                    {
+                        'addElementSeparators': false,
+                        'field': 'hasOtherNames',
+                        'label': 'Have you been known by any other names?',
+                        'omitFromPdf': true,
+                        'parsed': undefined,
+                        'step': '/has-other-names',
+                        'value': 'Yes',
+                    }
+                ],
+                'section': 'Have you been known by any other names?'
+            }]
+        );
+    });
+
+    it('expands aggregated fields into individual entries for summary display', () => {
+        lastResult.rows.should.containSubset(
+            [{
+                'section': 'Does the applicant have other names?',
+                'fields': [
+                    {
+                        'label': 'First name',
+                        'value': 'Jane',
+                        'changeLink': 'test/other-names/edit/0/firstName'
+                    },
+                    {
+                        'label': 'Surname',
+                        'value': 'Smith',
+                        'changeLink': 'test/other-names/edit/0/surname'
+                    },
+                    {
+                        'label': 'First name',
+                        'value': 'Steve',
+                        'changeLink': 'test/other-names/edit/1/firstName'
+                    }
+                ]
+            }]
+        );
+    });
+
+    it('should add separators when specified', () => {
+        lastResult.rows.should.containSubset([
+            {
+                'fields': [
+                    {
+                        'label': '',
+                        'value': 'separator',
+                        'changeLink': '',
+                        'isSeparator': true
+                    }
+                ]
+            }
+        ]);
+    });
+})
+;
