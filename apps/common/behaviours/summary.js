@@ -133,7 +133,8 @@ module.exports = superclass => class extends superclass {
     const rows = this.parseSections(req);
 
     return Object.assign({}, super.locals(req, res), {
-      rows
+      rows,
+      complete: true
     });
   }
 };

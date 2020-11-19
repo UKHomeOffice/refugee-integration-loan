@@ -110,25 +110,30 @@ module.exports = superclass => class extends superclass {
     const id = req.params.id;
     const action = req.params.action;
 
-    if (action === 'delete' && id) {
+    const deleteItem = () => action === 'delete' && id;
+    const editItem = () => action === 'edit' && id;
+    const updateItem =
+      () => action === 'edit' && req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`);
+    const noItemsPresent = () => this.getAggregateArray(req).length === 0;
+
+    if (deleteItem()) {
       this.deleteItem(req, res, id);
-      return {};
-    } else if (action === 'edit' && id) {
+    } else if (editItem()) {
       this.editItem(req, res, id, req.params.edit);
-      return {};
-    } else if (action === 'edit' && req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`)) {
+    } else if (updateItem()) {
       this.updateItem(req, res);
-      return {};
     } else if (this.newFieldsProvided(req)) {
       this.addItem(req, res);
-      return {};
-    } else if (this.getAggregateArray(req).length === 0) {
+    } else if (noItemsPresent()) {
       res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}`);
-      return {};
     }
 
+    if (res.headersSent) {
+      return next();
+    }
     return super.getValues(req, res, next);
   }
+
 
   runFieldParsers(req) {
     const items = this.getAggregateArray(req);
