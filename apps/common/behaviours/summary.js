@@ -81,7 +81,11 @@ module.exports = superclass => class extends superclass {
   }
 
   translateChangeLink(key, req) {
-    return req.translate([`fields.${key}.changeLinkDescription`]);
+    return req.translate([`fields.${key}.changeLinkDescription`,
+      `pages.confirm.fields.${key}.label`,
+      `fields.${key}.summary`,
+      `fields.${key}.label`,
+      `fields.${key}.legend`]);
   }
 
   translateCheckBoxOptions(key, value, req) {
