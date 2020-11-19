@@ -1,39 +1,38 @@
 'use strict';
-const _ = require('lodash');
 
 module.exports = superclass => class extends superclass {
 
   parseSections(req) {
-    const settings = req.form.options;
-    const sections = this.getSectionSettings(settings);
+    const sections = req.form.options.sections;
     return Object.keys(sections)
       .map(section => {
-        const fields = sections[section] || [];
-        const populatedFields =
-          _.flatten(fields.map(field => {
-              const processed = this.processDataSectionsField(field, req);
-              return Array.isArray(processed.value) && processed.value[0].fields ?
-                this.expandAggregatedFields(processed, req) : processed;
-            }
-            )
-          ).filter(f => f.value);
-
         return {
           section: req.translate([
             `pages.confirm.sections.${section}.header`,
             `pages.${section}.header`
           ]),
-          fields: populatedFields
+          fields: this.parseSectionFields(sections[section], req)
         };
       })
       .filter(section => section.fields.length);
   }
 
+  parseSectionFields(section, req) {
+    const fields = section || [];
+    const populatedFields = fields.map(field => this.processDataSectionsField(field, req)).filter(f => f.value);
+
+    if (populatedFields[0] && Array.isArray(populatedFields[0].value)) {
+      return this.expandAggregatedFields(populatedFields, req);
+    }
+    return populatedFields;
+
+  }
+
   expandAggregatedFields(obj, req) {
-    return obj.value.flatMap((element, index) => {
-      const fields = element.fields.map(inner => {
+    return obj[0].value.flatMap((element, index) => {
+      const fields = element.fields.flatMap(inner => {
         const changeField = inner.changeField || inner.field;
-        const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${changeField}`;
+        const changeLink = `${req.baseUrl}${obj[0].step}/edit/${index}/${changeField}`;
         return {
           changeLinkDescription: this.translateChangeLink(inner.field, req),
           label: this.translateLabel(inner.field, req),
@@ -44,25 +43,12 @@ module.exports = superclass => class extends superclass {
         };
       });
 
-      if (obj.addElementSeparators && index < obj.value.length - 1) {
+      if (obj[0].addElementSeparators && index < obj[0].value.length - 1) {
         fields.push({ label: '', value: 'separator', changeLink: '', isSeparator: true });
       }
 
       return fields;
     });
-  }
-
-  getSectionSettings(settings) {
-    if (settings.sections) {
-      return settings.sections;
-    }
-    return Object.keys(settings.steps).reduce((map, key) => {
-      const fields = settings.steps[key].fields;
-      if (fields) {
-        map[key.replace(/^\//, '')] = fields;
-      }
-      return map;
-    }, {});
   }
 
   getStepForField(key, steps) {
@@ -79,6 +65,7 @@ module.exports = superclass => class extends superclass {
       `fields.${key}.legend`
     ]);
   }
+
   translateChangeLink(key, req) {
     return req.translate([`fields.${key}.changeLinkDescription`,
       `pages.confirm.fields.${key}.label`,
@@ -135,7 +122,7 @@ module.exports = superclass => class extends superclass {
         obj.value = key.parse(obj.value);
       }
 
-      obj.addElementSeparators = key.addElementSeparators;
+      obj.addElementSeparators = key.addElementSeparators || false;
 
       return obj;
     }
@@ -145,10 +132,8 @@ module.exports = superclass => class extends superclass {
   locals(req, res) {
     const rows = this.parseSections(req);
 
-    const locals = Object.assign({}, super.locals(req, res), {
+    return Object.assign({}, super.locals(req, res), {
       rows
     });
-
-    return locals;
   }
 };

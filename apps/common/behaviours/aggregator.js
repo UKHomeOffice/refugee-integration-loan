@@ -13,8 +13,7 @@ module.exports = superclass => class extends superclass {
   }
 
   deleteItem(req, res, id) {
-    const aggregateArray = this.getAggregateArray(req);
-    aggregateArray.splice(id, 1);
+    const aggregateArray = this.getAggregateArray(req).filter((element, index) => index !== parseInt(id, 10));
     req.sessionModel.set(req.form.options.aggregateTo, aggregateArray);
     res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }

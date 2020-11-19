@@ -5,9 +5,21 @@
   <tbody>
   {{#fields}}
   <tr>
-    <td>{{label}}</td>
-    <td data-value="{{value}}">{{value}}</td>
-    <td><span class="link"><a href="{{baseUrl}}{{step}}/edit#{{field}}" id="{{field}}-change">{{#t}}buttons.change{{/t}} <span class="visuallyhidden">{{changeLinkDescription}} from {{value}}</span></a></span></td>
+    {{#isSeparator}}
+      <tr class="spacer">
+        <td colspan="3"></td>
+      </tr>
+    {{/isSeparator}}
+    {{^isSeparator}}
+      <td>{{label}}</td>
+      <td data-value="{{#parsed}}{{parsed}}{{/parsed}}{{^parsed}}{{value}}{{/parsed}}">{{#parsed}}{{parsed}}{{/parsed}}{{^parsed}}{{value}}{{/parsed}}</td>
+      {{#changeLink}}
+      <td><span class="link"><a href="{{changeLink}}" id="{{field}}-change">{{#t}}buttons.change{{/t}} <span class="visuallyhidden">{{changeLinkDescription}} from {{value}}</span></a></span></td>
+      {{/changeLink}}
+      {{^changeLink}}
+      <td><span class="link"><a href="{{baseUrl}}{{step}}/edit#{{field}}" id="{{field}}-change">{{#t}}buttons.change{{/t}} <span class="visuallyhidden">{{changeLinkDescription}} from {{value}}</span></a></span></td>
+      {{/changeLink}}
+    {{/isSeparator}}
   </tr>
   {{/fields}}
   </tbody>

@@ -142,7 +142,7 @@ describe('summary behaviour', () => {
       [{
         'fields': [
           {
-            'addElementSeparators': undefined,
+            'addElementSeparators': false,
             'field': 'hasOtherNames',
             'label': 'Have you been known by any other names?',
             'omitFromPdf': true,
