@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 module.exports = superclass => class extends superclass {
 
   constructor(options) {
@@ -46,6 +48,10 @@ module.exports = superclass => class extends superclass {
 
   editItem(req, res, id) {
     const items = this.getAggregateArray(req);
+
+    if (req.query.returnToSummary) {
+      req.sessionModel.set('returnToSummary', true);
+    }
 
     req.sessionModel.set(`${req.form.options.aggregateTo}-itemToReplaceId`, id);
 
@@ -128,10 +134,25 @@ module.exports = superclass => class extends superclass {
       res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}`);
     }
 
-    if (res.headersSent) {
-      return next();
+    if (!res.headersSent) {
+      return super.getValues(req, res, next);
     }
-    return super.getValues(req, res, next);
+
+    return {};
+  }
+
+  getNextStep(req, res) {
+    if (req.sessionModel.get('returnToSummary') && !this.continueOnEdit) {
+      return path.join(req.baseUrl, this.confirmStep);
+    }
+    let next = req.form.options.next || req.path;
+    if (req.form.options.forks && Array.isArray(req.form.options.forks)) {
+      next = this._getForkTarget(req, res);
+    }
+    if (req.baseUrl !== '/') {
+      next = req.baseUrl + next;
+    }
+    return next;
   }
 
 

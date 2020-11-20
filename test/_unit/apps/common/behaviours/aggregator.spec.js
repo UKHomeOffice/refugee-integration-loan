@@ -14,6 +14,7 @@ describe('aggregator behaviour', () => {
   let req;
   let res;
   let next;
+  let getNextStepStub;
 
   describe('#getValues', () => {
     let superGetValuesStub;
@@ -34,8 +35,12 @@ describe('aggregator behaviour', () => {
       Base.prototype.getValues = superGetValuesStub;
       next = sinon.stub();
 
+      getNextStepStub = sinon.stub();
+      Base.prototype.getNextStep = getNextStepStub;
+
       Behaviour = AggregatorBehaviour(Base);
       behaviour = new Behaviour(req.form.options);
+      behaviour.confirmStep = '/confirm';
 
     });
 
@@ -159,6 +164,19 @@ describe('aggregator behaviour', () => {
           {field: 'surname', value: 'Baker', changeField: undefined, showInSummary: true},
         ]
         });
+      });
+    });
+
+    describe('#getNextStep', () => {
+      it('should go to the next step if user does not come from summary', () => {
+        req.form.options.next = '/next';
+        behaviour.getNextStep(req, res).should.eql('/test/next');
+      });
+
+      it('should return to the confirm step if user comes from summary', () => {
+        req.sessionModel.set('returnToSummary', true);
+        behaviour.getNextStep(req, res).should.eql('/test/confirm');
+        getNextStepStub.should.not.be.called;
       });
     });
   });

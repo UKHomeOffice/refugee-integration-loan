@@ -21,6 +21,7 @@ module.exports = {
           value: 'no'
         }
       }],
+      returnToSummary: false,
       continueOnEdit: true
     },
     '/previous': {
@@ -33,6 +34,7 @@ module.exports = {
           value: 'no'
         }
       }],
+      returnToSummary: false,
       continueOnEdit: true
     },
     '/who-received-previous-loan': {
@@ -45,6 +47,7 @@ module.exports = {
           value: 'someoneElse'
         }
       }],
+      returnToSummary: false,
       continueOnEdit: true
     },
     '/partner': {
@@ -57,9 +60,11 @@ module.exports = {
           value: 'no'
         }
       }],
+      returnToSummary: true,
       continueOnEdit: true
     },
     '/joint': {
+      returnToSummary: true,
       fields: ['joint'],
       next: '/brp',
       continueOnEdit: true
@@ -103,7 +108,7 @@ module.exports = {
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/home-office-reference',
-      continueOnEdit: true
+      continueOnEdit: false
     },
     '/home-office-reference': {
       fields: ['homeOfficeReference'],
@@ -162,7 +167,7 @@ module.exports = {
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/convictions-joint',
-      continueOnEdit: true
+      continueOnEdit: false
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
@@ -205,7 +210,7 @@ module.exports = {
       addAnotherLinkText: 'dependant',
       template: 'add-another',
       next: '/address',
-      continueOnEdit: true
+      continueOnEdit: false
     },
     '/address': {
       fields: ['building', 'street', 'townOrCity', 'postcode'],

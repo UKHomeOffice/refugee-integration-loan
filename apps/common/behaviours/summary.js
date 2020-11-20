@@ -21,7 +21,8 @@ module.exports = superclass => class extends superclass {
     const fields = section || [];
     const populatedFields = fields.map(field => this.processDataSectionsField(field, req)).filter(f => f.value);
 
-    if (populatedFields[0] && Array.isArray(populatedFields[0].value)) {
+    if (populatedFields[0] && Array.isArray(populatedFields[0].value)
+        && typeof populatedFields[0].value[0] === 'object') {
       return this.expandAggregatedFields(populatedFields, req);
     }
     return populatedFields;
@@ -32,7 +33,7 @@ module.exports = superclass => class extends superclass {
     return obj[0].value.flatMap((element, index) => {
       const fields = element.fields.flatMap(inner => {
         const changeField = inner.changeField || inner.field;
-        const changeLink = `${req.baseUrl}${obj[0].step}/edit/${index}/${changeField}`;
+        const changeLink = `${req.baseUrl}${obj[0].step}/edit/${index}/${changeField}?returnToSummary=true`;
         return {
           changeLinkDescription: this.translateChangeLink(inner.field, req),
           label: this.translateLabel(inner.field, req),
@@ -130,11 +131,10 @@ module.exports = superclass => class extends superclass {
   }
 
   locals(req, res) {
+    req.sessionModel.unset('returnToSummary');
     const rows = this.parseSections(req);
-
     return Object.assign({}, super.locals(req, res), {
-      rows,
-      complete: true
+      rows
     });
   }
 };
