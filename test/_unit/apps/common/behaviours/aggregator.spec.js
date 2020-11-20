@@ -124,6 +124,12 @@ describe('aggregator behaviour', () => {
         behaviour.getValues(req, res, next);
       });
 
+      it('unsets field used to indicate an update operation', () => {
+        expect(req.sessionModel.get('otherNames-itemToReplaceId')).to.be.undefined;
+        expect(req.sessionModel.get('firstName')).to.be.undefined;
+        expect(req.sessionModel.get('surname')).to.be.undefined;
+      });
+
       it('replaces an item with the source step fields when itemToReplaceId is present ' +
         'in the session and action is edit', () => {
         const updatedElement = req.sessionModel.get('otherNames')[1];
@@ -135,6 +141,24 @@ describe('aggregator behaviour', () => {
           {field: 'surname', value: 'Baker'},
         ]});
       });
+    });
+
+    it('should return to the confirm step if user comes from summary', () => {
+      req.form.options.aggregateFrom = ['firstName', 'surname'];
+      req.form.options.titleField = 'firstName';
+
+      req.sessionModel.set('otherNames', [
+        {itemTitle: 'John', fields: [{field: 'firstName', value: 'John'}, {field: 'surname', value: 'Smith'}]},
+        {itemTitle: 'Steve', fields: [{field: 'firstName', value: 'Steve'}, {field: 'surname', value: 'Adams'}]}
+      ]);
+      req.params.action = 'edit';
+      req.sessionModel.set('otherNames-itemToReplaceId', 1);
+      req.sessionModel.set('firstName', 'Sam');
+      req.sessionModel.set('surname', 'Baker');
+      req.sessionModel.set('returnToSummary', true);
+
+      behaviour.getValues(req, res, next);
+      res.redirect.should.be.calledOnceWithExactly('/test/confirm');
     });
 
     describe('add item', () => {
@@ -164,19 +188,6 @@ describe('aggregator behaviour', () => {
           {field: 'surname', value: 'Baker', changeField: undefined, showInSummary: true},
         ]
         });
-      });
-    });
-
-    describe('#getNextStep', () => {
-      it('should go to the next step if user does not come from summary', () => {
-        req.form.options.next = '/next';
-        behaviour.getNextStep(req, res).should.eql('/test/next');
-      });
-
-      it('should return to the confirm step if user comes from summary', () => {
-        req.sessionModel.set('returnToSummary', true);
-        behaviour.getNextStep(req, res).should.eql('/test/confirm');
-        getNextStepStub.should.not.be.called;
       });
     });
   });

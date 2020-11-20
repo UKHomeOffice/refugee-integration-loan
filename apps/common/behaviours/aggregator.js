@@ -22,7 +22,6 @@ module.exports = superclass => class extends superclass {
 
   updateItem(req, res) {
     const id = req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`);
-    req.sessionModel.unset(`${req.form.options.aggregateTo}-itemToReplaceId`);
 
     const items = req.sessionModel.get(req.form.options.aggregateTo);
 
@@ -43,7 +42,15 @@ module.exports = superclass => class extends superclass {
     items[id].itemTitle = itemTitle;
 
     req.sessionModel.set(req.form.options.aggregateTo, items);
-    res.redirect(`${req.baseUrl}${req.form.options.route}`);
+    req.sessionModel.unset(`${req.form.options.aggregateTo}-itemToReplaceId`);
+
+
+    if (req.sessionModel.get('returnToSummary') && !this.continueOnEdit) {
+      req.sessionModel.unset('returnToSummary');
+      res.redirect(path.join(req.baseUrl, this.confirmStep));
+    } else {
+      res.redirect(`${req.baseUrl}${req.form.options.route}`);
+    }
   }
 
   editItem(req, res, id) {
@@ -140,21 +147,6 @@ module.exports = superclass => class extends superclass {
 
     return {};
   }
-
-  getNextStep(req, res) {
-    if (req.sessionModel.get('returnToSummary') && !this.continueOnEdit) {
-      return path.join(req.baseUrl, this.confirmStep);
-    }
-    let next = req.form.options.next || req.path;
-    if (req.form.options.forks && Array.isArray(req.form.options.forks)) {
-      next = this._getForkTarget(req, res);
-    }
-    if (req.baseUrl !== '/') {
-      next = req.baseUrl + next;
-    }
-    return next;
-  }
-
 
   runFieldParsers(req) {
     const items = this.getAggregateArray(req);

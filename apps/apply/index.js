@@ -108,7 +108,7 @@ module.exports = {
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/home-office-reference',
-      continueOnEdit: false
+      continueOnEdit: true
     },
     '/home-office-reference': {
       fields: ['homeOfficeReference'],
@@ -167,7 +167,7 @@ module.exports = {
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/convictions-joint',
-      continueOnEdit: false
+      continueOnEdit: true
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
@@ -210,7 +210,7 @@ module.exports = {
       addAnotherLinkText: 'dependant',
       template: 'add-another',
       next: '/address',
-      continueOnEdit: false
+      continueOnEdit: true
     },
     '/address': {
       fields: ['building', 'street', 'townOrCity', 'postcode'],
