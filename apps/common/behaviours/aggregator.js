@@ -14,9 +14,13 @@ module.exports = superclass => class extends superclass {
     super(options);
   }
 
-  deleteItem(req, res, id) {
-    const aggregateArray = this.getAggregateArray(req).filter((element, index) => index !== parseInt(id, 10));
-    req.sessionModel.set(req.form.options.aggregateTo, aggregateArray);
+  deleteItem(req, res) {
+    const id = req.params.id;
+
+    if (id) {
+      const aggregateArray = this.getAggregateArray(req).filter((element, index) => index !== parseInt(id, 10));
+      req.sessionModel.set(req.form.options.aggregateTo, aggregateArray);
+    }
     res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }
 
@@ -53,24 +57,28 @@ module.exports = superclass => class extends superclass {
     }
   }
 
-  editItem(req, res, id) {
+  showEditItemPage(req, res) {
     const items = this.getAggregateArray(req);
+    const id = req.params.id;
 
     if (req.query.returnToSummary) {
       req.sessionModel.set('returnToSummary', true);
     }
 
-    req.sessionModel.set(`${req.form.options.aggregateTo}-itemToReplaceId`, id);
+    if (id) {
+      req.sessionModel.set(`${req.form.options.aggregateTo}-itemToReplaceId`, id);
 
-    req.form.options.aggregateFrom.forEach(aggregateFromElement => {
-      const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
+      req.form.options.aggregateFrom.forEach(aggregateFromElement => {
+        const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
 
-      req.sessionModel.set(aggregateFromField,
-        items[id].fields.find((field) => field.field === aggregateFromField).value);
-    });
-
-    const editPath = req.params.edit ? `/edit#${req.params.edit}` : '/edit';
-    res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}${editPath}`);
+        req.sessionModel.set(aggregateFromField,
+          items[id].fields.find((field) => field.field === aggregateFromField).value);
+      });
+      const editPath = req.params.edit ? `/edit#${req.params.edit}` : '/edit';
+      res.redirect(`${req.baseUrl}/${req.form.options.addStep}${editPath}`);
+    } else {
+      res.redirect(`${req.baseUrl}${req.form.options.route}`);
+    }
   }
 
   addItem(req, res) {
@@ -119,32 +127,55 @@ module.exports = superclass => class extends superclass {
     return fieldsProvided;
   }
 
-  getValues(req, res, next) {
-    const id = req.params.id;
-    const action = req.params.action;
+  redirectToAddStep(req, res) {
+    res.redirect(`${req.baseUrl}/${req.form.options.addStep}`);
+  }
 
-    const deleteItem = () => action === 'delete' && id;
-    const editItem = () => action === 'edit' && id;
-    const updateItem =
-      () => action === 'edit' && req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`);
+  editItem(req, res) {
+    if (req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`)) {
+      this.updateItem(req, res);
+    } else {
+      this.showEditItemPage(req, res);
+    }
+  }
+
+  getAction(req) {
     const noItemsPresent = () => this.getAggregateArray(req).length === 0;
 
-    if (deleteItem()) {
-      this.deleteItem(req, res, id);
-    } else if (editItem()) {
-      this.editItem(req, res, id, req.params.edit);
-    } else if (updateItem()) {
-      this.updateItem(req, res);
-    } else if (this.newFieldsProvided(req)) {
-      this.addItem(req, res);
+    let action;
+
+    if (this.newFieldsProvided(req)) {
+      action = 'addItem';
     } else if (noItemsPresent()) {
-      res.redirect(`${req.baseUrl}/${req.form.options.sourceStep}`);
+      action = 'redirectToAddStep';
     }
 
-    if (!res.headersSent) {
-      return super.getValues(req, res, next);
-    }
+    return action || 'showItems';
+  }
 
+  getValues(req, res, next) {
+    const action = req.params.action || this.getAction(req, res, next);
+    this.handleAction(req, res, next, action);
+  }
+
+  handleAction(req, res, next, action) {
+      switch (action) {
+      case 'delete':
+        this.deleteItem(req, res);
+        break;
+      case 'edit':
+        this.editItem(req, res);
+        break;
+      case 'addItem':
+        this.addItem(req, res);
+        break;
+      case 'redirectToAddStep':
+        this.redirectToAddStep(req, res);
+        break;
+        case 'showItems':
+        default:
+          return super.getValues(req, res, next);
+      }
     return {};
   }
 
@@ -161,6 +192,10 @@ module.exports = superclass => class extends superclass {
     });
   }
 
+  successHandler(req, res, next) {
+    return super.successHandler(req, res, next);
+  }
+
   locals(req, res) {
     const items = this.getAggregateArray(req);
 
@@ -173,7 +208,7 @@ module.exports = superclass => class extends superclass {
     return Object.assign({}, super.locals(req, res), {
       items,
       hasItems: items.length > 0,
-      sourceStep: req.form.options.sourceStep,
+      addStep: req.form.options.addStep,
       field: req.form.options.aggregateTo,
       addAnotherLinkText: req.form.options.addAnotherLinkText,
     });
