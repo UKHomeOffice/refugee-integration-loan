@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  'other-names-items': [{
+  'other-names': [{
     otherName: 'Max Bloggs'
   }]
 };
