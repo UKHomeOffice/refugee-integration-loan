@@ -60,7 +60,8 @@ describe('aggregator behaviour', () => {
         behaviour.handleAction.should.be.calledOnceWithExactly(req, res, next, 'edit');
       });
 
-      it('sends the addItem action when url action is missing, but new fields to add are present, and no elements exist', () => {
+      it('sends the addItem action when url action is missing, but new fields to add are present, ' +
+        'and no elements exist', () => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
 
         req.sessionModel.set('firstName', 'Sam');
@@ -71,7 +72,8 @@ describe('aggregator behaviour', () => {
         behaviour.handleAction.should.be.calledOnceWithExactly(req, res, next, 'addItem');
       });
 
-      it('sends the addItem action when url action is missing, but new fields to add are present, and elements already exist', () => {
+      it('sends the addItem action when url action is missing, but new fields to add are present, ' +
+        'and elements already exist', () => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
 
         req.sessionModel.set('otherNames', [{ itemTitle: 'John', fields: {} }]);
@@ -85,7 +87,8 @@ describe('aggregator behaviour', () => {
         behaviour.handleAction.should.be.calledOnceWithExactly(req, res, next, 'addItem');
       });
 
-      it('sends the redirectToAddStep action when url action is not present, no new fields to add are present, and no elements have been added', () => {
+      it('sends the redirectToAddStep action when url action is not present, no new fields to add are present, ' +
+        'and no elements have been added', () => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
         behaviour.getValues(req, res, next);
 
@@ -134,17 +137,19 @@ describe('aggregator behaviour', () => {
 
     describe('delete item', () => {
       beforeEach(() => {
-        req.sessionModel.set('otherNames', [
-          { itemTitle: 'John', fields: { value: 'John' } },
-          { itemTitle: 'Steve', fields: { value: 'Steve' } },
-          { itemTitle: 'Jane', fields: { value: 'Jane' } }
-        ]);
+        req.sessionModel.set('otherNames', {
+          aggregatedValues: [
+            { itemTitle: 'John', fields: { value: 'John' } },
+            { itemTitle: 'Steve', fields: { value: 'Steve' } },
+            { itemTitle: 'Jane', fields: { value: 'Jane' } }
+          ]
+        });
         req.params.id = '1';
       });
 
       it('deletes the item with the given id when the action is delete and an id is provide', () => {
         behaviour.deleteItem(req, res);
-        req.sessionModel.get('otherNames').should.eql([
+        req.sessionModel.get('otherNames').aggregatedValues.should.eql([
           { itemTitle: 'John', fields: { value: 'John' } },
           { itemTitle: 'Jane', fields: { value: 'Jane' } }
         ]);
@@ -160,14 +165,19 @@ describe('aggregator behaviour', () => {
       beforeEach(() => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
 
-        req.sessionModel.set('otherNames', [
-          { itemTitle: 'John', fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }] },
-          {
-            itemTitle: 'Steve',
-            fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
-          },
-          { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Doe' }] }
-        ]);
+        req.sessionModel.set('otherNames', {
+          aggregatedValues: [
+            {
+              itemTitle: 'John',
+              fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }]
+            },
+            {
+              itemTitle: 'Steve',
+              fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
+            },
+            { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Doe' }] }
+          ]
+        });
         req.params.id = '1';
 
         behaviour.editItem(req, res);
@@ -188,14 +198,20 @@ describe('aggregator behaviour', () => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
         req.form.options.titleField = 'firstName';
 
-        req.sessionModel.set('otherNames', [
-          { itemTitle: 'John', fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }] },
-          {
-            itemTitle: 'Steve',
-            fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
-          },
-          { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Doe' }] }
-        ]);
+        req.sessionModel.set('otherNames', {
+          aggregatedValues:
+            [
+              {
+                itemTitle: 'John',
+                fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }]
+              },
+              {
+                itemTitle: 'Steve',
+                fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
+              },
+              { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Doe' }] }
+            ]
+        });
         req.sessionModel.set('otherNames-itemToReplaceId', 1);
 
         req.sessionModel.set('firstName', 'Sam');
@@ -212,7 +228,7 @@ describe('aggregator behaviour', () => {
 
       it('replaces an item with the source step fields when itemToReplaceId is present ' +
         'in the session and action is edit', () => {
-        const updatedElement = req.sessionModel.get('otherNames')[1];
+        const updatedElement = req.sessionModel.get('otherNames').aggregatedValues[1];
 
         updatedElement.should.be.eql({
           itemTitle: 'Sam',
@@ -227,10 +243,18 @@ describe('aggregator behaviour', () => {
         req.form.options.aggregateFrom = ['firstName', 'surname'];
         req.form.options.titleField = 'firstName';
 
-        req.sessionModel.set('otherNames', [
-          { itemTitle: 'John', fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }] },
-          { itemTitle: 'Steve', fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }] }
-        ]);
+        req.sessionModel.set('otherNames', {
+          aggregatedValues: [
+            {
+              itemTitle: 'John',
+              fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }]
+            },
+            {
+              itemTitle: 'Steve',
+              fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
+            }
+          ]
+        });
         req.params.action = 'edit';
         req.sessionModel.set('otherNames-itemToReplaceId', 1);
         req.sessionModel.set('firstName', 'Sam');
@@ -251,20 +275,25 @@ describe('aggregator behaviour', () => {
         req.sessionModel.set('firstName', 'Sam');
         req.sessionModel.set('surname', 'Baker');
 
-        req.sessionModel.set('otherNames', [
-          { itemTitle: 'John', fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }] },
-          {
-            itemTitle: 'Steve',
-            fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
-          },
-          { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Doe' }] }
-        ]);
+        req.sessionModel.set('otherNames', {
+          aggregatedValues: [
+            {
+              itemTitle: 'John',
+              fields: [{ field: 'firstName', value: 'John' }, { field: 'surname', value: 'Smith' }]
+            },
+            {
+              itemTitle: 'Steve',
+              fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }]
+            },
+            { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Doe' }] }
+          ]
+        });
 
         behaviour.addItem(req, res, next);
       });
 
       it('adds a new item', () => {
-        const addedElement = req.sessionModel.get('otherNames')[3];
+        const addedElement = req.sessionModel.get('otherNames').aggregatedValues[3];
 
         addedElement.should.be.eql({
           itemTitle: 'Sam',

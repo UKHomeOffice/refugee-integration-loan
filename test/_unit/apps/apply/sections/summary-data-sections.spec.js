@@ -166,20 +166,32 @@ describe('Apply Summary Data Sections', () => {
     });
 
     it('has-dependants', () => {
-      const sectionFields = mappedSections['has-dependants'];
-      const expectedFields = [
-        'hasDependants'
-      ];
+      const sectionFields = sections['has-dependants'];
+      const expectedFields = {
+        omitFromPdf: true,
+        steps: [
+          {
+            step: '/has-dependants',
+            field: 'hasDependants',
+          },
+        ]
+      };
 
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;
     });
 
     it('has-other-names', () => {
-      const sectionFields = mappedSections['has-other-names'];
-      const expectedFields = [
-        'hasOtherNames'
-      ];
+      const sectionFields = sections['has-other-names'];
+      const expectedFields = {
+        omitFromPdf: true,
+        steps: [
+          {
+            step: '/has-other-names',
+            field: 'hasOtherNames',
+          },
+        ]
+      };
 
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;
@@ -196,10 +208,17 @@ describe('Apply Summary Data Sections', () => {
     });
 
     it('partner=has-other-names', () => {
-      const sectionFields = mappedSections['partner-has-other-names'];
-      const expectedFields = [
-        'partnerHasOtherNames'
-      ];
+      const sectionFields = sections['partner-has-other-names'];
+      const expectedFields = {
+        omitFromPdf: true,
+        steps: [
+          {
+            step: '/partner-has-other-names',
+            field: 'partnerHasOtherNames',
+            omitFromPdf: true
+          }
+        ]
+      };
 
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;

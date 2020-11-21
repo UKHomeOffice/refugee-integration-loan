@@ -89,167 +89,170 @@ describe('summary behaviour', () => {
     // other names radio button
     req.sessionModel.set('hasOtherNames', 'yes');
     // other names values
-    req.sessionModel.set('otherNames', [
-      { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Smith' }] },
-      { itemTitle: 'Steve', fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }] }
-    ]);
+    req.sessionModel.set('otherNames', {
+      aggregatedValues: [
+        { itemTitle: 'Jane', fields: [{ field: 'firstName', value: 'Jane' }, { field: 'surname', value: 'Smith' }] },
+        { itemTitle: 'Steve', fields: [{ field: 'firstName', value: 'Steve' }, { field: 'surname', value: 'Adams' }] }
+      ]
+    });
 
 
     Behaviour = SummaryBehaviour(Base);
     behaviour = new Behaviour(req.form.options);
-
-    lastResult = behaviour.locals(req, res);
   });
 
-  it('should trigger parser functions provided in sections.js', () => {
-    lastResult.rows.should.containSubset([
-      {
-        'section': 'Applicant’s details',
-        'fields': [
-          {
-            'value': '1st January 1980'
-          }
-        ]
-      }
-    ]);
-  });
+  describe('#getRowsForSummarySections', () => {
+    beforeEach(() => {
+      lastResult = behaviour.getRowsForSummarySections(req, res);
+    });
 
-  it('should supply translated changeLinkDescriptions', () => {
-      lastResult.rows.should.containSubset([
+    it('should trigger parser functions provided in sections.js', () => {
+      lastResult.should.containSubset([
         {
+          'section': 'Applicant’s details',
           'fields': [
             {
-              'changeLinkDescription': 'Your date of birth'
-            },
-          ]
-        },
-        {
-          'fields': [
-            {
-              'changeLinkDescription': 'A first name'
-            },
-          ]
-        },
-        {
-          'fields': [
-            {
-              'changeLinkDescription': 'A surname'
+              'value': '1st January 1980'
             }
           ]
         }
       ]);
-    }
-  );
+    });
 
-  it('should translate the value for a radio button group', () => {
-    lastResult.rows.should.containSubset([{ 'fields': [{ 'value': 'Yes' }] }]);
-  });
-
-  it('should output the correct value for a yes/no radio button group', () => {
-    lastResult.rows.should.containSubset(
-      [{
-        'fields': [
+    it('should supply translated changeLinkDescriptions', () => {
+        lastResult.should.containSubset([
           {
-            'addElementSeparators': false,
-            'field': 'hasOtherNames',
-            'label': 'Have you been known by any other names?',
-            'omitFromPdf': true,
-            'parsed': undefined,
-            'step': '/has-other-names',
-            'value': 'Yes',
-          }
-        ],
-        'section': 'Have you been known by any other names?'
-      }]
-    );
-  });
-
-  it('expands aggregated fields into individual entries for summary display', () => {
-    lastResult.rows.should.containSubset(
-      [{
-        'section': 'Does the applicant have other names?',
-        'fields': [
-          {
-            'label': 'First name',
-            'value': 'Jane',
-            'changeLink': 'test/other-names/edit/0/firstName?returnToSummary=true'
+            'fields': [
+              {
+                'changeLinkDescription': 'Your date of birth'
+              },
+            ]
           },
           {
-            'label': 'Surname',
-            'value': 'Smith',
-            'changeLink': 'test/other-names/edit/0/surname?returnToSummary=true'
+            'fields': [
+              {
+                'changeLinkDescription': 'A first name'
+              },
+            ]
           },
           {
-            'label': 'First name',
-            'value': 'Steve',
-            'changeLink': 'test/other-names/edit/1/firstName?returnToSummary=true'
+            'fields': [
+              {
+                'changeLinkDescription': 'A surname'
+              }
+            ]
           }
-        ]
-      }]
-    );
-  });
-
-  it('should add separators when specified', () => {
-    lastResult.rows.should.containSubset([
-      {
-        'fields': [
-          {
-            'label': '',
-            'value': 'separator',
-            'changeLink': '',
-            'isSeparator': true
-          }
-        ]
+        ]);
       }
-    ]);
+    );
+
+    it('should translate the value for a radio button group', () => {
+      lastResult.should.containSubset([{ 'fields': [{ 'value': 'Yes' }] }]);
+    });
+
+    it('should output the correct value for a yes/no radio button group', () => {
+      lastResult.should.containSubset(
+        [{
+          'fields': [
+            {
+              'field': 'hasOtherNames',
+              'label': 'Have you been known by any other names?',
+              'step': '/has-other-names',
+              'value': 'Yes',
+            }
+          ],
+          'section': 'Have you been known by any other names?',
+        }]
+      );
+    });
+
+    it('expands aggregated fields into individual entries for summary display', () => {
+      lastResult.should.containSubset(
+        [{
+          'section': 'Does the applicant have other names?',
+          'fields': [
+            {
+              'label': 'First name',
+              'value': 'Jane',
+              'changeLink': 'test/other-names/edit/0/firstName?returnToSummary=true'
+            },
+            {
+              'label': 'Surname',
+              'value': 'Smith',
+              'changeLink': 'test/other-names/edit/0/surname?returnToSummary=true'
+            },
+            {
+              'label': 'First name',
+              'value': 'Steve',
+              'changeLink': 'test/other-names/edit/1/firstName?returnToSummary=true'
+            }
+          ]
+        }]
+      );
+    });
+
+    it('should add separators when specified', () => {
+      lastResult.should.containSubset([
+        {
+          'fields': [
+            {
+              'label': '',
+              'value': 'separator',
+              'changeLink': '',
+              'isSeparator': true
+            }
+          ]
+        }
+      ]);
+    });
   });
 
-  describe('getStepForField', () => {
+  describe('#getStepForField', () => {
     it('returns the correct step', () => {
       behaviour.getStepForField('hasOtherNames', req.form.options.steps)
         .should.be.eql('/has-other-names');
     });
   });
 
-  describe('expandAggregatedFields', () => {
+  describe('#expandAggregatedFields', () => {
     it('returns expanded fields', () => {
-      const inputObj = [
+      const inputObj =
         {
           'changeLinkDescription': 'Other name',
           'label': 'Full name',
-          'value': [
-            {
-              'itemTitle': 'John',
-              'fields': [
-                {
-                  'field': 'otherName',
-                  'value': 'John',
-                }
-              ],
-              'index': 0
-            },
-            {
-              'itemTitle': 'Jane',
-              'fields': [
-                {
-                  'field': 'otherName',
-                  'value': 'Jane',
-                }
-              ],
-              'index': 1
-            }
-          ],
+          'value': {
+            aggregatedValues: [
+              {
+                'itemTitle': 'John',
+                'fields': [
+                  {
+                    'field': 'otherName',
+                    'value': 'John',
+                  }
+                ],
+                'index': 0
+              },
+              {
+                'itemTitle': 'Jane',
+                'fields': [
+                  {
+                    'field': 'otherName',
+                    'value': 'Jane',
+                  }
+                ],
+                'index': 1
+              }
+            ]
+          },
           'step': '/other-names',
           'field': 'otherNames',
-        }
-      ];
+        };
 
       behaviour.expandAggregatedFields(inputObj, req)
         .should.be.eql([
         {
           'changeLinkDescription': 'Your other name',
           'label': 'Other name',
-          'parsed': false,
           'value': 'John',
           'changeLink': 'test/other-names/edit/0/otherName?returnToSummary=true',
           'field': 'otherName'
@@ -257,12 +260,64 @@ describe('summary behaviour', () => {
         {
           'changeLinkDescription': 'Your other name',
           'label': 'Other name',
-          'parsed': false,
           'value': 'Jane',
           'changeLink': 'test/other-names/edit/1/otherName?returnToSummary=true',
           'field': 'otherName'
         }
       ]);
+    });
+  });
+
+  describe('#getFieldData', () => {
+    it('should return the correct result for simple fields', () => {
+      behaviour.getFieldData('brpNumber', req).should.eql({
+        'changeLinkDescription': 'Your Biometric residence permit (BRP) number',
+        'label': 'Biometric residence permit (BRP) number',
+        'value': '12345678',
+        'step': '/pdf-applicant-details',
+        'field': 'brpNumber'
+      });
+    });
+
+    it('should return the correct result for aggregated fields', () => {
+      behaviour.getFieldData('otherNames', req).should.eql(
+        {
+          'changeLinkDescription': 'Your other names',
+          'field': 'otherNames',
+          'label': 'Other names',
+          'step': '/other-names',
+          'value': {
+            'aggregatedValues': [
+              {
+                'fields': [
+                  {
+                    'field': 'firstName',
+                    'value': 'Jane'
+                  },
+                  {
+                    'field': 'surname',
+                    'value': 'Smith',
+                  }
+                ],
+                'itemTitle': 'Jane'
+              },
+              {
+                'fields': [
+                  {
+                    'field': 'firstName',
+                    'value': 'Steve'
+                  },
+                  {
+                    'field': 'surname',
+                    'value': 'Adams'
+                  }
+                ],
+                'itemTitle': 'Steve',
+              }
+            ]
+          }
+        }
+      );
     });
   });
 });

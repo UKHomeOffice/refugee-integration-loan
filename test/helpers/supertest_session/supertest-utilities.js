@@ -37,6 +37,12 @@ function parseHtml(response) {
   return Promise.resolve($(dom.window.document));
 }
 
+
+function getDom(response) {
+  const dom = new JSDOM(response.text);
+  return Promise.resolve(dom.window.document);
+}
+
 function getToken(response) {
   return parseHtml(response)
     .then(win => win.find('[name=x-csrf-token]').val());
@@ -80,9 +86,9 @@ function postSessionBootstrapData(app, data) {
   });
 }
 
-const bootstrapSession = (app, appName, stepOrData, data) => {
+const bootstrapSession = (app, appName, stepOrData, data, pages) => {
   let props = {};
-  let baseProps = require('./session-data/base')(appName);
+  let baseProps = require('./session-data/base')(appName, pages);
   if (typeof stepOrData === 'object') {
     Object.assign(props, stepOrData);
   } else {
@@ -94,9 +100,10 @@ const bootstrapSession = (app, appName, stepOrData, data) => {
   });
 };
 
-function initSession(app, appName, stepOrData, data, subAppPath) {
+// eslint-disable-next-line max-params
+function initSession(app, appName, stepOrData, data, subAppPath, pages) {
   return getUrl(app, `/${appName}`, 302)
-    .then(() => bootstrapSession(app, appName, stepOrData, data))
+    .then(() => bootstrapSession(app, appName, stepOrData, data, pages))
     .then(() => {
       let destination = typeof stepOrData === 'string' ? stepOrData : '/';
       return getUrl(app, `${subAppPath}${destination}`, 200);
@@ -116,7 +123,7 @@ function getRedirection(app, expectedStatus, previousResponse) {
   return getUrl(app, parse302(previousResponse), expectedStatus);
 }
 
-function getSupertestApp(subAppName, subAppPath) {
+function getSupertestApp(subAppName, subAppPath, pages) {
   const app = require('../../../server');
   subAppPath = (subAppPath || subAppPath === '') ? subAppPath : subAppName;
   if (subAppPath.length > 0) {
@@ -129,7 +136,8 @@ function getSupertestApp(subAppName, subAppPath) {
     passStep: (uri, data) => passStep(testApp, `${subAppPath}${uri}`, data),
     getUrl: uri => getUrl(testApp, `${subAppPath}${uri}`, 200),
     parseHtml: res => parseHtml(res),
-    initSession: (uri, options) => initSession(testApp, subAppName, uri, options, subAppPath)
+    initSession: (uri, options) => initSession(testApp, subAppName, uri, options, subAppPath, pages),
+    getDom
   };
 }
 
@@ -139,6 +147,7 @@ module.exports = {
   passStep,
   passRedirectionStep,
   parseHtml,
+  getDom,
   getToken,
   resShouldMatch,
   initSession,

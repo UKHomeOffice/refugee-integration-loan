@@ -18,8 +18,8 @@ module.exports = superclass => class extends superclass {
     const id = req.params.id;
 
     if (id) {
-      const aggregateArray = this.getAggregateArray(req).filter((element, index) => index !== parseInt(id, 10));
-      req.sessionModel.set(req.form.options.aggregateTo, aggregateArray);
+      const items = this.getAggregateArray(req).filter((element, index) => index !== parseInt(id, 10));
+      this.setAggregateArray(req, items);
     }
     res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }
@@ -27,7 +27,7 @@ module.exports = superclass => class extends superclass {
   updateItem(req, res) {
     const id = req.sessionModel.get(`${req.form.options.aggregateTo}-itemToReplaceId`);
 
-    const items = req.sessionModel.get(req.form.options.aggregateTo);
+    const items = this.getAggregateArray(req);
 
     let itemTitle = '';
 
@@ -45,7 +45,7 @@ module.exports = superclass => class extends superclass {
 
     items[id].itemTitle = itemTitle;
 
-    req.sessionModel.set(req.form.options.aggregateTo, items);
+    this.setAggregateArray(req, items);
     req.sessionModel.unset(`${req.form.options.aggregateTo}-itemToReplaceId`);
 
 
@@ -107,12 +107,17 @@ module.exports = superclass => class extends superclass {
 
     items.push({ itemTitle, fields });
 
-    req.sessionModel.set(req.form.options.aggregateTo, items);
+    this.setAggregateArray(req, items);
     res.redirect(`${req.baseUrl}${req.form.options.route}`);
   }
 
   getAggregateArray(req) {
-    return req.sessionModel.get(req.form.options.aggregateTo) || [];
+    const aggregateToField = req.sessionModel.get(req.form.options.aggregateTo) || { aggregatedValues: [] };
+    return aggregateToField.aggregatedValues;
+  }
+
+  setAggregateArray(req, value) {
+    req.sessionModel.set(req.form.options.aggregateTo, { aggregatedValues: value});
   }
 
   newFieldsProvided(req) {
@@ -159,7 +164,7 @@ module.exports = superclass => class extends superclass {
   }
 
   handleAction(req, res, next, action) {
-      switch (action) {
+    switch (action) {
       case 'delete':
         this.deleteItem(req, res);
         break;
@@ -172,10 +177,10 @@ module.exports = superclass => class extends superclass {
       case 'redirectToAddStep':
         this.redirectToAddStep(req, res);
         break;
-        case 'showItems':
-        default:
-          return super.getValues(req, res, next);
-      }
+      case 'showItems':
+      default:
+        return super.getValues(req, res, next);
+    }
     return {};
   }
 
@@ -190,10 +195,6 @@ module.exports = superclass => class extends superclass {
         }
       });
     });
-  }
-
-  successHandler(req, res, next) {
-    return super.successHandler(req, res, next);
   }
 
   locals(req, res) {

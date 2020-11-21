@@ -16,13 +16,15 @@ module.exports = {
     },
     'homeOfficeReference'
   ],
-  'has-other-names': [
-    {
-      step: '/has-other-names',
-      field: 'hasOtherNames',
-      omitFromPdf: true
-    },
-  ],
+  'has-other-names': {
+    omitFromPdf: true,
+    steps: [
+      {
+        step: '/has-other-names',
+        field: 'hasOtherNames',
+      },
+    ]
+  },
   'other-names': [
     {
       step: '/other-names',
@@ -39,13 +41,16 @@ module.exports = {
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     }
   ],
-  'partner-has-other-names': [
-    {
-      step: '/partner-has-other-names',
-      field: 'partnerHasOtherNames',
-      omitFromPdf: true
-    }
-  ],
+  'partner-has-other-names': {
+    omitFromPdf: true,
+    steps: [
+      {
+        step: '/partner-has-other-names',
+        field: 'partnerHasOtherNames',
+        omitFromPdf: true
+      }
+    ]
+  },
   'partner-other-names': [
     {
       step: '/partner-other-names',
@@ -135,13 +140,15 @@ module.exports = {
     'email',
     'phone'
   ],
-  'has-dependants': [
-    {
-      step: '/has-dependants',
-      field: 'hasDependants',
-      omitFromPdf: true
-    },
-  ],
+  'has-dependants': {
+    omitFromPdf: true,
+    steps: [
+      {
+        step: '/has-dependants',
+        field: 'hasDependants',
+      },
+    ]
+  },
   'dependent-details': [
     {
       step: '/dependant-details',

@@ -2,49 +2,77 @@
 
 module.exports = superclass => class extends superclass {
 
-  parseSections(req) {
+  getRowsForSummarySections(req) {
     const sections = req.form.options.sections;
     return Object.keys(sections)
       .map(section => {
+        const fieldsInSection = sections[section].steps || sections[section];
+        const omitFromPdf = sections[section].omitFromPdf || false;
+
         return {
           section: req.translate([
             `pages.confirm.sections.${section}.header`,
             `pages.${section}.header`
           ]),
-          fields: this.parseSectionFields(sections[section], req)
+          fields: this.getFieldsForRow(fieldsInSection, req),
+          omitFromPdf
         };
       })
       .filter(section => section.fields.length);
   }
 
-  parseSectionFields(section, req) {
-    const fields = section || [];
-    const populatedFields = fields.map(field => this.processDataSectionsField(field, req)).filter(f => f.value);
+  getFieldsForRow(section, req) {
+    const fieldsSpecifications = section || [];
+    let populatedFields =
+      fieldsSpecifications.map(fieldSpec => {
+        let fieldData = {};
 
-    if (populatedFields[0] && Array.isArray(populatedFields[0].value)
-        && typeof populatedFields[0].value[0] === 'object') {
-      return this.expandAggregatedFields(populatedFields, req);
-    }
+        if (typeof fieldSpec === 'string') {
+          fieldData = this.getFieldData(fieldSpec, req);
+        } else if (this.dependencySatisfied(fieldSpec, req)) {
+          fieldData = Object.assign(this.getFieldData(fieldSpec.field, req), fieldSpec);
+        }
+
+        fieldData.value = (typeof fieldSpec.parse === 'function') ? fieldSpec.parse(fieldData.value) : fieldData.value;
+
+        return fieldData;
+      }).filter(f => f.value);
+
+    populatedFields = populatedFields.flatMap(populatedField => {
+      if (populatedField.value && populatedField.value.aggregatedValues) {
+        return this.expandAggregatedFields(populatedField, req);
+      }
+      return populatedField;
+    });
+
     return populatedFields;
+  }
 
+  dependencySatisfied(fieldSpec, req) {
+    if (fieldSpec.dependsOn) {
+      const dependencyValue = req.sessionModel.get(fieldSpec.dependsOn);
+      if (!dependencyValue || dependencyValue === 'no') {
+        return false;
+      }
+    }
+    return true;
   }
 
   expandAggregatedFields(obj, req) {
-    return obj[0].value.flatMap((element, index) => {
+    return obj.value.aggregatedValues.flatMap((element, index) => {
       const fields = element.fields.flatMap(inner => {
         const changeField = inner.changeField || inner.field;
-        const changeLink = `${req.baseUrl}${obj[0].step}/edit/${index}/${changeField}?returnToSummary=true`;
-        return {
+        const changeLink = `${req.baseUrl}${obj.step}/edit/${index}/${changeField}?returnToSummary=true`;
+
+        return Object.assign({}, inner, {
           changeLinkDescription: this.translateChangeLink(inner.field, req),
+          value: inner.parsed || inner.value,
           label: this.translateLabel(inner.field, req),
-          value: inner.value,
           changeLink,
-          parsed: inner.parsed || false,
-          field: inner.field
-        };
+        });
       });
 
-      if (obj[0].addElementSeparators && index < obj[0].value.length - 1) {
+      if (obj.addElementSeparators && index < obj.value.aggregatedValues.length - 1) {
         fields.push({ label: '', value: 'separator', changeLink: '', isSeparator: true });
       }
 
@@ -77,62 +105,37 @@ module.exports = superclass => class extends superclass {
 
 
   translateCheckBoxOptions(key, value, req) {
+    if (Array.isArray(value)) {
+      return value.map(val => this.translateCheckBoxOptions(key, val, req));
+    }
+
     return req.translate(`fields[${key}].options.[${value}]`);
   }
 
   getFieldData(key, req) {
     const settings = req.form.options;
-
-    const fieldIsCheckbox = req.form.options.fieldsConfig[key] &&
-      (req.form.options.fieldsConfig[key].mixin === 'checkbox-group' ||
-        req.form.options.fieldsConfig[key].mixin === 'radio-group');
     let value = req.sessionModel.get(key);
 
-    if (fieldIsCheckbox && value) {
-      if (Array.isArray(value)) {
-        value = value.map(val => this.translateCheckBoxOptions(key, val, req));
-      } else {
-        value = this.translateCheckBoxOptions(key, value, req);
-      }
+    const fieldIsCheckbox = value && req.form.options.fieldsConfig[key] &&
+      (req.form.options.fieldsConfig[key].mixin === 'checkbox-group' ||
+        req.form.options.fieldsConfig[key].mixin === 'radio-group');
+
+    if (fieldIsCheckbox) {
+      value = this.translateCheckBoxOptions(key, value, req);
     }
 
     return {
       changeLinkDescription: this.translateChangeLink(key, req),
-      parsed: value ? value.parsed : undefined,
       label: this.translateLabel(key, req),
-      value: value || settings.nullValue,
+      value,
       step: this.getStepForField(key, settings.steps),
       field: key
     };
   }
 
-  processDataSectionsField(key, req) {
-    if (typeof key === 'string') {
-      return this.getFieldData(key, req);
-    } else if (typeof key.field === 'string') {
-      if (key.dependsOn) {
-        const dependencyValue = req.sessionModel.get(key.dependsOn);
-        if (!dependencyValue || dependencyValue === 'no') {
-          return {};
-        }
-      }
-
-      let obj = Object.assign(this.getFieldData(key.field, req), key);
-
-      if (typeof key.parse === 'function') {
-        obj.value = key.parse(obj.value);
-      }
-
-      obj.addElementSeparators = key.addElementSeparators || false;
-
-      return obj;
-    }
-    return {};
-  }
-
   locals(req, res) {
     req.sessionModel.unset('returnToSummary');
-    const rows = this.parseSections(req);
+    const rows = this.getRowsForSummarySections(req);
     return Object.assign({}, super.locals(req, res), {
       rows
     });
