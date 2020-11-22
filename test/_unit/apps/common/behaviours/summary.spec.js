@@ -268,6 +268,33 @@ describe('summary behaviour', () => {
     });
   });
 
+  describe('#runCombinerForDerivedField', () => {
+    it('should execute the combiner and return the result', () => {
+      req.sessionModel.set('outgoingTypes', [
+        'food_toiletries_cleaning_supplies',
+        'mobile_phone'
+      ]);
+
+      req.sessionModel.set('foodToiletriesAndCleaningSuppliesAmount', '10');
+      req.sessionModel.set('mobilePhoneAmount', '20');
+
+      const sumValues = values => values.map(it => Number(it)).reduce((a, b) => a + b, 0);
+      const fieldSpec = {
+        'field': 'totalIncome',
+        'derivation': {
+          'fromFields': [
+            'foodToiletriesAndCleaningSuppliesAmount',
+            'mobilePhoneAmount'
+          ],
+          combiner: sumValues
+        }
+      };
+
+      behaviour.runCombinerForDerivedField(fieldSpec, req).should.eql(30);
+
+    });
+  });
+
   describe('#getFieldData', () => {
     it('should return the correct result for simple fields', () => {
       behaviour.getFieldData('brpNumber', req).should.eql({

@@ -33,6 +33,7 @@ module.exports = superclass => class extends superclass {
           fieldData = Object.assign(this.getFieldData(fieldSpec.field, req), fieldSpec);
         }
 
+        fieldData.value = fieldSpec.derivation ? this.runCombinerForDerivedField(fieldSpec, req) : fieldData.value;
         fieldData.value = (typeof fieldSpec.parse === 'function') ? fieldSpec.parse(fieldData.value) : fieldData.value;
 
         return fieldData;
@@ -46,6 +47,20 @@ module.exports = superclass => class extends superclass {
     });
 
     return populatedFields;
+  }
+
+  runCombinerForDerivedField(fieldSpec, req) {
+    const obj = Object.assign(this.getFieldData(fieldSpec.field, req), fieldSpec);
+
+    const values = fieldSpec.derivation.fromFields
+      .map(field => {
+        return req.sessionModel.get(field);
+      }).filter(field => field && field.length > 0);
+    if (values.length > 0) {
+      obj.value = fieldSpec.derivation.combiner(values);
+    }
+
+    return obj.value;
   }
 
   dependencySatisfied(fieldSpec, req) {
