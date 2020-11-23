@@ -38,14 +38,17 @@ module.exports = superclass => class extends superclass {
         itemTitle = req.sessionModel.get(aggregateFromField);
       }
 
-      items[id].fields.find((field) =>
-        field.field === aggregateFromField).value = req.sessionModel.get(aggregateFromField);
+      const value = req.sessionModel.get(aggregateFromField);
+
+      const fieldToUpdate = items[id].fields.find((field) => field.field === aggregateFromField);
+
+      fieldToUpdate.value = req.sessionModel.get(aggregateFromField);
+      fieldToUpdate.parsed = this.parseField(aggregateFromElement, value, req);
+
       req.sessionModel.unset(aggregateFromField);
     });
 
     items[id].itemTitle = itemTitle;
-
-    this.runFieldParser(items[id], req);
 
     this.setAggregateArray(req, items);
     req.sessionModel.unset(`${req.form.options.aggregateTo}-itemToReplaceId`);
@@ -100,15 +103,17 @@ module.exports = superclass => class extends superclass {
 
       fields.push({
         field: aggregateFromField,
+        parsed: this.parseField(aggregateFromField, value, req),
         value,
         showInSummary: !isTitleField,
         changeField: aggregateFromElement.changeField
       });
+
+      this.setAggregateArray(req, items);
       req.sessionModel.unset(aggregateFromField);
     });
 
     const newItem = { itemTitle, fields };
-    this.runFieldParser(newItem, req);
 
     items.push(newItem);
 
@@ -122,7 +127,7 @@ module.exports = superclass => class extends superclass {
   }
 
   setAggregateArray(req, value) {
-    req.sessionModel.set(req.form.options.aggregateTo, { aggregatedValues: value});
+    req.sessionModel.set(req.form.options.aggregateTo, { aggregatedValues: value });
   }
 
   newFieldsProvided(req) {
@@ -184,18 +189,15 @@ module.exports = superclass => class extends superclass {
         break;
       case 'showItems':
       default:
-        return Object.assign({}, super.getValues(req, res, next), {redirected: false});
+        return Object.assign({}, super.getValues(req, res, next), { redirected: false });
     }
-    return {redirected: true};
+    return { redirected: true };
   }
 
-  runFieldParser(item, req) {
-    item.fields.forEach(field => {
-      const parser = req.form.options.fieldsConfig[field.field].parse;
-      if (parser) {
-        field.parsed = parser(field.value);
-      }
-    });
+  parseField(field, value, req) {
+    const fieldName = field.field || field;
+    const parser = req.form.options.fieldsConfig[fieldName].parse;
+    return parser ? parser(value) : value;
   }
 
   locals(req, res) {

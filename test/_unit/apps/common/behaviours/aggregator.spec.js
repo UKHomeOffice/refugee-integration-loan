@@ -30,7 +30,11 @@ describe('aggregator behaviour', () => {
         aggregateFrom: ['otherName'],
         aggregateTo: 'otherNames',
         addStep: 'add-other-name',
-        route: '/other-names'
+        route: '/other-names',
+        fieldsConfig: {
+          firstName: {},
+          surname: {}
+        }
       };
       req.baseUrl = '/test';
 
@@ -238,8 +242,8 @@ describe('aggregator behaviour', () => {
         updatedElement.should.be.eql({
           itemTitle: 'Sam',
           fields: [
-            { field: 'firstName', value: 'Sam' },
-            { field: 'surname', value: 'Baker' },
+            { field: 'firstName', value: 'Sam', parsed: 'Sam'},
+            { field: 'surname', value: 'Baker', parsed: 'Baker' },
           ]
         });
       });
@@ -303,8 +307,8 @@ describe('aggregator behaviour', () => {
         addedElement.should.be.eql({
           itemTitle: 'Sam',
           fields: [
-            { field: 'firstName', value: 'Sam', changeField: undefined, showInSummary: false },
-            { field: 'surname', value: 'Baker', changeField: undefined, showInSummary: true },
+            { field: 'firstName', value: 'Sam', changeField: undefined, parsed: 'Sam', showInSummary: false },
+            { field: 'surname', value: 'Baker', changeField: undefined, parsed: 'Baker', showInSummary: true },
           ]
         });
       });
@@ -359,7 +363,7 @@ describe('aggregator behaviour', () => {
       });
     });
 
-    describe('#runFieldParser', () => {
+    describe('#parseField', () => {
       it('it should run the field parser', () => {
         req.form.options.aggregateTo = 'dependants';
         req.sessionModel = new Model({});
@@ -367,32 +371,16 @@ describe('aggregator behaviour', () => {
         req.form.options.fieldsConfig =
           { dependantDateOfBirth: { parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT) } };
 
-        const item = {
-          'itemTitle': 'Garth',
-          'fields': [
-            {
-              'field': 'dependantDateOfBirth',
-              'value': '1943-12-12',
-              'showInSummary': true,
-              'changeField': 'dependantDateOfBirth-day',
-            }
-          ],
+        const value = 1994 - 12 - 12;
+
+        const field = {
+          'field': 'dependantDateOfBirth',
+          'changeField': 'dependantDateOfBirth-day'
         };
 
-        behaviour.runFieldParser(item, req);
+        const result = behaviour.parseField(field, value, req);
 
-        item.should.eql({
-          'fields': [
-            {
-              'changeField': 'dependantDateOfBirth-day',
-              'field': 'dependantDateOfBirth',
-              'parsed': '12th December 1943',
-              'showInSummary': true,
-              'value': '1943-12-12'
-            }
-          ],
-          'itemTitle': 'Garth'
-        });
+        result.should.eql('1st January 1970');
 
       });
 
