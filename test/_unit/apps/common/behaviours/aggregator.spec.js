@@ -4,6 +4,8 @@ let request = require('../../../../helpers/request');
 let response = require('../../../../helpers/response');
 let AggregatorBehaviour = require('../../../../../apps/common/behaviours/aggregator');
 const Model = require('hof-model');
+const moment = require('moment');
+
 
 describe('aggregator behaviour', () => {
   class Base {
@@ -17,6 +19,7 @@ describe('aggregator behaviour', () => {
 
   describe('aggregator', () => {
     let superGetValuesStub;
+    let superLocalsStub;
 
     beforeEach(() => {
       req = request();
@@ -32,7 +35,9 @@ describe('aggregator behaviour', () => {
       req.baseUrl = '/test';
 
       superGetValuesStub = sinon.stub();
+      superLocalsStub = sinon.stub();
       Base.prototype.getValues = superGetValuesStub;
+      Base.prototype.locals = superLocalsStub;
       next = sinon.stub();
 
       Behaviour = AggregatorBehaviour(Base);
@@ -105,27 +110,27 @@ describe('aggregator behaviour', () => {
       });
 
       it('calls deleteItem when the action is delete', () => {
-        behaviour.handleAction(req, res, next, 'delete');
+        behaviour.handleAction(req, res, next, 'delete').redirected.should.be.true;
         behaviour.deleteItem.should.be.calledOnceWithExactly(req, res);
       });
 
       it('calls editItem when the action is edit', () => {
-        behaviour.handleAction(req, res, next, 'edit');
+        behaviour.handleAction(req, res, next, 'edit').redirected.should.be.true;
         behaviour.editItem.should.be.calledOnceWithExactly(req, res);
       });
 
       it('calls addItem when the action is addItem', () => {
-        behaviour.handleAction(req, res, next, 'addItem');
+        behaviour.handleAction(req, res, next, 'addItem').redirected.should.be.true;
         behaviour.addItem.should.be.calledOnceWithExactly(req, res);
       });
 
       it('calls redirectToAddStep when the action is redirectToAddStep', () => {
-        behaviour.handleAction(req, res, next, 'redirectToAddStep');
+        behaviour.handleAction(req, res, next, 'redirectToAddStep').redirected.should.be.true;
         behaviour.redirectToAddStep.should.be.calledOnceWithExactly(req, res);
       });
 
       it('calls super.getValues when the action is showItems', () => {
-        behaviour.handleAction(req, res, next, 'showItemsshowItems');
+        behaviour.handleAction(req, res, next, 'showItemsshowItems').redirected.should.be.false;
         superGetValuesStub.should.be.calledOnceWithExactly(req, res, next);
       });
 
@@ -303,6 +308,94 @@ describe('aggregator behaviour', () => {
           ]
         });
       });
+    });
+
+    describe('#locals', () => {
+      let result;
+      beforeEach(() => {
+        req.form.options.aggregateFrom = ['otherNames'];
+
+        req.sessionModel.set('otherNames', {
+          'aggregatedValues': [
+            {
+              'itemTitle': 'John Doe',
+              'fields': [
+                {
+                  'field': 'otherName',
+                  'value': 'John Doe',
+                  'showInSummary': false
+                }
+              ]
+            }
+          ]
+        });
+
+        result = behaviour.locals(req, res);
+      });
+
+      it('should call super', () => {
+        superLocalsStub.should.be.calledWithExactly(req, res);
+      });
+
+      it('should populate the correct items', () => {
+        result.should.containSubset({
+          'items': [
+            {
+              'itemTitle': 'John Doe',
+              'fields': [
+                {
+                  'field': 'otherName',
+                  'value': 'John Doe',
+                  'showInSummary': false
+                }
+              ],
+              'index': 0
+            }
+          ],
+          'hasItems': true,
+          'addStep': 'add-other-name',
+          'field': 'otherNames'
+        });
+      });
+    });
+
+    describe('#runFieldParser', () => {
+      it('it should run the field parser', () => {
+        req.form.options.aggregateTo = 'dependants';
+        req.sessionModel = new Model({});
+
+        req.form.options.fieldsConfig =
+          { dependantDateOfBirth: { parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT) } };
+
+        const item = {
+          'itemTitle': 'Garth',
+          'fields': [
+            {
+              'field': 'dependantDateOfBirth',
+              'value': '1943-12-12',
+              'showInSummary': true,
+              'changeField': 'dependantDateOfBirth-day',
+            }
+          ],
+        };
+
+        behaviour.runFieldParser(item, req);
+
+        item.should.eql({
+          'fields': [
+            {
+              'changeField': 'dependantDateOfBirth-day',
+              'field': 'dependantDateOfBirth',
+              'parsed': '12th December 1943',
+              'showInSummary': true,
+              'value': '1943-12-12'
+            }
+          ],
+          'itemTitle': 'Garth'
+        });
+
+      });
+
     });
   });
 });

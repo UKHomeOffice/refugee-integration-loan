@@ -45,6 +45,8 @@ module.exports = superclass => class extends superclass {
 
     items[id].itemTitle = itemTitle;
 
+    this.runFieldParser(items[id], req);
+
     this.setAggregateArray(req, items);
     req.sessionModel.unset(`${req.form.options.aggregateTo}-itemToReplaceId`);
 
@@ -105,7 +107,10 @@ module.exports = superclass => class extends superclass {
       req.sessionModel.unset(aggregateFromField);
     });
 
-    items.push({ itemTitle, fields });
+    const newItem = { itemTitle, fields };
+    this.runFieldParser(newItem, req);
+
+    items.push(newItem);
 
     this.setAggregateArray(req, items);
     res.redirect(`${req.baseUrl}${req.form.options.route}`);
@@ -179,28 +184,22 @@ module.exports = superclass => class extends superclass {
         break;
       case 'showItems':
       default:
-        return super.getValues(req, res, next);
+        return Object.assign({}, super.getValues(req, res, next), {redirected: false});
     }
-    return {};
+    return {redirected: true};
   }
 
-  runFieldParsers(req) {
-    const items = this.getAggregateArray(req);
-
-    items.forEach((item) => {
-      item.fields.forEach(field => {
-        const parser = req.form.options.fieldsConfig[field.field].parse;
-        if (parser) {
-          field.parsed = parser(field.value);
-        }
-      });
+  runFieldParser(item, req) {
+    item.fields.forEach(field => {
+      const parser = req.form.options.fieldsConfig[field.field].parse;
+      if (parser) {
+        field.parsed = parser(field.value);
+      }
     });
   }
 
   locals(req, res) {
     const items = this.getAggregateArray(req);
-
-    this.runFieldParsers(req);
 
     items.forEach((element, index) => {
       element.index = index;
