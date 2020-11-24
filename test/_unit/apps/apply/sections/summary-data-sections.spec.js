@@ -89,7 +89,17 @@ describe('Apply Summary Data Sections', () => {
       const expectedFields = [
         'incomeTypes',
         'combinedIncomeTypes',
-        'totalIncome'
+        'totalIncome',
+        'salaryAmount',
+        'universalCreditAmount',
+        'childBenefitAmount',
+        'housingBenefitAmount',
+        'otherIncomeAmount',
+        'combinedSalaryAmount',
+        'combinedUniversalCreditAmount',
+        'combinedChildBenefitAmount',
+        'combinedHousingBenefitAmount',
+        'combinedOtherIncomeAmount'
       ];
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;
@@ -100,7 +110,23 @@ describe('Apply Summary Data Sections', () => {
 
       const expectedFields = [
         'outgoingTypes',
-        'totalOutgoings'
+        'totalOutgoings',
+        'rentAmount',
+        'householdBillsAmount',
+        'foodToiletriesAndCleaningSuppliesAmount',
+        'mobilePhoneAmount',
+        'travelAmount',
+        'clothingAndFootwearAmount',
+        'universalCreditDeductionsAmount',
+        'otherOutgoingAmount',
+        'combinedRentAmount',
+        'combinedHouseholdBillsAmount',
+        'combinedFoodToiletriesAndCleaningSuppliesAmount',
+        'combinedMobilePhoneAmount',
+        'combinedTravelAmount',
+        'combinedClothingAndFootwearAmount',
+        'combinedUniversalCreditDeductionsAmount',
+        'combinedOtherOutgoingAmount'
       ];
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;
