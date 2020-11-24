@@ -22,6 +22,7 @@
             <caption class="visuallyhidden">{{section}}</caption>
             <tbody{{#name}} data-group="{{name}}"{{/name}}>
             {{#fields}}
+            {{^omitFromPdf}}
               {{#isSeparator}}
                 <tr class="spacer">
                   <td colspan="2"></td>
@@ -33,6 +34,7 @@
                   <td data-value="{{value}}">{{#parsed}}{{parsed}}{{/parsed}}{{^parsed}}{{value}}{{/parsed}}</td>
                 </tr>
               {{/isSeparator}}
+            {{/omitFromPdf}}
             {{/fields}}
             </tbody>
           </table>

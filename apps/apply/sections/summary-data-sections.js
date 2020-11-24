@@ -74,6 +74,7 @@ module.exports = {
     'incomeTypes',
     'combinedIncomeTypes',
     {
+      omitFromSummary: true,
       field: 'totalIncome',
       derivation: {
         fromFields: [
@@ -90,12 +91,23 @@ module.exports = {
         ],
         combiner: sumValues
       }
-    }
+    },
+    { field: 'salaryAmount', omitFromPdf: true },
+    { field: 'universalCreditAmount', omitFromPdf: true },
+    { field: 'childBenefitAmount', omitFromPdf: true },
+    { field: 'housingBenefitAmount', omitFromPdf: true },
+    { field: 'otherIncomeAmount', omitFromPdf: true },
+    { field: 'combinedSalaryAmount', omitFromPdf: true },
+    { field: 'combinedUniversalCreditAmount', omitFromPdf: true },
+    { field: 'combinedChildBenefitAmount', omitFromPdf: true },
+    { field: 'combinedHousingBenefitAmount', omitFromPdf: true },
+    { field: 'combinedOtherIncomeAmount', omitFromPdf: true }
   ],
   'pdf-outgoings': [
     'outgoingTypes',
     {
       field: 'totalOutgoings',
+      omitFromSummary: true,
       derivation: {
         fromFields: [
           'rentAmount',
@@ -116,8 +128,24 @@ module.exports = {
           'combinedOtherOutgoingAmount'
         ],
         combiner: sumValues
-      }
-    }
+      },
+    },
+    { field: 'rentAmount', omitFromPdf: true },
+    { field: 'householdBillsAmount', omitFromPdf: true },
+    { field: 'foodToiletriesAndCleaningSuppliesAmount', omitFromPdf: true },
+    { field: 'mobilePhoneAmount', omitFromPdf: true },
+    { field: 'travelAmount', omitFromPdf: true },
+    { field: 'clothingAndFootwearAmount', omitFromPdf: true },
+    { field: 'universalCreditDeductionsAmount', omitFromPdf: true },
+    { field: 'otherOutgoingAmount', omitFromPdf: true },
+    { field: 'combinedRentAmount', omitFromPdf: true },
+    { field: 'combinedHouseholdBillsAmount', omitFromPdf: true },
+    { field: 'combinedFoodToiletriesAndCleaningSuppliesAmount', omitFromPdf: true },
+    { field: 'combinedMobilePhoneAmount', omitFromPdf: true },
+    { field: 'combinedTravelAmount', omitFromPdf: true },
+    { field: 'combinedClothingAndFootwearAmount', omitFromPdf: true },
+    { field: 'combinedUniversalCreditDeductionsAmount', omitFromPdf: true },
+    { field: 'combinedOtherOutgoingAmount', omitFromPdf: true }
   ],
   'pdf-savings': [
     'savings',

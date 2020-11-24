@@ -4,7 +4,7 @@
 <table class="table-details">
   <tbody>
   {{#fields}}
-    {{> partials-summary-table-row}}
+    {{^omitFromSummary}}{{> partials-summary-table-row}}{{/omitFromSummary}}
   {{/fields}}
   </tbody>
 </table>
