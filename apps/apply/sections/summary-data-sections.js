@@ -16,8 +16,21 @@ module.exports = {
     },
     'homeOfficeReference'
   ],
+  'has-other-names': {
+    omitFromPdf: true,
+    steps: [
+      {
+        step: '/has-other-names',
+        field: 'hasOtherNames',
+      },
+    ]
+  },
   'other-names': [
-    'otherNames'
+    {
+      step: '/other-names',
+      field: 'otherNames',
+      dependsOn: 'hasOtherNames'
+    },
   ],
   'pdf-partner-details': [
     'partnerBrpNumber',
@@ -28,8 +41,22 @@ module.exports = {
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
     }
   ],
+  'partner-has-other-names': {
+    omitFromPdf: true,
+    steps: [
+      {
+        step: '/partner-has-other-names',
+        field: 'partnerHasOtherNames',
+        omitFromPdf: true
+      }
+    ]
+  },
   'partner-other-names': [
-    'partnerOtherNames'
+    {
+      step: '/partner-other-names',
+      field: 'partnerOtherNames',
+      dependsOn: 'partnerHasOtherNames'
+    },
   ],
   'pdf-bank-account-details': [
     'accountName',
@@ -47,6 +74,7 @@ module.exports = {
     'incomeTypes',
     'combinedIncomeTypes',
     {
+      omitFromSummary: true,
       field: 'totalIncome',
       derivation: {
         fromFields: [
@@ -63,12 +91,23 @@ module.exports = {
         ],
         combiner: sumValues
       }
-    }
+    },
+    { field: 'salaryAmount', omitFromPdf: true },
+    { field: 'universalCreditAmount', omitFromPdf: true },
+    { field: 'childBenefitAmount', omitFromPdf: true },
+    { field: 'housingBenefitAmount', omitFromPdf: true },
+    { field: 'otherIncomeAmount', omitFromPdf: true },
+    { field: 'combinedSalaryAmount', omitFromPdf: true },
+    { field: 'combinedUniversalCreditAmount', omitFromPdf: true },
+    { field: 'combinedChildBenefitAmount', omitFromPdf: true },
+    { field: 'combinedHousingBenefitAmount', omitFromPdf: true },
+    { field: 'combinedOtherIncomeAmount', omitFromPdf: true }
   ],
   'pdf-outgoings': [
     'outgoingTypes',
     {
       field: 'totalOutgoings',
+      omitFromSummary: true,
       derivation: {
         fromFields: [
           'rentAmount',
@@ -89,8 +128,24 @@ module.exports = {
           'combinedOtherOutgoingAmount'
         ],
         combiner: sumValues
-      }
-    }
+      },
+    },
+    { field: 'rentAmount', omitFromPdf: true },
+    { field: 'householdBillsAmount', omitFromPdf: true },
+    { field: 'foodToiletriesAndCleaningSuppliesAmount', omitFromPdf: true },
+    { field: 'mobilePhoneAmount', omitFromPdf: true },
+    { field: 'travelAmount', omitFromPdf: true },
+    { field: 'clothingAndFootwearAmount', omitFromPdf: true },
+    { field: 'universalCreditDeductionsAmount', omitFromPdf: true },
+    { field: 'otherOutgoingAmount', omitFromPdf: true },
+    { field: 'combinedRentAmount', omitFromPdf: true },
+    { field: 'combinedHouseholdBillsAmount', omitFromPdf: true },
+    { field: 'combinedFoodToiletriesAndCleaningSuppliesAmount', omitFromPdf: true },
+    { field: 'combinedMobilePhoneAmount', omitFromPdf: true },
+    { field: 'combinedTravelAmount', omitFromPdf: true },
+    { field: 'combinedClothingAndFootwearAmount', omitFromPdf: true },
+    { field: 'combinedUniversalCreditDeductionsAmount', omitFromPdf: true },
+    { field: 'combinedOtherOutgoingAmount', omitFromPdf: true }
   ],
   'pdf-savings': [
     'savings',
@@ -113,10 +168,22 @@ module.exports = {
     'email',
     'phone'
   ],
+  'has-dependants': {
+    omitFromPdf: true,
+    steps: [
+      {
+        step: '/has-dependants',
+        field: 'hasDependants',
+      },
+    ]
+  },
   'dependent-details': [
-    'dependentFullName',
-    'dependentDateOfBirth',
-    'dependentRelationship'
+    {
+      step: '/dependant-details',
+      field: 'dependants',
+      addElementSeparators: true,
+      dependsOn: 'hasDependants',
+    }
   ],
   'pdf-outcome': [
     'likelyToMove',

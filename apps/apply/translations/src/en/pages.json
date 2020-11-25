@@ -22,9 +22,6 @@
   "ni-number": {
     "header": "What is your National Insurance number?"
   },
-  "has-other-names": {
-    "header": "Have you been known by any other names?"
-  },
   "other-names": {
     "header": "Other names",
     "delete-text": "Delete"
@@ -45,9 +42,6 @@
   },
   "partner-ni-number": {
     "header": "What is your partner’s National Insurance number?"
-  },
-  "partner-has-other-names": {
-    "header": "Has your partner been known by any other names?"
   },
   "partner-other-names": {
     "header": "Partner's other names",
@@ -81,7 +75,7 @@
       "default" : "Delete"
     }
   },
-  "dependent-details-dependent": {
+  "add-dependent": {
     "header": "Enter details of your dependant",
     "intro": "You can add more dependants later."
   },
@@ -174,6 +168,15 @@
       },
       "partner-other-names": {
         "header": "Partner's other names"
+      },
+      "has-dependants": {
+        "header": "Do you have any dependants living with you?"
+      },
+      "has-other-names": {
+        "header": "Have you been known by any other names?"
+      },
+      "partner-has-other-names": {
+        "header": "Has your partner been known by any other names?"
       },
       "dependent-details": {
         "header": "Your dependants"

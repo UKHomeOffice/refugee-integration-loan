@@ -1,0 +1,7 @@
+{{<partials-page}}
+  {{$page-content}}
+    {{> partials-items-table}}
+    <p><a href="{{baseUrl}}/{{addStep}}" class="govuk-link" name="addAnother{{addAnotherLinkText}}">Add another {{addAnotherLinkText}}</a></p>
+    {{#input-submit}}continue{{/input-submit}}
+  {{/page-content}}
+{{/partials-page}}

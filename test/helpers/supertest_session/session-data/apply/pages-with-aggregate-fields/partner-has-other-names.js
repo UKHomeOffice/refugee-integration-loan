@@ -1,5 +1,5 @@
 'use strict';
 
 module.exports = {
-  dependents: 'yes'
+  partnerHasOtherNames: 'yes'
 };

@@ -308,7 +308,7 @@ describe('validation checks of the apply journey', () => {
     });
   });
 
-  describe('Has Other Name Validations', () => {
+  describe('Other Name Validations', () => {
     it('does not pass the Has Other Names page if nothing entered', async() => {
       const URI = '/has-other-names';
       await initSession(URI);
@@ -321,6 +321,19 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
         .to.match(/Select if you have been known by any other names/);
+    });
+
+    it('does not pass the add other name page if full name is not entered', async() => {
+      const URI = '/add-other-name';
+      await initSession(URI);
+      await passStep(URI, {});
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html()).to.match(/Enter a full name/);
     });
   });
 
@@ -588,6 +601,19 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Select if your partner has been known by any other names/);
     });
+
+    it('does not pass the partner add other name page if full name is not entered', async() => {
+      const URI = '/partner-add-other-name';
+      await initSession(URI);
+      await passStep(URI, {});
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html()).to.match(/Enter a full name/);
+    });
   });
 
   describe('Joint Convictions Validations', () => {
@@ -622,9 +648,9 @@ describe('validation checks of the apply journey', () => {
     });
   });
 
-  describe('Dependents Validations', () => {
-    it('does not pass the Dependents page if nothing entered', async() => {
-      const URI = '/dependents';
+  describe('Dependants Validations', () => {
+    it('does not pass the has dependants page if nothing entered', async() => {
+      const URI = '/has-dependants';
       await initSession(URI);
       await passStep(URI, {});
 
@@ -636,6 +662,44 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Select if you have any dependants living with you/);
     });
+
+    it('does not pass the add dependant page if Name, DOB, and Relationship to you are not entered are not entered',
+      async() => {
+        const URI = '/add-dependent';
+        await initSession(URI);
+        await passStep(URI, {});
+
+        const res = await getUrl(URI);
+        const docu = await parseHtml(res);
+        const validationSummary = docu.find('.validation-summary');
+
+        expect(validationSummary.length === 1).to.be.true;
+        expect(validationSummary.html())
+          .to.match(/Enter the dependant's relationship to you/);
+        expect(validationSummary.html())
+          .to.match(/Enter dependant's full name/);
+        expect(validationSummary.html())
+          .to.match(/Enter dependant's date of birth in the correct format; for example, 31 3 1980/);
+      });
+
+    it('does not pass the add dependant page if the dependant\'s DOB is in the future',
+      async() => {
+        const URI = '/add-dependent';
+        await initSession(URI);
+        await passStep(URI, {
+          dependantFullName: 'John Doe',
+          dependantRelationship: 'Son',
+          dependantDateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
+      });
+
+        const res = await getUrl(URI);
+        const docu = await parseHtml(res);
+        const validationSummary = docu.find('.validation-summary');
+
+        expect(validationSummary.length === 1).to.be.true;
+        expect(validationSummary.html())
+          .to.match(/Enter a date that is in the past/);
+      });
   });
 
   describe('Address Validations', () => {
@@ -1745,9 +1809,7 @@ describe('validation checks of the apply journey', () => {
     it('does not pass the Help Reasons page if nothing entered', async() => {
       const URI = '/help-reasons';
       await initSession(URI);
-      await passStep(URI, {
-
-      });
+      await passStep(URI, {});
 
       const res = await getUrl(URI);
       const docu = await parseHtml(res);

@@ -1,6 +1,6 @@
 'use strict';
 
-const sections = require('../../../../../apps/apply/sections/pdf-data-sections');
+const sections = require('../../../../../apps/apply/sections/summary-data-sections');
 const pages = require('../../../../../apps/apply/translations/src/en/pages.json');
 const fields = require('../../../../../apps/apply/fields/index');
 const utilities = require('../../../../helpers/utilities');
@@ -9,14 +9,14 @@ const mappedSections = utilities.mapSections(sections);
 const areOrderedEqual = utilities.areOrderedEqual;
 const containsAll = utilities.containsAll;
 
-describe('Apply PDF Data Sections', () => {
+describe('Apply Summary Data Sections', () => {
 
   describe('Sections and Pages', () => {
     it('should have sections and page translations that correlate', () => {
       const sectionsKeys = Object.keys(sections).sort();
       const pagesSectionsKeys = Object.keys(pages.confirm.sections).sort();
 
-      expect(_.isEqual(sectionsKeys, pagesSectionsKeys)).to.be.true;
+      sectionsKeys.should.deep.equal(pagesSectionsKeys);
     });
   });
 
@@ -29,16 +29,6 @@ describe('Apply PDF Data Sections', () => {
         'fullName',
         'dateOfBirth',
         'homeOfficeReference'
-      ];
-
-      const result = areOrderedEqual(sectionFields, expectedFields);
-      expect(result).to.be.true;
-    });
-
-    it('other-names', () => {
-      const sectionFields = mappedSections['other-names'];
-      const expectedFields = [
-        'otherNames'
       ];
 
       const result = areOrderedEqual(sectionFields, expectedFields);
@@ -99,7 +89,17 @@ describe('Apply PDF Data Sections', () => {
       const expectedFields = [
         'incomeTypes',
         'combinedIncomeTypes',
-        'totalIncome'
+        'totalIncome',
+        'salaryAmount',
+        'universalCreditAmount',
+        'childBenefitAmount',
+        'housingBenefitAmount',
+        'otherIncomeAmount',
+        'combinedSalaryAmount',
+        'combinedUniversalCreditAmount',
+        'combinedChildBenefitAmount',
+        'combinedHousingBenefitAmount',
+        'combinedOtherIncomeAmount'
       ];
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;
@@ -110,7 +110,23 @@ describe('Apply PDF Data Sections', () => {
 
       const expectedFields = [
         'outgoingTypes',
-        'totalOutgoings'
+        'totalOutgoings',
+        'rentAmount',
+        'householdBillsAmount',
+        'foodToiletriesAndCleaningSuppliesAmount',
+        'mobilePhoneAmount',
+        'travelAmount',
+        'clothingAndFootwearAmount',
+        'universalCreditDeductionsAmount',
+        'otherOutgoingAmount',
+        'combinedRentAmount',
+        'combinedHouseholdBillsAmount',
+        'combinedFoodToiletriesAndCleaningSuppliesAmount',
+        'combinedMobilePhoneAmount',
+        'combinedTravelAmount',
+        'combinedClothingAndFootwearAmount',
+        'combinedUniversalCreditDeductionsAmount',
+        'combinedOtherOutgoingAmount'
       ];
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;
@@ -165,12 +181,79 @@ describe('Apply PDF Data Sections', () => {
       expect(result).to.be.true;
     });
 
-    it('dependent-details', () => {
+    it('dependant-details', () => {
       const sectionFields = mappedSections['dependent-details'];
       const expectedFields = [
-        'dependentFullName',
-        'dependentDateOfBirth',
-        'dependentRelationship'
+        'dependants'
+      ];
+
+      const result = areOrderedEqual(sectionFields, expectedFields);
+      expect(result).to.be.true;
+    });
+
+    it('has-dependants', () => {
+      const sectionFields = sections['has-dependants'];
+      const expectedFields = {
+        omitFromPdf: true,
+        steps: [
+          {
+            step: '/has-dependants',
+            field: 'hasDependants',
+          },
+        ]
+      };
+
+      const result = areOrderedEqual(sectionFields, expectedFields);
+      expect(result).to.be.true;
+    });
+
+    it('has-other-names', () => {
+      const sectionFields = sections['has-other-names'];
+      const expectedFields = {
+        omitFromPdf: true,
+        steps: [
+          {
+            step: '/has-other-names',
+            field: 'hasOtherNames',
+          },
+        ]
+      };
+
+      const result = areOrderedEqual(sectionFields, expectedFields);
+      expect(result).to.be.true;
+    });
+
+    it('other-names', () => {
+      const sectionFields = mappedSections['other-names'];
+      const expectedFields = [
+        'otherNames'
+      ];
+
+      const result = areOrderedEqual(sectionFields, expectedFields);
+      expect(result).to.be.true;
+    });
+
+    it('partner=has-other-names', () => {
+      const sectionFields = sections['partner-has-other-names'];
+      const expectedFields = {
+        omitFromPdf: true,
+        steps: [
+          {
+            step: '/partner-has-other-names',
+            field: 'partnerHasOtherNames',
+            omitFromPdf: true
+          }
+        ]
+      };
+
+      const result = areOrderedEqual(sectionFields, expectedFields);
+      expect(result).to.be.true;
+    });
+
+    it('partner-other-names', () => {
+      const sectionFields = mappedSections['partner-other-names'];
+      const expectedFields = [
+        'partnerOtherNames'
       ];
 
       const result = areOrderedEqual(sectionFields, expectedFields);
@@ -277,25 +360,11 @@ describe('Apply PDF Data Sections', () => {
       });
     });
 
-    it('other-names', () => {
-      expect(containsAll(
-        Object.keys(fields),
-        mappedSections['other-names'])
-        ).to.be.true;
-    });
-
     it('pdf-partner-details', () => {
       mappedSections['pdf-partner-details'].every(i => {
         const item = i.field || i;
         return Object.keys(fields).includes(item);
       });
-    });
-
-    it('partner-other-names', () => {
-      expect(containsAll(
-        Object.keys(fields),
-        mappedSections['partner-other-names'])
-      ).to.be.true;
     });
 
     it('pdf-bank-account-details', () => {
@@ -355,13 +424,6 @@ describe('Apply PDF Data Sections', () => {
       expect(containsAll(
         Object.keys(fields),
         mappedSections['pdf-contact-details'])
-      ).to.be.true;
-    });
-
-    it('dependent-details', () => {
-      expect(containsAll(
-        Object.keys(fields),
-        mappedSections['dependent-details'])
       ).to.be.true;
     });
 

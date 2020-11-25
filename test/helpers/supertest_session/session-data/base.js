@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-module.exports = (appName) => {
+module.exports = (appName, overridenPages) => {
   const possibleSteps = require(`./${appName}/steps`);
 
   return (stepOrData, data) => {
@@ -19,8 +19,14 @@ module.exports = (appName) => {
       if (prop !== '/') {
         try {
           /* eslint-disable no-nested-ternary */
-          Object.assign(props, require(`./${appName}/pages${prop}`),
-            data ? data : typeof stepOrData === 'object' ? stepOrData : {});
+          if (overridenPages && require(`./${appName}/${overridenPages}${prop}`)) {
+            Object.assign(props, require(`./${appName}/${overridenPages}${prop}`),
+              data ? data : typeof stepOrData === 'object' ? stepOrData : {});
+          } else {
+            Object.assign(props, require(`./${appName}/pages${prop}`),
+              data ? data : typeof stepOrData === 'object' ? stepOrData : {});
+          }
+
           /* eslint-disable no-empty */
         } catch (e) {}
         /* eslint-enable no-empty */
