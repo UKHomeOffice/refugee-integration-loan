@@ -1,13 +1,10 @@
 'use strict';
 
-const LoopBehaviour = require('hof-behaviour-loop');
-const Loop = LoopBehaviour.Loop;
-const LoopSummary = LoopBehaviour.SummaryWithLoopItems;
+const Aggregate = require('../common/behaviours/aggregator');
+const Summary = require('../common/behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
-
 const confirmStep = config.routes.confirmStep;
-
 
 module.exports = {
   name: 'apply',
@@ -24,6 +21,7 @@ module.exports = {
           value: 'no'
         }
       }],
+      returnToSummary: false,
       continueOnEdit: true
     },
     '/previous': {
@@ -36,6 +34,7 @@ module.exports = {
           value: 'no'
         }
       }],
+      returnToSummary: false,
       continueOnEdit: true
     },
     '/who-received-previous-loan': {
@@ -48,6 +47,7 @@ module.exports = {
           value: 'someoneElse'
         }
       }],
+      returnToSummary: false,
       continueOnEdit: true
     },
     '/partner': {
@@ -60,9 +60,11 @@ module.exports = {
           value: 'no'
         }
       }],
+      returnToSummary: true,
       continueOnEdit: true
     },
     '/joint': {
+      returnToSummary: true,
       fields: ['joint'],
       next: '/brp',
       continueOnEdit: true
@@ -90,30 +92,21 @@ module.exports = {
       }],
       continueOnEdit: true
     },
+    '/add-other-name': {
+      backLink: 'has-other-names',
+      fields: ['otherName'],
+      continueOnEdit: true,
+      next: '/other-names',
+    },
     '/other-names': {
-      behaviours: Loop,
-      loop: {
-        subSteps: {
-          name: {
-            fields: ['otherNames'],
-            next: 'add-another'
-          },
-          'add-another': {
-            fields: ['addAnotherName'],
-            template: 'other-names-add-another'
-          }
-        },
-        loopCondition: {
-          field: 'addAnotherName',
-          value: 'yes'
-        },
-        itemTable: {
-          headerField: 'otherNames'
-        },
-        summary: {
-          applySpacer: false
-        }
-      },
+      backLink: 'has-other-names',
+      behaviours: [Aggregate],
+      aggregateTo: 'otherNames',
+      aggregateFrom: ['otherName'],
+      titleField: 'otherName',
+      addStep: 'add-other-name',
+      addAnotherLinkText: 'name',
+      template: 'add-another',
       next: '/home-office-reference',
       continueOnEdit: true
     },
@@ -131,7 +124,7 @@ module.exports = {
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
-      next: '/dependents',
+      next: '/has-dependants',
       continueOnEdit: true
     },
     '/partner-brp': {
@@ -158,78 +151,64 @@ module.exports = {
       }],
       continueOnEdit: true
     },
+    '/partner-add-other-name': {
+      backLink: 'partner-has-other-names',
+      fields: ['partnerOtherName'],
+      continueOnEdit: true,
+      next: '/partner-other-names',
+    },
     '/partner-other-names': {
-      behaviours: Loop,
-      loop: {
-        subSteps: {
-          name: {
-            fields: ['partnerOtherNames'],
-            next: 'add-another'
-          },
-          'add-another': {
-            fields: ['partnerAddAnotherName'],
-            template: 'partner-other-names-add-another'
-          }
-        },
-        loopCondition: {
-          field: 'partnerAddAnotherName',
-          value: 'yes'
-        },
-        itemTable: {
-          headerField: 'partnerOtherNames'
-        },
-        summary: {
-          applySpacer: false
-        }
-      },
+      behaviours: [Aggregate],
+      backLink: 'partner-has-other-names',
+      aggregateTo: 'partnerOtherNames',
+      aggregateFrom: ['partnerOtherName'],
+      addStep: 'partner-add-other-name',
+      titleField: 'partnerOtherName',
+      addAnotherLinkText: 'name',
+      template: 'add-another',
       next: '/convictions-joint',
       continueOnEdit: true
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
-      next: '/dependents',
+      next: '/has-dependants',
       continueOnEdit: true
     },
-    '/dependents': {
-      fields: ['dependents'],
+    '/has-dependants': {
+      fields: ['hasDependants'],
       next: '/address',
       forks: [{
-        target: '/dependent-details',
+        target: '/dependant-details',
         condition: {
-          field: 'dependents',
+          field: 'hasDependants',
           value: 'yes'
         }
       }],
       continueOnEdit: true
     },
-    '/dependent-details': {
-      behaviours: Loop,
-      loop: {
-        itemTable: {
-          headerField: 'dependentFullName',
-          editFieldsIndividually: false
-        },
-        subSteps: {
-          dependent: {
-            fields: [
-              'dependentFullName',
-              'dependentDateOfBirth',
-              'dependentRelationship'
-            ],
-            next: 'add-another'
-          },
-          'add-another': {
-            fields: [
-              'addAnotherDependant'
-            ],
-            template: 'dependents-add-another'
-          }
-        },
-        loopCondition: {
-          field: 'addAnotherDependant',
-          value: 'yes'
-        }
-      },
+    '/add-dependent': {
+      backLink: 'has-dependants',
+      fields: [
+        'dependantFullName',
+        'dependantDateOfBirth',
+        'dependantRelationship'
+      ],
+      continueOnEdit: true,
+      next: '/dependant-details'
+    },
+    '/dependant-details': {
+      backLink: 'has-dependants',
+      behaviours: [Aggregate],
+      aggregateTo: 'dependants',
+      aggregateFrom: [
+        'dependantFullName',
+        {field: 'dependantDateOfBirth', changeField: 'dependantDateOfBirth-day'},
+        'dependantRelationship'
+      ],
+      titleField: 'dependantFullName',
+      addStep: 'add-dependent',
+      addAnotherLinkText: 'dependant',
+      template: 'add-another',
       next: '/address',
       continueOnEdit: true
     },
@@ -368,8 +347,9 @@ module.exports = {
       continueOnEdit: true
     },
     [confirmStep]: {
-      behaviours: [LoopSummary, UploadPDF],
-      pdfSections: require('./sections/pdf-data-sections'),
+      behaviours: [Summary, UploadPDF],
+      sections: require('./sections/summary-data-sections'),
+      pdfSections: require('./sections/summary-data-sections'),
       uploadPdfShared: false,
       submitted: false,
       next: '/complete'

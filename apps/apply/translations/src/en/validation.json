@@ -32,7 +32,7 @@
   "hasOtherNames": {
     "default": "Select if you have been known by any other names"
   },
-  "otherNames": {
+  "otherName": {
     "default": "Enter a full name"
   },
   "homeOfficeReference": {
@@ -56,7 +56,7 @@
   "partnerHasOtherNames": {
     "default": "Select if your partner has been known by any other names"
   },
-  "partnerOtherNames": {
+  "partnerOtherName": {
     "default": "Enter a full name"
   },
   "convicted": {
@@ -71,17 +71,17 @@
   "detailsOfCrimeJoint": {
     "default": "Enter details of the crime(s)"
   },
-  "dependents": {
+  "hasDependants": {
     "default": "Select if you have any dependants living with you"
   },
-  "dependentFullName": {
+  "dependantFullName": {
     "default": "Enter dependant's full name"
   },
-  "dependentDateOfBirth": {
-    "default": "Enter dependant's date of birth in the correct format",
+  "dependantDateOfBirth": {
+    "default": "Enter dependant's date of birth in the correct format; for example, 31 3 1980",
     "before": "Enter a date that is in the past"
   },
-  "dependentRelationship": {
+  "dependantRelationship": {
     "default": "Enter the dependant's relationship to you"
   },
   "building": {

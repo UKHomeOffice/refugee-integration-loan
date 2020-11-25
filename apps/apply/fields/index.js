@@ -74,7 +74,7 @@ module.exports = {
       className: 'visuallyhidden'
     }
   },
-  otherNames: {
+  otherName: {
     validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
   addAnotherDependant: {
@@ -159,10 +159,10 @@ module.exports = {
       className: 'visuallyhidden'
     }
   },
-  partnerOtherNames: {
+  partnerOtherName: {
     validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
-  dependents: {
+  hasDependants: {
     mixin: 'radio-group',
     options: ['yes', 'no'],
     validate: 'required',
@@ -170,14 +170,14 @@ module.exports = {
       className: 'visuallyhidden'
     }
   },
-  dependentFullName: {
+  dependantFullName: {
     validate: ['required', { type: 'maxlength', arguments: 200 }]
   },
-  dependentDateOfBirth: dateComponent('dependentDateOfBirth', {
+  dependantDateOfBirth: dateComponent('dependantDateOfBirth', {
     validate: ['required', 'before', after1900Validator],
     parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
   }),
-  dependentRelationship: {
+  dependantRelationship: {
     validate: ['required', { type: 'maxlength', arguments: 100 }]
   },
   building: {

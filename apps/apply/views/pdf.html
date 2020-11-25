@@ -16,25 +16,29 @@
       <h1>{{title}}</h1>
       <h2>Time and date: {{dateTime}}</h2>
       {{#rows}}
+        {{^omitFromPdf}}
         <h2>{{section}}</h2>
-        <table data-section="{{section}}" class="table-details">
-          <caption class="visuallyhidden">{{section}}</caption>
-          <tbody{{#name}} data-group="{{name}}"{{/name}}>
-          {{#fields}}
-            {{#spacer}}
-              <tr class="spacer">
-                <td colspan="2"></td>
-              </tr>
-            {{/spacer}}
-            {{^spacer}}
-              <tr data-id="{{field}}"{{#className}} class="{{className}}"{{/className}}>
-                <td data-label="{{label}}">{{label}}</td>
-                <td data-value="{{value}}">{{value}}</td>
-              </tr>
-            {{/spacer}}
-          {{/fields}}
-          </tbody>
-        </table>
+          <table data-section="{{section}}" class="table-details">
+            <caption class="visuallyhidden">{{section}}</caption>
+            <tbody{{#name}} data-group="{{name}}"{{/name}}>
+            {{#fields}}
+            {{^omitFromPdf}}
+              {{#isSeparator}}
+                <tr class="spacer">
+                  <td colspan="2"></td>
+                </tr>
+              {{/isSeparator}}
+              {{^isSeparator}}
+                <tr data-id="{{field}}"{{#className}} class="{{className}}"{{/className}}>
+                  <td data-label="{{label}}">{{label}}</td>
+                  <td data-value="{{value}}">{{#parsed}}{{parsed}}{{/parsed}}{{^parsed}}{{value}}{{/parsed}}</td>
+                </tr>
+              {{/isSeparator}}
+            {{/omitFromPdf}}
+            {{/fields}}
+            </tbody>
+          </table>
+        {{/omitFromPdf}}
       {{/rows}}
     </main>
   {{/main}}

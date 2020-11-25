@@ -13,7 +13,6 @@ describe('Server.js app file', () => {
   let appsCommonStub;
   let appsApplyStub;
   let appsAcceptStub;
-  let hofBehaviourLoopViewsStub;
   let behavioursClearSessionStub;
   let req;
   let res;
@@ -43,7 +42,6 @@ describe('Server.js app file', () => {
     appsCommonStub = sinon.stub();
     appsApplyStub = sinon.stub();
     appsAcceptStub = sinon.stub();
-    hofBehaviourLoopViewsStub = sinon.stub();
     behavioursClearSessionStub = sinon.stub();
 
     useStub.onCall(0);
@@ -59,9 +57,6 @@ describe('Server.js app file', () => {
       './apps/common': appsCommonStub,
       './apps/apply/': appsApplyStub,
       './apps/accept/': appsAcceptStub,
-      'hof-behaviour-loop': {
-        views: hofBehaviourLoopViewsStub
-      },
       './config': { nodeEnv: 'test' }
     });
   });
@@ -79,7 +74,7 @@ describe('Server.js app file', () => {
           appsApplyStub,
           appsAcceptStub,
         ],
-        views: [path.resolve(__dirname, '../../apps/common/views'), hofBehaviourLoopViewsStub],
+        views: [path.resolve(__dirname, '../../apps/common/views')],
         getTerms: false,
         getCookies: false
       });
