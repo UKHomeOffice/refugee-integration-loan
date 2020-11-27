@@ -94,7 +94,7 @@ module.exports = {
     options: [{
       value: 'yes',
       toggle: 'detailsOfCrime',
-      child: 'partials/details-summary'
+      child: 'partials/details-summary-textarea'
     },
       {
         value: 'no'
@@ -106,34 +106,44 @@ module.exports = {
     }
   },
   detailsOfCrime: {
-    validate: 'required',
+    mixin: 'textarea',
+    validate: ['required', { type: 'maxlength', arguments: 500 }],
     dependent: {
       field: 'convicted',
       value: 'yes'
-    }
+    },
+    className: 'form-textarea--revealed',
+    attributes: [{
+      attribute: 'rows',
+      value: 8
+    }]
   },
   convictedJoint: {
     mixin: 'radio-group',
     options: [{
       value: 'yes',
       toggle: 'detailsOfCrimeJoint',
-      child: 'partials/details-summary'
+      child: 'partials/details-summary-textarea'
     },
       {
         value: 'no'
       }
     ],
-    validate: 'required',
     legend: {
       className: 'visuallyhidden'
-    }
+    },
   },
   detailsOfCrimeJoint: {
-    validate: 'required',
+    validate: ['required', { type: 'maxlength', arguments: 500 }],
     dependent: {
       field: 'convictedJoint',
       value: 'yes'
-    }
+    },
+    className: 'form-textarea--revealed',
+    attributes: [{
+      attribute: 'rows',
+      value: 8
+    }]
   },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
     validate: ['required', after1900Validator, 'before', 'over18']
@@ -200,27 +210,27 @@ module.exports = {
       {
         value: 'salary',
         toggle: 'salaryAmount',
-        child: 'partials/details-summary',
+        child: 'partials/details-summary-input-text',
       },
       {
         value: 'universal_credit',
         toggle: 'universalCreditAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'child_benefit',
         toggle: 'childBenefitAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'housing_benefit',
         toggle: 'housingBenefitAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'other',
         toggle: 'otherIncomeAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       }
     ],
     legend: {
@@ -274,27 +284,27 @@ module.exports = {
       {
         value: 'salary',
         toggle: 'combinedSalaryAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'universal_credit',
         toggle: 'combinedUniversalCreditAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'child_benefit',
         toggle: 'combinedChildBenefitAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'housing_benefit',
         toggle: 'combinedHousingBenefitAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'other',
         toggle: 'combinedOtherIncomeAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       }
     ],
     legend: {
@@ -348,42 +358,42 @@ module.exports = {
       {
         value: 'rent',
         toggle: 'rentAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'household_bills',
         toggle: 'householdBillsAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'food_toiletries_cleaning_supplies',
         toggle: 'foodToiletriesAndCleaningSuppliesAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'mobile_phone',
         toggle: 'mobilePhoneAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'travel',
         toggle: 'travelAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'clothing_and_footwear',
         toggle: 'clothingAndFootwearAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'universal_credit_deductions',
         toggle: 'universalCreditDeductionsAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'other',
         toggle: 'otherOutgoingAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       }
     ],
     legend: {
@@ -461,42 +471,42 @@ module.exports = {
       {
         value: 'rent',
         toggle: 'combinedRentAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'household_bills',
         toggle: 'combinedHouseholdBillsAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'food_toiletries_cleaning_supplies',
         toggle: 'combinedFoodToiletriesAndCleaningSuppliesAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'mobile_phone',
         toggle: 'combinedMobilePhoneAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'travel',
         toggle: 'combinedTravelAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'clothing_and_footwear',
         toggle: 'combinedClothingAndFootwearAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'universal_credit_deductions',
         toggle: 'combinedUniversalCreditDeductionsAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'other',
         toggle: 'combinedOtherOutgoingAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       }
     ],
     legend: {
@@ -574,7 +584,7 @@ module.exports = {
       {
         value: 'yes',
         toggle: 'savingsAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'no'
@@ -599,7 +609,7 @@ module.exports = {
       {
         value: 'yes',
         toggle: 'combinedSavingsAmount',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'no'
@@ -657,12 +667,12 @@ module.exports = {
       {
         value: 'email',
         toggle: 'email',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'phone',
         toggle: 'phone',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       }
     ],
     validate: 'required',
@@ -756,12 +766,12 @@ module.exports = {
       {
         value: 'email',
         toggle: 'helpEmail',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'phone',
         toggle: 'helpPhone',
-        child: 'partials/details-summary'
+        child: 'partials/details-summary-input-text'
       }
     ],
     validate: 'required'

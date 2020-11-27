@@ -37,6 +37,15 @@
   }
 }
 
+.form-textarea--revealed {
+  @media (max-width: 40.0525em) {
+    width: 100%;
+  }
+  @media (min-width: 40.0625em){
+    width: 95%;
+  }
+}
+
 button.govuk-link {
     background: none!important;
     border: none;
