@@ -120,6 +120,7 @@ module.exports = {
   },
   convictedJoint: {
     mixin: 'radio-group',
+    validate: 'required',
     options: [{
       value: 'yes',
       toggle: 'detailsOfCrimeJoint',
