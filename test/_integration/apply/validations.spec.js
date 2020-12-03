@@ -383,6 +383,25 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Enter details of the crime\(s\)/);
     });
+
+    it('does not pass the Convictions page if crime details over 500 characters', async() => {
+      const URI = '/convictions';
+      await initSession(URI);
+      const _501Chars = 'a'.repeat(501);
+
+      await passStep(URI, {
+        convicted: 'yes',
+        detailsOfCrime: _501Chars
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/The details of the crime\(s\) must be 500 characters or fewer/);
+    });
   });
 
   describe('Partner BRP Validations', () => {
@@ -646,6 +665,25 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Enter details of the crime\(s\)/);
     });
+  });
+
+  it('does not pass the Joint Convictions page if crime details over 500 characters', async() => {
+    const URI = '/convictions-joint';
+    await initSession(URI);
+    const _501Chars = 'a'.repeat(501);
+
+    await passStep(URI, {
+      convictedJoint: 'yes',
+      detailsOfCrimeJoint: _501Chars
+    });
+
+    const res = await getUrl(URI);
+    const docu = await parseHtml(res);
+    const validationSummary = docu.find('.validation-summary');
+
+    expect(validationSummary.length === 1).to.be.true;
+    expect(validationSummary.html())
+      .to.match(/The details of the crime\(s\) must be 500 characters or fewer/);
   });
 
   describe('Dependants Validations', () => {
