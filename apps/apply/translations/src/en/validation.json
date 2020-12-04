@@ -63,13 +63,15 @@
     "default": "Select if you have ever been convicted of a crime in the UK"
   },
   "detailsOfCrime": {
-    "default": "Enter details of the crime(s)"
+    "default": "Enter details of the crime(s)",
+    "maxlength": "The details of the crime(s) must be 500 characters or fewer"
   },
   "convictedJoint": {
     "default": "Select if you or your partner have ever been convicted of a crime in the UK"
   },
   "detailsOfCrimeJoint": {
-    "default": "Enter details of the crime(s)"
+    "default": "Enter details of the crime(s)",
+    "maxlength": "The details of the crime(s) must be 500 characters or fewer"
   },
   "hasDependants": {
     "default": "Select if you have any dependants living with you"
