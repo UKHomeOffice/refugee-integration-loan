@@ -1787,7 +1787,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Enter your email address/);
       expect(validationSummary.html())
-        .to.match(/Enter your mobile phone number/);
+        .to.match(/Enter your phone number in the correct format/);
     });
   });
 

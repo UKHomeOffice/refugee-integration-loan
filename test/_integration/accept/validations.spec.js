@@ -207,7 +207,7 @@ describe('validation checks of the accept journey', () => {
       expect(validationSummary.html())
         .to.contain('Enter your email address in the correct format');
       expect(validationSummary.html())
-        .to.contain('Enter your mobile phone number in the correct format');
+        .to.contain('Enter your phone number in the correct format');
     });
   });
 
