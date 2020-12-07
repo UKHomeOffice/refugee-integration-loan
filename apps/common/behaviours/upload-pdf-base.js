@@ -9,6 +9,7 @@ const config = require('../../../config');
 const utilities = require('../../../lib/utilities');
 const _ = require('lodash');
 const NotifyClient = utilities.NotifyClient;
+const libPhoneNumber = require('libphonenumber-js/max');
 
 const tempLocation = path.resolve(config.pdf.tempLocation);
 
@@ -127,6 +128,7 @@ module.exports = class UploadPDFBase {
 
     let applicantEmail = req.sessionModel.get('email');
     let applicantPhone = req.sessionModel.get('phone');
+    let parsedPhone = libPhoneNumber.parsePhoneNumberFromString(req.sessionModel.get('phone'), 'GB');
     const appName = this.behaviourConfig.app;
 
     const emailReceiptTemplateId = this.getEmailReceiptTemplateId(appName);
@@ -136,7 +138,7 @@ module.exports = class UploadPDFBase {
       await this.notifyByEmail(req, notifyClient, emailReceiptTemplateId, applicantEmail, appName);
     }
 
-    if (applicantPhone) {
+    if (applicantPhone && parsedPhone.getType() === 'MOBILE') {
       await this.notifyBySms(req, notifyClient, textReceiptTemplateId, applicantPhone, appName);
     }
   }

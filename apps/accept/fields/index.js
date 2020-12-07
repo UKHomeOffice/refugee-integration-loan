@@ -40,7 +40,7 @@ module.exports = {
     }
   },
   phone: {
-    validate: ['required', 'ukmobilephone'],
+    validate: ['required', 'phonenumber'],
     dependent: {
       field: 'contactTypes',
       value: 'phone'
