@@ -18,6 +18,6 @@
     "default": "Enter your email address in the correct format"
   },
   "phone": {
-    "default": "Enter your mobile phone number in the correct format"
+    "default": "Enter your phone number in the correct format"
   }
 }

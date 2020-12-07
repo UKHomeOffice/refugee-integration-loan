@@ -280,7 +280,7 @@
     "default": "Enter your email address"
   },
   "phone": {
-    "default": "Enter your mobile phone number"
+    "default": "Enter your phone number in the correct format"
   },
   "likelyToMove": {
     "default": "Select if you are likely to move to another address in the next 4 weeks"
