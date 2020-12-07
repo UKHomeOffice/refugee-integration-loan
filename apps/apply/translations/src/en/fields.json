@@ -485,7 +485,7 @@
     "changeLinkDescription": "Your email address"
   },
   "phone": {
-    "label": "Mobile phone number",
+    "label": "Phone number",
     "hint":"For international numbers include the country code",
     "changeLinkDescription": "Your phone number"
   },
