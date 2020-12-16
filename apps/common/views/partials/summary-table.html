@@ -1,10 +1,9 @@
 <div>
-  <h3 class="section-header">{{section}}</h3>
+  <h2 class="section-header">{{section}}</h2>
 </div>
-<table class="table-details">
-  <tbody>
-  {{#fields}}
+<dl>
+    {{#fields}}
     {{^omitFromSummary}}{{> partials-summary-table-row}}{{/omitFromSummary}}
-  {{/fields}}
-  </tbody>
-</table>
+    {{/fields}}
+</dl>
+

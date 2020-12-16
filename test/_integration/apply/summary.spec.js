@@ -8,7 +8,7 @@ describe('the journey of a single apply application', () => {
   let getDom;
   let parseHtml;
   let getSectionHeaderByText = (document, text) => {
-    const headers = document.querySelectorAll('h3.section-header');
+    const headers = document.querySelectorAll('h2.section-header');
 
     return Array(headers.length)
       .fill().map((_, i) => headers[i].textContent).find(header => header.match(text));

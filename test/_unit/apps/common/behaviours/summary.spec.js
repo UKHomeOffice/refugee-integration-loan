@@ -255,14 +255,16 @@ describe('summary behaviour', () => {
           'label': 'Other name',
           'value': 'John',
           'changeLink': 'test/other-names/edit/0/otherName?returnToSummary=true',
-          'field': 'otherName'
+          'field': 'otherName',
+          'index': 0,
         },
         {
           'changeLinkDescription': 'Your other name',
           'label': 'Other name',
           'value': 'Jane',
           'changeLink': 'test/other-names/edit/1/otherName?returnToSummary=true',
-          'field': 'otherName'
+          'field': 'otherName',
+          'index': 1,
         }
       ]);
     });
