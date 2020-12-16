@@ -126,3 +126,32 @@ span.form-hint {
 }
 
 .error-summary ul li a { color: #B00E1F; }
+
+// Check your answers page styles
+.confirm-label {
+  font-weight: bold;
+  width: 40%;
+}
+
+.confirm-value {
+  width: 60%;
+  word-break: break-word;
+}
+
+.confirm-row {
+  display: table-row;
+  > * {
+    border-bottom: 1px solid $grey-2;
+    display: table-cell;
+  }
+  .confirm-label, .confirm-value {
+    padding: 10px 20px 10px 0;
+  }
+}
+
+dl {
+  margin-bottom: 40px;
+  @media (min-width: 641px) {
+    margin-bottom: 60px;
+  }
+}

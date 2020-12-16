@@ -84,6 +84,7 @@ module.exports = superclass => class extends superclass {
           value: inner.parsed || inner.value,
           label: this.translateLabel(inner.field, req),
           changeLink,
+          index,
         });
       });
 
