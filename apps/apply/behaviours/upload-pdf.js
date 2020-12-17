@@ -21,7 +21,7 @@ module.exports = superclass => class extends superclass {
     if (this.options.steps[confirmStep].submitted) {
       return super.successHandler(req, res, next);
     }
-    return await this.pollPdf(req, res, next, tries + 1);
+    return this.pollPdf(req, res, next, tries + 1);
   }
 
   pdfLocals(req, res) {
@@ -60,7 +60,8 @@ module.exports = superclass => class extends superclass {
         req.log('info', 'ril.form.apply.submit_form.successful');
         return super.successHandler(req, res, next);
       }
-      return await this.pollPdf(req, res, next, 0);
+      const pdfPoll = await this.pollPdf(req, res, next, 0);
+      return pdfPoll;
     } catch (err) {
       req.log('error', 'ril.form.apply.submit_form.error', err.message || err);
       return next(err);

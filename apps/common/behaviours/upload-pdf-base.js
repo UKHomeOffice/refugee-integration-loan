@@ -126,9 +126,9 @@ module.exports = class UploadPDFBase {
       return;
     }
 
-    let applicantEmail = req.sessionModel.get('email');
-    let applicantPhone = req.sessionModel.get('phone');
-    let parsedPhone = libPhoneNumber.parsePhoneNumberFromString(req.sessionModel.get('phone'), 'GB');
+    const applicantEmail = req.sessionModel.get('email');
+    const applicantPhone = req.sessionModel.get('phone');
+    const parsedPhone = libPhoneNumber.parsePhoneNumberFromString(req.sessionModel.get('phone'), 'GB');
     const appName = this.behaviourConfig.app;
 
     const emailReceiptTemplateId = this.getEmailReceiptTemplateId(appName);
