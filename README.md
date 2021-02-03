@@ -41,6 +41,6 @@ Defaults in ACP are:
 
 ### Pa11y CI - Accessibility test runner
 ```
-npm run test:accessibilty
+npm run test:accessibility
 ```
 New/addional pages for Pa11y to pick up and test need to be added to `.pa11ci.json` config file under 'urls'.

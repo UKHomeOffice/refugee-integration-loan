@@ -13,7 +13,7 @@
     "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
     "build": "hof-build",
     "postinstall": "npm run build",
-    "test:accessibilty": "pa11y-ci --config .pa11yci.json"
+    "test:accessibility": "pa11y-ci --config .pa11yci.json"
   },
   "mocha": {
     "reporter": "spec",
