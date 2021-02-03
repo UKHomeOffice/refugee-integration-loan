@@ -38,3 +38,9 @@ Defaults in ACP are:
 
             Requests - cpu: 50m, memory: 200Mi
             Limits - cpu: 400m, memory: 400Mi
+
+### Pa11y CI - Accessibility test runner
+```
+npm run test:accessibilty
+```
+New/addional pages for Pa11y to pick up and test need to be added to `.pa11ci.json` config file under 'urls'.

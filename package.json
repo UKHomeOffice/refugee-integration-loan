@@ -12,7 +12,8 @@
     "test:integration": "_mocha \"test/_integration/**/*.spec.js\" --exit",
     "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
     "build": "hof-build",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "test:accessibilty": "pa11y-ci --config .pa11yci.json"
   },
   "mocha": {
     "reporter": "spec",
@@ -36,7 +37,8 @@
     "notifications-node-client": "^4.9.0",
     "puppeteer": "^5.3.1",
     "uuid": "^3.3.3",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "pa11y-ci": "~1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
