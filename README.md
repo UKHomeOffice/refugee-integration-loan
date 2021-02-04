@@ -39,8 +39,14 @@ Defaults in ACP are:
             Requests - cpu: 50m, memory: 200Mi
             Limits - cpu: 400m, memory: 400Mi
 
-### Pa11y CI - Accessibility test runner
+### Pa11y CI Accessibility test runner
+
+Pa11y CI is a CI-centric accessibility test runner, built using [Pa11y](https://github.com/pa11y/pa11y).
+
+Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This used during automated testing of the application and can act as a gatekeeper to stop common WCAG a11y issues from making it to live.
+
+To run against URL's listed in the `.pa11yci.json` configuration file.   
+
+```bash
+npm run test:accessibility          // requires app to be running
 ```
-npm run test:accessibility
-```
-New/addional pages for Pa11y to pick up and test need to be added to `.pa11ci.json` config file under 'urls'.
