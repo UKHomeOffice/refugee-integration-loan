@@ -31,6 +31,7 @@ app.use('/cookies', (req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  res.locals.serviceName = 'Refugee integration loan service';
   res.locals.htmlLang = 'en';
   res.locals.feedbackUrl = '/feedback';
   res.locals.footerSupportLinks = [
