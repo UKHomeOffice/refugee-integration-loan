@@ -116,6 +116,7 @@ describe('Server.js app file', () => {
   describe('Use Locals', () => {
     it('should set locals on the response', () => {
       res.locals.should.eql({
+        serviceName: 'Refugee integration loan service',
         htmlLang: 'en',
         feedbackUrl: '/feedback',
         footerSupportLinks: [
