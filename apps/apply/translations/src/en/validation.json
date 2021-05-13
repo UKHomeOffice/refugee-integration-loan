@@ -315,6 +315,6 @@
     "default": "Enter the person's email address"
   },
   "helpPhone": {
-    "default": "Enter the person's mobile phone number"
+    "default": "Enter the person's phone number"
   }
 }
