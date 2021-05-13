@@ -652,7 +652,7 @@ module.exports = {
     }
   },
   accountName: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
   sortCode: {
     validate: ['required', { type: 'regex', arguments: /^[0-9]{6}$/ }],
@@ -661,7 +661,9 @@ module.exports = {
   accountNumber: {
     validate: ['required', 'numeric', { type: 'minlength', arguments: 6 }, { type: 'maxlength', arguments: 8 }]
   },
-  rollNumber: {},
+  rollNumber: {
+    validate: 'notUrl'
+  },
   contactTypes: {
     mixin: 'checkbox-group',
     options: [
