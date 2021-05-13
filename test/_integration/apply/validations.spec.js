@@ -1934,7 +1934,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.html())
         .to.match(/Enter the person\'s email address/);
       expect(validationSummary.html())
-        .to.match(/Enter the person\'s mobile phone number/);
+        .to.match(/Enter the person\'s phone number/);
     });
   });
 
