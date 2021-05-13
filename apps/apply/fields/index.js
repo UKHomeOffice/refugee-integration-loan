@@ -56,7 +56,7 @@ module.exports = {
     validate: ['required', after1900Validator, 'before', 'over18']
   }),
   fullName: {
-    validate: ['required', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   brpNumber: {
     validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
@@ -75,7 +75,7 @@ module.exports = {
     }
   },
   otherName: {
-    validate: ['required', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   addAnotherDependant: {
     omitFromSummary: true
@@ -107,7 +107,7 @@ module.exports = {
   },
   detailsOfCrime: {
     mixin: 'textarea',
-    validate: ['required', { type: 'maxlength', arguments: 500 }],
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 500 }],
     dependent: {
       field: 'convicted',
       value: 'yes'
@@ -135,7 +135,7 @@ module.exports = {
     },
   },
   detailsOfCrimeJoint: {
-    validate: ['required', { type: 'maxlength', arguments: 500 }],
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 500 }],
     dependent: {
       field: 'convictedJoint',
       value: 'yes'
@@ -150,7 +150,7 @@ module.exports = {
     validate: ['required', after1900Validator, 'before', 'over18']
   }),
   partnerFullName: {
-    validate: ['required', { type: 'maxlength', arguments: 200 }],
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
     className: 'govuk-input'
   },
   partnerBrpNumber: {
@@ -171,7 +171,7 @@ module.exports = {
     }
   },
   partnerOtherName: {
-    validate: ['required', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   hasDependants: {
     mixin: 'radio-group',
@@ -182,24 +182,24 @@ module.exports = {
     }
   },
   dependantFullName: {
-    validate: ['required', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   dependantDateOfBirth: dateComponent('dependantDateOfBirth', {
     validate: ['required', 'before', after1900Validator],
     parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
   }),
   dependantRelationship: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
   building: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
   street: {
-    validate: [{ type: 'maxlength', arguments: 50 }],
+    validate: ['notUrl', { type: 'maxlength', arguments: 50 }],
     labelClassName: 'visuallyhidden'
   },
   townOrCity: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
   postcode: {
     validate: ['required', 'postcode'],
@@ -710,14 +710,14 @@ module.exports = {
     validate: 'required'
   },
   outcomeBuilding: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }],
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
     }
   },
   outcomeStreet: {
-    validate: [{ type: 'maxlength', arguments: 100 }],
+    validate: ['notUrl', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
@@ -725,7 +725,7 @@ module.exports = {
     labelClassName: 'visuallyhidden'
   },
   outcomeTownOrCity: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }],
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
@@ -756,10 +756,10 @@ module.exports = {
     }
   },
   helpFullName: {
-    validate: ['required', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   helpRelationship: {
-    validate: ['required', { type: 'maxlength', arguments: 100 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
   helpContactTypes: {
     mixin: 'checkbox-group',
