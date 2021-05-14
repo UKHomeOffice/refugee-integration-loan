@@ -11,7 +11,6 @@ data:
   COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
   GA_TAG: "UA-178636922-1"
   NODE_ENV: "development"
-  PROTOCOL: "https"
   CASEWORKER_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
   FEEDBACK_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
   TEMPLATE_APPLY: "472182fb-61c9-4a2a-af67-d68052cc9e66"
