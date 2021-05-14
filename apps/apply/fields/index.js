@@ -6,6 +6,11 @@ const dateComponent = require('hof-component-date');
 
 const after1900Validator = { type: 'after', arguments: ['1900'] };
 
+const brpNumber = {
+  type: 'regex',
+  arguments: /(?=(?:.){10})[a-zA-Z]{2,3}?\d{7,8}$/
+};
+
 const niNumber = {
   type: 'regex',
   arguments: /^[ABCEGHJKLMNOPRSTWXYZ][ABCEGHJKLMNPRSTWXYZ][0-9]{6}[A-D]$/
@@ -59,7 +64,7 @@ module.exports = {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   brpNumber: {
-    validate: ['required', 'alphanum', { type: 'exactlength', arguments: 9 }],
+    validate: ['required', brpNumber],
     formatter: ['uppercase']
   },
   niNumber: {

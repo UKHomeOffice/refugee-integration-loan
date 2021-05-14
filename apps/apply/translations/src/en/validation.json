@@ -24,7 +24,7 @@
     "before": "Enter a date that is in the past"
   },
   "brpNumber": {
-    "default": "Enter your BRP number in the correct format; for example, ‘ZU1234567’"
+    "default": "Enter your BRP number in the correct format; for example, ‘ZU12345678’"
   },
   "niNumber": {
     "default": "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'"
