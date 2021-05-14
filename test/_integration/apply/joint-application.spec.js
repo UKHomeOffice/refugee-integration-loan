@@ -58,7 +58,7 @@ describe('the journey of a joint apply application', () => {
     const URI = '/brp';
     await initSession(URI);
     const response = await passStep(URI, {
-      brpNumber: 'ZU1234567',
+      brpNumber: 'ZU12345678',
       fullName: 'Joe Bloggs',
       dateOfBirth: '1954-11-22'
     });
