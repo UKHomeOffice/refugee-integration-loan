@@ -131,13 +131,26 @@ module.exports = superclass => class extends superclass {
   getFieldData(key, req) {
     const settings = req.form.options;
     let value = req.sessionModel.get(key);
+    let changeLink;
+    let step;
 
     const fieldIsCheckbox = value && req.form.options.fieldsConfig[key] &&
       (req.form.options.fieldsConfig[key].mixin === 'checkbox-group' ||
         req.form.options.fieldsConfig[key].mixin === 'radio-group');
 
     if (fieldIsCheckbox) {
+      step = this.getStepForField(key, settings.steps);
+      changeLink = `${req.baseUrl}${step}/edit#${key}-${value}`;
       value = this.translateCheckBoxOptions(key, value, req);
+
+      return {
+        changeLinkDescription: this.translateChangeLink(key, req),
+        label: this.translateLabel(key, req),
+        value,
+        step,
+        field: key,
+        changeLink
+      };
     }
 
     return {
