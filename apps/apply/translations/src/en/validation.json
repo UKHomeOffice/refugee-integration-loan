@@ -39,7 +39,7 @@
     "default": "Enter a Home Office reference number in the correct format; for example, ‘A1234567’ or ‘VPR1234’"
   },
   "partnerBrpNumber": {
-    "default": "Enter your partner's BRP number in the correct format; for example, ‘ZU1234567’"
+    "default": "Enter your partner's BRP number in the correct format; for example, ‘ZU12345678’"
   },
   "partnerFullName": {
     "default": "Enter your partner's full name"

@@ -110,7 +110,7 @@ describe('the journey of a joint apply application', () => {
     const URI = '/partner-brp';
     await initSession(URI);
     const response = await passStep(URI, {
-      partnerBrpNumber: 'ZU1434569',
+      partnerBrpNumber: 'ZU14345678',
       partnerFullName: 'Janice Bloggs',
       partnerDateOfBirth: '1962-10-28'
     });
