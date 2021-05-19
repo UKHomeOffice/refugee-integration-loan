@@ -124,7 +124,7 @@
   },
   "partnerBrpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘ZU1234567’.",
+    "hint": "For example, ‘ZU12345678’.",
     "changeLinkDescription": "Partner biometric residence permit (BRP) number"
   },
   "partnerNiNumber": {
