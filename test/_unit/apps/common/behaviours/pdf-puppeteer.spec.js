@@ -1,4 +1,3 @@
-'use strict';
 
 const { expect } = require('chai');
 const request = require('../../../../helpers/request');
@@ -14,7 +13,7 @@ describe('pdf-puppeteer', () => {
     let closeStub;
     let req;
 
-    let puppetLaunchArgs = {
+    const puppetLaunchArgs = {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--export-tagged-pdf']
     };
@@ -25,7 +24,7 @@ describe('pdf-puppeteer', () => {
     const testTempName = 'Test.pdf';
     const testApplication = 'apply';
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       req = request();
       closeStub = sinon.stub();
       pdfStub = sinon.stub();
@@ -45,8 +44,8 @@ describe('pdf-puppeteer', () => {
       newPageStub.resolves({
         setContent: setContentStub,
         emulateMediaType: emulateMediaTypeStub,
-        pdf: pdfStub,
-        });
+        pdf: pdfStub
+      });
 
       pdfPuppeteerProxy = proxyquire('../apps/common/behaviours/pdf-puppeteer', {
         puppeteer: {
@@ -91,18 +90,17 @@ describe('pdf-puppeteer', () => {
       closeStub.should.have.been.calledOnce;
     });
 
-    it('returns file', async() => {
+    it('returns file', async () => {
       const testFile = await pdfPuppeteerProxy.generate(req, testHtml, testDestination, testTempName, testApplication);
       expect(testFile).to.eql(`${testDestination}/${testTempName}`);
     });
 
-    it('returns an object containing the error message if function fails', async() => {
+    it('returns an object containing the error message if function fails', async () => {
       await pdfPuppeteerProxy.generate(req, badHtml, testDestination, testTempName, testApplication)
         .catch(err => {
           expect(err).to.be.instanceof(Error);
           expect(err.message).to.equal('error');
         });
     });
-
   });
 });

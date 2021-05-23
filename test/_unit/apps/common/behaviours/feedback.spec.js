@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-'use strict';
+
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
 const { expect } = require('chai');
@@ -24,11 +24,11 @@ describe('Feedback behaviour', () => {
     message: 'testError'
   };
   let logStub;
-  let reqTestName = 'reqtestName';
-  let reqTestEmail = 'reqtestEmail';
-  let reqTestProcess = 'reqtestProcess';
-  let reqTestPath = 'reqtestPath';
-  let reqTestFeedback = 'reqtestFeedback';
+  const reqTestName = 'reqtestName';
+  const reqTestEmail = 'reqtestEmail';
+  const reqTestProcess = 'reqtestProcess';
+  const reqTestPath = 'reqtestPath';
+  const reqTestFeedback = 'reqtestFeedback';
 
   beforeEach(() => {
     req = request();
@@ -44,7 +44,7 @@ describe('Feedback behaviour', () => {
         emailExists: 'yes',
         process: reqTestProcess,
         path: reqTestPath,
-        feedback: reqTestFeedback,
+        feedback: reqTestFeedback
       }
     }).resolves();
     sendEmailStub.withArgs(testTemplate, testEmail, {
@@ -55,17 +55,17 @@ describe('Feedback behaviour', () => {
         emailExists: 'yes',
         process: reqTestProcess,
         path: reqTestPath,
-        feedback: reqTestFeedback,
+        feedback: reqTestFeedback
       }
     }).rejects(testError);
     capitalizeStub = sinon.stub().returns('Ref1');
 
     notifyClientMock = class {
-        constructor() {
-          this.sendEmail = sendEmailStub;
-          return this;
-        }
-      };
+      constructor() {
+        this.sendEmail = sendEmailStub;
+        return this;
+      }
+    };
 
     successHandlerStub = sinon.stub();
     superGetValuesStub = sinon.stub();
@@ -143,7 +143,6 @@ describe('Feedback behaviour', () => {
   });
 
   describe('#successHandler', () => {
-
     beforeEach(() => {
       logStub = sinon.stub();
       req.sessionModel.attributes.feedbackName = reqTestName;
@@ -154,7 +153,7 @@ describe('Feedback behaviour', () => {
       req.log = logStub;
     });
 
-    it('sendEmail is called with config templateId, emailAddress and personalisation values', async() => {
+    it('sendEmail is called with config templateId, emailAddress and personalisation values', async () => {
       await behaviour.successHandler(req, res, next);
       sendEmailStub.should.have.been.calledOnce.calledWith(testTemplate, testEmail, {
         personalisation: {
@@ -169,7 +168,7 @@ describe('Feedback behaviour', () => {
       });
     });
 
-    it('sendEmail is called with default process and path personalisation values if not set', async() => {
+    it('sendEmail is called with default process and path personalisation values if not set', async () => {
       req.sessionModel.attributes.feedbackProcess = undefined;
       req.sessionModel.attributes.feedbackPath = undefined;
       await behaviour.successHandler(req, res, next);
@@ -186,7 +185,7 @@ describe('Feedback behaviour', () => {
       });
     });
 
-    it('sendEmail is called false nameExists and emailExists personalisation values if not set', async() => {
+    it('sendEmail is called false nameExists and emailExists personalisation values if not set', async () => {
       req.sessionModel.attributes.feedbackName = undefined;
       req.sessionModel.attributes.feedbackEmail = undefined;
       await behaviour.successHandler(req, res, next);
@@ -203,27 +202,26 @@ describe('Feedback behaviour', () => {
       });
     });
 
-    it('should call super.successHandler with req, res, and next arguments', async() => {
+    it('should call super.successHandler with req, res, and next arguments', async () => {
       await behaviour.successHandler(req, res, next);
       successHandlerStub.should.have.been.calledOnce.calledWith(req, res, next);
     });
 
-    it('should call req.log once with info message if successful', async() => {
+    it('should call req.log once with info message if successful', async () => {
       await behaviour.successHandler(req, res, next);
       logStub.should.have.been.calledOnce.calledWith('info', 'ril.form.feedback.submit_form.successful');
     });
 
-    it('should call req.log once with error message if error', async() => {
+    it('should call req.log once with error message if error', async () => {
       req.sessionModel.attributes.feedbackName = errorName;
       await behaviour.successHandler(req, res, next);
       logStub.should.have.been.calledOnce.calledWith('error', 'ril.form.feedback.submit_form.error', testError.message);
     });
 
-    it('should call next wih error if failed', async() => {
+    it('should call next wih error if failed', async () => {
       req.sessionModel.attributes.feedbackName = errorName;
       await behaviour.successHandler(req, res, next);
       next.should.have.been.calledOnce.calledWith(testError);
     });
   });
 });
-

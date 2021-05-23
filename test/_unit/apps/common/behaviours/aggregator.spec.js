@@ -1,8 +1,7 @@
-'use strict';
 
-let request = require('../../../../helpers/request');
-let response = require('../../../../helpers/response');
-let AggregatorBehaviour = require('../../../../../apps/common/behaviours/aggregator');
+const request = require('../../../../helpers/request');
+const response = require('../../../../helpers/response');
+const AggregatorBehaviour = require('../../../../../apps/common/behaviours/aggregator');
 const Model = require('hof-model');
 const moment = require('moment');
 
@@ -50,7 +49,6 @@ describe('aggregator behaviour', () => {
     });
 
     describe('#getValues actions', () => {
-
       beforeEach(() => {
         behaviour.handleAction = sinon.stub();
       });
@@ -243,7 +241,7 @@ describe('aggregator behaviour', () => {
           itemTitle: 'Sam',
           fields: [
             { field: 'firstName', value: 'Sam', parsed: 'Sam'},
-            { field: 'surname', value: 'Baker', parsed: 'Baker' },
+            { field: 'surname', value: 'Baker', parsed: 'Baker' }
           ]
         });
       });
@@ -308,7 +306,7 @@ describe('aggregator behaviour', () => {
           itemTitle: 'Sam',
           fields: [
             { field: 'firstName', value: 'Sam', changeField: undefined, parsed: 'Sam', showInSummary: false },
-            { field: 'surname', value: 'Baker', changeField: undefined, parsed: 'Baker', showInSummary: true },
+            { field: 'surname', value: 'Baker', changeField: undefined, parsed: 'Baker', showInSummary: true }
           ]
         });
       });
@@ -320,14 +318,14 @@ describe('aggregator behaviour', () => {
         req.form.options.aggregateFrom = ['otherNames'];
 
         req.sessionModel.set('otherNames', {
-          'aggregatedValues': [
+          aggregatedValues: [
             {
-              'itemTitle': 'John Doe',
-              'fields': [
+              itemTitle: 'John Doe',
+              fields: [
                 {
-                  'field': 'otherName',
-                  'value': 'John Doe',
-                  'showInSummary': false
+                  field: 'otherName',
+                  value: 'John Doe',
+                  showInSummary: false
                 }
               ]
             }
@@ -343,22 +341,22 @@ describe('aggregator behaviour', () => {
 
       it('should populate the correct items', () => {
         result.should.containSubset({
-          'items': [
+          items: [
             {
-              'itemTitle': 'John Doe',
-              'fields': [
+              itemTitle: 'John Doe',
+              fields: [
                 {
-                  'field': 'otherName',
-                  'value': 'John Doe',
-                  'showInSummary': false
+                  field: 'otherName',
+                  value: 'John Doe',
+                  showInSummary: false
                 }
               ],
-              'index': 0
+              index: 0
             }
           ],
-          'hasItems': true,
-          'addStep': 'add-other-name',
-          'field': 'otherNames'
+          hasItems: true,
+          addStep: 'add-other-name',
+          field: 'otherNames'
         });
       });
     });
@@ -374,16 +372,14 @@ describe('aggregator behaviour', () => {
         const value = 1994 - 12 - 12;
 
         const field = {
-          'field': 'dependantDateOfBirth',
-          'changeField': 'dependantDateOfBirth-day'
+          field: 'dependantDateOfBirth',
+          changeField: 'dependantDateOfBirth-day'
         };
 
         const result = behaviour.parseField(field, value, req);
 
         result.should.eql('1st January 1970');
-
       });
-
     });
   });
 });

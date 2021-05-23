@@ -1,9 +1,9 @@
-'use strict';
+
 /* eslint-disable no-console */
 const puppeteer = require('puppeteer');
 
 module.exports = {
-  generate: async(req, html, destination, tempName, application) => {
+  generate: async (req, html, destination, tempName, application) => {
     try {
       const file = `${destination}/${tempName}`;
 

@@ -1,4 +1,3 @@
-'use strict';
 
 const path = require('path');
 const request = require('../helpers/request');
@@ -51,7 +50,7 @@ describe('Server.js app file', () => {
     hofStub.returns({ use: useStub });
 
     proxyquire('../server', {
-      'hof': hofStub,
+      hof: hofStub,
       './apps/common/behaviours/clear-session': behavioursClearSessionStub,
       './apps/common/behaviours/fields-filter': behavioursFieldFilterStub,
       './apps/common': appsCommonStub,
@@ -72,7 +71,7 @@ describe('Server.js app file', () => {
         routes: [
           appsCommonStub,
           appsApplyStub,
-          appsAcceptStub,
+          appsAcceptStub
         ],
         views: [path.resolve(__dirname, '../../apps/common/views')],
         getTerms: false,
@@ -86,12 +85,10 @@ describe('Server.js app file', () => {
 
     it('should call the app use method four times if nodeEnv set to development', () => {
       const use = sinon.stub();
-      const hof = () => {
-        return { use };
-      };
+      const hof = () => ({ use });
 
       proxyquire('../server', {
-        'hof': hof,
+        hof: hof,
         './config': { nodeEnv: 'development' }
       });
 
@@ -100,12 +97,10 @@ describe('Server.js app file', () => {
 
     it('should call the app use method three times if nodeEnv set to anything else', () => {
       const use = sinon.stub();
-      const hof = () => {
-        return { use };
-      };
+      const hof = () => ({ use });
 
       proxyquire('../server', {
-        'hof': hof,
+        hof: hof,
         './config': { nodeEnv: 'production' }
       });
 
@@ -122,7 +117,7 @@ describe('Server.js app file', () => {
         footerSupportLinks: [
           { path: '/cookies', property: 'base.cookies' },
           { path: '/terms-and-conditions', property: 'base.terms' },
-          { path: '/accessibility', property: 'base.accessibility' },
+          { path: '/accessibility', property: 'base.accessibility' }
         ]
       });
     });

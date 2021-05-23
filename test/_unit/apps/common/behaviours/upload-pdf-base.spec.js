@@ -1,4 +1,3 @@
-'use strict';
 
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
@@ -29,7 +28,7 @@ describe('Base Upload PDF Behaviour', () => {
   };
 
   describe('assorted functions', () => {
-    it('createPDF should call pdfPuppeteer.generatePDF', async() => {
+    it('createPDF should call pdfPuppeteer.generatePDF', async () => {
       const req = request();
 
       const pdfPuppeteerMock = { generate: sinon.stub().returns(mockPath) };
@@ -37,7 +36,7 @@ describe('Base Upload PDF Behaviour', () => {
       const instance = getProxyquiredInstance(
         {
           '../../common/behaviours/pdf-puppeteer': pdfPuppeteerMock,
-          'uuid': { v1: sinon.stub().returns('abc123') }
+          uuid: { v1: sinon.stub().returns('abc123') }
         });
 
       const result = await instance.createPDF(req, mockData);
@@ -48,12 +47,12 @@ describe('Base Upload PDF Behaviour', () => {
         .calledOnce.should.be.true;
     });
 
-    it('readPdf should read a PDF from the correct path', async() => {
+    it('readPdf should read a PDF from the correct path', async () => {
       const fsMock = {
-        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData))
       };
 
-      const instance = getProxyquiredInstance({ 'fs': fsMock });
+      const instance = getProxyquiredInstance({ fs: fsMock });
 
       const result = await instance.readPdf(mockPath);
 
@@ -73,11 +72,11 @@ describe('Base Upload PDF Behaviour', () => {
 
     it('should return the correct email template for the apply journey', () => {
       const fsMock = {
-        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData))
       };
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../../../config': configMock
       });
 
@@ -88,11 +87,11 @@ describe('Base Upload PDF Behaviour', () => {
 
     it('should return the correct email template for the accept journey', () => {
       const fsMock = {
-        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData))
       };
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../../../config': configMock
       });
 
@@ -113,11 +112,11 @@ describe('Base Upload PDF Behaviour', () => {
 
     it('should return the correct text template for the apply journey', () => {
       const fsMock = {
-        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData))
       };
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../../../config': configMock
       });
 
@@ -128,11 +127,11 @@ describe('Base Upload PDF Behaviour', () => {
 
     it('should return the correct text template for the accept journey', () => {
       const fsMock = {
-        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData)),
+        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData))
       };
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../../../config': configMock
       });
 
@@ -156,37 +155,37 @@ describe('Base Upload PDF Behaviour', () => {
     });
 
 
-    it('should send the correct locals and ordered rows to renderHTML', async() => {
+    it('should send the correct locals and ordered rows to renderHTML', async () => {
       const req = request({ form: { options: {} }, session: {} });
       const res = response({});
       res.render = sinon.stub().callsFake((template, values, cb) => {
-          cb(null, {});
-        }
+        cb(null, {});
+      }
       );
 
       const inputRows = [
         {
-          'section': 'Criminal convictions',
-          'fields': [
+          section: 'Criminal convictions',
+          fields: [
             {
-              'label': 'Have you ever been convicted of a crime in the UK?'
+              label: 'Have you ever been convicted of a crime in the UK?'
             }
           ]
         },
         {
-          'section': 'Applicant’s details'
+          section: 'Applicant’s details'
         }
       ];
 
       const expectedRows = [
         {
-          'section': 'Applicant’s details'
+          section: 'Applicant’s details'
         },
         {
-          'section': 'Criminal convictions',
-          'fields': [
+          section: 'Criminal convictions',
+          fields: [
             {
-              'label': 'Have you ever been convicted of a crime in the UK?'
+              label: 'Have you ever been convicted of a crime in the UK?'
             }
           ]
         }
@@ -197,31 +196,31 @@ describe('Base Upload PDF Behaviour', () => {
           confirm: {
             sections: {
               'pdf-applicant-details': {
-                'header': 'Applicant’s details'
+                header: 'Applicant’s details'
               },
               'pdf-conviction-details': {
-                'header': 'Criminal convictions'
+                header: 'Criminal convictions'
               }
             }
-          },
+          }
         },
         '@noCallThru': true
       };
 
       const mockLocals = {
-        'fields': [],
-        'route': 'confirm',
-        'baseUrl': '/apply',
-        'title': 'Check your answers before sending your application',
-        'intro': null,
-        'nextPage': '/apply/complete',
-        'feedbackUrl': '/feedback?f_t=eyJiYXNlVXJsIjoiL2FwcGx5IiwicGF0aCI6Ii9jb25maXJtIiwidXJsIjoiL2FwcGx5L2N' +
+        fields: [],
+        route: 'confirm',
+        baseUrl: '/apply',
+        title: 'Check your answers before sending your application',
+        intro: null,
+        nextPage: '/apply/complete',
+        feedbackUrl: '/feedback?f_t=eyJiYXNlVXJsIjoiL2FwcGx5IiwicGF0aCI6Ii9jb25maXJtIiwidXJsIjoiL2FwcGx5L2N' +
           'vbmZpcm0ifQ%3D%3D',
-        'rows': inputRows
+        rows: inputRows
       };
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../translations/src/en/pages.json': orderedSections
       });
 
@@ -236,7 +235,7 @@ describe('Base Upload PDF Behaviour', () => {
       actualLocals.title.should.eql('Refugee integration loan application');
     });
 
-    it('should call sortSections when sortSections is true ', async() => {
+    it('should call sortSections when sortSections is true ', async () => {
       const req = request({ form: { options: {} }, session: {} });
 
       const res = response({});
@@ -245,17 +244,15 @@ describe('Base Upload PDF Behaviour', () => {
         cb(null, {});
       });
 
-      const instance = getProxyquiredInstance({ 'fs': fsMock });
+      const instance = getProxyquiredInstance({ fs: fsMock });
       instance.sortSections = sinon.stub().callsFake((...args) => args);
 
-      await instance.renderHTML(req, res, () => {
-        return { rows: [] };
-      });
+      await instance.renderHTML(req, res, () => ({ rows: [] }));
 
       instance.sortSections.should.be.calledOnce;
     });
 
-    it('should not call sortSections when sortSections is false ', async() => {
+    it('should not call sortSections when sortSections is false ', async () => {
       const req = request({ form: { options: {} }, session: {} });
 
       const res = response({});
@@ -264,26 +261,23 @@ describe('Base Upload PDF Behaviour', () => {
         cb(null, {});
       });
 
-      const instance = getProxyquiredInstance({ 'fs': fsMock }, {sortSections: false});
+      const instance = getProxyquiredInstance({ fs: fsMock }, {sortSections: false});
       instance.sortSections = sinon.stub().callsFake((...args) => args);
 
-      await instance.renderHTML(req, res, () => {
-        return { rows: [] };
-      });
+      await instance.renderHTML(req, res, () => ({ rows: [] }));
 
       instance.sortSections.should.not.be.calledOnce;
     });
 
-    it('should reject on render error', async() => {
+    it('should reject on render error', async () => {
       const req = request({ form: { options: {} }, session: {} });
       const res = response({});
       res.render = sinon.stub().callsFake((template, values, cb) => {
-          cb(Error('Error'), null);
-        }
-      );
+        cb(Error('Error'), null);
+      });
 
       const localsStub = sinon.stub().returns({});
-      const instance = getProxyquiredInstance({ 'fs': fsMock });
+      const instance = getProxyquiredInstance({ fs: fsMock });
 
       await instance.renderHTML(req, res, localsStub).should.be.rejected;
     });
@@ -313,8 +307,8 @@ describe('Base Upload PDF Behaviour', () => {
     beforeEach(() => {
       sendEmailStub = sinon.stub().callsFake(() => Promise.resolve({}));
       prepareUploadStub = sinon.stub().returns({
-        'file': 'base64-file',
-        'is_csv': false
+        file: 'base64-file',
+        is_csv: false
       });
 
       fsMock = {
@@ -334,14 +328,14 @@ describe('Base Upload PDF Behaviour', () => {
       };
     });
 
-    it('should send the correct details to the email service and delete the pdf', async() => {
+    it('should send the correct details to the email service and delete the pdf', async () => {
       const req = request({ session: { fullName: 'Jane Smith' } });
       const emailReceiptTemplateId = 'test';
       const applicantEmail = 'test@example.org';
       const appName = 'testApp';
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../../../lib/utilities': notifyClientMock,
         '../../../config': configMock
       });
@@ -354,8 +348,8 @@ describe('Base Upload PDF Behaviour', () => {
       const expectedEmailContent = {
         personalisation: {
           'form id': {
-            'file': 'base64-file',
-            'is_csv': false
+            file: 'base64-file',
+            is_csv: false
           }
         }
       };
@@ -373,13 +367,13 @@ describe('Base Upload PDF Behaviour', () => {
       fsMock.unlink.calledOnce.should.be.true;
     });
 
-    it('should reject on send email error', async() => {
+    it('should reject on send email error', async () => {
       sendEmailStub.callsFake(() => Promise.reject({}));
 
       const req = request({ session: { 'session.started.timestamp': '7357' } });
 
       const instance = getProxyquiredInstance({
-        'fs': fsMock,
+        fs: fsMock,
         '../../../lib/utilities': notifyClientMock,
         '../../../config': configMock
       });

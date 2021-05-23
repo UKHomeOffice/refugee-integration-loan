@@ -1,4 +1,3 @@
-'use strict';
 
 const Aggregate = require('../common/behaviours/aggregator');
 const Summary = require('../common/behaviours/summary');
@@ -96,7 +95,7 @@ module.exports = {
       backLink: 'has-other-names',
       fields: ['otherName'],
       continueOnEdit: true,
-      next: '/other-names',
+      next: '/other-names'
     },
     '/other-names': {
       backLink: 'has-other-names',
@@ -155,7 +154,7 @@ module.exports = {
       backLink: 'partner-has-other-names',
       fields: ['partnerOtherName'],
       continueOnEdit: true,
-      next: '/partner-other-names',
+      next: '/partner-other-names'
     },
     '/partner-other-names': {
       behaviours: [Aggregate],

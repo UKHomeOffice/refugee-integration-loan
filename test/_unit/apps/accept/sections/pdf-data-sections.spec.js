@@ -1,4 +1,3 @@
-'use strict';
 
 const sections = require('../../../../../apps/accept/sections/summary-data-sections');
 const pages = require('../../../../../apps/accept/translations/src/en/pages.json');
@@ -9,7 +8,6 @@ const mappedSections = utilities.mapSections(sections);
 const areOrderedEqual = utilities.areOrderedEqual;
 
 describe('Accept PDF Data Sections', () => {
-
   describe('Sections and Pages', () => {
     it('should have sections and page translations that correlate', () => {
       const sectionsKeys = Object.keys(sections).sort();

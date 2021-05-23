@@ -1,5 +1,5 @@
 /* eslint no-process-env: 0 */
-'use strict';
+
 
 module.exports = {
   nodeEnv: process.env.NODE_ENV,

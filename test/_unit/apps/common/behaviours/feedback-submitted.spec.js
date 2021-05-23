@@ -1,8 +1,7 @@
-'use strict';
 
-let request = require('../../../../helpers/request');
-let response = require('../../../../helpers/response');
-let FeedbackSubmittedBehaviour = require('../../../../../apps/common/behaviours/feedback-submitted');
+const request = require('../../../../helpers/request');
+const response = require('../../../../helpers/response');
+const FeedbackSubmittedBehaviour = require('../../../../../apps/common/behaviours/feedback-submitted');
 const Model = require('hof-model');
 
 describe('feedback submitted behaviour', () => {
@@ -22,11 +21,11 @@ describe('feedback submitted behaviour', () => {
       res = response();
 
       req.sessionModel = new Model({
-        'feedbackName': 'test',
-        'feedbackEmail': 'test',
-        'feedbackProcess': 'test',
-        'feedbackPath': 'test',
-        'feedbackText': 'test'
+        feedbackName: 'test',
+        feedbackEmail: 'test',
+        feedbackProcess: 'test',
+        feedbackPath: 'test',
+        feedbackText: 'test'
       });
 
       superGetValuesStub = sinon.stub();
@@ -56,7 +55,7 @@ describe('feedback submitted behaviour', () => {
       res = response();
 
       req.sessionModel = new Model({
-        'feedbackReferer': '/test'
+        feedbackReferer: '/test'
       });
 
       req.get.withArgs('origin').returns('example.org');
@@ -68,7 +67,6 @@ describe('feedback submitted behaviour', () => {
       behaviour = new Behaviour();
 
       behaviour.successHandler(req, res);
-
     });
 
     it('redirects to feedbackReferer if it is set', () => {

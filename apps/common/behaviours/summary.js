@@ -1,7 +1,5 @@
-'use strict';
 
 module.exports = superclass => class extends superclass {
-
   getRowsForSummarySections(req) {
     const sections = req.form.options.sections;
     return Object.keys(sections)
@@ -53,9 +51,7 @@ module.exports = superclass => class extends superclass {
     const obj = Object.assign(this.getFieldData(fieldSpec.field, req), fieldSpec);
 
     const values = fieldSpec.derivation.fromFields
-      .map(field => {
-        return req.sessionModel.get(field);
-      }).filter(field => field && field.length > 0);
+      .map(field => req.sessionModel.get(field)).filter(field => field && field.length > 0);
     if (values.length > 0) {
       obj.value = fieldSpec.derivation.combiner(values);
     }
@@ -84,7 +80,7 @@ module.exports = superclass => class extends superclass {
           value: inner.parsed || inner.value,
           label: this.translateLabel(inner.field, req),
           changeLink,
-          index,
+          index
         });
       });
 
@@ -97,9 +93,7 @@ module.exports = superclass => class extends superclass {
   }
 
   getStepForField(key, steps) {
-    return Object.keys(steps).filter(step => {
-      return steps[step].fields && steps[step].fields.indexOf(key) > -1;
-    })[0];
+    return Object.keys(steps).filter(step => steps[step].fields && steps[step].fields.indexOf(key) > -1)[0];
   }
 
 

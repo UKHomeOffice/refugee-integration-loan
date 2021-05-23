@@ -1,4 +1,3 @@
-'use strict';
 
 const _ = require('lodash');
 const config = require('../../../config');
@@ -7,7 +6,6 @@ const capitalize = utilities.capitalize;
 const NotifyClient = utilities.NotifyClient;
 
 module.exports = superclass => class extends superclass {
-
   getValues(req, res, next) {
     const referer = _.get(req, 'headers.referer') || `${req.get('origin')}/apply`;
     const url = new URL(referer);

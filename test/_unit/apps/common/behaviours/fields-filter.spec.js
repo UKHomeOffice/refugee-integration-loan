@@ -1,11 +1,9 @@
-'use strict';
 
 const request = require('../../../../helpers/request');
-let response = require('../../../../helpers/response');
-let FieldsFilter = require('../../../../../apps/common/behaviours/fields-filter');
+const response = require('../../../../helpers/response');
+const FieldsFilter = require('../../../../../apps/common/behaviours/fields-filter');
 
 describe('Fields filter behaviour', () => {
-
   describe('locals', () => {
     class Base {}
 
@@ -49,27 +47,26 @@ describe('Fields filter behaviour', () => {
       next = sinon.stub();
 
       superLocalsStub = sinon.stub().returns({
-          fields: [
-            {
-              mixin: 'checkbox-group',
-              options: [[{}], [{}]],
-              validate: 'required',
-              legend: { className: 'visuallyhidden' },
-              key: 'contactTypes'
-            },
-            {
-              validate: ['required', 'email'],
-              dependent: { field: 'contactTypes', value: 'email' },
-              key: 'email'
-            },
-            {
-              validate: ['required', 'phone'],
-              dependent: { field: 'contactTypes', value: 'phone' },
-              key: 'phone'
-            },
-          ]
-        }
-      );
+        fields: [
+          {
+            mixin: 'checkbox-group',
+            options: [[{}], [{}]],
+            validate: 'required',
+            legend: { className: 'visuallyhidden' },
+            key: 'contactTypes'
+          },
+          {
+            validate: ['required', 'email'],
+            dependent: { field: 'contactTypes', value: 'email' },
+            key: 'email'
+          },
+          {
+            validate: ['required', 'phone'],
+            dependent: { field: 'contactTypes', value: 'phone' },
+            key: 'phone'
+          }
+        ]
+      });
 
       Base.prototype.locals = superLocalsStub;
       Behaviour = FieldsFilter(Base);
@@ -95,12 +92,12 @@ describe('Fields filter behaviour', () => {
 
     it('Returns fields with no dependents', () => {
       expect(result).to.eql({ fields: [{
-          mixin: 'checkbox-group',
-          options: [[{}], [{}]],
-          validate: 'required',
-          legend: { className: 'visuallyhidden' },
-          key: 'contactTypes'
-        }]});
+        mixin: 'checkbox-group',
+        options: [[{}], [{}]],
+        validate: 'required',
+        legend: { className: 'visuallyhidden' },
+        key: 'contactTypes'
+      }]});
     });
   });
 });

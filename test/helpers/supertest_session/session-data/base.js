@@ -1,4 +1,3 @@
-'use strict';
 
 const _ = require('lodash');
 
@@ -6,16 +5,14 @@ module.exports = (appName, overridenPages) => {
   const possibleSteps = require(`./${appName}/steps`);
 
   return (stepOrData, data) => {
-    let props = {};
+    const props = {};
     if (typeof stepOrData === 'string') {
-      props.steps = _.dropRightWhile(possibleSteps, val => {
-        return val !== stepOrData;
-      });
+      props.steps = _.dropRightWhile(possibleSteps, val => val !== stepOrData);
       props.steps.pop();
     } else {
       props.steps = possibleSteps;
     }
-    props.steps.forEach((prop) => {
+    props.steps.forEach(prop => {
       if (prop !== '/') {
         try {
           /* eslint-disable no-nested-ternary */

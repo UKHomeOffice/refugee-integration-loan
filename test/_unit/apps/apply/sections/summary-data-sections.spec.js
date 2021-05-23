@@ -1,4 +1,3 @@
-'use strict';
 
 const sections = require('../../../../../apps/apply/sections/summary-data-sections');
 const pages = require('../../../../../apps/apply/translations/src/en/pages.json');
@@ -10,7 +9,6 @@ const areOrderedEqual = utilities.areOrderedEqual;
 const containsAll = utilities.containsAll;
 
 describe('Apply Summary Data Sections', () => {
-
   describe('Sections and Pages', () => {
     it('should have sections and page translations that correlate', () => {
       const sectionsKeys = Object.keys(sections).sort();
@@ -150,7 +148,7 @@ describe('Apply Summary Data Sections', () => {
       const expectedFields = [
         'amount',
         'jointAmount',
-        'purposeTypes',
+        'purposeTypes'
       ];
 
       const result = areOrderedEqual(sectionFields, expectedFields);
@@ -198,8 +196,8 @@ describe('Apply Summary Data Sections', () => {
         steps: [
           {
             step: '/has-dependants',
-            field: 'hasDependants',
-          },
+            field: 'hasDependants'
+          }
         ]
       };
 
@@ -214,8 +212,8 @@ describe('Apply Summary Data Sections', () => {
         steps: [
           {
             step: '/has-other-names',
-            field: 'hasOtherNames',
-          },
+            field: 'hasOtherNames'
+          }
         ]
       };
 

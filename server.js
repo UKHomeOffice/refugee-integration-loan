@@ -1,4 +1,3 @@
-'use strict';
 
 const hof = require('hof');
 const config = require('./config');
@@ -37,7 +36,7 @@ app.use((req, res, next) => {
   res.locals.footerSupportLinks = [
     { path: '/cookies', property: 'base.cookies' },
     { path: '/terms-and-conditions', property: 'base.terms' },
-    { path: '/accessibility', property: 'base.accessibility' },
+    { path: '/accessibility', property: 'base.accessibility' }
   ];
   next();
 });
@@ -54,7 +53,7 @@ if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
       req.session[`hof-wizard-${appName}`] = {};
     }
 
-    Object.keys(req.body.sessionProperties || {}).forEach((key) => {
+    Object.keys(req.body.sessionProperties || {}).forEach(key => {
       req.session[`hof-wizard-${appName}`][key] = req.body.sessionProperties[key];
     });
 

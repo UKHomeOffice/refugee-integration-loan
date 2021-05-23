@@ -1,5 +1,3 @@
-'use strict';
-
 
 describe('Footer links', () => {
   let testApp;
@@ -17,7 +15,7 @@ describe('Footer links', () => {
     initSession = testApp.initSession;
   });
 
-  it('should mount the cookies page on the app', async() => {
+  it('should mount the cookies page on the app', async () => {
     const URI = '/cookies';
     await initSession(URI);
     const res = await getUrl(URI);
@@ -28,7 +26,7 @@ describe('Footer links', () => {
     header.html().should.match(/Cookies/);
   });
 
-  it('should mount the terms page on the app', async() => {
+  it('should mount the terms page on the app', async () => {
     const URI = '/terms-and-conditions';
     await initSession(URI);
     await getUrl(URI);
@@ -40,7 +38,7 @@ describe('Footer links', () => {
     header.html().should.match(/Terms and conditions/);
   });
 
-  it('should mount the accessibility page on the app', async() => {
+  it('should mount the accessibility page on the app', async () => {
     const URI = '/accessibility';
     await initSession(URI);
     await getUrl(URI);

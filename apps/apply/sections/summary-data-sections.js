@@ -1,4 +1,3 @@
-'use strict';
 
 const moment = require('moment');
 const config = require('../../../config');
@@ -21,8 +20,8 @@ module.exports = {
     steps: [
       {
         step: '/has-other-names',
-        field: 'hasOtherNames',
-      },
+        field: 'hasOtherNames'
+      }
     ]
   },
   'other-names': [
@@ -30,7 +29,7 @@ module.exports = {
       step: '/other-names',
       field: 'otherNames',
       dependsOn: 'hasOtherNames'
-    },
+    }
   ],
   'pdf-partner-details': [
     'partnerBrpNumber',
@@ -56,7 +55,7 @@ module.exports = {
       step: '/partner-other-names',
       field: 'partnerOtherNames',
       dependsOn: 'partnerHasOtherNames'
-    },
+    }
   ],
   'pdf-bank-account-details': [
     'accountName',
@@ -128,7 +127,7 @@ module.exports = {
           'combinedOtherOutgoingAmount'
         ],
         combiner: sumValues
-      },
+      }
     },
     { field: 'rentAmount', omitFromPdf: true },
     { field: 'householdBillsAmount', omitFromPdf: true },
@@ -156,7 +155,7 @@ module.exports = {
   'pdf-loan-details': [
     'amount',
     'jointAmount',
-    'purposeTypes',
+    'purposeTypes'
   ],
   'pdf-address': [
     'building',
@@ -173,8 +172,8 @@ module.exports = {
     steps: [
       {
         step: '/has-dependants',
-        field: 'hasDependants',
-      },
+        field: 'hasDependants'
+      }
     ]
   },
   'dependent-details': [
@@ -182,7 +181,7 @@ module.exports = {
       step: '/dependant-details',
       field: 'dependants',
       addElementSeparators: true,
-      dependsOn: 'hasDependants',
+      dependsOn: 'hasDependants'
     }
   ],
   'pdf-outcome': [

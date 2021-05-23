@@ -1,8 +1,7 @@
-'use strict';
 
-let request = require('../../../../helpers/request');
-let response = require('../../../../helpers/response');
-let SetContinueLinkBehaviour = require('../../../../../apps/common/behaviours/set-continue-link');
+const request = require('../../../../helpers/request');
+const response = require('../../../../helpers/response');
+const SetContinueLinkBehaviour = require('../../../../../apps/common/behaviours/set-continue-link');
 const config = require('../../../../../config');
 
 describe('Set continue link behaviour', () => {
@@ -29,7 +28,6 @@ describe('Set continue link behaviour', () => {
     });
 
     it('should return a mixin', () => {
-
       expect(behaviour).to.be.an.instanceOf(Base);
     });
 

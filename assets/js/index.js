@@ -1,3 +1,3 @@
-'use strict';
-// eslint-disable-next-line implicit-dependencies/no-implicit
+
+// eslint-disable-next-line node/no-missing-require
 require('$$theme');
