@@ -1,4 +1,3 @@
-'use strict';
 
 const SetContinueLink = require('./behaviours/set-continue-link');
 const Feedback = require('./behaviours/feedback');
@@ -8,13 +7,13 @@ module.exports = {
   name: 'common',
   steps: {
     '/accessibility': {
-      behaviours: [SetContinueLink],
+      behaviours: [SetContinueLink]
     },
     '/cookies': {
-      behaviours: [SetContinueLink],
+      behaviours: [SetContinueLink]
     },
     '/terms-and-conditions': {
-      behaviours: [SetContinueLink],
+      behaviours: [SetContinueLink]
     },
     '/feedback': {
       fields: ['feedbackText', 'feedbackName', 'feedbackEmail'],

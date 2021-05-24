@@ -1,4 +1,3 @@
-'use strict';
 
 let utilities = require('../../../lib/utilities');
 

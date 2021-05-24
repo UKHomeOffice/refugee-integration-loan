@@ -1,20 +1,17 @@
-'use strict';
-
 describe('the journey of a joint apply application', () => {
-
   let testApp;
   let passStep;
   let initSession;
 
   const SUBAPP = 'apply';
 
-  before(function setup() {
+  before(() => {
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
     initSession = testApp.initSession;
   });
 
-  it('goes to the partner page when the user has not previously applied', async() => {
+  it('goes to the partner page when the user has not previously applied', async () => {
     const URI = '/previously-applied';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -24,7 +21,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/partner');
   });
 
-  it('goes to the Joint page when the user has a partner they live with', async() => {
+  it('goes to the Joint page when the user has a partner they live with', async () => {
     const URI = '/partner';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -34,7 +31,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/joint');
   });
 
-  it('goes to the BRP page when the user does not want a joint application', async() => {
+  it('goes to the BRP page when the user does not want a joint application', async () => {
     const URI = '/joint';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -44,7 +41,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/brp');
   });
 
-  it('goes to the BRP page when the user does want a joint application', async() => {
+  it('goes to the BRP page when the user does want a joint application', async () => {
     const URI = '/joint';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -54,7 +51,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/brp');
   });
 
-  it('goes to the NI Number page when the user has submitted their brp details', async() => {
+  it('goes to the NI Number page when the user has submitted their brp details', async () => {
     const URI = '/brp';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -66,7 +63,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/ni-number');
   });
 
-  it('goes to the Has Other Names page when the user has submitted their NI number', async() => {
+  it('goes to the Has Other Names page when the user has submitted their NI number', async () => {
     const URI = '/ni-number';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -76,7 +73,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/has-other-names');
   });
 
-  it('goes to the Home Office Reference page when the user has no other names', async() => {
+  it('goes to the Home Office Reference page when the user has no other names', async () => {
     const URI = '/has-other-names';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -86,7 +83,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/home-office-reference');
   });
 
-  it('goes to the Other Names page when the user has other names', async() => {
+  it('goes to the Other Names page when the user has other names', async () => {
     const URI = '/has-other-names';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -96,7 +93,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/other-names');
   });
 
-  it('goes to the Partner BRP page when the primary user has submitted their HO Reference Number', async() => {
+  it('goes to the Partner BRP page when the primary user has submitted their HO Reference Number', async () => {
     const URI = '/home-office-reference';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -106,7 +103,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/partner-brp');
   });
 
-  it('goes to the Partner NI Number page when the partner has submitted their BRP details', async() => {
+  it('goes to the Partner NI Number page when the partner has submitted their BRP details', async () => {
     const URI = '/partner-brp';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -118,7 +115,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/partner-ni-number');
   });
 
-  it('goes to the Partner Has Other Names page when the partner has submitted their NI Number', async() => {
+  it('goes to the Partner Has Other Names page when the partner has submitted their NI Number', async () => {
     const URI = '/partner-ni-number';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -128,7 +125,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/partner-has-other-names');
   });
 
-  it('goes to the Convictions Joint page when the partner has no other names', async() => {
+  it('goes to the Convictions Joint page when the partner has no other names', async () => {
     const URI = '/partner-has-other-names';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -138,7 +135,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/convictions-joint');
   });
 
-  it('goes to the Partner Other Names page when the partner has other names', async() => {
+  it('goes to the Partner Other Names page when the partner has other names', async () => {
     const URI = '/partner-has-other-names';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -148,7 +145,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/partner-other-names');
   });
 
-  it('goes to the Dependants page when join convictions are submitted', async() => {
+  it('goes to the Dependants page when join convictions are submitted', async () => {
     const URI = '/convictions-joint';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -159,7 +156,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/has-dependants');
   });
 
-  it('goes to the Address page if a user has no dependants', async() => {
+  it('goes to the Address page if a user has no dependants', async () => {
     const URI = '/has-dependants';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -169,7 +166,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/address');
   });
 
-  it('goes to the dependants Details page if a user has dependants', async() => {
+  it('goes to the dependants Details page if a user has dependants', async () => {
     const URI = '/has-dependants';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -179,7 +176,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/dependant-details');
   });
 
-  it('goes to the Combined Income page when they submit their address', async() => {
+  it('goes to the Combined Income page when they submit their address', async () => {
     const URI = '/address';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -192,7 +189,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/combined-income');
   });
 
-  it('goes to the Combined Outgoings page when they submit their income', async() => {
+  it('goes to the Combined Outgoings page when they submit their income', async () => {
     const URI = '/combined-income';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -213,7 +210,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/combined-outgoings');
   });
 
-  it('goes to the Combined Savings page when they submit their outgoings', async() => {
+  it('goes to the Combined Savings page when they submit their outgoings', async () => {
     const URI = '/combined-outgoings';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -240,7 +237,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/combined-savings');
   });
 
-  it('goes to the Combined Amount page when they submit their savings', async() => {
+  it('goes to the Combined Amount page when they submit their savings', async () => {
     const URI = '/combined-savings';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -251,7 +248,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/combined-amount');
   });
 
-  it('goes to the Purpose page when they submit their amount', async() => {
+  it('goes to the Purpose page when they submit their amount', async () => {
     const URI = '/combined-amount';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -261,7 +258,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/purpose');
   });
 
-  it('goes to the Bank Details page when a user submits their purpose types', async() => {
+  it('goes to the Bank Details page when a user submits their purpose types', async () => {
     const URI = '/purpose';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -277,7 +274,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/bank-details');
   });
 
-  it('goes to the Contact page when a user submits their bank details', async() => {
+  it('goes to the Contact page when a user submits their bank details', async () => {
     const URI = '/bank-details';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -290,7 +287,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/contact');
   });
 
-  it('goes to the Help page when a user submits their contact details', async() => {
+  it('goes to the Help page when a user submits their contact details', async () => {
     const URI = '/contact';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -305,7 +302,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/help');
   });
 
-  it('goes to the Outcome page when a user submits their contact details without email', async() => {
+  it('goes to the Outcome page when a user submits their contact details without email', async () => {
     const URI = '/contact';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -318,7 +315,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/outcome');
   });
 
-  it('goes to the Help page when a user submits their moving details', async() => {
+  it('goes to the Help page when a user submits their moving details', async () => {
     const URI = '/outcome';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -332,7 +329,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/help');
   });
 
-  it('goes to the Help page when a user does not move', async() => {
+  it('goes to the Help page when a user does not move', async () => {
     const URI = '/outcome';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -342,7 +339,7 @@ describe('the journey of a joint apply application', () => {
     expect(response.text).to.contain('Found. Redirecting to /apply/help');
   });
 
-  it('goes to the Confirm page if a user has not had help', async() => {
+  it('goes to the Confirm page if a user has not had help', async () => {
     const URI = '/help';
     await initSession(URI);
     const response = await passStep(URI, {
@@ -351,5 +348,4 @@ describe('the journey of a joint apply application', () => {
 
     expect(response.text).to.contain('Found. Redirecting to /apply/confirm');
   });
-
 });

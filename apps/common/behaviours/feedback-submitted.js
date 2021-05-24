@@ -1,4 +1,3 @@
-'use strict';
 
 module.exports = superclass => class extends superclass {
   getValues(req, res, next) {

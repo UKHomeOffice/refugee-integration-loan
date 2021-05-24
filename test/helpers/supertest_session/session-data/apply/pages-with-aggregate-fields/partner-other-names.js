@@ -1,29 +1,28 @@
-'use strict';
 
 module.exports = {
   partnerOtherNames: {
-    'aggregatedValues': [
+    aggregatedValues: [
       {
-        'itemTitle': 'Jane',
-        'fields': [
+        itemTitle: 'Jane',
+        fields: [
           {
-            'field': 'otherName',
-            'value': 'Jane',
-            'showInSummary': false
+            field: 'otherName',
+            value: 'Jane',
+            showInSummary: false
           }
         ],
-        'index': 0
+        index: 0
       },
       {
-        'itemTitle': 'June',
-        'fields': [
+        itemTitle: 'June',
+        fields: [
           {
-            'field': 'otherName',
-            'value': 'June',
-            'showInSummary': false
+            field: 'otherName',
+            value: 'June',
+            showInSummary: false
           }
         ],
-        'index': 1
+        index: 1
       }
     ]
   }

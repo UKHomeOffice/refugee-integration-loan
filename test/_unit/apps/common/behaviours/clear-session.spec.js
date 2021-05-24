@@ -1,8 +1,7 @@
-'use strict';
 
-let request = require('../../../../helpers/request');
-let response = require('../../../../helpers/response');
-let ClearSessionBehaviour = require('../../../../../apps/common/behaviours/clear-session');
+const request = require('../../../../helpers/request');
+const response = require('../../../../helpers/response');
+const ClearSessionBehaviour = require('../../../../../apps/common/behaviours/clear-session');
 
 describe('Clear session behaviour', () => {
   class Base {}
@@ -127,6 +126,5 @@ describe('Clear session behaviour', () => {
     it('should call the callback if everything succeeds', () => {
       next.should.have.been.calledOnce.calledWithExactly(null, 'values');
     });
-
   });
 });

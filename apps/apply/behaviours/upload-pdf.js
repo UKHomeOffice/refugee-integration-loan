@@ -1,13 +1,11 @@
-'use strict';
 
 const UploadPdfShared = require('../../common/behaviours/upload-pdf-base');
 const config = require('../../../config');
 const confirmStep = config.routes.confirmStep;
 
 module.exports = superclass => class extends superclass {
-
   sleep(ms) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(resolve, ms);
     });
   }
@@ -25,7 +23,7 @@ module.exports = superclass => class extends superclass {
   }
 
   pdfLocals(req, res) {
-    let sections = req.form.options.sections;
+    const sections = req.form.options.sections;
     req.form.options.sections = req.form.options.pdfSections;
 
     const superLocals = super.locals(req, res);

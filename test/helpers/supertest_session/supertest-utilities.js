@@ -1,4 +1,3 @@
-'use strict';
 
 const supertestSession = require('supertest-session');
 const jsdom = require('jsdom');
@@ -11,9 +10,7 @@ function getUrl(app, url, expectedStatus) {
     app
       .get(url)
       .expect(expectedStatus)
-      .end((err, response) => {
-        return err ? reject(err) : resolve(response);
-      });
+      .end((err, response) => err ? reject(err) : resolve(response));
   });
 }
 
@@ -25,9 +22,7 @@ function postUrl(app, url, data, expectedStatus, token) {
         'x-csrf-token': token
       }))
       .expect(expectedStatus)
-      .end((err, response) => {
-        return err ? reject(err) : resolve(response);
-      });
+      .end((err, response) => err ? reject(err) : resolve(response));
   });
 }
 
@@ -52,13 +47,11 @@ function passStep(app, url, data) {
   return getUrl(app, url, 200)
     .then(getToken)
     .then(postUrl.bind(null, app, url, data, 302))
-    .catch(error => {
-      return Promise.reject(`Error passing step: ${url}. ${error}`);
-    });
+    .catch(error => Promise.reject(`Error passing step: ${url}. ${error}`));
 }
 
 function parse302(previousResponse) {
-  let url = previousResponse && previousResponse.text ? previousResponse.text.match(/\/(.*?)$/)[0] : null;
+  const url = previousResponse && previousResponse.text ? previousResponse.text.match(/\/(.*?)$/)[0] : null;
   if (!url || url.length > 100) {
     throw new Error('getRedirection or passRedirectionStep cannot find an url in the response');
   }
@@ -66,13 +59,11 @@ function parse302(previousResponse) {
 }
 
 function passRedirectionStep(app, data, previousResponse) {
-  let url = parse302(previousResponse);
+  const url = parse302(previousResponse);
   return getUrl(app, url, 200)
     .then(getToken)
     .then(postUrl.bind(null, app, url, data, 302))
-    .catch(error => {
-      return Promise.reject(`Error passing step: ${url}. ${error}`);
-    });
+    .catch(error => Promise.reject(`Error passing step: ${url}. ${error}`));
 }
 
 function postSessionBootstrapData(app, data) {
@@ -80,15 +71,13 @@ function postSessionBootstrapData(app, data) {
     app
       .post('/test/bootstrap-session')
       .send(data)
-      .end((err, response) => {
-        return err ? reject(err) : resolve(response);
-      });
+      .end((err, response) => err ? reject(err) : resolve(response));
   });
 }
 
 const bootstrapSession = (app, appName, stepOrData, data, pages) => {
   let props = {};
-  let baseProps = require('./session-data/base')(appName, pages);
+  const baseProps = require('./session-data/base')(appName, pages);
   if (typeof stepOrData === 'object') {
     Object.assign(props, stepOrData);
   } else {
@@ -105,7 +94,7 @@ function initSession(app, appName, stepOrData, data, subAppPath, pages) {
   return getUrl(app, `/${appName}`, 302)
     .then(() => bootstrapSession(app, appName, stepOrData, data, pages))
     .then(() => {
-      let destination = typeof stepOrData === 'string' ? stepOrData : '/';
+      const destination = typeof stepOrData === 'string' ? stepOrData : '/';
       return getUrl(app, `${subAppPath}${destination}`, 200);
     });
 }
@@ -125,18 +114,18 @@ function getRedirection(app, expectedStatus, previousResponse) {
 
 function getSupertestApp(subAppName, subAppPath, pages) {
   const app = require('../../../server');
-  subAppPath = (subAppPath || subAppPath === '') ? subAppPath : subAppName;
-  if (subAppPath.length > 0) {
-    subAppPath = `/${subAppPath}`;
+  let newSubAppPath = (subAppPath || subAppPath === '') ? subAppPath : subAppName;
+  if (newSubAppPath.length > 0) {
+    newSubAppPath = `/${newSubAppPath}`;
   }
 
   const testApp = supertestSession(app.server);
 
   return {
-    passStep: (uri, data) => passStep(testApp, `${subAppPath}${uri}`, data),
-    getUrl: uri => getUrl(testApp, `${subAppPath}${uri}`, 200),
+    passStep: (uri, data) => passStep(testApp, `${newSubAppPath}${uri}`, data),
+    getUrl: uri => getUrl(testApp, `${newSubAppPath}${uri}`, 200),
     parseHtml: res => parseHtml(res),
-    initSession: (uri, options) => initSession(testApp, subAppName, uri, options, subAppPath, pages),
+    initSession: (uri, options) => initSession(testApp, subAppName, uri, options, newSubAppPath, pages),
     getDom
   };
 }

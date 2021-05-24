@@ -1,9 +1,7 @@
-'use strict';
 
 const moment = require('moment');
 
 describe('validation checks of the apply journey', () => {
-
   let testApp;
   let passStep;
   let initSession;
@@ -13,7 +11,7 @@ describe('validation checks of the apply journey', () => {
   const SUBAPP = 'apply';
   let now;
 
-  before(function setup() {
+  before(() => {
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
     initSession = testApp.initSession;
@@ -26,7 +24,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Previously Applied Validations', () => {
-    it('does not pass the previously applied page if nothing entered', async() => {
+    it('does not pass the previously applied page if nothing entered', async () => {
       const URI = '/previously-applied';
       await initSession(URI);
       await passStep(URI, {});
@@ -42,7 +40,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Previous Validations', () => {
-    it('does not pass the Previous page if nothing entered', async() => {
+    it('does not pass the Previous page if nothing entered', async () => {
       const URI = '/previous';
       await initSession(URI);
       await passStep(URI, {});
@@ -58,7 +56,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Who Received Previous Loan Validations', () => {
-    it('does not pass the Who Received Previous Loan page if nothing entered', async() => {
+    it('does not pass the Who Received Previous Loan page if nothing entered', async () => {
       const URI = '/who-received-previous-loan';
       await initSession(URI);
       await passStep(URI, {});
@@ -74,7 +72,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Partner Validations', () => {
-    it('does not pass the Partner page if nothing entered', async() => {
+    it('does not pass the Partner page if nothing entered', async () => {
       const URI = '/partner';
       await initSession(URI);
       await passStep(URI, {});
@@ -90,7 +88,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Joint Validations', () => {
-    it('does not pass the Joint page if nothing entered', async() => {
+    it('does not pass the Joint page if nothing entered', async () => {
       const URI = '/joint';
       await initSession(URI);
       await passStep(URI, {});
@@ -106,7 +104,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('BRP Validations', () => {
-    it('does not pass the BRP page if BRP Number, Name and DOB are not entered', async() => {
+    it('does not pass the BRP page if BRP Number, Name and DOB are not entered', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {});
@@ -124,7 +122,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your date of birth in the correct format; for example, 31 3 1980/);
     });
 
-    it('does not pass the BRP page if DOB younger than 18 years old', async() => {
+    it('does not pass the BRP page if DOB younger than 18 years old', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -142,7 +140,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter a valid date of birth. You must be over 18 to apply/);
     });
 
-    it('does pass the BRP page if DOB is 18 years old or older', async() => {
+    it('does pass the BRP page if DOB is 18 years old or older', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -158,7 +156,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if DOB earlier than 1900-01-01', async() => {
+    it('does not pass the BRP page if DOB earlier than 1900-01-01', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -176,7 +174,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter a date after 1 1 1900/);
     });
 
-    it('does pass the BRP page if DOB later than 1900-01-02', async() => {
+    it('does pass the BRP page if DOB later than 1900-01-02', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -192,7 +190,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if DOB is in the future', async() => {
+    it('does not pass the BRP page if DOB is in the future', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -211,7 +209,7 @@ describe('validation checks of the apply journey', () => {
     });
 
 
-    it('does not pass the BRP page if the BRP number is less than 10 characters', async() => {
+    it('does not pass the BRP page if the BRP number is less than 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -229,7 +227,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
     });
 
-    it('does not pass the BRP page if the BRP number is more than 10 characters', async() => {
+    it('does not pass the BRP page if the BRP number is more than 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -249,7 +247,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('NI Number Validations', () => {
-    it('does not pass the NI Number page if nothing entered', async() => {
+    it('does not pass the NI Number page if nothing entered', async () => {
       const URI = '/ni-number';
       await initSession(URI);
       await passStep(URI, {});
@@ -263,7 +261,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
     });
 
-    it('does not pass the NI Number page if in the wrong format', async() => {
+    it('does not pass the NI Number page if in the wrong format', async () => {
       const URI = '/ni-number';
       await initSession(URI);
       await passStep(URI, {
@@ -279,7 +277,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
     });
 
-    it('does pass the NI Number page if in the correct format', async() => {
+    it('does pass the NI Number page if in the correct format', async () => {
       const URI = '/ni-number';
       await initSession(URI);
       await passStep(URI, {
@@ -293,7 +291,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does pass the NI Number page if the number is mixed case', async() => {
+    it('does pass the NI Number page if the number is mixed case', async () => {
       const URI = '/ni-number';
       await initSession(URI);
       await passStep(URI, {
@@ -309,7 +307,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Other Name Validations', () => {
-    it('does not pass the Has Other Names page if nothing entered', async() => {
+    it('does not pass the Has Other Names page if nothing entered', async () => {
       const URI = '/has-other-names';
       await initSession(URI);
       await passStep(URI, {});
@@ -323,7 +321,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if you have been known by any other names/);
     });
 
-    it('does not pass the add other name page if full name is not entered', async() => {
+    it('does not pass the add other name page if full name is not entered', async () => {
       const URI = '/add-other-name';
       await initSession(URI);
       await passStep(URI, {});
@@ -338,7 +336,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Home Office Reference Validations', () => {
-    it('does not pass the Home Office Reference page if nothing entered', async() => {
+    it('does not pass the Home Office Reference page if nothing entered', async () => {
       const URI = '/home-office-reference';
       await initSession(URI);
       await passStep(URI, {});
@@ -354,7 +352,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Convictions Validations', () => {
-    it('does not pass the Convictions page if nothing entered', async() => {
+    it('does not pass the Convictions page if nothing entered', async () => {
       const URI = '/convictions';
       await initSession(URI);
       await passStep(URI, {});
@@ -368,7 +366,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if you have ever been convicted of a crime in the UK/);
     });
 
-    it('does not pass the Convictions page if no crime details entered', async() => {
+    it('does not pass the Convictions page if no crime details entered', async () => {
       const URI = '/convictions';
       await initSession(URI);
       await passStep(URI, {
@@ -384,7 +382,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter details of the crime\(s\)/);
     });
 
-    it('does not pass the Convictions page if crime details over 500 characters', async() => {
+    it('does not pass the Convictions page if crime details over 500 characters', async () => {
       const URI = '/convictions';
       await initSession(URI);
       const _501Chars = 'a'.repeat(501);
@@ -405,7 +403,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Partner BRP Validations', () => {
-    it('does not pass the Partner BRP page if BRP Number, Name and DOB are not entered', async() => {
+    it('does not pass the Partner BRP page if BRP Number, Name and DOB are not entered', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {});
@@ -423,7 +421,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your partner's date of birth in the correct format; for example, 31 3 1980/);
     });
 
-    it('does not pass the Partner BRP page if DOB younger than 18 years old', async() => {
+    it('does not pass the Partner BRP page if DOB younger than 18 years old', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -441,7 +439,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter a valid date of birth. You must be over 18 to apply/);
     });
 
-    it('does pass the Partner BRP page if DOB is 18 years old or older', async() => {
+    it('does pass the Partner BRP page if DOB is 18 years old or older', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -457,7 +455,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if partner DOB is in the future', async() => {
+    it('does not pass the BRP page if partner DOB is in the future', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -475,7 +473,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter a date that is in the past/);
     });
 
-    it('does not pass the Partner BRP page if DOB earlier than 1900-01-01', async() => {
+    it('does not pass the Partner BRP page if DOB earlier than 1900-01-01', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -493,7 +491,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter a date after 1 1 1900/);
     });
 
-    it('does pass the Partner BRP page if DOB later than 1900-01-02', async() => {
+    it('does pass the Partner BRP page if DOB later than 1900-01-02', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -509,7 +507,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the Partner BRP page if the BRP number is less than 9 characters', async() => {
+    it('does not pass the Partner BRP page if the BRP number is less than 9 characters', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -527,7 +525,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU12345678’/);
     });
 
-    it('does not pass the Partner BRP page if the BRP number is more than 9 characters', async() => {
+    it('does not pass the Partner BRP page if the BRP number is more than 9 characters', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
@@ -547,7 +545,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Partner NI Number Validations', () => {
-    it('does not pass the Partner NI Number page if nothing entered', async() => {
+    it('does not pass the Partner NI Number page if nothing entered', async () => {
       const URI = '/partner-ni-number';
       await initSession(URI);
       await passStep(URI, {});
@@ -561,7 +559,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
     });
 
-    it('does not pass the Partner NI Number page if in the wrong format', async() => {
+    it('does not pass the Partner NI Number page if in the wrong format', async () => {
       const URI = '/partner-ni-number';
       await initSession(URI);
       await passStep(URI, {
@@ -577,7 +575,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'/);
     });
 
-    it('does pass the Partner NI Number page if in the correct format', async() => {
+    it('does pass the Partner NI Number page if in the correct format', async () => {
       const URI = '/partner-ni-number';
       await initSession(URI);
       await passStep(URI, {
@@ -591,7 +589,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does pass the Partner NI Number page if the number is mixed case', async() => {
+    it('does pass the Partner NI Number page if the number is mixed case', async () => {
       const URI = '/partner-ni-number';
       await initSession(URI);
       await passStep(URI, {
@@ -607,7 +605,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Partner Has Other Name Validations', () => {
-    it('does not pass the Partner Has Other Names page if nothing entered', async() => {
+    it('does not pass the Partner Has Other Names page if nothing entered', async () => {
       const URI = '/partner-has-other-names';
       await initSession(URI);
       await passStep(URI, {});
@@ -621,7 +619,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if your partner has been known by any other names/);
     });
 
-    it('does not pass the partner add other name page if full name is not entered', async() => {
+    it('does not pass the partner add other name page if full name is not entered', async () => {
       const URI = '/partner-add-other-name';
       await initSession(URI);
       await passStep(URI, {});
@@ -636,7 +634,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Joint Convictions Validations', () => {
-    it('does not pass the Joint Convictions page if nothing entered', async() => {
+    it('does not pass the Joint Convictions page if nothing entered', async () => {
       const URI = '/convictions-joint';
       await initSession(URI);
       await passStep(URI, {});
@@ -650,7 +648,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if you or your partner have ever been convicted of a crime in the UK/);
     });
 
-    it('does not pass the Joint Convictions page if no crime details entered', async() => {
+    it('does not pass the Joint Convictions page if no crime details entered', async () => {
       const URI = '/convictions-joint';
       await initSession(URI);
       await passStep(URI, {
@@ -667,7 +665,7 @@ describe('validation checks of the apply journey', () => {
     });
   });
 
-  it('does not pass the Joint Convictions page if crime details over 500 characters', async() => {
+  it('does not pass the Joint Convictions page if crime details over 500 characters', async () => {
     const URI = '/convictions-joint';
     await initSession(URI);
     const _501Chars = 'a'.repeat(501);
@@ -687,7 +685,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Dependants Validations', () => {
-    it('does not pass the has dependants page if nothing entered', async() => {
+    it('does not pass the has dependants page if nothing entered', async () => {
       const URI = '/has-dependants';
       await initSession(URI);
       await passStep(URI, {});
@@ -702,7 +700,7 @@ describe('validation checks of the apply journey', () => {
     });
 
     it('does not pass the add dependant page if Name, DOB, and Relationship to you are not entered are not entered',
-      async() => {
+      async () => {
         const URI = '/add-dependent';
         await initSession(URI);
         await passStep(URI, {});
@@ -721,14 +719,14 @@ describe('validation checks of the apply journey', () => {
       });
 
     it('does not pass the add dependant page if the dependant\'s DOB is in the future',
-      async() => {
+      async () => {
         const URI = '/add-dependent';
         await initSession(URI);
         await passStep(URI, {
           dependantFullName: 'John Doe',
           dependantRelationship: 'Son',
           dependantDateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
-      });
+        });
 
         const res = await getUrl(URI);
         const docu = await parseHtml(res);
@@ -741,7 +739,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Address Validations', () => {
-    it('does not pass the Address page if nothing entered', async() => {
+    it('does not pass the Address page if nothing entered', async () => {
       const URI = '/address';
       await initSession(URI);
       await passStep(URI, {});
@@ -761,7 +759,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Income Validations', () => {
-    it('does not pass the Income page if nothing entered', async() => {
+    it('does not pass the Income page if nothing entered', async () => {
       const URI = '/income';
       await initSession(URI);
       await passStep(URI, {});
@@ -775,7 +773,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select options for your monthly income/);
     });
 
-    it('does not pass the Income page if numbers entered are negative', async() => {
+    it('does not pass the Income page if numbers entered are negative', async () => {
       const URI = '/income';
       await initSession(URI);
       await passStep(URI, {
@@ -810,7 +808,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other income amount must be greater than zero/);
     });
 
-    it('does not pass the Income page if numbers entered are more than 2 decimal places', async() => {
+    it('does not pass the Income page if numbers entered are more than 2 decimal places', async () => {
       const URI = '/income';
       await initSession(URI);
       await passStep(URI, {
@@ -845,7 +843,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other income must be in pounds and pence; for example £100.00/);
     });
 
-    it('does not pass the Income page if income types selected with no amounts', async() => {
+    it('does not pass the Income page if income types selected with no amounts', async () => {
       const URI = '/income';
       await initSession(URI);
       await passStep(URI, {
@@ -877,7 +875,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Outgoings Validations', () => {
-    it('does not pass the Outgoings page if nothing entered', async() => {
+    it('does not pass the Outgoings page if nothing entered', async () => {
       const URI = '/outgoings';
       await initSession(URI);
       await passStep(URI, {});
@@ -891,7 +889,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select at least one option for your monthly outgoings/);
     });
 
-    it('does not pass the Outgoings page if numbers entered are negative', async() => {
+    it('does not pass the Outgoings page if numbers entered are negative', async () => {
       const URI = '/outgoings';
       await initSession(URI);
       await passStep(URI, {
@@ -938,7 +936,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other outgoings amount must be greater than zero/);
     });
 
-    it('does not pass the Outgoings page if numbers entered are more than 2 decimal places', async() => {
+    it('does not pass the Outgoings page if numbers entered are more than 2 decimal places', async () => {
       const URI = '/outgoings';
       await initSession(URI);
       await passStep(URI, {
@@ -985,7 +983,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other outgoings amount must be in pounds and pence; for example £100.00/);
     });
 
-    it('does not pass the Outgoings page if outgoings types selected with no amounts', async() => {
+    it('does not pass the Outgoings page if outgoings types selected with no amounts', async () => {
       const URI = '/outgoings';
       await initSession(URI);
       await passStep(URI, {
@@ -1026,7 +1024,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Savings Validations', () => {
-    it('does not pass the Savings page if nothing entered', async() => {
+    it('does not pass the Savings page if nothing entered', async () => {
       const URI = '/savings';
       await initSession(URI);
       await passStep(URI, {});
@@ -1040,7 +1038,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if you have any savings/);
     });
 
-    it('does not pass the Savings page if no savings amount entered', async() => {
+    it('does not pass the Savings page if no savings amount entered', async () => {
       const URI = '/savings';
       await initSession(URI);
       await passStep(URI, {
@@ -1056,7 +1054,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter total amount of savings/);
     });
 
-    it('does not pass the Savings page if savings amount entered is negative', async() => {
+    it('does not pass the Savings page if savings amount entered is negative', async () => {
       const URI = '/savings';
       await initSession(URI);
       await passStep(URI, {
@@ -1073,7 +1071,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Total amount of savings must be greater than zero/);
     });
 
-    it('does not pass the Savings page if savings amount entered are more than 2 decimal places', async() => {
+    it('does not pass the Savings page if savings amount entered are more than 2 decimal places', async () => {
       const URI = '/savings';
       await initSession(URI);
       await passStep(URI, {
@@ -1092,7 +1090,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Amount Validations', () => {
-    it('does not pass the Amount page if nothing entered', async() => {
+    it('does not pass the Amount page if nothing entered', async () => {
       const URI = '/amount';
       await initSession(URI);
       await passStep(URI, {});
@@ -1106,7 +1104,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter loan amount/);
     });
 
-    it('does not pass the Amount page if amount entered is less than 100', async() => {
+    it('does not pass the Amount page if amount entered is less than 100', async () => {
       const URI = '/amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1122,7 +1120,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter loan amount between £100.00 and £500.00 in pounds and pence/);
     });
 
-    it('does pass the Amount page if amount entered is 100 or more', async() => {
+    it('does pass the Amount page if amount entered is 100 or more', async () => {
       const URI = '/amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1136,7 +1134,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the Amount page if amount entered is more than 500', async() => {
+    it('does not pass the Amount page if amount entered is more than 500', async () => {
       const URI = '/amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1152,7 +1150,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter loan amount between £100.00 and £500.00 in pounds and pence/);
     });
 
-    it('does pass the Amount page if amount entered is less than 500', async() => {
+    it('does pass the Amount page if amount entered is less than 500', async () => {
       const URI = '/amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1166,7 +1164,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the Amount page if amount entered is more than 2 decimal places', async() => {
+    it('does not pass the Amount page if amount entered is more than 2 decimal places', async () => {
       const URI = '/amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1184,7 +1182,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Combined Income Validations', () => {
-    it('does not pass the Combined Income page if nothing entered', async() => {
+    it('does not pass the Combined Income page if nothing entered', async () => {
       const URI = '/combined-income';
       await initSession(URI);
       await passStep(URI, {});
@@ -1198,7 +1196,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select options for you and your partner\'s monthly income/);
     });
 
-    it('does not pass the Combined Income page if numbers entered are negative', async() => {
+    it('does not pass the Combined Income page if numbers entered are negative', async () => {
       const URI = '/combined-income';
       await initSession(URI);
       await passStep(URI, {
@@ -1233,7 +1231,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other income amount must be greater than zero/);
     });
 
-    it('does not pass the Combined Income page if numbers entered are more than 2 decimal places', async() => {
+    it('does not pass the Combined Income page if numbers entered are more than 2 decimal places', async () => {
       const URI = '/combined-income';
       await initSession(URI);
       await passStep(URI, {
@@ -1268,7 +1266,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other income must be in pounds and pence; for example £100.00/);
     });
 
-    it('does not pass the Combined Income page if income types selected with no amounts', async() => {
+    it('does not pass the Combined Income page if income types selected with no amounts', async () => {
       const URI = '/combined-income';
       await initSession(URI);
       await passStep(URI, {
@@ -1300,7 +1298,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Combined Outgoings Validations', () => {
-    it('does not pass the Combined Outgoings page if nothing entered', async() => {
+    it('does not pass the Combined Outgoings page if nothing entered', async () => {
       const URI = '/combined-outgoings';
       await initSession(URI);
       await passStep(URI, {});
@@ -1314,7 +1312,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select options for you and your partner\'s monthly outgoings/);
     });
 
-    it('does not pass the Combined Outgoings page if numbers entered are negative', async() => {
+    it('does not pass the Combined Outgoings page if numbers entered are negative', async () => {
       const URI = '/combined-outgoings';
       await initSession(URI);
       await passStep(URI, {
@@ -1361,7 +1359,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other outgoings amount must be greater than zero/);
     });
 
-    it('does not pass the Combined Outgoings page if numbers entered are more than 2 decimal places', async() => {
+    it('does not pass the Combined Outgoings page if numbers entered are more than 2 decimal places', async () => {
       const URI = '/combined-outgoings';
       await initSession(URI);
       await passStep(URI, {
@@ -1408,7 +1406,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other outgoings amount must be in pounds and pence; for example £100.00/);
     });
 
-    it('does not pass the Combined Outgoings page if outgoings types selected with no amounts', async() => {
+    it('does not pass the Combined Outgoings page if outgoings types selected with no amounts', async () => {
       const URI = '/combined-outgoings';
       await initSession(URI);
       await passStep(URI, {
@@ -1449,7 +1447,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Combined Savings Validations', () => {
-    it('does not pass the Combined Savings page if nothing entered', async() => {
+    it('does not pass the Combined Savings page if nothing entered', async () => {
       const URI = '/combined-savings';
       await initSession(URI);
       await passStep(URI, {});
@@ -1463,7 +1461,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if you or your partner have any savings/);
     });
 
-    it('does not pass the Combined Savings page if no savings amount entered', async() => {
+    it('does not pass the Combined Savings page if no savings amount entered', async () => {
       const URI = '/combined-savings';
       await initSession(URI);
       await passStep(URI, {
@@ -1479,7 +1477,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter total amount of savings/);
     });
 
-    it('does not pass the Combined Savings page if savings amount entered is negative', async() => {
+    it('does not pass the Combined Savings page if savings amount entered is negative', async () => {
       const URI = '/combined-savings';
       await initSession(URI);
       await passStep(URI, {
@@ -1496,7 +1494,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Total amount of savings must be greater than zero/);
     });
 
-    it('does not pass the Combined Savings page if savings amount entered are more than 2 decimal places', async() => {
+    it('does not pass the Combined Savings page if savings amount entered are more than 2 decimal places', async () => {
       const URI = '/combined-savings';
       await initSession(URI);
       await passStep(URI, {
@@ -1515,7 +1513,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Combined Amount Validations', () => {
-    it('does not pass the Combined Amount page if nothing entered', async() => {
+    it('does not pass the Combined Amount page if nothing entered', async () => {
       const URI = '/combined-amount';
       await initSession(URI);
       await passStep(URI, {});
@@ -1529,7 +1527,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter loan amount/);
     });
 
-    it('does not pass the Combined Amount page if amount entered is less than 100', async() => {
+    it('does not pass the Combined Amount page if amount entered is less than 100', async () => {
       const URI = '/combined-amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1545,7 +1543,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter loan amount between £100.00 and £780.00 in pounds and pence/);
     });
 
-    it('does pass the Combined Amount page if amount entered is 100 or more', async() => {
+    it('does pass the Combined Amount page if amount entered is 100 or more', async () => {
       const URI = '/combined-amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1559,7 +1557,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the Combined Amount page if amount entered is more than 780', async() => {
+    it('does not pass the Combined Amount page if amount entered is more than 780', async () => {
       const URI = '/combined-amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1575,7 +1573,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter loan amount between £100.00 and £780.00 in pounds and pence/);
     });
 
-    it('does pass the Combined Amount page if amount entered is less than 780', async() => {
+    it('does pass the Combined Amount page if amount entered is less than 780', async () => {
       const URI = '/combined-amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1589,7 +1587,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the Combined Amount page if amount entered is more than 2 decimal places', async() => {
+    it('does not pass the Combined Amount page if amount entered is more than 2 decimal places', async () => {
       const URI = '/combined-amount';
       await initSession(URI);
       await passStep(URI, {
@@ -1607,7 +1605,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Purpose Validations', () => {
-    it('does not pass the Purpose page if nothing entered', async() => {
+    it('does not pass the Purpose page if nothing entered', async () => {
       const URI = '/purpose';
       await initSession(URI);
       await passStep(URI, {});
@@ -1621,7 +1619,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select what you will use the loan for/);
     });
 
-    it('does pass the Purpose page if one purpose entered', async() => {
+    it('does pass the Purpose page if one purpose entered', async () => {
       const URI = '/purpose';
       await initSession(URI);
       await passStep(URI, {
@@ -1637,7 +1635,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does pass the Purpose page if all purposes entered', async() => {
+    it('does pass the Purpose page if all purposes entered', async () => {
       const URI = '/purpose';
       await initSession(URI);
       await passStep(URI, {
@@ -1659,7 +1657,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Bank Details Validations', () => {
-    it('does not pass the Bank Details page if nothing entered', async() => {
+    it('does not pass the Bank Details page if nothing entered', async () => {
       const URI = '/bank-details';
       await initSession(URI);
       await passStep(URI, {});
@@ -1677,7 +1675,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your 6 to 8 digit account number/);
     });
 
-    it('does not pass the Bank Details page if sort code and account numbers too short', async() => {
+    it('does not pass the Bank Details page if sort code and account numbers too short', async () => {
       const URI = '/bank-details';
       await initSession(URI);
       await passStep(URI, {
@@ -1698,7 +1696,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your 6 to 8 digit account number/);
     });
 
-    it('does not pass the Bank Details page if sort code and account numbers too long', async() => {
+    it('does not pass the Bank Details page if sort code and account numbers too long', async () => {
       const URI = '/bank-details';
       await initSession(URI);
       await passStep(URI, {
@@ -1719,7 +1717,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter your 6 to 8 digit account number/);
     });
 
-    it('does pass the Bank Details page if account number 8 digits long', async() => {
+    it('does pass the Bank Details page if account number 8 digits long', async () => {
       const URI = '/bank-details';
       await initSession(URI);
       await passStep(URI, {
@@ -1736,7 +1734,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does pass the Bank Details page if roll not entered', async() => {
+    it('does pass the Bank Details page if roll not entered', async () => {
       const URI = '/bank-details';
       await initSession(URI);
       await passStep(URI, {
@@ -1755,7 +1753,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Contact Validations', () => {
-    it('does not pass the Contact page if nothing entered', async() => {
+    it('does not pass the Contact page if nothing entered', async () => {
       const URI = '/contact';
       await initSession(URI);
       await passStep(URI, {});
@@ -1769,7 +1767,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select how we can contact you/);
     });
 
-    it('does not pass the Contact page if email and phone selected but not entered', async() => {
+    it('does not pass the Contact page if email and phone selected but not entered', async () => {
       const URI = '/contact';
       await initSession(URI);
       await passStep(URI, {
@@ -1792,7 +1790,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Outcome Validations', () => {
-    it('does not pass the Outcome page if nothing entered', async() => {
+    it('does not pass the Outcome page if nothing entered', async () => {
       const URI = '/outcome';
       await initSession(URI);
       await passStep(URI, {});
@@ -1806,7 +1804,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select if you are likely to move to another address in the next 4 weeks/);
     });
 
-    it('does not pass the Outcome page if likelt to move entered with no details', async() => {
+    it('does not pass the Outcome page if likelt to move entered with no details', async () => {
       const URI = '/outcome';
       await initSession(URI);
       await passStep(URI, {
@@ -1828,7 +1826,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Help Validations', () => {
-    it('does not pass the Help page if nothing entered', async() => {
+    it('does not pass the Help page if nothing entered', async () => {
       const URI = '/help';
       await initSession(URI);
       await passStep(URI, {});
@@ -1844,7 +1842,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Help Reasons Validations', () => {
-    it('does not pass the Help Reasons page if nothing entered', async() => {
+    it('does not pass the Help Reasons page if nothing entered', async () => {
       const URI = '/help-reasons';
       await initSession(URI);
       await passStep(URI, {});
@@ -1858,7 +1856,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select why you needed help/);
     });
 
-    it('does pass the Help Reasons page if one item selected', async() => {
+    it('does pass the Help Reasons page if one item selected', async () => {
       const URI = '/help-reasons';
       await initSession(URI);
       await passStep(URI, {
@@ -1874,7 +1872,7 @@ describe('validation checks of the apply journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does pass the Help Reasons page if all items selected', async() => {
+    it('does pass the Help Reasons page if all items selected', async () => {
       const URI = '/help-reasons';
       await initSession(URI);
       await passStep(URI, {
@@ -1896,7 +1894,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Who Helped Validations', () => {
-    it('does not pass the Who Helped page if nothing entered', async() => {
+    it('does not pass the Who Helped page if nothing entered', async () => {
       const URI = '/who-helped';
       await initSession(URI);
       await passStep(URI, {});
@@ -1914,7 +1912,7 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Select how we can contact the person who helped you/);
     });
 
-    it('does not pass the Who Helped page if email and phone details not entered', async() => {
+    it('does not pass the Who Helped page if email and phone details not entered', async () => {
       const URI = '/who-helped';
       await initSession(URI);
       await passStep(URI, {
@@ -1937,5 +1935,4 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Enter the person\'s phone number/);
     });
   });
-
 });

@@ -1,9 +1,7 @@
-'use strict';
 
 const path = require('path');
 
 module.exports = superclass => class extends superclass {
-
   constructor(options) {
     if (!options.aggregateTo) {
       throw new Error('options.aggregateTo is required for loops');
@@ -40,7 +38,7 @@ module.exports = superclass => class extends superclass {
 
       const value = req.sessionModel.get(aggregateFromField);
 
-      const fieldToUpdate = items[id].fields.find((field) => field.field === aggregateFromField);
+      const fieldToUpdate = items[id].fields.find(field => field.field === aggregateFromField);
 
       fieldToUpdate.value = req.sessionModel.get(aggregateFromField);
       fieldToUpdate.parsed = this.parseField(aggregateFromElement, value, req);
@@ -77,7 +75,7 @@ module.exports = superclass => class extends superclass {
         const aggregateFromField = aggregateFromElement.field || aggregateFromElement;
 
         req.sessionModel.set(aggregateFromField,
-          items[id].fields.find((field) => field.field === aggregateFromField).value);
+          items[id].fields.find(field => field.field === aggregateFromField).value);
       });
       const editPath = req.params.edit ? `/edit#${req.params.edit}` : '/edit';
       res.redirect(`${req.baseUrl}/${req.form.options.addStep}${editPath}`);
@@ -212,7 +210,7 @@ module.exports = superclass => class extends superclass {
       hasItems: items.length > 0,
       addStep: req.form.options.addStep,
       field: req.form.options.aggregateTo,
-      addAnotherLinkText: req.form.options.addAnotherLinkText,
+      addAnotherLinkText: req.form.options.addAnotherLinkText
     });
   }
 };

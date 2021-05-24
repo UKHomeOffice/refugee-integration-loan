@@ -1,9 +1,7 @@
-'use strict';
 
 const moment = require('moment');
 
 describe('validation checks of the accept journey', () => {
-
   let testApp;
   let passStep;
   let initSession;
@@ -13,7 +11,7 @@ describe('validation checks of the accept journey', () => {
   const SUBAPP = 'accept';
   let now;
 
-  before(function setup() {
+  before(() => {
     testApp = getSupertestApp(SUBAPP);
     passStep = testApp.passStep;
     initSession = testApp.initSession;
@@ -26,7 +24,7 @@ describe('validation checks of the accept journey', () => {
   });
 
   describe('Reference Number Validations', () => {
-    it('does not pass the Reference Number page if nothing entered', async() => {
+    it('does not pass the Reference Number page if nothing entered', async () => {
       const URI = '/reference-number';
       await initSession(URI);
       await passStep(URI, {});
@@ -42,7 +40,7 @@ describe('validation checks of the accept journey', () => {
   });
 
   describe('BRP Validations', () => {
-    it('does not pass the BRP page if BRP Number and DOB are not entered', async() => {
+    it('does not pass the BRP page if BRP Number and DOB are not entered', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {});
@@ -58,7 +56,7 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter your date of birth in the correct format; for example, 31 3 1980/);
     });
 
-    it('does not pass the BRP page if DOB younger than 18 years old', async() => {
+    it('does not pass the BRP page if DOB younger than 18 years old', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -75,7 +73,7 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter a valid date of birth. You must be over 18 to accept/);
     });
 
-    it('does pass the BRP page if DOB is 18 years old or older', async() => {
+    it('does pass the BRP page if DOB is 18 years old or older', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -90,7 +88,7 @@ describe('validation checks of the accept journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if DOB earlier than 1900-01-01', async() => {
+    it('does not pass the BRP page if DOB earlier than 1900-01-01', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -107,7 +105,7 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter a date after 1 1 1900/);
     });
 
-    it('does not pass the BRP page if DOB is in the future', async() => {
+    it('does not pass the BRP page if DOB is in the future', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -124,7 +122,7 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter a date that is in the past/);
     });
 
-    it('does pass the BRP page if DOB later than 1900-01-02', async() => {
+    it('does pass the BRP page if DOB later than 1900-01-02', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -139,7 +137,7 @@ describe('validation checks of the accept journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if the BRP number is less than 10 characters', async() => {
+    it('does not pass the BRP page if the BRP number is less than 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -156,7 +154,7 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
     });
 
-    it('does not pass the BRP page if the BRP number is more than 10 characters', async() => {
+    it('does not pass the BRP page if the BRP number is more than 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -175,7 +173,7 @@ describe('validation checks of the accept journey', () => {
   });
 
   describe('Contact Validations', () => {
-    it('does not pass the Contact page if nothing entered', async() => {
+    it('does not pass the Contact page if nothing entered', async () => {
       const URI = '/contact';
       await initSession(URI);
       await passStep(URI, {});
@@ -189,7 +187,7 @@ describe('validation checks of the accept journey', () => {
         .to.contain('Select how we can contact you');
     });
 
-    it('does not pass the Contact page if email and phone selected but not entered', async() => {
+    it('does not pass the Contact page if email and phone selected but not entered', async () => {
       const URI = '/contact';
       await initSession(URI);
       await passStep(URI, {
@@ -210,5 +208,4 @@ describe('validation checks of the accept journey', () => {
         .to.contain('Enter your phone number in the correct format');
     });
   });
-
 });

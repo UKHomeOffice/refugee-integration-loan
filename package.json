@@ -10,7 +10,7 @@
     "test:audit": "npm audit --audit-level=high",
     "test:unit": "nyc _mocha \"test/_unit/**/*.spec.js\"",
     "test:integration": "_mocha \"test/_integration/**/*.spec.js\" --exit",
-    "test:lint": "eslint .",
+    "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
     "build": "hof-build",
     "postinstall": "npm run build"
   },
@@ -42,8 +42,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
-    "eslint": "^7.11.0",
-    "eslint-config-homeoffice": "^2.2.0",
+    "eslint-config-hof": "^1.0.4",
     "jquery": "^3.5.1",
     "jsdom": "^16.4.0",
     "mocha": "^8.2.0",

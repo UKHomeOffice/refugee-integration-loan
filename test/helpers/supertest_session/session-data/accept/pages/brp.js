@@ -1,4 +1,3 @@
-'use strict';
 
 module.exports = {
   brpNumber: 'ZU1234567',

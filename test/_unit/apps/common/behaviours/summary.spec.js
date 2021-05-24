@@ -1,4 +1,3 @@
-'use strict';
 
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
@@ -27,9 +26,11 @@ describe('summary behaviour', () => {
     translateMock.callsFake(itemNames => {
       if (Array.isArray(itemNames)) {
         for (const index in itemNames) {
-          const item = _.get(mockTranslations, itemNames[index]);
-          if (item) {
-            return item;
+          if (itemNames.hasOwnProperty(index)) {
+            const item = _.get(mockTranslations, itemNames[index]);
+            if (item) {
+              return item;
+            }
           }
         }
         return itemNames[0];
@@ -47,7 +48,7 @@ describe('summary behaviour', () => {
 
     req.form.options = {
       fieldsConfig: {
-        'hasOtherNames': { mixin: 'radio-group' }
+        hasOtherNames: { mixin: 'radio-group' }
       },
       sections: {
         'pdf-applicant-details': [
@@ -62,7 +63,7 @@ describe('summary behaviour', () => {
             step: '/has-other-names',
             field: 'hasOtherNames',
             omitFromPdf: true
-          },
+          }
         ],
         'other-names': [
           {
@@ -70,16 +71,16 @@ describe('summary behaviour', () => {
             field: 'otherNames',
             dependsOn: 'hasOtherNames',
             addElementSeparators: true
-          },
+          }
         ]
       },
       steps: {
         '/pdf-applicant-details':
-          { 'fields': ['brpNumber', 'dateOfBirth'] },
+          { fields: ['brpNumber', 'dateOfBirth'] },
         '/has-other-names':
-          { 'fields': ['hasOtherNames'] },
+          { fields: ['hasOtherNames'] },
         '/other-names':
-          { 'fields': ['otherNames'] }
+          { fields: ['otherNames'] }
       }
     };
 
@@ -109,10 +110,10 @@ describe('summary behaviour', () => {
     it('should trigger parser functions provided in sections.js', () => {
       lastResult.should.containSubset([
         {
-          'section': 'Applicant’s details',
-          'fields': [
+          section: 'Applicant’s details',
+          fields: [
             {
-              'value': '1st January 1980'
+              value: '1st January 1980'
             }
           ]
         }
@@ -120,48 +121,48 @@ describe('summary behaviour', () => {
     });
 
     it('should supply translated changeLinkDescriptions', () => {
-        lastResult.should.containSubset([
-          {
-            'fields': [
-              {
-                'changeLinkDescription': 'Your date of birth'
-              },
-            ]
-          },
-          {
-            'fields': [
-              {
-                'changeLinkDescription': 'A first name'
-              },
-            ]
-          },
-          {
-            'fields': [
-              {
-                'changeLinkDescription': 'A surname'
-              }
-            ]
-          }
-        ]);
-      }
+      lastResult.should.containSubset([
+        {
+          fields: [
+            {
+              changeLinkDescription: 'Your date of birth'
+            }
+          ]
+        },
+        {
+          fields: [
+            {
+              changeLinkDescription: 'A first name'
+            }
+          ]
+        },
+        {
+          fields: [
+            {
+              changeLinkDescription: 'A surname'
+            }
+          ]
+        }
+      ]);
+    }
     );
 
     it('should translate the value for a radio button group', () => {
-      lastResult.should.containSubset([{ 'fields': [{ 'value': 'Yes' }] }]);
+      lastResult.should.containSubset([{ fields: [{ value: 'Yes' }] }]);
     });
 
     it('should output the correct value for a yes/no radio button group', () => {
       lastResult.should.containSubset(
         [{
-          'fields': [
+          fields: [
             {
-              'field': 'hasOtherNames',
-              'label': 'Have you been known by any other names?',
-              'step': '/has-other-names',
-              'value': 'Yes',
+              field: 'hasOtherNames',
+              label: 'Have you been known by any other names?',
+              step: '/has-other-names',
+              value: 'Yes'
             }
           ],
-          'section': 'Have you been known by any other names?',
+          section: 'Have you been known by any other names?'
         }]
       );
     });
@@ -169,22 +170,22 @@ describe('summary behaviour', () => {
     it('expands aggregated fields into individual entries for summary display', () => {
       lastResult.should.containSubset(
         [{
-          'section': 'Does the applicant have other names?',
-          'fields': [
+          section: 'Does the applicant have other names?',
+          fields: [
             {
-              'label': 'First name',
-              'value': 'Jane',
-              'changeLink': 'test/other-names/edit/0/firstName?returnToSummary=true'
+              label: 'First name',
+              value: 'Jane',
+              changeLink: 'test/other-names/edit/0/firstName?returnToSummary=true'
             },
             {
-              'label': 'Surname',
-              'value': 'Smith',
-              'changeLink': 'test/other-names/edit/0/surname?returnToSummary=true'
+              label: 'Surname',
+              value: 'Smith',
+              changeLink: 'test/other-names/edit/0/surname?returnToSummary=true'
             },
             {
-              'label': 'First name',
-              'value': 'Steve',
-              'changeLink': 'test/other-names/edit/1/firstName?returnToSummary=true'
+              label: 'First name',
+              value: 'Steve',
+              changeLink: 'test/other-names/edit/1/firstName?returnToSummary=true'
             }
           ]
         }]
@@ -194,12 +195,12 @@ describe('summary behaviour', () => {
     it('should add separators when specified', () => {
       lastResult.should.containSubset([
         {
-          'fields': [
+          fields: [
             {
-              'label': '',
-              'value': 'separator',
-              'changeLink': '',
-              'isSeparator': true
+              label: '',
+              value: 'separator',
+              changeLink: '',
+              isSeparator: true
             }
           ]
         }
@@ -218,55 +219,55 @@ describe('summary behaviour', () => {
     it('returns expanded fields', () => {
       const inputObj =
         {
-          'changeLinkDescription': 'Other name',
-          'label': 'Full name',
-          'value': {
+          changeLinkDescription: 'Other name',
+          label: 'Full name',
+          value: {
             aggregatedValues: [
               {
-                'itemTitle': 'John',
-                'fields': [
+                itemTitle: 'John',
+                fields: [
                   {
-                    'field': 'otherName',
-                    'value': 'John',
+                    field: 'otherName',
+                    value: 'John'
                   }
                 ],
-                'index': 0
+                index: 0
               },
               {
-                'itemTitle': 'Jane',
-                'fields': [
+                itemTitle: 'Jane',
+                fields: [
                   {
-                    'field': 'otherName',
-                    'value': 'Jane',
+                    field: 'otherName',
+                    value: 'Jane'
                   }
                 ],
-                'index': 1
+                index: 1
               }
             ]
           },
-          'step': '/other-names',
-          'field': 'otherNames',
+          step: '/other-names',
+          field: 'otherNames'
         };
 
       behaviour.expandAggregatedFields(inputObj, req)
         .should.be.eql([
-        {
-          'changeLinkDescription': 'Your other name',
-          'label': 'Other name',
-          'value': 'John',
-          'changeLink': 'test/other-names/edit/0/otherName?returnToSummary=true',
-          'field': 'otherName',
-          'index': 0,
-        },
-        {
-          'changeLinkDescription': 'Your other name',
-          'label': 'Other name',
-          'value': 'Jane',
-          'changeLink': 'test/other-names/edit/1/otherName?returnToSummary=true',
-          'field': 'otherName',
-          'index': 1,
-        }
-      ]);
+          {
+            changeLinkDescription: 'Your other name',
+            label: 'Other name',
+            value: 'John',
+            changeLink: 'test/other-names/edit/0/otherName?returnToSummary=true',
+            field: 'otherName',
+            index: 0
+          },
+          {
+            changeLinkDescription: 'Your other name',
+            label: 'Other name',
+            value: 'Jane',
+            changeLink: 'test/other-names/edit/1/otherName?returnToSummary=true',
+            field: 'otherName',
+            index: 1
+          }
+        ]);
     });
   });
 
@@ -282,9 +283,9 @@ describe('summary behaviour', () => {
 
       const sumValues = values => values.map(it => Number(it)).reduce((a, b) => a + b, 0);
       const fieldSpec = {
-        'field': 'totalIncome',
-        'derivation': {
-          'fromFields': [
+        field: 'totalIncome',
+        derivation: {
+          fromFields: [
             'foodToiletriesAndCleaningSuppliesAmount',
             'mobilePhoneAmount'
           ],
@@ -293,55 +294,54 @@ describe('summary behaviour', () => {
       };
 
       behaviour.runCombinerForDerivedField(fieldSpec, req).should.eql(30);
-
     });
   });
 
   describe('#getFieldData', () => {
     it('should return the correct result for simple fields', () => {
       behaviour.getFieldData('brpNumber', req).should.eql({
-        'changeLinkDescription': 'Your Biometric residence permit (BRP) number',
-        'label': 'Biometric residence permit (BRP) number',
-        'value': '12345678',
-        'step': '/pdf-applicant-details',
-        'field': 'brpNumber'
+        changeLinkDescription: 'Your Biometric residence permit (BRP) number',
+        label: 'Biometric residence permit (BRP) number',
+        value: '12345678',
+        step: '/pdf-applicant-details',
+        field: 'brpNumber'
       });
     });
 
     it('should return the correct result for aggregated fields', () => {
       behaviour.getFieldData('otherNames', req).should.eql(
         {
-          'changeLinkDescription': 'Your other names',
-          'field': 'otherNames',
-          'label': 'Other names',
-          'step': '/other-names',
-          'value': {
-            'aggregatedValues': [
+          changeLinkDescription: 'Your other names',
+          field: 'otherNames',
+          label: 'Other names',
+          step: '/other-names',
+          value: {
+            aggregatedValues: [
               {
-                'fields': [
+                fields: [
                   {
-                    'field': 'firstName',
-                    'value': 'Jane'
+                    field: 'firstName',
+                    value: 'Jane'
                   },
                   {
-                    'field': 'surname',
-                    'value': 'Smith',
+                    field: 'surname',
+                    value: 'Smith'
                   }
                 ],
-                'itemTitle': 'Jane'
+                itemTitle: 'Jane'
               },
               {
-                'fields': [
+                fields: [
                   {
-                    'field': 'firstName',
-                    'value': 'Steve'
+                    field: 'firstName',
+                    value: 'Steve'
                   },
                   {
-                    'field': 'surname',
-                    'value': 'Adams'
+                    field: 'surname',
+                    value: 'Adams'
                   }
                 ],
-                'itemTitle': 'Steve',
+                itemTitle: 'Steve'
               }
             ]
           }

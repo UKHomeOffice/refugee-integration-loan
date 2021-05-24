@@ -1,4 +1,3 @@
-'use strict';
 
 const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
@@ -102,7 +101,7 @@ describe('Apply Upload PDF Behaviour', () => {
   });
 
   describe('#sleep', () => {
-    it('creates a timed delay', async() => {
+    it('creates a timed delay', async () => {
       const then = moment();
       await behaviour.sleep(200);
       const diffTo100Mills = Math.round((moment() - then) / 100) * 100;
@@ -115,7 +114,7 @@ describe('Apply Upload PDF Behaviour', () => {
     let sleepStub;
     let next;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       next = sinon.stub();
       sandbox = sinon.createSandbox();
       sleepStub = sandbox.stub(Behaviour.prototype, 'sleep');
@@ -126,7 +125,7 @@ describe('Apply Upload PDF Behaviour', () => {
       sandbox.restore();
     });
 
-    it('should call super successHandler if submitted set to true', async() => {
+    it('should call super successHandler if submitted set to true', async () => {
       behaviour.options.steps[confirmStep].submitted = true;
       await behaviour.pollPdf(req, res, next, 0);
       superStub.should.have.been.calledOnce.calledWithExactly(req, res, next);
@@ -164,7 +163,7 @@ describe('Apply Upload PDF Behaviour', () => {
     let pdfLocalsStub;
     let next;
 
-    beforeEach(async() => {
+    beforeEach(async () => {
       req = request();
       res = response();
       next = sinon.stub();
@@ -209,19 +208,19 @@ describe('Apply Upload PDF Behaviour', () => {
       sendEmailWithAttachmentStub.should.have.been.calledOnce.calledWithExactly(req, testPDFFilePath);
     });
 
-    it('sets uploadPdfShared to pdf base instance and submitted to true', async() => {
+    it('sets uploadPdfShared to pdf base instance and submitted to true', async () => {
       const confirmOptions = behaviour.options.steps[confirmStep];
       expect(confirmOptions.uploadPdfShared).to.eql(pdfBaseInstanceStub);
       expect(confirmOptions.submitted).to.be.true;
     });
 
-    it('calls pollPdf when method invoked multiple times', async() => {
+    it('calls pollPdf when method invoked multiple times', async () => {
       await behaviour.successHandler(req, res, next);
       await behaviour.successHandler(req, res, next);
       pdfPollStub.should.have.been.calledTwice.calledWithExactly(req, res, next, 0);
     });
 
-    it('should call the callback with an Error if there is an error', async() => {
+    it('should call the callback with an Error if there is an error', async () => {
       behaviour.options.steps[confirmStep] = {
         uploadPdfShared: true
       };

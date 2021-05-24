@@ -1,4 +1,3 @@
-'use strict';
 
 const Summary = require('../common/behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');

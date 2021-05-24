@@ -1,4 +1,3 @@
-'use strict';
 
 module.exports = {
   partnerBrpNumber: 'ZU1434569',

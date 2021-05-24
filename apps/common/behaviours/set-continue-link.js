@@ -1,4 +1,4 @@
-'use strict';
+
 const _ = require('lodash');
 
 const config = require('../../../config');
@@ -13,9 +13,7 @@ module.exports = superclass => class extends superclass {
   }
 
   setContinueLink(req, res) {
-    const refererIsInternal = referer => {
-      return referer.hostname === req.hostname;
-    };
+    const refererIsInternal = referer => referer.hostname === req.hostname;
 
     const allowedPaths = ['accept', 'apply'];
 

@@ -1,10 +1,9 @@
-'use strict';
 
 const reqres = require('reqres');
 const Model = require('hof-model');
 
-module.exports = function request(opts) {
-  opts = opts || {};
+module.exports = options => {
+  const opts = options || {};
   const req = reqres.req(opts);
   req.log = () => {};
   req.form = req.form || {};

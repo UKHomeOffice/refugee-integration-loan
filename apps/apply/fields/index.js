@@ -1,4 +1,3 @@
-'use strict';
 
 const moment = require('moment');
 const config = require('../../../config');
@@ -101,9 +100,9 @@ module.exports = {
       toggle: 'detailsOfCrime',
       child: 'partials/details-summary-textarea'
     },
-      {
-        value: 'no'
-      }
+    {
+      value: 'no'
+    }
     ],
     validate: 'required',
     legend: {
@@ -131,13 +130,13 @@ module.exports = {
       toggle: 'detailsOfCrimeJoint',
       child: 'partials/details-summary-textarea'
     },
-      {
-        value: 'no'
-      }
+    {
+      value: 'no'
+    }
     ],
     legend: {
       className: 'visuallyhidden'
-    },
+    }
   },
   detailsOfCrimeJoint: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 500 }],
@@ -161,7 +160,7 @@ module.exports = {
   partnerBrpNumber: {
     formatter: ['removespaces', 'uppercase'],
     className: 'govuk-input govuk-input--width-10',
-    validate: ['required', brpNumber],
+    validate: ['required', brpNumber]
   },
   partnerNiNumber: {
     validate: ['required', niNumber],
@@ -216,7 +215,7 @@ module.exports = {
       {
         value: 'salary',
         toggle: 'salaryAmount',
-        child: 'partials/details-summary-input-text',
+        child: 'partials/details-summary-input-text'
       },
       {
         value: 'universal_credit',
@@ -249,7 +248,7 @@ module.exports = {
     attributes: [{ attribute: 'placeholder', value: '£' }],
     dependent: {
       field: 'incomeTypes',
-      value: 'salary',
+      value: 'salary'
     }
   },
   universalCreditAmount: {

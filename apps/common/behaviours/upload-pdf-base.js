@@ -1,4 +1,3 @@
-'use strict';
 
 const fs = require('fs');
 const path = require('path');
@@ -46,16 +45,19 @@ module.exports = class UploadPDFBase {
 
   readCss() {
     return new Promise((resolve, reject) => {
-      fs.readFile(path.resolve(__dirname, '../../../public/css/app.css'), (err, data) => {
-        return err ? reject(err) : resolve(data);
-      });
+      const cssFile = path.resolve(__dirname, '../../../public/css/app.css');
+      fs.readFile(cssFile, (err, data) => err ? reject(err) : resolve(data));
     });
   }
 
   readHOLogo() {
     return new Promise((resolve, reject) => {
-      fs.readFile(path.resolve(__dirname, '../../../assets/images/ho-logo.png'), (err, data) => {
-        return err ? reject(err) : resolve(`data:image/png;base64,${data.toString('base64')}`);
+      const hoLogoFile = path.resolve(__dirname, '../../../assets/images/ho-logo.png');
+      fs.readFile(hoLogoFile, (err, data) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(`data:image/png;base64,${data.toString('base64')}`);
       });
     });
   }
@@ -66,9 +68,11 @@ module.exports = class UploadPDFBase {
     });
   }
 
-  async renderHTML(req, res, locals) {
+  async renderHTML(req, res, locs) {
+    let locals = locs;
+
     if (this.behaviourConfig.sortSections) {
-      locals = this.sortSections(locals);
+      locals = this.sortSections(locs);
     }
 
     locals.title = `Refugee integration loan ${this.behaviourConfig.component}`;
@@ -189,12 +193,9 @@ module.exports = class UploadPDFBase {
     const orderedSections = _.map(sectionHeaders, obj => obj.header);
     let rows = locals.rows;
 
-    rows = rows.slice().sort((a, b) => {
-      return orderedSections.indexOf(a.section) - orderedSections.indexOf(b.section);
-    });
+    rows = rows.slice().sort((a, b) => orderedSections.indexOf(a.section) - orderedSections.indexOf(b.section));
 
     locals.rows = rows;
     return locals;
   }
-
 };

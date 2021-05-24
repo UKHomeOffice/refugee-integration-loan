@@ -1,4 +1,3 @@
-'use strict';
 
 module.exports = {
   building: '19',
