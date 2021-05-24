@@ -73,7 +73,7 @@ steps:
     when:
       branch:
         exclude:
-          - task/*
+          - feature/*
       event: push
 
   - name: sonar-scanner
@@ -85,7 +85,7 @@ steps:
     when:
       branch:
         exclude:
-          - task/*
+          - feature/*
       event: push
 
   - name: anchore-scan
@@ -103,7 +103,7 @@ steps:
     when:
       branch:
         exclude:
-          - task/*
+          - feature/*
       event: push
 
   - name: create_artefact
@@ -122,7 +122,7 @@ steps:
     when:
       branch:
         exclude:
-          - task/*
+          - feature/*
       event: push
 
   - name: deploy_to_branch
@@ -142,7 +142,7 @@ steps:
       branch:
         exclude:
           - master
-          - task/*
+          - feature/*
       event: push
 
   - name: deploy_to_uat
