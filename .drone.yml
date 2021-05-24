@@ -71,6 +71,9 @@ steps:
       - name: dockersock
         path: /var/run
     when:
+      branch:
+        exclude:
+          - task/*
       event: push
 
   - name: sonar-scanner
@@ -80,6 +83,9 @@ steps:
     settings:
       failure: ignore
     when:
+      branch:
+        exclude:
+          - task/*
       event: push
 
   - name: anchore-scan
@@ -95,6 +101,9 @@ steps:
       SHOW_ALL_VULNERABILITIES: true
       FAIL_ON_DETECTION: false
     when:
+      branch:
+        exclude:
+          - task/*
       event: push
 
   - name: create_artefact
@@ -111,6 +120,9 @@ steps:
         - latest_${DRONE_BRANCH}
         - ${DRONE_COMMIT_SHA}
     when:
+      branch:
+        exclude:
+          - task/*
       event: push
 
   - name: deploy_to_branch
@@ -130,6 +142,7 @@ steps:
       branch:
         exclude:
           - master
+          - task/*
       event: push
 
   - name: deploy_to_uat
@@ -197,8 +210,8 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-external.yaml -f kube/networkpolicy-external.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
     when:
-      event: promote
-      target: PROD
+      branch: master
+      event: push
 
 services:
   - name: docker
