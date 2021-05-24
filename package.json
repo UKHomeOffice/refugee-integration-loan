@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "hof-build watch",
-    "test": "npm run test:unit && npm run test:integration && npm run test:lint && npm audit --audit-level=high",
+    "test": "npm run test:unit && npm run test:integration && npm run test:lint && npm run test:audit",
+    "test:audit": "npm audit --audit-level=high",
     "test:unit": "nyc _mocha \"test/_unit/**/*.spec.js\"",
     "test:integration": "_mocha \"test/_integration/**/*.spec.js\" --exit",
     "test:lint": "eslint .",

@@ -2,20 +2,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+  name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+  {{ else if eq .KUBE_NAMESPACE .PROD_ENV }}
+  name: refugee-loan
+  {{ else }}
   annotations:
     downscaler/uptime: Mon-Fri 07:00-21:00 Europe/London
   name: refugee-loan
+  {{ end }}
 spec:
+  {{ if or (eq .KUBE_NAMESPACE .STG_ENV) (eq .KUBE_NAMESPACE .PROD_ENV) }}
+  replicas: 2
+  {{ else }}
   replicas: 1
+  {{ end }}
   selector:
     matchLabels:
+      {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+      name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+      {{ else }}
       name: refugee-loan
+      {{ end }}
   template:
     metadata:
       labels:
+        {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+        name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+        app: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+        service: refugee-integration-loan-{{ .DRONE_SOURCE_BRANCH }}
+        {{ else }}
         name: refugee-loan
         app: refugee-loan
         service: refugee-integration-loan
+        {{ end }}
     spec:
       containers:
         - name: refugee-loan
@@ -27,17 +47,32 @@ spec:
             - containerPort: 8080
           envFrom:
             - configMapRef:
+                {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+                name: refugee-loan-configmap-{{ .DRONE_SOURCE_BRANCH }}
+                {{ else }}
                 name: refugee-loan-configmap
+                {{ end }}
           env:
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_HOST
+              {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+              value: redis-{{ .DRONE_SOURCE_BRANCH }}
+              {{ else }}
               value: redis
+              {{ end }}
             - name: NOTIFY_KEY
               valueFrom:
                 secretKeyRef:
                   name: ril-notify-key
                   key: ril-notify-key
+            {{ if or (eq .KUBE_NAMESPACE .STG_ENV) (eq .KUBE_NAMESPACE .PROD_ENV) }}
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: session_secret
+            {{ end }}
           livenessProbe:
             httpGet:
               path: /healthz/ping
