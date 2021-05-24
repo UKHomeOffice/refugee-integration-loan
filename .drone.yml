@@ -89,16 +89,13 @@ steps:
       event: push
 
   - name: anchore-scan
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+    image: docker.digital.homeoffice.gov.uk/acp-anchore-submission:latest
     detach: true
     environment:
       IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
       SERVICE_URL: http://anchore-submission-server:10080
       LOCAL_IMAGE: true
       TOLERATE: medium
-      #whitelist: CVE_SOMENAME_1,CVE_SOMENAME_2
-      #whitelist_file: <PATH>
-      SHOW_ALL_VULNERABILITIES: true
       FAIL_ON_DETECTION: false
     when:
       branch:
