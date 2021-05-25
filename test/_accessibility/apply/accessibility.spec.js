@@ -1,22 +1,31 @@
 /* eslint no-console: 0 */
 const pa11y = require('pa11y');
-const settings = require('../../../hof.settings');
+const settings = require('../../../hof.settings.json');
 const path = require('path');
 const fs = require('fs');
 
-describe('the journey of an accessible accept application', async () => {
+describe('the journey of an accessible apply application', async () => {
   let testApp;
   let initSession;
   let getUrl;
   let uris = [];
   const accessibilityResults = [];
 
-  const SUBAPP = 'accept';
-  const URI = '/contact';
+  const SUBAPP = 'apply';
+  const URI = '/confirm';
+
+  const codeExemptions = result => {
+    const updatedResult = result;
+    if (updatedResult.step === '/apply/ineligible') {
+      const submitButtonCode = 'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2';
+      updatedResult.issues = updatedResult.issues.filter(obj => obj.code !== submitButtonCode);
+    }
+    return updatedResult;
+  };
 
   before(async () => {
     settings.routes.map(route => {
-      if (route.includes('accept')) {
+      if (route.includes('apply')) {
         const routeConfig = require(path.resolve(process.cwd(), route));
         uris = uris.concat(Object.keys(routeConfig.steps));
       }
@@ -27,12 +36,16 @@ describe('the journey of an accessible accept application', async () => {
     getUrl = testApp.getUrl;
   });
 
-  it('check accept accessibility issues', async () => {
+  it('check apply accessibility issues', async () => {
     await initSession(URI);
 
     const exclusions = [
-      '/confirm',
-      '/complete-acceptance'
+      '/other-names',
+      '/partner-other-names',
+      '/dependant-details',
+      '/help-reasons',
+      '/who-helped',
+      '/complete'
     ];
 
     await uris.reduce(async (previous, uri) => {
@@ -44,7 +57,7 @@ describe('the journey of an accessible accept application', async () => {
 
       const testHtmlFile = process.env.ENVIRONMENT === 'DRONE' ?
         `/root/.dockersock${uri}.html` :
-        `${process.cwd()}/test/_integration/tmp${uri}.html`;
+        `${process.cwd()}/test/_accessibility/tmp${uri}.html`;
 
       const res = await getUrl(uri);
 
@@ -57,10 +70,16 @@ describe('the journey of an accessible accept application', async () => {
         chromeLaunchConfig: {
           args: ['--no-sandbox']
         }
-      }).then(async results => {
-        results.step = `/${SUBAPP}${uri}`;
-        console.log(results);
-        accessibilityResults.push(results);
+      }).then(async r => {
+        let result = r;
+
+        result.step = `/${SUBAPP}${uri}`;
+
+        result = codeExemptions(result);
+
+        console.log(result);
+
+        accessibilityResults.push(result);
 
         await fs.unlink(testHtmlFile, (err, success) => {
           if (err) return console.log(err);

@@ -10,7 +10,7 @@
     "test:audit": "npm audit --audit-level=high",
     "test:unit": "nyc _mocha \"test/_unit/**/*.spec.js\"",
     "test:integration": "_mocha \"test/_integration/**/*.spec.js\" --exit",
-    "test:accessibility": "_mocha \"test/_integration/**/accessibility.spec.js\" --exit",
+    "test:accessibility": "_mocha \"test/_accessibility/**/*.spec.js\" --exit",
     "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
     "build": "hof-build",
     "postinstall": "npm run build"

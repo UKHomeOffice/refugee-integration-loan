@@ -47,6 +47,16 @@ steps:
 
   - name: integration
     pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:integration
+    when:
+      event: push
+
+  - name: accessibility
+    pull: if-not-exists
     image: buildkite/puppeteer:8.0.0
     environment:
       NOTIFY_KEY: USE_MOCK
@@ -55,7 +65,7 @@ steps:
       - name: dockersock
         path: /root/.dockersock
     commands:
-      - npm run test:integration
+      - npm run test:accessibility
     when:
       event: push
 
