@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: refugee-loan-external
+  name: {{ .APP_NAME }}-external
   labels:
     cert-manager.io/solver: http01
   annotations:
@@ -17,13 +17,13 @@ metadata:
 spec:
   tls:
     - hosts:
-        - www.apply-for-refugee-integration-loan.homeoffice.gov.uk
-      secretName: refugee-loan-external
+        - {{ .PRODUCTION-URL }}
+      secretName: {{ .APP_NAME }}-external
   rules:
-    - host: www.apply-for-refugee-integration-loan.homeoffice.gov.uk
+    - host: {{ .PRODUCTION_URL }}
       http:
         paths:
           - path: /
             backend:
-              serviceName: refugee-loan
+              serviceName: {{ .APP_NAME }}
               servicePort: 443

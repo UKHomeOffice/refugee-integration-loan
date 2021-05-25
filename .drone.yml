@@ -4,10 +4,14 @@ name: default
 type: kubernetes
 
 environment:
+  APP_NAME: refugee-loan
+  IMAGE_REPO: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans
+  PRODUCTION_URL: www.apply-for-refugee-integration-loan.homeoffice.gov.uk
   PROD_ENV: sas-ril-prod
   STG_ENV: sas-ril-stg
   UAT_ENV: sas-ril-uat
   BRANCH_ENV: sas-ril-branch
+  NON_PROD_AVAILABILITY: Mon-Fri 07:00-21:00 Europe/London
 
 steps:
   - name: setup
@@ -43,9 +47,13 @@ steps:
 
   - name: integration
     pull: if-not-exists
-    image: node:14
+    image: buildkite/puppeteer:8.0.0
     environment:
       NOTIFY_KEY: USE_MOCK
+      ENVIRONMENT: DRONE
+    volumes:
+      - name: dockersock
+        path: /root/.dockersock
     commands:
       - npm run test:integration
     when:

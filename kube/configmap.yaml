@@ -2,16 +2,16 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-  name: refugee-loan-configmap-{{ .DRONE_SOURCE_BRANCH }}
+  name: {{ .APP_NAME }}-configmap-{{ .DRONE_SOURCE_BRANCH }}
   {{ else }}
-  name: refugee-loan-configmap
+  name: {{ .APP_NAME }}-configmap
   {{ end }}
   namespace: {{ .KUBE_NAMESPACE }}
   labels:
     {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-    name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+    name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
     {{ else }}
-    name: refugee-loan
+    name: {{ .APP_NAME }}
     {{ end }}
 data:
   APP_NAME: "Refugee Integration Loan Application Service"

@@ -12,16 +12,16 @@ spec:
     - podSelector:
         matchLabels:
           {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-          name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+          name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
           {{ else }}
-          name: refugee-loan
+          name: {{ .APP_NAME }}
           {{ end }}
     - podSelector:
         matchLabels:
           {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-          name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+          name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
           {{ else }}
-          name: refugee-loan
+          name: {{ .APP_NAME }}
           {{ end }}
     ports:
     - port: 6379

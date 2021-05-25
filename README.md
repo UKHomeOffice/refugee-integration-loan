@@ -48,5 +48,5 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 To run against URL's listed in the `.pa11yci.json` configuration file.   
 
 ```bash
-npm run test:accessibility          // requires app to be running
+npm run test:_accessibility          // requires app to be running
 ```
