@@ -17,7 +17,7 @@ metadata:
 spec:
   tls:
     - hosts:
-        - {{ .PRODUCTION-URL }}
+        - {{ .PRODUCTION_URL }}
       secretName: {{ .APP_NAME }}-external
   rules:
     - host: {{ .PRODUCTION_URL }}
