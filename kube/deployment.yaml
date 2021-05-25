@@ -3,13 +3,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-  name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+  name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
   {{ else if eq .KUBE_NAMESPACE .PROD_ENV }}
-  name: refugee-loan
+  name: {{ .APP_NAME }}
   {{ else }}
   annotations:
-    downscaler/uptime: Mon-Fri 07:00-21:00 Europe/London
-  name: refugee-loan
+    downscaler/uptime: {{ .NON_PROD_AVAILABILITY }}
+  name: {{ .APP_NAME }}
   {{ end }}
 spec:
   {{ if or (eq .KUBE_NAMESPACE .STG_ENV) (eq .KUBE_NAMESPACE .PROD_ENV) }}
@@ -20,26 +20,26 @@ spec:
   selector:
     matchLabels:
       {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-      name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+      name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
       {{ else }}
-      name: refugee-loan
+      name: {{ .APP_NAME }}
       {{ end }}
   template:
     metadata:
       labels:
         {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-        name: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
-        app: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
-        service: refugee-integration-loan-{{ .DRONE_SOURCE_BRANCH }}
+        name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
+        app: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
+        service: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
         {{ else }}
-        name: refugee-loan
-        app: refugee-loan
-        service: refugee-integration-loan
+        name: {{ .APP_NAME }}
+        app: {{ .APP_NAME }}
+        service: {{ .APP_NAME }}
         {{ end }}
     spec:
       containers:
-        - name: refugee-loan
-          image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/sas/refugee-integration-loans:{{.DRONE_COMMIT_SHA}}
+        - name: {{ .APP_NAME }}
+          image: {{ .IMAGE_REPO }}:{{.DRONE_COMMIT_SHA}}
           imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
@@ -48,9 +48,9 @@ spec:
           envFrom:
             - configMapRef:
                 {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-                name: refugee-loan-configmap-{{ .DRONE_SOURCE_BRANCH }}
+                name: {{ .APP_NAME }}-configmap-{{ .DRONE_SOURCE_BRANCH }}
                 {{ else }}
-                name: refugee-loan-configmap
+                name: {{ .APP_NAME }}-configmap
                 {{ end }}
           env:
             - name: REDIS_PORT

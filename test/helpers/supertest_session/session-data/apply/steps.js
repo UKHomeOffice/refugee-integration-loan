@@ -21,7 +21,7 @@ module.exports = [
   '/partner-other-names',
   '/convictions-joint',
   '/has-dependants',
-  'add-dependants',
+  '/add-dependants',
   '/dependant-details',
   '/address',
   '/income',

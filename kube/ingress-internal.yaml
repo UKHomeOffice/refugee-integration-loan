@@ -3,9 +3,9 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-  name: refugee-loan-internal-{{ .DRONE_SOURCE_BRANCH }}
+  name: {{ .APP_NAME }}-internal-{{ .DRONE_SOURCE_BRANCH }}
   {{ else }}
-  name: refugee-loan-internal
+  name: {{ .APP_NAME }}-internal
   {{ end }}
   labels:
     cert-manager.io/solver: route53
@@ -19,32 +19,33 @@ spec:
   tls:
     - hosts:
       {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-        - refugee-loan.branch.internal.sas-notprod.homeoffice.gov.uk
+        - {{ .DRONE_BUILD_NUMBER }}.branch.internal.sas-notprod.homeoffice.gov.uk
+        - {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}.branch.internal.sas-notprod.homeoffice.gov.uk
       {{ else if eq .KUBE_NAMESPACE .UAT_ENV }}
-        - refugee-loan.uat.internal.sas-notprod.homeoffice.gov.uk
+        - {{ .APP_NAME }}.uat.internal.sas-notprod.homeoffice.gov.uk
       {{ else if eq .KUBE_NAMESPACE .STG_ENV }}
-        - stg.internal.refugee-loan.sas.homeoffice.gov.uk
+        - stg.internal.{{ .APP_NAME }}.sas.homeoffice.gov.uk
       {{ end }}
       {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-      secretName: refugee-loan-internal-{{ .DRONE_SOURCE_BRANCH }}
+      secretName: {{ .APP_NAME }}-internal-{{ .DRONE_SOURCE_BRANCH }}
       {{ else }}
-      secretName: refugee-loan-internal
+      secretName: {{ .APP_NAME }}-internal
       {{ end }}
   rules:
     {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-    - host: refugee-loan.branch.internal.sas-notprod.homeoffice.gov.uk
+    - host: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}.branch.internal.sas-notprod.homeoffice.gov.uk
     {{ else if eq .KUBE_NAMESPACE .UAT_ENV }}
-    - host: refugee-loan.uat.internal.sas-notprod.homeoffice.gov.uk
+    - host: {{ .APP_NAME }}.uat.internal.sas-notprod.homeoffice.gov.uk
     {{ else if eq .KUBE_NAMESPACE .STG_ENV }}
-    - host: stg.internal.refugee-loan.sas.homeoffice.gov.uk
+    - host: stg.internal.{{ .APP_NAME }}.sas.homeoffice.gov.uk
     {{ end }}
       http:
         paths:
           - path: /
             backend:
               {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-              serviceName: refugee-loan-{{ .DRONE_SOURCE_BRANCH }}
+              serviceName: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
               {{ else }}
-              serviceName: refugee-loan
+              serviceName: {{ .APP_NAME }}
               {{ end }}
               servicePort: 443
