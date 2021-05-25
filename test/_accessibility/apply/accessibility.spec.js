@@ -50,8 +50,13 @@ describe('the journey of an accessible apply application', async () => {
 
     await uris.reduce(async (previous, uri) => {
       await previous;
-      console.log(uri);
+
       if (exclusions.includes(uri)) {
+        const result = {
+          step: `/${SUBAPP}${uri}`,
+          generic_message: 'MANUAL CHECK REQUIRED'
+        };
+        console.log(result);
         return Promise.resolve();
       }
 
