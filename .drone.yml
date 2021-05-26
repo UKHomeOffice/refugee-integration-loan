@@ -11,20 +11,49 @@ environment:
   STG_ENV: sas-ril-stg
   UAT_ENV: sas-ril-uat
   BRANCH_ENV: sas-ril-branch
-  NON_PROD_AVAILABILITY: Mon-Fri 07:00-21:00 Europe/London
+  NON_PROD_AVAILABILITY: Mon-Fri 07:00-22:00 Europe/London
 
 steps:
+  - name: promote_master
+    pull: if-not-exists
+    image: drone/cli:alpine
+    environment:
+      DRONE_SERVER:
+        from_secret: drone_server
+      DRONE_TOKEN:
+        from_secret: drone_token
+    commands:
+      - echo $DRONE_BUILD_PARENT
+      - drone build promote cto/refugee-integration-loans $DRONE_BUILD_PARENT PIPELINE
+    when:
+      branch: master
+      event: push
+
   - name: setup
     pull: if-not-exists
     image: node:14
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
-      - echo $DRONE_SOURCE_BRANCH
       - npm install
       - npm run build
     when:
+      branch:
+        exclude:
+          - master
       event: push
+
+  - name: setup_master
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm install
+      - npm run build
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: linting
     pull: if-not-exists
@@ -34,7 +63,21 @@ steps:
     commands:
       - npm run test:lint
     when:
+      branch:
+        exclude:
+          - master
       event: push
+
+  - name: linting_master
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:lint
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: unit
     pull: if-not-exists
@@ -44,7 +87,21 @@ steps:
     commands:
       - npm run test:unit
     when:
+      branch:
+        exclude:
+          - master
       event: push
+
+  - name: unit_master
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:unit
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: integration
     pull: if-not-exists
@@ -54,7 +111,21 @@ steps:
     commands:
       - npm run test:integration
     when:
+      branch:
+        exclude:
+          - master
       event: push
+
+  - name: integration_master
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:integration
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: accessibility
     pull: if-not-exists
@@ -68,7 +139,25 @@ steps:
     commands:
       - npm run test:accessibility
     when:
+      branch:
+        exclude:
+          - master
       event: push
+
+  - name: accessibility_master
+    pull: if-not-exists
+    image: buildkite/puppeteer:8.0.0
+    environment:
+      NOTIFY_KEY: USE_MOCK
+      ENVIRONMENT: DRONE
+    volumes:
+      - name: dockersock
+        path: /root/.dockersock
+    commands:
+      - npm run test:accessibility
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: audit
     pull: if-not-exists
@@ -78,7 +167,21 @@ steps:
     commands:
       - npm run test:audit
     when:
+      branch:
+        exclude:
+          - master
       event: push
+
+  - name: audit_master
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:audit
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: build
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -93,7 +196,21 @@ steps:
       branch:
         exclude:
           - feature/*
+          - master
       event: push
+
+  - name: build_master
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+    commands:
+      # wait for docker service to be up before running docker build
+      - n=0; while [ "$n" -lt 60 ] && [ ! docker stats --no-stream ]; do n=$(( n + 1 )); sleep 1; done
+      - docker build -t sas/refugee-integration-loans:$${DRONE_COMMIT_SHA} .
+    volumes:
+      - name: dockersock
+        path: /var/run
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: sonar-scanner
     pull: if-not-exists
@@ -105,7 +222,18 @@ steps:
       branch:
         exclude:
           - feature/*
+          - master
       event: push
+
+  - name: sonar-scanner_master
+    pull: if-not-exists
+    image: quay.io/ukhomeofficedigital/sonar-scanner-node:6a03c77c7e1bad005893cdcc9cd3d99479b79d5c
+    detach: true
+    settings:
+      failure: ignore
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: anchore-scan
     image: docker.digital.homeoffice.gov.uk/acp-anchore-submission:latest
@@ -120,7 +248,21 @@ steps:
       branch:
         exclude:
           - feature/*
+          - master
       event: push
+
+  - name: anchore-scan_master
+    image: docker.digital.homeoffice.gov.uk/acp-anchore-submission:latest
+    detach: true
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      SERVICE_URL: http://anchore-submission-server:10080
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      FAIL_ON_DETECTION: false
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: create_artefact
     image: plugins/ecr
@@ -139,7 +281,25 @@ steps:
       branch:
         exclude:
           - feature/*
+          - master
       event: push
+
+  - name: create_artefact_master
+    image: plugins/ecr
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: eu-west-2
+      repo: sas/refugee-integration-loans
+      registry: 340268328991.dkr.ecr.eu-west-2.amazonaws.com
+      tags:
+        - latest_${DRONE_BRANCH}
+        - ${DRONE_COMMIT_SHA}
+    when:
+      target: PIPELINE
+      event: promote
 
   - name: deploy_to_branch
     pull: if-not-exists
@@ -158,8 +318,8 @@ steps:
     when:
       branch:
         exclude:
-          - master
           - feature/*
+          - master
       event: push
 
   - name: deploy_to_uat
@@ -176,8 +336,8 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
     when:
-      branch: master
-      event: push
+      target: PIPELINE
+      event: promote
 
   - name: get_pr_branch
     pull: if-not-exists
@@ -194,8 +354,8 @@ steps:
       - echo $DRONE_BUILD_PARENT
       - drone build info cto/refugee-integration-loans $DRONE_BUILD_PARENT --format {{.Target}} > /root/.dockersock/branch_name.txt
     when:
-      branch: master
-      event: push
+      target: PIPELINE
+      event: promote
 
   - name: tear_down_branch
     pull: if-not-exists
@@ -217,8 +377,8 @@ steps:
       - kubectl --insecure-skip-tls-verify=true delete secret $${APP_NAME}-internal-$${DRONE_SOURCE_BRANCH}
       - echo "Torn Down UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
-      branch: master
-      event: push
+      target: PIPELINE
+      event: promote
 
   - name: deploy_to_stg
     pull: if-not-exists
@@ -234,8 +394,8 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
     when:
-      branch: master
-      event: push
+      target: PIPELINE
+      event: promote
 
   - name: deploy_to_prod
     pull: if-not-exists
@@ -251,8 +411,8 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-external.yaml -f kube/networkpolicy-external.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
     when:
-      branch: master
-      event: push
+      target: PIPELINE
+      event: promote
 
 services:
   - name: docker
