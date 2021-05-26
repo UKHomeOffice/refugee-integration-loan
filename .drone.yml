@@ -20,7 +20,7 @@ steps:
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
-      - echo $DRONE_COMMIT_BRANCH
+      - echo $DRONE_SOURCE_BRANCH
       - npm install
       - npm run build
     when:
