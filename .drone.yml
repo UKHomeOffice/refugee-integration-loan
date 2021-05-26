@@ -190,7 +190,7 @@ steps:
       - name: dockersock
         path: /root/.dockersock
     commands:
-      - drone build info cto/refugee-integration-loans $DRONE_BUILD_NUMBER --format {{.Message}}  | grep -o " '.*' " | tr -d "[ ']" > /root/.dockersock/branch_name.txt
+      - drone build info cto/refugee-integration-loans $DRONE_BUILD_NUMBER --format {{.Message}} | grep -o " '.*' " | tr -d "[ ']" > /root/.dockersock/branch_name.txt
     when:
       branch: master
       event: push
@@ -209,10 +209,11 @@ steps:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
       - export KUBE_NAMESPACE=$${BRANCH_ENV}
       - export DRONE_SOURCE_BRANCH=$(cat /root/.dockersock/branch_name.txt)
+      - kubectl="kubectl --insecure-skip-tls-verify --server=$${KUBE_SERVER} --namespace=$${KUBE_NAMESPACE} --token=$${KUBE_TOKEN}"
       - kd --delete --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --delete --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --delete --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
-      - kubectl --insecure-skip-tls-verify=true delete secret $${APP_NAME}-internal-$${DRONE_SOURCE_BRANCH}
+      - $${kubectl} delete secret $${APP_NAME}-internal-$${DRONE_SOURCE_BRANCH}
       - echo "Torn Down UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch: master
