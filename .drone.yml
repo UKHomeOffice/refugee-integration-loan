@@ -153,6 +153,7 @@ steps:
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
+      - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch:
         exclude:
@@ -177,6 +178,23 @@ steps:
       branch: master
       event: push
 
+  - name: get_pr_branch
+    pull: if-not-exists
+    image: drone/cli:alpine
+    environment:
+      DRONE_SERVER:
+        from_secret: drone_server
+      DRONE_TOKEN:
+        from_secret: drone_token
+    volumes:
+      - name: dockersock
+        path: /root/.dockersock
+    commands:
+      - drone build info cto/refugee-integration-loans $${DRONE_BUILD_PARENT} --format {{.Target}} > /root/.dockersock/branch_name.txt
+    when:
+      branch: master
+      event: push
+
   - name: tear_down_branch
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -184,12 +202,18 @@ steps:
       KUBE_SERVER: https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
       KUBE_TOKEN_RIL_ACP_NOTPROD:
         from_secret: kube_token_ril_acp_notprod
+    volumes:
+      - name: dockersock
+        path: /root/.dockersock
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
       - export KUBE_NAMESPACE=$${BRANCH_ENV}
+      - export DRONE_SOURCE_BRANCH=$(cat /root/.dockersock/branch_name.txt)
       - kd --delete --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --delete --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --delete --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
+      - kubectl --insecure-skip-tls-verify=true delete secret $${APP_NAME}-internal-$${DRONE_SOURCE_BRANCH}
+      - echo "Torn Down UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch: master
       event: push
