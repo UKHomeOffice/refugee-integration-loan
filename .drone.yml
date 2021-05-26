@@ -20,6 +20,7 @@ steps:
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
+      - echo $CI_PARENT_BUILD_NUMBER
       - npm install
       - npm run build
     when:
@@ -190,8 +191,8 @@ steps:
       - name: dockersock
         path: /root/.dockersock
     commands:
-      - echo $DRONE_BUILD_PARENT
-      - drone build info cto/refugee-integration-loans $DRONE_BUILD_PARENT --format {{.Target}} > /root/.dockersock/branch_name.txt
+      - echo $CI_PARENT_BUILD_NUMBER
+      - drone build info cto/refugee-integration-loans $CI_PARENT_BUILD_NUMBER --format {{.Target}} > /root/.dockersock/branch_name.txt
     when:
       branch: master
       event: push
