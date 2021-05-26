@@ -11,7 +11,7 @@ environment:
   STG_ENV: sas-ril-stg
   UAT_ENV: sas-ril-uat
   BRANCH_ENV: sas-ril-branch
-  NON_PROD_AVAILABILITY: Mon-Fri 07:00-23:00 Europe/London
+  NON_PROD_AVAILABILITY: Mon-Fri 07:00-21:00 Europe/London
 
 steps:
   - name: setup
