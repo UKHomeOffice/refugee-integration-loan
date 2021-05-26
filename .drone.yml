@@ -190,7 +190,8 @@ steps:
       - name: dockersock
         path: /root/.dockersock
     commands:
-      - drone build info cto/refugee-integration-loans $${DRONE_BUILD_PARENT} --format {{.Target}} > /root/.dockersock/branch_name.txt
+      - echo $DRONE_BUILD_PARENT
+      - drone build info cto/refugee-integration-loans $DRONE_BUILD_PARENT --format {{.Target}} > /root/.dockersock/branch_name.txt
     when:
       branch: master
       event: push
