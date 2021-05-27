@@ -1,4 +1,5 @@
 
+const setDateErrorLink = require('../common/behaviours/set-date-error-link');
 const Summary = require('../common/behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
@@ -15,6 +16,7 @@ module.exports = {
     },
     '/brp': {
       fields: ['brpNumber', 'dateOfBirth'],
+      behaviours: [setDateErrorLink],
       next: '/contact'
     },
     '/contact': {
