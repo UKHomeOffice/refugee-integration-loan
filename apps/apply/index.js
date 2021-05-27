@@ -1,5 +1,7 @@
 
 const Aggregate = require('../common/behaviours/aggregator');
+const setDateErrorLink = require('../common/behaviours/set-date-error-link');
+const setRadioButtonErrorLink = require('./behaviours/set-radio-button-error-link');
 const Summary = require('../common/behaviours/summary');
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
@@ -12,6 +14,7 @@ module.exports = {
   steps: {
     '/previously-applied': {
       fields: ['previouslyApplied'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/previous',
       forks: [{
         target: '/partner',
@@ -25,6 +28,7 @@ module.exports = {
     },
     '/previous': {
       fields: ['previouslyHadIntegrationLoan'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/who-received-previous-loan',
       forks: [{
         target: '/partner',
@@ -38,6 +42,7 @@ module.exports = {
     },
     '/who-received-previous-loan': {
       fields: ['whoReceivedPreviousLoan'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/ineligible',
       forks: [{
         target: '/partner',
@@ -51,6 +56,7 @@ module.exports = {
     },
     '/partner': {
       fields: ['partner'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/joint',
       forks: [{
         target: '/brp',
@@ -65,11 +71,13 @@ module.exports = {
     '/joint': {
       returnToSummary: true,
       fields: ['joint'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/brp',
       continueOnEdit: true
     },
     '/brp': {
       fields: ['brpNumber', 'fullName', 'dateOfBirth'],
+      behaviours: [setDateErrorLink],
       next: '/ni-number',
       template: 'brp',
       continueOnEdit: true
@@ -81,6 +89,7 @@ module.exports = {
     },
     '/has-other-names': {
       fields: ['hasOtherNames'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/home-office-reference',
       forks: [{
         target: '/other-names',
@@ -123,11 +132,13 @@ module.exports = {
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/has-dependants',
       continueOnEdit: true
     },
     '/partner-brp': {
       fields: ['partnerBrpNumber', 'partnerFullName', 'partnerDateOfBirth'],
+      behaviours: [setDateErrorLink],
       next: '/partner-ni-number',
       template: 'brp',
       continueOnEdit: true
@@ -140,6 +151,7 @@ module.exports = {
     },
     '/partner-has-other-names': {
       fields: ['partnerHasOtherNames'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/convictions-joint',
       forks: [{
         target: '/partner-other-names',
@@ -170,11 +182,13 @@ module.exports = {
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/has-dependants',
       continueOnEdit: true
     },
     '/has-dependants': {
       fields: ['hasDependants'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/address',
       forks: [{
         target: '/dependant-details',
@@ -192,6 +206,7 @@ module.exports = {
         'dependantDateOfBirth',
         'dependantRelationship'
       ],
+      behaviours: [setDateErrorLink],
       continueOnEdit: true,
       next: '/dependant-details'
     },
@@ -252,6 +267,7 @@ module.exports = {
     },
     '/savings': {
       fields: ['savings', 'savingsAmount'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/amount',
       continueOnEdit: true
     },
@@ -289,6 +305,7 @@ module.exports = {
     },
     '/combined-savings': {
       fields: ['combinedSavings', 'combinedSavingsAmount'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/combined-amount',
       continueOnEdit: true
     },
@@ -319,12 +336,14 @@ module.exports = {
     },
     '/outcome': {
       fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],
+      behaviours: [setRadioButtonErrorLink],
       template: 'outcome',
       next: '/help',
       continueOnEdit: true
     },
     '/help': {
       fields: ['hadHelp'],
+      behaviours: [setRadioButtonErrorLink],
       next: '/confirm',
       forks: [{
         target: '/help-reasons',
