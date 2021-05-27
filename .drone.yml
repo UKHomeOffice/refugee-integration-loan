@@ -257,6 +257,7 @@ steps:
       DRONE_TOKEN:
         from_secret: drone_token
     commands:
+      - ls
       - ./sanity_check_build.sh
     when:
       target: PROD
