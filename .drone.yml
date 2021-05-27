@@ -266,6 +266,7 @@ steps:
     commands:
       - export KUBE_TOKEN=$${KUBE_TOKEN_RIL_ACP_NOTPROD}
       - export KUBE_NAMESPACE=$${BRANCH_ENV}
+      - export DRONE_SOURCE_BRANCH=$(echo $${DRONE_SOURCE_BRANCH} | tr '[:upper:]' '[:lower:]')
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
@@ -307,7 +308,7 @@ steps:
       - name: dockersock
         path: /root/.dockersock
     commands:
-      - drone build info $GIT_REPO $DRONE_BUILD_NUMBER --format {{.Message}} | grep -o " '.*' " | tr -d "[ ']" > /root/.dockersock/branch_name.txt
+      - drone build info $GIT_REPO $DRONE_BUILD_NUMBER --format {{.Message}} | grep -o " '.*' " | tr -d "[ ']" | tr '[:upper:]' '[:lower:]' > /root/.dockersock/branch_name.txt
     when:
       branch: master
       event: push
