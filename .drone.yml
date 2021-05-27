@@ -248,7 +248,7 @@ steps:
       branch: master
       event: push
 
-  - name: get_parent_build
+  - name: sanity_check_parent_build
     pull: if-not-exists
     image: drone/cli:alpine
     environment:
@@ -257,8 +257,9 @@ steps:
       DRONE_TOKEN:
         from_secret: drone_token
     commands:
-      - ls
-      - ./sanity_check_build.sh
+      - export STATUS=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Status}})
+      - export BRANCH=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Target}})
+      - if [[ "$STATUS" != "success" || "$BRANCH" != "master" ]] ; then return 1; else return 0 ; fi
     when:
       target: PROD
       event: promote
