@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: {{ .APP_NAME }}
-          image: {{ .IMAGE_REPO }}:{{.DRONE_COMMIT_SHA}}
+          image: {{ .IMAGE_URL }}/{{ .IMAGE_REPO }}:{{.DRONE_COMMIT_SHA}}
           imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
