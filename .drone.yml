@@ -13,7 +13,7 @@ environment:
   IMAGE_URL: 340268328991.dkr.ecr.eu-west-2.amazonaws.com
   IMAGE_REPO: sas/refugee-integration-loans
   GIT_REPO: cto/refugee-integration-loans
-  NON_PROD_AVAILABILITY: Mon-Fri 07:00-21:00 Europe/London
+  NON_PROD_AVAILABILITY: Mon-Fri 08:00-19:00 Europe/London
 
 setup: &setup
   pull: if-not-exists
