@@ -354,7 +354,7 @@ steps:
       branch: master
       event: push
 
-  - name: sanity_check_parent_build
+  - name: sanity_check_build_prod
     pull: if-not-exists
     image: drone/cli:alpine
     environment:
@@ -365,7 +365,9 @@ steps:
     commands:
       - export STATUS=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Status}})
       - export BRANCH=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Target}})
-      - if [[ "$STATUS" != "success" || "$BRANCH" != "master" ]] ; then return 1; else return 0 ; fi
+      - export EVENT=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Event}})
+      - export REFS=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Ref}})
+      - if [[ "$STATUS" != "success" || "$BRANCH" != "master" || "$EVENT" != "push" || "$REFS" != "refs/heads/master" ]] ; then return 1; else return 0 ; fi
     when:
       target: PROD
       event: promote
