@@ -78,20 +78,14 @@ build_image: &build_image
 
 sonar-scanner: &sonar-scanner
   pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/sonar-scanner-node:6a03c77c7e1bad005893cdcc9cd3d99479b79d5c
-  detach: true
-  settings:
-    failure: ignore
+  image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
+  commands:
+    - sonar-scanner -Dproject.settings=./sonar-project.properties
 
 anchore-scan: &anchore-scan
-  image: docker.digital.homeoffice.gov.uk/acp-anchore-submission:latest
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+  pull: always
   detach: true
-  environment:
-    IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-    SERVICE_URL: http://anchore-submission-server:10080
-    LOCAL_IMAGE: true
-    TOLERATE: medium
-    FAIL_ON_DETECTION: false
 
 create_artefact: &create_artefact
   image: plugins/ecr
@@ -112,9 +106,6 @@ anchore-submission-server: &anchore-submission-server
   pull: always
   commands:
     - /run.sh server
-  environment:
-    ANCHORE_URL: "acp-anchore.acp.homeoffice.gov.uk"
-    REGISTRY_URL: "acp-ephemeral-registry.acp.homeoffice.gov.uk"
 
 session: &session
   image: redis
@@ -155,6 +146,22 @@ steps:
 
   - name: unit_master
     <<: *unit
+    when:
+      branch: master
+      event: push
+
+  - name: sonar-scanner_dev
+    <<: *sonar-scanner
+    when:
+      branch:
+        exclude:
+          - feature/*
+          - snyk-fix-*
+          - dependabot/*
+      event: pull_request
+
+  - name: sonar-scanner_master
+    <<: *sonar-scanner
     when:
       branch: master
       event: push
@@ -208,24 +215,14 @@ steps:
       branch: master
       event: push
 
-  - name: sonar-scanner_dev
-    <<: *sonar-scanner
-    when:
-      branch:
-        exclude:
-          - feature/*
-          - snyk-fix-*
-          - dependabot/*
-      event: pull_request
-
-  - name: sonar-scanner_master
-    <<: *sonar-scanner
-    when:
-      branch: master
-      event: push
-
   - name: anchore-scan_dev
     <<: *anchore-scan
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      SERVICE_URL: http://anchore-submission-server_dev:10080
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      FAIL_ON_DETECTION: false
     when:
       branch:
         exclude:
@@ -236,6 +233,12 @@ steps:
 
   - name: anchore-scan_master
     <<: *anchore-scan
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      SERVICE_URL: http://anchore-submission-server_master:10080
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      FAIL_ON_DETECTION: false
     when:
       branch: master
       event: push
@@ -439,7 +442,15 @@ services:
       event: push
 
   - name: anchore-submission-server_dev
-    <<: *anchore-submission-server
+    image: docker.digital.homeoffice.gov.uk/acp-anchore-submission:latest
+    commands:
+      - /anchore-submission server
+    environment:
+      ANCHORE_URL: "acp-anchore.acp.homeoffice.gov.uk"
+      REGISTRY_URL: "acp-ephemeral-registry.acp.homeoffice.gov.uk"
+    volumes:
+      - name: dockersock
+        path: /var/run
     when:
       branch:
         exclude:
@@ -449,7 +460,15 @@ services:
       event: pull_request
 
   - name: anchore-submission-server_master
-    <<: *anchore-submission-server
+    image: docker.digital.homeoffice.gov.uk/acp-anchore-submission:latest
+    commands:
+      - /anchore-submission server
+    environment:
+      ANCHORE_URL: "acp-anchore.acp.homeoffice.gov.uk"
+      REGISTRY_URL: "acp-ephemeral-registry.acp.homeoffice.gov.uk"
+    volumes:
+      - name: dockersock
+        path: /var/run
     when:
       branch: master
       event: push
