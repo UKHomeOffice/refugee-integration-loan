@@ -71,7 +71,7 @@ audit: &audit
 build_image: &build_image
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
-    - docker build -t $${IMAGE_REPO}:$${DRONE_COMMIT_SHA} .
+    - docker build --no-cache -t $${IMAGE_REPO}:$${DRONE_COMMIT_SHA} .
   volumes:
     - name: dockersock
       path: /var/run
@@ -235,6 +235,7 @@ steps:
       branch: master
       event: push
 
+  # Deploy to pull request UAT environment
   - name: deploy_to_branch
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -268,6 +269,7 @@ steps:
           - dependabot/*
       event: pull_request
 
+  # Deploy to Master UAT environment
   - name: deploy_to_uat
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -285,6 +287,7 @@ steps:
       branch: master
       event: push
 
+  # Get pull request branch so correct PR UAT environment is torn down in the tear_down_branch step that follows
   - name: get_pr_branch
     pull: if-not-exists
     image: drone/cli:alpine
@@ -302,6 +305,7 @@ steps:
       branch: master
       event: push
 
+  # Tear down pull request UAT environment
   - name: tear_down_branch
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -326,6 +330,7 @@ steps:
       branch: master
       event: push
 
+  # Deploy to Staging environment
   - name: deploy_to_stg
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -343,6 +348,7 @@ steps:
       branch: master
       event: push
 
+  # Checks a build being promoted has passed, is on master which effectively means a healthy build on Staging
   - name: sanity_check_build_prod
     pull: if-not-exists
     image: drone/cli:alpine
@@ -361,6 +367,7 @@ steps:
       target: PROD
       event: promote
 
+  # Deploy to Production environment
   - name: deploy_to_prod
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -378,6 +385,7 @@ steps:
       target: PROD
       event: promote
 
+  # CRON job step that tears down our pull request UAT environments
   - name: cron_tear_down
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
@@ -393,6 +401,7 @@ steps:
       cron: tear_down_pr_envs
       event: cron
 
+  # Slack notification upon a CRON job fail
   - name: notify_slack_cron
     pull: if-not-exists
     image: plugins/slack
@@ -408,7 +417,7 @@ steps:
     when:
       cron: tear_down_pr_envs
       event: cron
-      status: [ failure ]
+      status: failure
 
 services:
   - name: docker_dev
@@ -427,12 +436,26 @@ services:
       branch: master
       event: push
 
+  # Drone service restarts and stops current build if frozen and taking more than 30 minutes (current build time ~15mins)
+  - name: drone_service
+    pull: if-not-exists
+    image: drone/cli:alpine
+    environment:
+      DRONE_SERVER:
+        from_secret: drone_server
+      DRONE_TOKEN:
+        from_secret: drone_token
+    commands:
+      - sleep 1800 && drone build restart $GIT_REPO $DRONE_BUILD_NUMBER && drone build stop $GIT_REPO $DRONE_BUILD_NUMBER &
+
+  # Anchore scanning needs background service to run
   - name: anchore-submission-server
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
     pull: always
     commands:
       - /run.sh server
 
+  # Redis session setup in background so integration tests can run
   - name: session_dev
     <<: *session
     when:
