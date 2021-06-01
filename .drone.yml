@@ -22,7 +22,7 @@ setup: &setup
     NOTIFY_KEY: USE_MOCK
   commands:
     - npm install
-    - npm run build
+    - npm run postinstall
 
 linting: &linting
   pull: if-not-exists
@@ -118,6 +118,7 @@ steps:
   - name: setup_dev
     <<: *setup
     when:
+      branch: master
       event: pull_request
 
   - name: setup_master
@@ -129,6 +130,7 @@ steps:
   - name: linting_dev
     <<: *linting
     when:
+      branch: master
       event: pull_request
 
   - name: linting_master
@@ -140,6 +142,7 @@ steps:
   - name: unit_dev
     <<: *unit
     when:
+      branch: master
       event: pull_request
 
   - name: unit_master
@@ -152,6 +155,7 @@ steps:
     <<: *sonar-scanner
     when:
       branch:
+        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -167,6 +171,7 @@ steps:
   - name: integration_dev
     <<: *integration
     when:
+      branch: master
       event: pull_request
 
   - name: integration_master
@@ -178,6 +183,7 @@ steps:
   - name: accessibility_dev
     <<: *accessibility
     when:
+      branch: master
       event: pull_request
 
   - name: accessibility_master
@@ -189,6 +195,7 @@ steps:
   - name: audit_dev
     <<: *audit
     when:
+      branch: master
       event: pull_request
 
   - name: audit_master
@@ -201,6 +208,7 @@ steps:
     <<: *build_image
     when:
       branch:
+        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -223,6 +231,7 @@ steps:
     <<: *create_artefact
     when:
       branch:
+        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -253,6 +262,7 @@ steps:
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch:
+        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -263,6 +273,7 @@ steps:
     <<: *anchore-scan
     when:
       branch:
+        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -424,6 +435,7 @@ services:
     <<: *docker_service
     when:
       branch:
+        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -436,29 +448,21 @@ services:
       branch: master
       event: push
 
-  # Drone service restarts and stops current build if frozen and taking more than 30 minutes (current build time ~15mins)
-  - name: drone_service
-    pull: if-not-exists
-    image: drone/cli:alpine
-    environment:
-      DRONE_SERVER:
-        from_secret: drone_server
-      DRONE_TOKEN:
-        from_secret: drone_token
-    commands:
-      - sleep 1800 && drone build restart $GIT_REPO $DRONE_BUILD_NUMBER && drone build stop $GIT_REPO $DRONE_BUILD_NUMBER &
-
   # Anchore scanning needs background service to run
   - name: anchore-submission-server
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
     pull: always
     commands:
       - /run.sh server
+    when:
+      branch: master
+      event: [push, pull_request]
 
   # Redis session setup in background so integration tests can run
   - name: session_dev
     <<: *session
     when:
+      branch: master
       event: pull_request
 
   - name: session_master

@@ -31,6 +31,7 @@
     "hof-component-date": "^1.4.0",
     "hof-model": "^3.1.0",
     "hof-template-mixins": "^5.2.1",
+    "hof-theme-govuk": "^5.2.4",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",

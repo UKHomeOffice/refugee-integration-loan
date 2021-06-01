@@ -6,24 +6,18 @@ RUN addgroup --system nodejs --gid 998 && \
     adduser --system nodejs --uid 999 --home /app/ && \
     chown -R 999:998 /app/
 
-WORKDIR /app
-
-COPY . /app
-
-# Give nodejs user permissions to public and app folders. Nodejs user is set to 999 and the group 998
-RUN chown -R 999:998 public && \
-    chown -R 999:998 pdf-form-submissions && \
-    chown -R 999:998 /app/ && \
-    # ensure user can exec the chrome binaries installed into the puppeteer directory
-    chown -R 999:998 /app/node_modules/puppeteer
-
 USER 999
 
-RUN npm --loglevel warn install --production  --no-optional
+WORKDIR /app
+
+COPY --chown=999:998 . /app
+
+RUN npm --loglevel warn install --production  --no-optional && \
+    npm --loglevel warn run postinstall
 
 HEALTHCHECK --interval=5m --timeout=3s \
  CMD curl --fail http://localhost:8080 || exit 1
 
-CMD ["/app/run.sh"]
+CMD ["sh", "/app/run.sh"]
 
 EXPOSE 8080
