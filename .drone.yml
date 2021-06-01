@@ -3,6 +3,10 @@ kind: pipeline
 name: default
 type: kubernetes
 
+trigger:
+  branch:
+    - master
+
 environment:
   APP_NAME: refugee-loan
   PROD_ENV: sas-ril-prod
@@ -14,59 +18,6 @@ environment:
   IMAGE_REPO: sas/refugee-integration-loans
   GIT_REPO: cto/refugee-integration-loans
   NON_PROD_AVAILABILITY: Mon-Fri 08:00-19:00 Europe/London
-
-setup: &setup
-  pull: if-not-exists
-  image: node:14
-  environment:
-    NOTIFY_KEY: USE_MOCK
-  commands:
-    - npm install
-    - npm run postinstall
-
-linting: &linting
-  pull: if-not-exists
-  image: node:14
-  environment:
-    NOTIFY_KEY: USE_MOCK
-  commands:
-    - npm run test:lint
-
-unit: &unit
-  pull: if-not-exists
-  image: node:14
-  environment:
-    NOTIFY_KEY: USE_MOCK
-  commands:
-    - npm run test:unit
-
-integration: &integration
-  pull: if-not-exists
-  image: node:14
-  environment:
-    NOTIFY_KEY: USE_MOCK
-  commands:
-    - npm run test:integration
-
-accessibility: &accessibility
-  pull: if-not-exists
-  image: buildkite/puppeteer:8.0.0
-  environment:
-    NOTIFY_KEY: USE_MOCK
-    ENVIRONMENT: DRONE
-  volumes:
-    - name: dockersock
-      path: /root/.dockersock
-  commands:
-    - npm run test:accessibility
-
-audit: &audit
-  pull: if-not-exists
-  image: node:14
-  environment:
-    NOTIFY_KEY: USE_MOCK
-  commands:
-    - npm run test:audit
 
 build_image: &build_image
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -105,51 +56,43 @@ create_artefact: &create_artefact
       - latest_${DRONE_BRANCH}
       - ${DRONE_COMMIT_SHA}
 
-session: &session
-  image: redis
-  volumes:
-    - name: dockersock
-      path: /var/run
-
 docker_service: &docker_service
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
 
 steps:
-  - name: setup_dev
-    <<: *setup
+  - name: setup
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm install
+      - npm run postinstall
     when:
       branch: master
-      event: pull_request
+      event: [push, pull_request]
 
-  - name: setup_master
-    <<: *setup
+  - name: linting
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:lint
     when:
       branch: master
-      event: push
+      event: [push, pull_request]
 
-  - name: linting_dev
-    <<: *linting
+  - name: unit
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:unit
     when:
       branch: master
-      event: pull_request
-
-  - name: linting_master
-    <<: *linting
-    when:
-      branch: master
-      event: push
-
-  - name: unit_dev
-    <<: *unit
-    when:
-      branch: master
-      event: pull_request
-
-  - name: unit_master
-    <<: *unit
-    when:
-      branch: master
-      event: push
+      event: [push, pull_request]
 
   - name: sonar-scanner_dev
     <<: *sonar-scanner
@@ -168,41 +111,42 @@ steps:
       branch: master
       event: push
 
-  - name: integration_dev
-    <<: *integration
+  - name: integration
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:integration
     when:
       branch: master
-      event: pull_request
+      event: [push, pull_request]
 
-  - name: integration_master
-    <<: *integration
+  - name: accessibility
+    pull: if-not-exists
+    image: buildkite/puppeteer:8.0.0
+    environment:
+      NOTIFY_KEY: USE_MOCK
+      ENVIRONMENT: DRONE
+    volumes:
+      - name: dockersock
+        path: /root/.dockersock
+    commands:
+      - npm run test:accessibility
     when:
       branch: master
-      event: push
+      event: [push, pull_request]
 
-  - name: accessibility_dev
-    <<: *accessibility
+  - name: audit
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+    commands:
+      - npm run test:audit
     when:
       branch: master
-      event: pull_request
-
-  - name: accessibility_master
-    <<: *accessibility
-    when:
-      branch: master
-      event: push
-
-  - name: audit_dev
-    <<: *audit
-    when:
-      branch: master
-      event: pull_request
-
-  - name: audit_master
-    <<: *audit
-    when:
-      branch: master
-      event: push
+      event: [push, pull_request]
 
   - name: build_dev
     <<: *build_image
@@ -435,7 +379,6 @@ services:
     <<: *docker_service
     when:
       branch:
-        include: master
         exclude:
           - feature/*
           - snyk-fix-*
@@ -459,17 +402,14 @@ services:
       event: [push, pull_request]
 
   # Redis session setup in background so integration tests can run
-  - name: session_dev
-    <<: *session
+  - name: session
+    image: redis
+    volumes:
+      - name: dockersock
+        path: /var/run
     when:
       branch: master
-      event: pull_request
-
-  - name: session_master
-    <<: *session
-    when:
-      branch: master
-      event: push
+      event: [push, pull_request]
 
 volumes:
   - name: dockersock
