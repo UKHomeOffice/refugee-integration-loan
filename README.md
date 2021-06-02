@@ -56,6 +56,7 @@ When the Drone pipeline runs, Anchore will check if the Docker image has any sec
 Anything whitelisted should be added to this git repo where a check is carried out against it in Drone:
 https://github.com/UKHomeOfficeForms/hof-cve-exceptions
 
+### Local Snyk setup
 For anything needing fixing, you can use Snyk on your local machine to debug vulnerability issues. They tend to align with what Anchore has raised and are more detailed in how to fix issues.
 Just `export SNYK_TOKEN=<your_token>` in your `~/.bashrc` or bash_profile or before executing the following command:
 ```
@@ -63,7 +64,22 @@ npm run test:snyk
 ```
 This will run Snyk tests just against the code base. You can also run `snyk wizard` to assist with repo level fixes. This will also generate/update the `.snyk` policy which others in the project can reuse for focusing on new errors and ignoring previously audited issues.
 
-However, the following creates a test Docker image from the repo and run Snyk tests against the Docker image dependencies. This should help you debug any issues found with Anchore APK package issues as opposed to npm modules which might have security flaws:
+### Dockerfile image scanning with Snyk & Anchore
+However, the following creates a test Docker image from the repo and run Snyk and Anchore tests against the Docker image dependencies. This should help you debug any issues found with Anchore APK package issues as opposed to npm modules which might have security flaws:
 ```
-./snyk_check.sh
+./image_check.sh
+```
+<strong>You need to ensure you have snyk globally installed using npm `npm install snyk -g`, setup a SNYK_TOKEN for snyk authentication, and Docker for this to work.</strong>
+
+This will create a Snyk report in your terminal for assessing vulnerabilities and will also create an Anchore report in this project's `anchore-reports` directory for your reference.
+
+### Updating vulnerable dependencies
+One can use npm to update individual dependencies if they have been flagged due to security updates. These can be done like this:
+```
+npm i express@"<15.0.0" -S
+```
+In this example we have updated just the `express` npm package to the latest version before 15.0.0. So for instance, if it was set to `14.16.0` prior, this might update to the latest minor/patch fix version `14.17.1`. This is a safe way to get the latest minor/patch version before the next major/minor respectively to mitigate bringing in a breaking change.
+Here is an example for updating a dev_dependency bringing in the latest patch fix for version `8.2.x`
+```
+npm i mocha@"<8.3.0" -SD
 ```

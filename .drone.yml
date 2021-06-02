@@ -204,7 +204,7 @@ steps:
       IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
       LOCAL_IMAGE: true
       TOLERATE: medium
-      WHITELIST_FILE: hof-cve-exceptions/default.txt
+      WHITELIST_FILE: hof-cve-exceptions/refugee-integration-loan.txt
     when:
       branch: master
       event: pull_request
