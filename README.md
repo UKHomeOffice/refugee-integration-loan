@@ -45,8 +45,25 @@ Pa11y CI is a CI-centric accessibility test runner, built using [Pa11y](https://
 
 Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This used during automated testing of the application and can act as a gatekeeper to stop common WCAG a11y issues from making it to live.
 
-To run against URL's listed in the `.pa11yci.json` configuration file.   
-
 ```bash
 npm run test:_accessibility          // requires app to be running
+```
+
+### Anchore/Snyk image testing
+
+When the Drone pipeline runs, Anchore will check if the Docker image has any security vulnerabilities. Anything raised can be downloaded via the Drone UI as a manifest detailing the dependencies needing investigation and either needs whitelisting or updating.   
+
+Anything whitelisted should be added to this git repo where a check is carried out against it in Drone:
+https://github.com/UKHomeOfficeForms/hof-cve-exceptions
+
+For anything needing fixing, you can use Snyk on your local machine to debug vulnerability issues. They tend to align with what Anchore has raised and are more detailed in how to fix issues.
+Just `export SNYK_TOKEN=<your_token>` in your `~/.bashrc` or bash_profile or before executing the following command:
+```
+npm run test:snyk
+```
+This will run Snyk tests just against the code base. You can also run `snyk wizard` to assist with repo level fixes. This will also generate/update the `.snyk` policy which others in the project can reuse for focusing on new errors and ignoring previously audited issues.
+
+However, the following creates a test Docker image from the repo and run Snyk tests against the Docker image dependencies. This should help you debug any issues found with Anchore APK package issues as opposed to npm modules which might have security flaws:
+```
+./snyk_check.sh
 ```

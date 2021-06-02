@@ -3,10 +3,6 @@ kind: pipeline
 name: default
 type: kubernetes
 
-trigger:
-  branch:
-    - master
-
 environment:
   APP_NAME: refugee-loan
   PROD_ENV: sas-ril-prod
@@ -19,47 +15,23 @@ environment:
   GIT_REPO: cto/refugee-integration-loans
   NON_PROD_AVAILABILITY: Mon-Fri 08:00-19:00 Europe/London
 
-build_image: &build_image
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
-  commands:
-    - docker build --no-cache -t $${IMAGE_REPO}:$${DRONE_COMMIT_SHA} .
-  volumes:
-    - name: dockersock
-      path: /var/run
-
-sonar-scanner: &sonar-scanner
-  pull: if-not-exists
-  image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
-  commands:
-    - sonar-scanner -Dproject.settings=./sonar-project.properties
-
-anchore-scan: &anchore-scan
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
-  pull: always
-  environment:
-    IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-    LOCAL_IMAGE: true
-    TOLERATE: medium
-    FAIL_ON_DETECTION: false
-
-create_artefact: &create_artefact
-  image: plugins/ecr
-  settings:
-    access_key:
-      from_secret: aws_access_key_id
-    secret_key:
-      from_secret: aws_secret_access_key
-    region: eu-west-2
-    repo: sas/refugee-integration-loans
-    registry: 340268328991.dkr.ecr.eu-west-2.amazonaws.com
-    tags:
-      - latest_${DRONE_BRANCH}
-      - ${DRONE_COMMIT_SHA}
-
-docker_service: &docker_service
-  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+trigger:
+  branch:
+    - feature/*
+    - master
 
 steps:
+  - name: clone_repos
+    image: alpine/git
+    commands:
+      - git clone https://github.com/UKHomeOfficeForms/hof-cve-exceptions
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: [push, pull_request]
+
   - name: setup
     pull: if-not-exists
     image: node:14
@@ -69,7 +41,10 @@ steps:
       - npm install
       - npm run postinstall
     when:
-      branch: master
+      branch:
+        include:
+        - master
+        - feature/*
       event: [push, pull_request]
 
   - name: linting
@@ -80,7 +55,10 @@ steps:
     commands:
       - npm run test:lint
     when:
-      branch: master
+      branch:
+        include:
+          - master
+          - feature/*
       event: [push, pull_request]
 
   - name: unit
@@ -91,25 +69,23 @@ steps:
     commands:
       - npm run test:unit
     when:
-      branch: master
+      branch:
+        include:
+          - master
+          - feature/*
       event: [push, pull_request]
 
-  - name: sonar-scanner_dev
-    <<: *sonar-scanner
+  - name: sonar-scanner
+    pull: if-not-exists
+    image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
+    commands:
+      - sonar-scanner -Dproject.settings=./sonar-project.properties
     when:
       branch:
-        include: master
-        exclude:
+        include:
+          - master
           - feature/*
-          - snyk-fix-*
-          - dependabot/*
-      event: pull_request
-
-  - name: sonar-scanner_master
-    <<: *sonar-scanner
-    when:
-      branch: master
-      event: push
+      event: [push, pull_request]
 
   - name: integration
     pull: if-not-exists
@@ -119,12 +95,15 @@ steps:
     commands:
       - npm run test:integration
     when:
-      branch: master
+      branch:
+        include:
+          - master
+          - feature/*
       event: [push, pull_request]
 
   - name: accessibility
     pull: if-not-exists
-    image: buildkite/puppeteer:8.0.0
+    image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
     environment:
       NOTIFY_KEY: USE_MOCK
       ENVIRONMENT: DRONE
@@ -134,7 +113,10 @@ steps:
     commands:
       - npm run test:accessibility
     when:
-      branch: master
+      branch:
+        include:
+          - master
+          - feature/*
       event: [push, pull_request]
 
   - name: audit
@@ -145,48 +127,39 @@ steps:
     commands:
       - npm run test:audit
     when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: [push, pull_request]
+
+  - name: build_image
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+    commands:
+      - docker build --no-cache -t $${IMAGE_REPO}:$${DRONE_COMMIT_SHA} .
+    volumes:
+      - name: dockersock
+        path: /var/run
+    when:
       branch: master
       event: [push, pull_request]
 
-  - name: build_dev
-    <<: *build_image
-    when:
-      branch:
-        include: master
-        exclude:
-          - feature/*
-          - snyk-fix-*
-          - dependabot/*
-      event: pull_request
-
-  - name: build_master
-    <<: *build_image
-    when:
-      branch: master
-      event: push
-
-  - name: anchore-scan_master
-    <<: *anchore-scan
+  - name: create_artefact
+    image: plugins/ecr
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: eu-west-2
+      repo: sas/refugee-integration-loans
+      registry: 340268328991.dkr.ecr.eu-west-2.amazonaws.com
+      tags:
+        - latest_${DRONE_BRANCH}
+        - ${DRONE_COMMIT_SHA}
     when:
       branch: master
-      event: push
-
-  - name: create_artefact_dev
-    <<: *create_artefact
-    when:
-      branch:
-        include: master
-        exclude:
-          - feature/*
-          - snyk-fix-*
-          - dependabot/*
-      event: pull_request
-
-  - name: create_artefact_master
-    <<: *create_artefact
-    when:
-      branch: master
-      event: push
+      event: [push, pull_request]
 
   # Deploy to pull request UAT environment
   - name: deploy_to_branch
@@ -205,23 +178,35 @@ steps:
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
+      branch: master
+      event: pull_request
+
+  - name: snyk_dev
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+      SNYK_TOKEN:
+        from_secret: snyk_token
+    commands:
+      - npm run test:snyk
+    when:
       branch:
-        include: master
-        exclude:
+        include:
+          - master
           - feature/*
-          - snyk-fix-*
-          - dependabot/*
       event: pull_request
 
   - name: anchore-scan_dev
-    <<: *anchore-scan
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+    pull: always
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      WHITELIST_FILE: hof-cve-exceptions/default.txt
     when:
-      branch:
-        include: master
-        exclude:
-          - feature/*
-          - snyk-fix-*
-          - dependabot/*
+      branch: master
       event: pull_request
 
   # Deploy to Master UAT environment
@@ -245,7 +230,7 @@ steps:
   # Get pull request branch so correct PR UAT environment is torn down in the tear_down_branch step that follows
   - name: get_pr_branch
     pull: if-not-exists
-    image: drone/cli:alpine
+    image: drone/cli:alpine@sha256:14409f7f7247befb9dd2effdb2f61ac40d1f5fbfb1a80566cf6f2f8d21f3be11
     environment:
       DRONE_SERVER:
         from_secret: drone_server
@@ -306,7 +291,7 @@ steps:
   # Checks a build being promoted has passed, is on master which effectively means a healthy build on Staging
   - name: sanity_check_build_prod
     pull: if-not-exists
-    image: drone/cli:alpine
+    image: drone/cli:alpine@sha256:14409f7f7247befb9dd2effdb2f61ac40d1f5fbfb1a80566cf6f2f8d21f3be11
     environment:
       DRONE_SERVER:
         from_secret: drone_server
@@ -375,21 +360,11 @@ steps:
       status: failure
 
 services:
-  - name: docker_dev
-    <<: *docker_service
-    when:
-      branch:
-        exclude:
-          - feature/*
-          - snyk-fix-*
-          - dependabot/*
-      event: pull_request
-
-  - name: docker_master
-    <<: *docker_service
+  - name: docker
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
     when:
       branch: master
-      event: push
+      event: [push, pull_request]
 
   # Anchore scanning needs background service to run
   - name: anchore-submission-server
