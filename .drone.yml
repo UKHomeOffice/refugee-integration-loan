@@ -144,6 +144,36 @@ steps:
       branch: master
       event: [push, pull_request]
 
+  - name: snyk_dev
+    pull: if-not-exists
+    image: node:14
+    detach: true
+    environment:
+      NOTIFY_KEY: USE_MOCK
+      SNYK_TOKEN:
+        from_secret: snyk_token
+    commands:
+      - npm run test:snyk
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: anchore-scan_dev
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+    pull: always
+    detach: true
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      WHITELIST_FILE: hof-cve-exceptions/refugee-integration-loan.txt
+    when:
+      branch: master
+      event: pull_request
+
   - name: create_artefact
     image: plugins/ecr
     settings:
@@ -177,34 +207,6 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
-    when:
-      branch: master
-      event: pull_request
-
-  - name: snyk_dev
-    pull: if-not-exists
-    image: node:14
-    environment:
-      NOTIFY_KEY: USE_MOCK
-      SNYK_TOKEN:
-        from_secret: snyk_token
-    commands:
-      - npm run test:snyk
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
-
-  - name: anchore-scan_dev
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
-    pull: always
-    environment:
-      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      LOCAL_IMAGE: true
-      TOLERATE: medium
-      WHITELIST_FILE: hof-cve-exceptions/refugee-integration-loan.txt
     when:
       branch: master
       event: pull_request
@@ -374,7 +376,7 @@ services:
       - /run.sh server
     when:
       branch: master
-      event: [push, pull_request]
+      event: pull_request
 
   # Redis session setup in background so integration tests can run
   - name: session
