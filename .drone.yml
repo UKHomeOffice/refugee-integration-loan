@@ -26,11 +26,8 @@ steps:
     commands:
       - git clone https://github.com/UKHomeOfficeForms/hof-cve-exceptions
     when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: [push, pull_request]
+      branch: master
+      event: pull_request
 
   - name: setup
     pull: if-not-exists
@@ -75,7 +72,7 @@ steps:
           - feature/*
       event: [push, pull_request]
 
-  - name: sonar-scanner
+  - name: sonar_scanner
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
     commands:
@@ -144,36 +141,6 @@ steps:
       branch: master
       event: [push, pull_request]
 
-  - name: snyk_dev
-    pull: if-not-exists
-    image: node:14
-    detach: true
-    environment:
-      NOTIFY_KEY: USE_MOCK
-      SNYK_TOKEN:
-        from_secret: snyk_token
-    commands:
-      - npm run test:snyk
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
-
-  - name: anchore-scan_dev
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
-    pull: always
-    detach: true
-    environment:
-      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      LOCAL_IMAGE: true
-      TOLERATE: medium
-      WHITELIST_FILE: hof-cve-exceptions/refugee-integration-loan.txt
-    when:
-      branch: master
-      event: pull_request
-
   - name: create_artefact
     image: plugins/ecr
     settings:
@@ -207,6 +174,35 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
+    when:
+      branch: master
+      event: pull_request
+
+  # Snyk & Anchore security scans which run after branch deployment to prevent blocking of PR UAT tests
+  - name: snyk_scan
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+      SNYK_TOKEN:
+        from_secret: snyk_token
+    commands:
+      - npm run test:snyk
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: anchore_scan
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+    pull: always
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      WHITELIST_FILE: hof-cve-exceptions/refugee-integration-loan.txt
     when:
       branch: master
       event: pull_request
@@ -343,8 +339,55 @@ steps:
       cron: tear_down_pr_envs
       event: cron
 
+  # CRON job steps that runs security scans using Snyk & Anchore
+  - name: cron_clone_repos
+    image: alpine/git
+    commands:
+      - git clone https://github.com/UKHomeOfficeForms/hof-cve-exceptions
+    when:
+      cron: security_scans
+      event: cron
+
+  - name: cron_build_image
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+    commands:
+      - docker build --no-cache -t $${IMAGE_REPO}:$${DRONE_COMMIT_SHA} .
+    volumes:
+      - name: dockersock
+        path: /var/run
+    when:
+      cron: security_scans
+      event: cron
+
+  - name: cron_snyk_scan
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_KEY: USE_MOCK
+      SNYK_TOKEN:
+        from_secret: snyk_token
+    commands:
+      - npm install
+      - npm run postinstall
+      - npm run test:snyk
+    when:
+      cron: security_scans
+      event: cron
+
+  - name: cron_anchore_scan
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+    pull: always
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      LOCAL_IMAGE: true
+      TOLERATE: medium
+      WHITELIST_FILE: hof-cve-exceptions/refugee-integration-loan.txt
+    when:
+      cron: security_scans
+      event: cron
+
   # Slack notification upon a CRON job fail
-  - name: notify_slack_cron
+  - name: cron_notify_slack_tear_down_pr_envs
     pull: if-not-exists
     image: plugins/slack
     settings:
@@ -361,12 +404,26 @@ steps:
       event: cron
       status: failure
 
+  - name: cron_notify_slack_security_scans
+    pull: if-not-exists
+    image: plugins/slack
+    settings:
+      channel: sas-build
+      failure: ignore
+      icon_url: http://readme.drone.io/0.5/logo_dark.svg
+      icon.url: http://readme.drone.io/0.5/logo_dark.svg
+      template: "CRON Job {{build.deployTo}} of RIL has {{build.status}} - <{{build.link}}|#{{build.number}}> {{#success build.status}}\n  :thumbsup: :thumbsup: :thumbsup:\n{{else}}\n  :x: :x: :x:\n{{/success}} Author: {{build.author}}\n\nDuration: {{since job.started}}\n\nJob: <{{build.link}}|#{{build.number}}>\n\nCommit: {{build.commit}}\n"
+      username: Drone
+      webhook:
+        from_secret: slack_webhook
+    when:
+      cron: security_scans
+      event: cron
+      status: failure
+
 services:
   - name: docker
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
-    when:
-      branch: master
-      event: [push, pull_request]
 
   # Anchore scanning needs background service to run
   - name: anchore-submission-server
@@ -374,9 +431,6 @@ services:
     pull: always
     commands:
       - /run.sh server
-    when:
-      branch: master
-      event: pull_request
 
   # Redis session setup in background so integration tests can run
   - name: session
@@ -384,9 +438,6 @@ services:
     volumes:
       - name: dockersock
         path: /var/run
-    when:
-      branch: master
-      event: [push, pull_request]
 
 volumes:
   - name: dockersock
