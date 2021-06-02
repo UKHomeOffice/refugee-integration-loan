@@ -74,6 +74,13 @@ However, the following creates a test Docker image from the repo and run Snyk an
 This will create a Snyk report in your terminal for assessing vulnerabilities and will also create an Anchore report in this project's `anchore-reports` directory for your reference.
 
 ### Updating vulnerable dependencies
+#### Docker Image APK
+This should be as simple as extending what apk packages to upgrade to. The registry is already being updated in the Dockerfile, so if anything is raised by Anchore you just need to add the dependency to the following line in it:
+```
+apk add --upgrade gnutls <dependency1_to_update> <dependency2_to_update> etc etc...
+```
+
+#### NPM
 One can use npm to update individual dependencies if they have been flagged due to security updates. These can be done like this:
 ```
 npm i express@"<15.0.0" -S
