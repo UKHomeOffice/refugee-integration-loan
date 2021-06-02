@@ -1,0 +1,73 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.19.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-NODESASS-1059081:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-535498:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-535500:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-535502:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-540956:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-540958:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-540964:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-540978:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.377Z'
+  SNYK-JS-NODESASS-540980:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-540990:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-540992:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-540994:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-540996:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-540998:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-541000:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-NODESASS-541002:
+    - hof-build > npm-sass > node-sass:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+  SNYK-JS-TRIMNEWLINES-1298042:
+    - hof-build > npm-sass > node-sass > meow > trim-newlines:
+        reason: None given
+        expires: '2021-07-01T21:26:06.378Z'
+patch: {}

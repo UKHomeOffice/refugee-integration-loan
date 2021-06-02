@@ -1,32 +1,28 @@
-FROM buildkite/puppeteer:8.0.0
+FROM zenika/alpine-chrome:with-puppeteer@sha256:386def808d7db8af04bb6815f58647591d5a21d6a27d15613a0630e3d7661c7f
 
-RUN apt-get update && \
-    # Setup nodejs group & nodejs user
-    addgroup --system nodejs --gid 998 && \
+USER root
+
+# Update packages as a result of Anchore security vulnerability checks
+RUN apk update && \
+    apk add --upgrade gnutls binutils nodejs nodejs-npm apk-tools libjpeg-turbo libcurl libx11
+
+# Setup nodejs group & nodejs user
+RUN addgroup --system nodejs --gid 998 && \
     adduser --system nodejs --uid 999 --home /app/ && \
     chown -R 999:998 /app/
 
-COPY package.json /app/package.json
+USER 999
 
 WORKDIR /app
 
-# uncomment the below for running with local changes to modules published via yalc
-# COPY ./.yalc /app/.yalc
+COPY --chown=999:998 . /app
 
-RUN npm --loglevel warn install --production  --no-optional
+RUN npm --loglevel warn install --production  --no-optional && \
+    npm --loglevel warn run postinstall
 
-COPY . /app
+HEALTHCHECK --interval=5m --timeout=3s \
+ CMD curl --fail http://localhost:8080 || exit 1
 
-# Give nodejs user permissions to public and app folders. Nodejs user is set to 999 and the group 998
-RUN npm --loglevel warn run postinstall && \
-    chown -R 999:998 public && \
-    chown -R 999:998 pdf-form-submissions && \
-    chown -R 999:998 /app/ && \
-    # ensure user can exec the chrome binaries installed into the puppeteer directory
-    chown -R 999:998 /app/node_modules/puppeteer
-
-USER 999
-
-CMD ["/app/run.sh"]
+CMD ["sh", "/app/run.sh"]
 
 EXPOSE 8080
