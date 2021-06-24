@@ -22,6 +22,48 @@ trigger:
     - feature/*
     - master
 
+linting: &linting
+  pull: if-not-exists
+  image: node:14
+  environment:
+    NOTIFY_KEY: USE_MOCK
+  commands:
+    - npm run test:lint
+
+unit_tests: &unit_tests
+  pull: if-not-exists
+  image: node:14
+  environment:
+    NOTIFY_KEY: USE_MOCK
+  commands:
+    - npm run test:unit
+
+sonar_scanner: &sonar_scanner
+  pull: if-not-exists
+  image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
+  commands:
+    - sonar-scanner -Dproject.settings=./sonar-project.properties
+
+integration_tests: &integration_tests
+  pull: if-not-exists
+  image: node:14
+  environment:
+    NOTIFY_KEY: USE_MOCK
+  commands:
+    - npm run test:integration
+
+accessibility_tests: &accessibility_tests
+  pull: if-not-exists
+  image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  environment:
+    NOTIFY_KEY: USE_MOCK
+    ENVIRONMENT: DRONE
+  volumes:
+    - name: dockersock
+      path: /root/.dockersock
+  commands:
+    - npm run test:accessibility
+
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
   image: mcr.microsoft.com/playwright:v1.11.1-focal
@@ -50,82 +92,100 @@ steps:
         - feature/*
       event: [push, pull_request]
 
-  - name: linting
-    pull: if-not-exists
-    image: node:14
+  - name: linting_branch
+    <<: *linting
     detach: true
-    environment:
-      NOTIFY_KEY: USE_MOCK
-    commands:
-      - npm run test:lint
     when:
       branch:
         include:
           - master
           - feature/*
-      event: [push, pull_request]
+      event: pull_request
 
-  - name: unit_tests
-    pull: if-not-exists
-    image: node:14
-    detach: true
-    environment:
-      NOTIFY_KEY: USE_MOCK
-    commands:
-      - npm run test:unit
+  - name: linting_deploy
+    <<: *linting
     when:
       branch:
         include:
           - master
           - feature/*
-      event: [push, pull_request]
+      event: push
 
-  - name: sonar_scanner
-    pull: if-not-exists
+  - name: unit_tests_branch
+    <<: *unit_tests
     detach: true
-    image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
-    commands:
-      - sonar-scanner -Dproject.settings=./sonar-project.properties
     when:
       branch:
         include:
           - master
           - feature/*
-      event: [push, pull_request]
+      event: pull_request
 
-  - name: integration_tests
-    pull: if-not-exists
-    image: node:14
-    detach: true
-    environment:
-      NOTIFY_KEY: USE_MOCK
-    commands:
-      - npm run test:integration
+  - name: unit_tests_deploy
+    <<: *unit_tests
     when:
       branch:
         include:
           - master
           - feature/*
-      event: [push, pull_request]
+      event: push
 
-  - name: accessibility_tests
-    pull: if-not-exists
-    image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  - name: sonar_scanner_branch
+    <<: *sonar_scanner
     detach: true
-    environment:
-      NOTIFY_KEY: USE_MOCK
-      ENVIRONMENT: DRONE
-    volumes:
-      - name: dockersock
-        path: /root/.dockersock
-    commands:
-      - npm run test:accessibility
     when:
       branch:
         include:
           - master
           - feature/*
-      event: [push, pull_request]
+      event: pull_request
+
+  - name: sonar_scanner_deploy
+    <<: *sonar_scanner
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: push
+
+  - name: integration_tests_branch
+    <<: *integration_tests
+    detach: true
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: integration_tests_deploy
+    <<: *integration_tests
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: push
+
+  - name: accessibility_tests_branch
+    <<: *accessibility_tests
+    detach: true
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: accessibility_tests_deploy
+    <<: *accessibility_tests
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: push
 
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -186,15 +246,6 @@ steps:
       branch: master
       event: pull_request
 
-  - name: acceptance_tests_uat
-    <<: *acceptance_tests
-    commands:
-      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
-      - npm run test:acceptance
-    when:
-      branch: master
-      event: push
-
   # Snyk & Anchore security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
     pull: if-not-exists
@@ -239,6 +290,15 @@ steps:
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - sleep $${READY_FOR_TEST_DELAY}
+    when:
+      branch: master
+      event: push
+
+  - name: acceptance_tests_uat
+    <<: *acceptance_tests
+    commands:
+      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
+      - npm run test:acceptance
     when:
       branch: master
       event: push
