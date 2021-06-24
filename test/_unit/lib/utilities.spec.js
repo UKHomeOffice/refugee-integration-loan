@@ -8,17 +8,17 @@ describe('Utilities', () => {
     beforeEach(() => {
       utilities = proxyquire('../lib/utilities', {
         '../config': {
-          govukNotify: { notifyApiKey: 'USE-MOCK' }
+          govukNotify: { notifyApiKey: 'USE_MOCK' }
         }
       });
     });
 
-    it('should return a mock instance if Notify key set to USE-MOCK', () => {
+    it('should return a mock instance if Notify key set to USE_MOCK', () => {
       notify = new utilities.NotifyClient();
       expect(notify.constructor.name).to.eql('NotifyMock');
     });
 
-    it('should return a real Notify instance if Notify key not set to USE-MOCK', () => {
+    it('should return a real Notify instance if Notify key not set to USE_MOCK', () => {
       utilities = proxyquire('../lib/utilities', {
         '../config': {
           govukNotify: { notifyApiKey: '123456' }

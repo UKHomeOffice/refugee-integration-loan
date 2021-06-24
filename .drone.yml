@@ -14,11 +14,17 @@ environment:
   IMAGE_REPO: sas/refugee-integration-loans
   GIT_REPO: cto/refugee-integration-loans
   NON_PROD_AVAILABILITY: Mon-Fri 08:00-19:00 Europe/London
+  READY_FOR_TEST_DELAY: 20s
+  NOTIFY_STUB: off
 
 trigger:
   branch:
     - feature/*
     - master
+
+acceptance_tests: &acceptance_tests
+  pull: if-not-exists
+  image: mcr.microsoft.com/playwright:v1.11.1-focal
 
 steps:
   - name: clone_repos
@@ -47,6 +53,7 @@ steps:
   - name: linting
     pull: if-not-exists
     image: node:14
+    detach: true
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
@@ -58,9 +65,10 @@ steps:
           - feature/*
       event: [push, pull_request]
 
-  - name: unit
+  - name: unit_tests
     pull: if-not-exists
     image: node:14
+    detach: true
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
@@ -74,6 +82,7 @@ steps:
 
   - name: sonar_scanner
     pull: if-not-exists
+    detach: true
     image: quay.io/ukhomeofficedigital/sonar-scanner-node:549b75f593f28da1c4a0a6f79877ec69d3b21037
     commands:
       - sonar-scanner -Dproject.settings=./sonar-project.properties
@@ -84,9 +93,10 @@ steps:
           - feature/*
       event: [push, pull_request]
 
-  - name: integration
+  - name: integration_tests
     pull: if-not-exists
     image: node:14
+    detach: true
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
@@ -98,9 +108,10 @@ steps:
           - feature/*
       event: [push, pull_request]
 
-  - name: accessibility
+  - name: accessibility_tests
     pull: if-not-exists
     image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+    detach: true
     environment:
       NOTIFY_KEY: USE_MOCK
       ENVIRONMENT: DRONE
@@ -109,20 +120,6 @@ steps:
         path: /root/.dockersock
     commands:
       - npm run test:accessibility
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: [push, pull_request]
-
-  - name: audit
-    pull: if-not-exists
-    image: node:14
-    environment:
-      NOTIFY_KEY: USE_MOCK
-    commands:
-      - npm run test:audit
     when:
       branch:
         include:
@@ -163,6 +160,7 @@ steps:
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
     environment:
+      NOTIFY_STUB: stub
       KUBE_SERVER: https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
       KUBE_TOKEN_RIL_ACP_NOTPROD:
         from_secret: kube_token_ril_acp_notprod
@@ -173,10 +171,29 @@ steps:
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
+      - sleep $${READY_FOR_TEST_DELAY}
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch: master
       event: pull_request
+
+  - name: acceptance_tests_branch
+    <<: *acceptance_tests
+    commands:
+      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk
+      - npm run test:acceptance
+    when:
+      branch: master
+      event: pull_request
+
+  - name: acceptance_tests_uat
+    <<: *acceptance_tests
+    commands:
+      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
+      - npm run test:acceptance
+    when:
+      branch: master
+      event: push
 
   # Snyk & Anchore security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
@@ -221,6 +238,7 @@ steps:
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
+      - sleep $${READY_FOR_TEST_DELAY}
     when:
       branch: master
       event: push
@@ -282,6 +300,7 @@ steps:
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
+      - sleep $${READY_FOR_TEST_DELAY}
     when:
       branch: master
       event: push
@@ -319,6 +338,7 @@ steps:
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-external.yaml -f kube/networkpolicy-external.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
+      - sleep $${READY_FOR_TEST_DELAY}
     when:
       target: PROD
       event: promote

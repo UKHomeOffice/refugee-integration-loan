@@ -199,7 +199,7 @@ module.exports = {
       }],
       continueOnEdit: true
     },
-    '/add-dependent': {
+    '/add-dependant': {
       backLink: 'has-dependants',
       fields: [
         'dependantFullName',
@@ -220,7 +220,7 @@ module.exports = {
         'dependantRelationship'
       ],
       titleField: 'dependantFullName',
-      addStep: 'add-dependent',
+      addStep: 'add-dependant',
       addAnotherLinkText: 'dependant',
       template: 'add-another',
       next: '/address',

@@ -9,6 +9,9 @@ module.exports = {
   pdf: {
     tempLocation: 'pdf-form-submissions'
   },
+  hosts: {
+    acceptanceTests: process.env.ACCEPTANCE_HOST_NAME || `http://localhost:${process.env.PORT || 8080}`
+  },
   govukNotify: {
     notifyApiKey: process.env.NOTIFY_KEY,
     caseworkerEmail: process.env.CASEWORKER_EMAIL,

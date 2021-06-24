@@ -701,7 +701,7 @@ describe('validation checks of the apply journey', () => {
 
     it('does not pass the add dependant page if Name, DOB, and Relationship to you are not entered are not entered',
       async () => {
-        const URI = '/add-dependent';
+        const URI = '/add-dependant';
         await initSession(URI);
         await passStep(URI, {});
 
@@ -720,7 +720,7 @@ describe('validation checks of the apply journey', () => {
 
     it('does not pass the add dependant page if the dependant\'s DOB is in the future',
       async () => {
-        const URI = '/add-dependent';
+        const URI = '/add-dependant';
         await initSession(URI);
         await passStep(URI, {
           dependantFullName: 'John Doe',

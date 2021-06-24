@@ -1,5 +1,5 @@
 
-describe('the journey of a single person with no dependents apply application', () => {
+describe('the journey of a single person with no dependants apply application', () => {
   let testApp;
   let passStep;
   let initSession;
