@@ -97,8 +97,8 @@ module.exports = class UploadPDFBase {
     try {
       const notifyClient = new NotifyClient(notifyKey);
 
-      if (notifyKey === 'USE-MOCK') {
-        req.log('warn', '*** Notify API Key set to USE-MOCK. Ensure disabled in production! ***');
+      if (notifyKey === 'USE_MOCK') {
+        req.log('warn', '*** Notify API Key set to USE_MOCK. Ensure disabled in production! ***');
       }
 
       const data = await this.readPdf(pdfFile);

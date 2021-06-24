@@ -11,8 +11,8 @@ brew install redis
 brew services start redis
 npm start #OR npm run start:dev
 ```
-To use the mock notification service locally, set the NOTIFY_KEY environment variable to USE-MOCK:
-```export NOTIFY_KEY=USE-MOCK```
+To use the mock notification service locally, set the NOTIFY_KEY environment variable to USE_MOCK:
+```export NOTIFY_KEY=USE_MOCK```
 
 To set the RIL logging level, set the LOG_LEVEL environment variable to either error, warn, or info:
 ```export LOG_LEVEL="info"```
@@ -38,6 +38,26 @@ Defaults in ACP are:
 
             Requests - cpu: 50m, memory: 200Mi
             Limits - cpu: 400m, memory: 400Mi
+
+### Acceptance Testing
+You can run the following to run all acceptance tests. These use the `@feature` tag by default:
+```
+npm run test:acceptance
+```
+You can also run this in browser mode slowed down for visibility when debugging:
+```
+npm run test:acceptance_browser
+```
+Additionally, you can place your own tag (@<name>), e.g. @test, above a Feature or Scenario section to run just that feature or scenario:
+```
+  @test
+  Scenario: Simple application - Mobile Only with new address
+    Given I start the 'apply' application journey
+```
+And then you can run your tests using the `TAGS` environmental variable to use it:
+```
+TAGS=@test npm run test:acceptance
+```
 
 ### Pa11y CI Accessibility test runner
 
