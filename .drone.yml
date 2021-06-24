@@ -92,16 +92,6 @@ steps:
         - feature/*
       event: [push, pull_request]
 
-  - name: linting_branch
-    <<: *linting
-    detach: true
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
-
   - name: linting_deploy
     <<: *linting
     when:
@@ -110,16 +100,6 @@ steps:
           - master
           - feature/*
       event: push
-
-  - name: unit_tests_branch
-    <<: *unit_tests
-    detach: true
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
 
   - name: unit_tests_deploy
     <<: *unit_tests
@@ -130,16 +110,6 @@ steps:
           - feature/*
       event: push
 
-  - name: sonar_scanner_branch
-    <<: *sonar_scanner
-    detach: true
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
-
   - name: sonar_scanner_deploy
     <<: *sonar_scanner
     when:
@@ -149,16 +119,6 @@ steps:
           - feature/*
       event: push
 
-  - name: integration_tests_branch
-    <<: *integration_tests
-    detach: true
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
-
   - name: integration_tests_deploy
     <<: *integration_tests
     when:
@@ -167,16 +127,6 @@ steps:
           - master
           - feature/*
       event: push
-
-  - name: accessibility_tests_branch
-    <<: *accessibility_tests
-    detach: true
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
 
   - name: accessibility_tests_deploy
     <<: *accessibility_tests
@@ -235,6 +185,51 @@ steps:
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch: master
+      event: pull_request
+
+  - name: linting_branch
+    <<: *linting
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: unit_tests_branch
+    <<: *unit_tests
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: sonar_scanner_branch
+    <<: *sonar_scanner
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: integration_tests_branch
+    <<: *integration_tests
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
+
+  - name: accessibility_tests_branch
+    <<: *accessibility_tests
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
       event: pull_request
 
   - name: acceptance_tests_branch

@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('@cucumber/cucumber');
+const { Given, Then } = require('@cucumber/cucumber');
 const expect = require('chai').expect;
 const World = require('../test.setup.js');
 const config = require('../../../config');
