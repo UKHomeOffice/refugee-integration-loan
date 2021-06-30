@@ -638,7 +638,7 @@ module.exports = {
     attributes: [{ attribute: 'placeholder', value: '£' }]
   },
   jointAmount: {
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ attribute: 'placeholder', prefix: '£' }],
     validate: ['required', 'decimal', { type: 'between', arguments: [100, 780] }]
   },
   purposeTypes: {

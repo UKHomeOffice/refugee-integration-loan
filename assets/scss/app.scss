@@ -1,5 +1,6 @@
 @import "$$theme";
 @import "./pdf.scss";
+@import "./prefix.scss";
 
 .phase-banner {
   @include phase-banner(beta);
