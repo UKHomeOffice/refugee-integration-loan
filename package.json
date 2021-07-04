@@ -28,7 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "^19.0.0-beta-v15",
+    "hof": "^19.0.0-beta-v16",
     "hof-component-date": "^1.4.0",
     "hof-template-mixins": "^5.2.1",
     "hof-theme-govuk": "^5.2.4",
