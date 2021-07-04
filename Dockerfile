@@ -17,7 +17,7 @@ WORKDIR /app
 
 COPY --chown=999:998 . /app
 
-RUN npm --loglevel warn install --production  --no-optional && \
+RUN npm --loglevel warn ci --production  --no-optional && \
     npm --loglevel warn run postinstall
 
 HEALTHCHECK --interval=5m --timeout=3s \

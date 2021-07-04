@@ -66,7 +66,7 @@ accessibility_tests: &accessibility_tests
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
-  image: mcr.microsoft.com/playwright:v1.11.1-focal
+  image: mcr.microsoft.com/playwright:v1.12.3-focal
 
 steps:
   - name: clone_repos
@@ -83,7 +83,7 @@ steps:
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
-      - npm install
+      - npm ci
       - npm run postinstall
     when:
       branch:
@@ -442,7 +442,7 @@ steps:
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:
-      - npm install
+      - npm ci
       - npm run postinstall
       - npm run test:snyk
     when:
