@@ -1,6 +1,6 @@
 
 const reqres = require('reqres');
-const Model = require('hof-model');
+const Model = require('hof').model;
 
 module.exports = options => {
   const opts = options || {};
