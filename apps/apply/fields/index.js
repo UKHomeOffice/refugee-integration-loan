@@ -1,7 +1,7 @@
 
 const moment = require('moment');
 const config = require('../../../config');
-const dateComponent = require('hof-component-date');
+const dateComponent = require('hof').components.date;
 
 const after1900Validator = { type: 'after', arguments: ['1900'] };
 

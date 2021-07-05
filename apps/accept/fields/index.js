@@ -1,5 +1,5 @@
 
-const dateComponent = require('hof-component-date');
+const dateComponent = require('hof').components.date;
 
 const brpNumber = {
   type: 'regex',

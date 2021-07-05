@@ -28,10 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "^19.0.0-beta-v19",
-    "hof-component-date": "^1.4.0",
-    "hof-template-mixins": "^5.2.1",
-    "hof-theme-govuk": "^5.2.4",
+    "hof": "^19.0.0-beta-v24",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

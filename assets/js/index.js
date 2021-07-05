@@ -1,3 +1,3 @@
 
 // eslint-disable-next-line node/no-missing-require
-require('$$theme');
+require('hof/frontend/theme/client-js');
