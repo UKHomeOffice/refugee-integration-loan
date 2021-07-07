@@ -1,0 +1,82 @@
+/*! CSS Used from: https://design-system.service.gov.uk/stylesheets/main-13a39c438f5ffab909341dc59792671e.css ; media=all */
+@media all{
+  .govuk-input{font-family:"GDS Transport",arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400;font-size:16px;font-size:1.4rem;line-height:1.25;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;height:40px;height:2.5rem;margin-top:0;padding:5px;border:2px solid #0b0c0c;border-radius:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+  @media print{
+    .govuk-input{font-family:sans-serif;}
+  }
+  @media (min-width: 40.0625em){
+    .govuk-input{font-size:19px;font-size:1.5875rem;line-height:1.51579;}
+  }
+  @media print{
+    .govuk-input{font-size:14pt;line-height:1.15;}
+  }
+  .govuk-input:focus{outline:3px solid #fd0;outline-offset:0;-webkit-box-shadow:inset 0 0 0 2px;box-shadow:inset 0 0 0 2px;}
+  .govuk-input--width-5{max-width:10.8ex;}
+  .govuk-input__wrapper{display:-webkit-box;display:-ms-flexbox;display:flex;}
+  .govuk-input__wrapper .govuk-input{-webkit-box-flex:0;-ms-flex:0 1 auto;flex:0 1 auto;}
+  .govuk-input__wrapper .govuk-input:focus{z-index:1;}
+  @media (max-width: 19.99em){
+    .govuk-input__wrapper{display:block;}
+    .govuk-input__wrapper .govuk-input{max-width:100%;}
+  }
+  .govuk-input__prefix,.govuk-input__suffix{font-family:"GDS Transport",arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400;font-size:16px;font-size:1.4rem;line-height:1.25;-webkit-box-sizing:border-box;box-sizing:border-box;display:inline-block;min-width:40px;min-width:2.5rem;height:40px;height:2.5rem;padding:5px;border:2px solid #0b0c0c;background-color:#f3f2f1;text-align:center;white-space:nowrap;cursor:default;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:0 0 auto;}
+  @media print{
+    .govuk-input__prefix,.govuk-input__suffix{font-family:sans-serif;}
+  }
+  @media (min-width: 40.0625em){
+    .govuk-input__prefix,.govuk-input__suffix{font-size:19px;font-size:1.5875rem;line-height:1.51579;}
+  }
+  @media print{
+    .govuk-input__prefix,.govuk-input__suffix{font-size:14pt;line-height:1.15;}
+  }
+  @media (max-width: 40.0525em){
+    .govuk-input__prefix,.govuk-input__suffix{line-height:1.6;}
+  }
+  @media (max-width: 19.99em){
+    .govuk-input__prefix,.govuk-input__suffix{display:block;height:100%;white-space:normal;}
+  }
+  @media (max-width: 19.99em){
+    .govuk-input__prefix{border-bottom:0;}
+  }
+  @media (min-width: 20em){
+    .govuk-input__prefix{border-right:0;}
+  }
+  @media (max-width: 19.99em){
+    .govuk-input__suffix{border-top:0;}
+  }
+  @media (min-width: 20em){
+    .govuk-input__suffix{border-left:0;}
+  }
+}
+/*! CSS Used fontfaces */
+@font-face{font-family:"GDS Transport";font-style:normal;font-weight:normal;src:url("https://design-system.service.gov.uk/assets/fonts/light-94a07e06a1-v2.woff2") format("woff2"),url("https://design-system.service.gov.uk/assets/fonts/light-f591b13f7d-v2.woff") format("woff");font-display:fallback;}
+@font-face{font-family:"GDS Transport";font-style:normal;font-weight:bold;src:url("https://design-system.service.gov.uk/assets/fonts/bold-b542beb274-v2.woff2") format("woff2"),url("https://design-system.service.gov.uk/assets/fonts/bold-affa96571d-v2.woff") format("woff");font-display:fallback;}
+
+/*! CSS Used from: https://design-system.service.gov.uk/stylesheets/main-13a39c438f5ffab909341dc59792671e.css ; media=all */
+@media all{
+  .govuk-input__prefix{font-family:"GDS Transport",arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400;font-size:16px;font-size:1.4rem;line-height:1.25;-webkit-box-sizing:border-box;box-sizing:border-box;display:inline-block;min-width:40px;min-width:3.8rem;height:40px;height:3.8rem;padding:5px;border:2px solid #0b0c0c;background-color:#f3f2f1;text-align:center;white-space:nowrap;cursor:default;-webkit-box-flex:0;-ms-flex:0 0 auto;flex:0 0 auto;}
+  @media print{
+    .govuk-input__prefix{font-family:sans-serif;}
+  }
+  @media (min-width: 40.0625em){
+    .govuk-input__prefix{font-size:19px;font-size:1.5875rem;line-height:1.51579;}
+  }
+  @media print{
+    .govuk-input__prefix{font-size:14pt;line-height:1.15;}
+  }
+  @media (max-width: 40.0525em){
+    .govuk-input__prefix{line-height:1.6;}
+  }
+  @media (max-width: 19.99em){
+    .govuk-input__prefix{display:block;height:100%;white-space:normal;}
+  }
+  @media (max-width: 19.99em){
+    .govuk-input__prefix{border-bottom:0;}
+  }
+  @media (min-width: 20em){
+    .govuk-input__prefix{border-right:0;}
+  }
+}
+/*! CSS Used fontfaces */
+@font-face{font-family:"GDS Transport";font-style:normal;font-weight:normal;src:url("https://design-system.service.gov.uk/assets/fonts/light-94a07e06a1-v2.woff2") format("woff2"),url("https://design-system.service.gov.uk/assets/fonts/light-f591b13f7d-v2.woff") format("woff");font-display:fallback;}
+@font-face{font-family:"GDS Transport";font-style:normal;font-weight:bold;src:url("https://design-system.service.gov.uk/assets/fonts/bold-b542beb274-v2.woff2") format("woff2"),url("https://design-system.service.gov.uk/assets/fonts/bold-affa96571d-v2.woff") format("woff");font-display:fallback;}

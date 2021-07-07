@@ -245,7 +245,7 @@ module.exports = {
   },
   salaryAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'incomeTypes',
       value: 'salary'
@@ -253,7 +253,7 @@ module.exports = {
   },
   universalCreditAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'incomeTypes',
       value: 'universal_credit'
@@ -261,7 +261,7 @@ module.exports = {
   },
   childBenefitAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'incomeTypes',
       value: 'child_benefit'
@@ -269,7 +269,7 @@ module.exports = {
   },
   housingBenefitAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'incomeTypes',
       value: 'housing_benefit'
@@ -277,7 +277,7 @@ module.exports = {
   },
   otherIncomeAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'incomeTypes',
       value: 'other'
@@ -319,7 +319,7 @@ module.exports = {
   },
   combinedSalaryAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
       value: 'salary'
@@ -327,7 +327,7 @@ module.exports = {
   },
   combinedUniversalCreditAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
       value: 'universal_credit'
@@ -335,7 +335,7 @@ module.exports = {
   },
   combinedChildBenefitAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
       value: 'child_benefit'
@@ -343,7 +343,7 @@ module.exports = {
   },
   combinedHousingBenefitAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
       value: 'housing_benefit'
@@ -351,7 +351,7 @@ module.exports = {
   },
   combinedOtherIncomeAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedIncomeTypes',
       value: 'other'
@@ -408,7 +408,7 @@ module.exports = {
   },
   rentAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'rent'
@@ -416,7 +416,7 @@ module.exports = {
   },
   householdBillsAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'household_bills'
@@ -424,7 +424,7 @@ module.exports = {
   },
   foodToiletriesAndCleaningSuppliesAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'food_toiletries_cleaning_supplies'
@@ -432,7 +432,7 @@ module.exports = {
   },
   mobilePhoneAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'mobile_phone'
@@ -440,7 +440,7 @@ module.exports = {
   },
   travelAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'travel'
@@ -448,7 +448,7 @@ module.exports = {
   },
   clothingAndFootwearAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'clothing_and_footwear'
@@ -456,7 +456,7 @@ module.exports = {
   },
   universalCreditDeductionsAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'universal_credit_deductions'
@@ -464,7 +464,7 @@ module.exports = {
   },
   otherOutgoingAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'outgoingTypes',
       value: 'other'
@@ -521,7 +521,7 @@ module.exports = {
   },
   combinedRentAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'rent'
@@ -529,14 +529,14 @@ module.exports = {
   },
   combinedHouseholdBillsAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'household_bills'
     }
   },
   combinedFoodToiletriesAndCleaningSuppliesAmount: {
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     dependent: {
       field: 'combinedOutgoingTypes',
@@ -545,7 +545,7 @@ module.exports = {
   },
   combinedMobilePhoneAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'mobile_phone'
@@ -553,7 +553,7 @@ module.exports = {
   },
   combinedTravelAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'travel'
@@ -561,7 +561,7 @@ module.exports = {
   },
   combinedClothingAndFootwearAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'clothing_and_footwear'
@@ -569,7 +569,7 @@ module.exports = {
   },
   combinedUniversalCreditDeductionsAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'universal_credit_deductions'
@@ -577,7 +577,7 @@ module.exports = {
   },
   combinedOtherOutgoingAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedOutgoingTypes',
       value: 'other'
@@ -602,7 +602,7 @@ module.exports = {
   },
   savingsAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'savings',
       value: 'yes'
@@ -627,7 +627,7 @@ module.exports = {
   },
   combinedSavingsAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     dependent: {
       field: 'combinedSavings',
       value: 'yes'
@@ -635,10 +635,10 @@ module.exports = {
   },
   amount: {
     validate: ['required', 'decimal', { type: 'between', arguments: [100, 500] }],
-    attributes: [{ attribute: 'placeholder', value: '£' }]
+    attributes: [{ prefix: '£' }]
   },
   jointAmount: {
-    attributes: [{ attribute: 'placeholder', value: '£' }],
+    attributes: [{ prefix: '£' }],
     validate: ['required', 'decimal', { type: 'between', arguments: [100, 780] }]
   },
   purposeTypes: {
