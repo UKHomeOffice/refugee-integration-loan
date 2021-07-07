@@ -4,7 +4,6 @@
     "node": "^14.15.0"
   },
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "start": "node server.js",
     "start:dev": "hof-build watch",
     "test": "npm run test:lint && npm run test:unit && npm run test:integration",
@@ -34,7 +33,6 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "notifications-node-client": "^4.9.0",
-    "npm-force-resolutions": "0.0.10",
     "puppeteer": "^5.5.0",
     "uuid": "^3.3.3"
   },
@@ -44,6 +42,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-subset": "^1.6.0",
+    "eslint": "^7.30.0",
     "eslint-config-hof": "^1.0.4",
     "jquery": "^3.5.1",
     "jsdom": "^16.4.0",

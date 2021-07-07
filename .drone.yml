@@ -83,8 +83,8 @@ steps:
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
-      - npm ci
-      - npm run postinstall
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
     when:
       branch:
         include:
@@ -236,7 +236,7 @@ steps:
     <<: *acceptance_tests
     commands:
       - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk
-      - npm run test:acceptance
+      - yarn run test:acceptance
     when:
       branch: master
       event: pull_request
@@ -250,7 +250,7 @@ steps:
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:
-      - npm run test:snyk
+      - yarn run test:snyk
     when:
       branch:
         include:
@@ -293,7 +293,7 @@ steps:
     <<: *acceptance_tests
     commands:
       - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
-      - npm run test:acceptance
+      - yarn run test:acceptance
     when:
       branch: master
       event: push
@@ -442,9 +442,9 @@ steps:
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:
-      - npm ci
-      - npm run postinstall
-      - npm run test:snyk
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
+      - yarn run test:snyk
     when:
       cron: security_scans
       event: cron
