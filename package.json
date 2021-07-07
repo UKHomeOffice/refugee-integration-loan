@@ -4,6 +4,7 @@
     "node": "^14.15.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "node server.js",
     "start:dev": "hof-build watch",
     "test": "npm run test:lint && npm run test:unit && npm run test:integration",
@@ -28,11 +29,12 @@
     ""
   ],
   "dependencies": {
-    "hof": "^19.0.0",
+    "hof": "^19.1.0",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "notifications-node-client": "^4.9.0",
+    "npm-force-resolutions": "0.0.10",
     "puppeteer": "^5.5.0",
     "uuid": "^3.3.3"
   },
@@ -56,6 +58,9 @@
     "snyk": "^1.620.0",
     "supertest": "^5.0.0",
     "supertest-session": "^4.1.0"
+  },
+  "resolutions": {
+    "underscore": "^1.12.1"
   },
   "name": "refugee-integration-loans",
   "version": "1.0.0",
