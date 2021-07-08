@@ -7715,7 +7715,7 @@ snyk-try-require@^2.0.0:
     lodash.clonedeep "^4.3.0"
     lru-cache "^5.1.1"
 
-snyk@^1.620.0:
+snyk@^1.657.0:
   version "1.657.0"
   resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.657.0.tgz#cf08456069a77e564ee38d2790ccbc71e593867d"
   integrity sha512-wTJ5k49SopXL9Sm8Ltlp+HVVpakpaxkt//IRzOTEN75CMd/NpLtCSD34oAbUfo+tTrN1Ig8MSXGk5Z3XQm2d7w==

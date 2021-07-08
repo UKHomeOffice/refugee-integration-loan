@@ -6,17 +6,17 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "hof-build watch",
-    "test": "npm run test:lint && npm run test:unit && npm run test:integration",
+    "test": "snyk test && yarn run test:lint && yarn run test:unit && yarn run test:integration",
     "test:accessibility": "_mocha \"test/_accessibility/**/*.spec.js\" --exit",
-    "test:acceptance": "TAGS=\"${TAGS:=@feature}\" npm run test:cucumber",
-    "test:acceptance_browser": "ACCEPTANCE_WITH_BROWSER=true TAGS=\"${TAGS:=@feature}\" npm run test:cucumber",
+    "test:acceptance": "TAGS=\"${TAGS:=@feature}\" yarn run test:cucumber",
+    "test:acceptance_browser": "ACCEPTANCE_WITH_BROWSER=true TAGS=\"${TAGS:=@feature}\" yarn run test:cucumber",
     "test:cucumber": "cucumber-js -f @cucumber/pretty-formatter \"test/_features/**/*.feature\" --require test/_features/test.setup.js --require \"test/_features/step_definitions/**/*.js\" --tags $TAGS",
     "test:integration": "_mocha \"test/_integration/**/*.spec.js\" --exit",
     "test:lint": "eslint . --config ./node_modules/eslint-config-hof/default.js",
     "test:snyk": "snyk config set api=SNYK_TOKEN && snyk test",
     "test:unit": "nyc _mocha \"test/_unit/**/*.spec.js\"",
     "build": "hof-build",
-    "postinstall": "npm run build"
+    "postinstall": "yarn run build"
   },
   "mocha": {
     "reporter": "spec",
@@ -54,7 +54,7 @@
     "reqres": "^3.0.1",
     "sinon": "^9.2.0",
     "sinon-chai": "^3.5.0",
-    "snyk": "^1.620.0",
+    "snyk": "^1.657.0",
     "supertest": "^5.0.0",
     "supertest-session": "^4.1.0"
   },
