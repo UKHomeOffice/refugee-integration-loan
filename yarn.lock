@@ -4103,7 +4103,7 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hof@^19.1.0:
+hof@^19.1.1:
   version "19.1.1"
   resolved "https://registry.yarnpkg.com/hof/-/hof-19.1.1.tgz#26c576d600328c2f9b5341aef86f896950e96012"
   integrity sha512-5zoYh2NUkjHRoKMTkLYn4w3HjRT0D/sBGVMCie1bkhmwJ6397Dv2TP3MVTkSQ/buwDWfEPBK2MZ4d+pgRE7Lqw==
@@ -7194,9 +7194,9 @@ safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, s
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
 sass@^1.35.1:
-  version "1.35.1"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.35.1.tgz#90ecf774dfe68f07b6193077e3b42fb154b9e1cd"
-  integrity sha512-oCisuQJstxMcacOPmxLNiLlj4cUyN2+8xJnG7VanRoh2GOLr9RqkvI4AxA4a6LHVg/rsu+PmxXeGhrdSF9jCiQ==
+  version "1.35.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.35.2.tgz#b732314fcdaf7ef8d0f1698698adc378043cb821"
+  integrity sha512-jhO5KAR+AMxCEwIH3v+4zbB2WB0z67V1X0jbapfVwQQdjHZUGUyukpnoM6+iCMfsIUC016w9OPKQ5jrNOS9uXw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
