@@ -4,6 +4,9 @@ const settings = require('../../../hof.settings.json');
 const path = require('path');
 const fs = require('fs');
 
+const testDir = `${process.cwd()}/test/_accessibility/tmp`;
+const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
+
 describe('the journey of an accessible apply application', async () => {
   let testApp;
   let initSession;
@@ -60,7 +63,11 @@ describe('the journey of an accessible apply application', async () => {
         return Promise.resolve();
       }
 
-      const testHtmlFile = process.env.ENVIRONMENT === 'DRONE' ?
+      if (!isDroneEnv && !fs.existsSync(testDir)) {
+        fs.mkdirSync(testDir);
+      }
+
+      const testHtmlFile = isDroneEnv ?
         `/root/.dockersock${uri}.html` :
         `${process.cwd()}/test/_accessibility/tmp${uri}.html`;
 

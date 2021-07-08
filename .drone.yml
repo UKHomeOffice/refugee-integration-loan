@@ -28,7 +28,7 @@ linting: &linting
   environment:
     NOTIFY_KEY: USE_MOCK
   commands:
-    - npm run test:lint
+    - yarn run test:lint
 
 unit_tests: &unit_tests
   pull: if-not-exists
@@ -36,7 +36,7 @@ unit_tests: &unit_tests
   environment:
     NOTIFY_KEY: USE_MOCK
   commands:
-    - npm run test:unit
+    - yarn run test:unit
 
 sonar_scanner: &sonar_scanner
   pull: if-not-exists
@@ -50,7 +50,7 @@ integration_tests: &integration_tests
   environment:
     NOTIFY_KEY: USE_MOCK
   commands:
-    - npm run test:integration
+    - yarn run test:integration
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
@@ -62,11 +62,11 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
-    - npm run test:accessibility
+    - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
-  image: mcr.microsoft.com/playwright:v1.11.1-focal
+  image: mcr.microsoft.com/playwright:v1.12.3-focal
 
 steps:
   - name: clone_repos
@@ -83,8 +83,8 @@ steps:
     environment:
       NOTIFY_KEY: USE_MOCK
     commands:
-      - npm install
-      - npm run postinstall
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
     when:
       branch:
         include:
@@ -250,7 +250,7 @@ steps:
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:
-      - npm run test:snyk
+      - yarn run test:snyk
     when:
       branch:
         include:
@@ -442,9 +442,9 @@ steps:
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:
-      - npm install
-      - npm run postinstall
-      - npm run test:snyk
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
+      - yarn run test:snyk
     when:
       cron: security_scans
       event: cron

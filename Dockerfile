@@ -17,8 +17,8 @@ WORKDIR /app
 
 COPY --chown=999:998 . /app
 
-RUN npm --loglevel warn install --production  --no-optional && \
-    npm --loglevel warn run postinstall
+RUN yarn install --frozen-lockfile --production --ignore-optional && \
+    yarn run postinstall
 
 HEALTHCHECK --interval=5m --timeout=3s \
  CMD curl --fail http://localhost:8080 || exit 1

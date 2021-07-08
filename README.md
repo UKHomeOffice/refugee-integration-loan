@@ -6,10 +6,10 @@
 ```
 nvm install 14.11.0
 nvm use 14.11.0
-npm i
+yarn
 brew install redis
 brew services start redis
-npm start #OR npm run start:dev
+yarn start #OR yarn run start:dev
 ```
 To use the mock notification service locally, set the NOTIFY_KEY environment variable to USE_MOCK:
 ```export NOTIFY_KEY=USE_MOCK```
@@ -27,7 +27,7 @@ docker run --name some-redis -d redis
 
 ### Docker
 ```
-npm i && docker-compose build && docker-compose up
+yarn && docker-compose build && docker-compose up
 ```
 
 Then navigate to <http://localhost:8080/apply>
@@ -42,11 +42,11 @@ Defaults in ACP are:
 ### Acceptance Testing
 You can run the following to run all acceptance tests. These use the `@feature` tag by default:
 ```
-npm run test:acceptance
+yarn run test:acceptance
 ```
 You can also run this in browser mode slowed down for visibility when debugging:
 ```
-npm run test:acceptance_browser
+yarn run test:acceptance_browser
 ```
 Additionally, you can place your own tag (@<name>), e.g. @test, above a Feature or Scenario section to run just that feature or scenario:
 ```
@@ -56,7 +56,7 @@ Additionally, you can place your own tag (@<name>), e.g. @test, above a Feature 
 ```
 And then you can run your tests using the `TAGS` environmental variable to use it:
 ```
-TAGS=@test npm run test:acceptance
+TAGS=@test yarn run test:acceptance
 ```
 
 ### Pa11y CI Accessibility test runner
@@ -66,7 +66,7 @@ Pa11y CI is a CI-centric accessibility test runner, built using [Pa11y](https://
 Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This used during automated testing of the application and can act as a gatekeeper to stop common WCAG a11y issues from making it to live.
 
 ```bash
-npm run test:_accessibility          // requires app to be running
+yarn run test:_accessibility          // requires app to be running
 ```
 
 ### Anchore/Snyk image testing
@@ -80,7 +80,7 @@ https://github.com/UKHomeOfficeForms/hof-cve-exceptions
 For anything needing fixing, you can use Snyk on your local machine to debug vulnerability issues. They tend to align with what Anchore has raised and are more detailed in how to fix issues.
 Just `export SNYK_TOKEN=<your_token>` in your `~/.bashrc` or bash_profile or before executing the following command:
 ```
-npm run test:snyk
+yarn run test:snyk
 ```
 This will run Snyk tests just against the code base. You can also run `snyk wizard` to assist with repo level fixes. This will also generate/update the `.snyk` policy which others in the project can reuse for focusing on new errors and ignoring previously audited issues.
 
@@ -103,10 +103,10 @@ apk add --upgrade gnutls <dependency1_to_update> <dependency2_to_update> etc etc
 #### NPM
 One can use npm to update individual dependencies if they have been flagged due to security updates. These can be done like this:
 ```
-npm i express@"<15.0.0" -S
+yarn upgrade express@"<15.0.0"
 ```
 In this example we have updated just the `express` npm package to the latest version before 15.0.0. So for instance, if it was set to `14.16.0` prior, this might update to the latest minor/patch fix version `14.17.1`. This is a safe way to get the latest minor/patch version before the next major/minor respectively to mitigate bringing in a breaking change.
 Here is an example for updating a dev_dependency bringing in the latest patch fix for version `8.2.x`
 ```
-npm i mocha@"<8.3.0" -SD
+yarn upgrade mocha@"<8.3.0"
 ```

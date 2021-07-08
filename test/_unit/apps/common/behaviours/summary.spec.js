@@ -3,7 +3,7 @@ const request = require('../../../../helpers/request');
 const response = require('../../../../helpers/response');
 const SummaryBehaviour = require('../../../../../apps/common/behaviours/summary');
 const mockTranslations = require('./translations/en/default');
-const Model = require('hof-model');
+const Model = require('hof').model;
 const moment = require('moment');
 
 describe('summary behaviour', () => {
