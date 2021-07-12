@@ -100,3 +100,27 @@ spec:
             limits:
               cpu: "100m"
               memory: "200Mi"
+          volumeMounts:
+            - mountPath: /public
+              name: public
+        - name: nginx-proxy
+          image: quay.io/ukhomeofficedigital/nginx-proxy-govuk:v3
+          resources:
+            requests:
+              memory: 10Mi
+              cpu: 10m
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          env:
+{{ file .NGINX_SETTINGS | indent 12 }}
+          ports:
+            - containerPort: 10443
+          volumeMounts:
+            - mountPath: /public
+              name: public
+          securityContext:
+            runAsNonRoot: true
+      volumes:
+        - name: public
+          emptyDir: {}

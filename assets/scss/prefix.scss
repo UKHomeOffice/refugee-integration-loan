@@ -1,12 +1,5 @@
 /*! CSS Used from: https://design-system.service.gov.uk/stylesheets/main-13a39c438f5ffab909341dc59792671e.css ; media=all */
 @media all{
-  .govuk-input{font-family:"GDS Transport",arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-weight:400;font-size:16px;font-size:1.4rem;line-height:1.25;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;height:40px;height:2.5rem;margin-top:0;padding:5px;border:2px solid #0b0c0c;border-radius:0;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
-  @media print{
-    .govuk-input{font-family:sans-serif;}
-  }
-  @media (min-width: 40.0625em){
-    .govuk-input{font-size:19px;font-size:1.5875rem;line-height:1.51579;}
-  }
   @media print{
     .govuk-input{font-size:14pt;line-height:1.15;}
   }

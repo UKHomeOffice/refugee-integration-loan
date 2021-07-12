@@ -14,37 +14,4 @@ metadata:
     name: {{ .APP_NAME }}
     {{ end }}
 data:
-  APP_NAME: "Refugee Integration Loan Application Service"
-  COMMIT_SHA: {{ .DRONE_COMMIT_SHA }}
-  TEMPLATE_APPLY: "1376a8f2-2157-42f3-b9a7-5008ba8f26c9"
-  TEMPLATE_ACCEPT: "21235643-6a96-426a-94d5-bc1a49c0b1d0"
-  TEMPLATE_FEEDBACK: "ccfb0d84-8bed-4749-8667-c7890cd1dcb1"
-  TEMPLATE_EMAIL_RECEIPT: "428f308d-228b-4b3f-a866-e389d122a212"
-  TEMPLATE_TEXT_RECEIPT: "03db3bde-be6c-4f54-888d-2c0bc0d76bca"
-  TEMPLATE_ACCEPT_EMAIL_RECEIPT: "9319b125-783f-4a11-893b-400fa7b03259"
-  TEMPLATE_ACCEPT_TEXT_RECEIPT: "f9b6961e-8a6f-4eda-aae8-eb04b875f348"
-  {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-  ENVIRONMENT: "BRANCH"
-  GA_TAG: "UA-178636922-1"
-  NODE_ENV: "development"
-  CASEWORKER_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
-  FEEDBACK_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
-  {{ else if eq .KUBE_NAMESPACE .UAT_ENV }}
-  ENVIRONMENT: "UAT"
-  GA_TAG: "UA-178636922-1"
-  NODE_ENV: "development"
-  CASEWORKER_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
-  FEEDBACK_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
-  {{ else if eq .KUBE_NAMESPACE .STG_ENV }}
-  ENVIRONMENT: "STG"
-  GA_TAG: "UA-145652997-2"
-  NODE_ENV: "production"
-  CASEWORKER_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
-  FEEDBACK_EMAIL: "refugee-integration-loan-sas@digital.homeoffice.gov.uk"
-  {{ else if eq .KUBE_NAMESPACE .PROD_ENV }}
-  ENVIRONMENT: "PROD"
-  GA_TAG: "UA-145652997-1"
-  NODE_ENV: "production"
-  CASEWORKER_EMAIL: "integrationloan@homeoffice.gov.uk"
-  FEEDBACK_EMAIL: "refugee-integration-loan@digital.homeoffice.gov.uk"
-  {{ end }}
+{{ file .CONFIGMAP_VALUES | indent 2 }}

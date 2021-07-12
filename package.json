@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "hof-build watch",
-    "test": "snyk test && yarn run test:lint && yarn run test:unit && yarn run test:integration",
+    "test": "yarn run test:lint && yarn run test:unit && yarn run test:integration",
     "test:accessibility": "_mocha \"test/_accessibility/**/*.spec.js\" --exit",
     "test:acceptance": "TAGS=\"${TAGS:=@feature}\" npm run test:cucumber",
     "test:acceptance_browser": "ACCEPTANCE_WITH_BROWSER=true TAGS=\"${TAGS:=@feature}\" yarn run test:cucumber",
@@ -28,7 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "^19.1.1",
+    "hof": "^19.3.4",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

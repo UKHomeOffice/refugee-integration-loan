@@ -16,6 +16,7 @@ spec:
     {{ end }}
   type: ClusterIP
   ports:
-    - name: https
-      port: 443
-      targetPort: 8080
+  - name: http
+    port: 10080
+  - name: https
+    port: 10443
