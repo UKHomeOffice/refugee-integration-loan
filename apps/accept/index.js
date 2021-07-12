@@ -1,6 +1,6 @@
 
 const setDateErrorLink = require('../common/behaviours/set-date-error-link');
-const Summary = require('../common/behaviours/summary');
+const Summary = require('hof').components.summary;
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 

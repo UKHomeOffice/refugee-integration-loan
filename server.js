@@ -3,21 +3,18 @@ const hof = require('hof');
 const config = require('./config');
 const _ = require('lodash');
 const path = require('path');
-const app = hof({
-  behaviours: [
-    require('./apps/common/behaviours/clear-session'),
-    require('./apps/common/behaviours/fields-filter')
-  ],
-  translations: './apps/common/translations',
-  routes: [
-    require('./apps/common'),
-    require('./apps/apply/'),
-    require('./apps/accept/')
-  ],
-  views: [path.resolve(__dirname, './apps/common/views')],
+
+let settings = require('./hof.settings');
+
+settings = Object.assign({}, settings, {
+  behaviours: settings.behaviours.map(require),
+  routes: settings.routes.map(require),
+  views: settings.views.map(view => path.resolve(__dirname, view)),
   getTerms: false,
   getCookies: false
 });
+
+const app = hof(settings);
 
 app.use('/terms-and-conditions', (req, res, next) => {
   res.locals = Object.assign({}, res.locals, req.translate('terms'));

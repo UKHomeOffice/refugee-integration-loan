@@ -21,5 +21,7 @@ spec:
             matchLabels:
               name: ingress-internal
       ports:
-        - protocol: TCP
-          port: 8080
+      - port: 10080
+        protocol: TCP
+      - port: 10443
+        protocol: TCP

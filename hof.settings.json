@@ -1,8 +1,18 @@
 {
-  "theme": "govuk",
+  "appName": "Refugee Integration Loan",
+  "theme": "govUK",
+  "behaviours": [
+    "./apps/common/behaviours/clear-session",
+    "./apps/common/behaviours/fields-filter"
+  ],
+  "translations": "./apps/common/translations",
   "routes": [
+    "./apps/common",
     "./apps/apply",
     "./apps/accept"
+  ],
+  "views": [
+    "./apps/common/views"
   ],
   "session": {
     "name": "refugee-integration-loans.hof.sid"

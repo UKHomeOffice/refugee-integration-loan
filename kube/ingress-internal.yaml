@@ -7,14 +7,7 @@ metadata:
   {{ else }}
   name: {{ .APP_NAME }}-internal
   {{ end }}
-  labels:
-    cert-manager.io/solver: route53
-  annotations:
-    cert-manager.io/enabled: "true"
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    kubernetes.io/ingress.class: "nginx-internal"
-    ingress.kubernetes.io/add-base-url: "true"
-    ingress.kubernetes.io/app-root: /apply
+{{ file .INGRESS_INTERNAL_ANNOTATIONS | indent 2 }}
 spec:
   tls:
     - hosts:
@@ -48,4 +41,4 @@ spec:
               {{ else }}
               serviceName: {{ .APP_NAME }}
               {{ end }}
-              servicePort: 443
+              servicePort: 10443

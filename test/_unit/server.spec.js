@@ -63,6 +63,8 @@ describe('Server.js app file', () => {
   describe('Setup HOF Configuration', () => {
     it('calls hof with behaviours and routes', () => {
       hofStub.should.have.been.calledOnce.calledWithExactly({
+        appName: 'Refugee Integration Loan',
+        theme: 'govUK',
         behaviours: [
           behavioursClearSessionStub,
           behavioursFieldFilterStub
@@ -74,6 +76,7 @@ describe('Server.js app file', () => {
           appsAcceptStub
         ],
         views: [path.resolve(__dirname, '../../apps/common/views')],
+        session: { name: 'refugee-integration-loans.hof.sid' },
         getTerms: false,
         getCookies: false
       });
