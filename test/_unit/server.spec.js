@@ -51,7 +51,7 @@ describe('Server.js app file', () => {
 
     proxyquire('../server', {
       hof: hofStub,
-      './apps/common/behaviours/clear-session': behavioursClearSessionStub,
+      'hof/components/clear-session': behavioursClearSessionStub,
       './apps/common/behaviours/fields-filter': behavioursFieldFilterStub,
       './apps/common': appsCommonStub,
       './apps/apply/': appsApplyStub,
@@ -114,7 +114,7 @@ describe('Server.js app file', () => {
   describe('Use Locals', () => {
     it('should set locals on the response', () => {
       res.locals.should.eql({
-        serviceName: 'Refugee integration loan service',
+        appName: 'Refugee integration loan service',
         htmlLang: 'en',
         feedbackUrl: '/feedback',
         footerSupportLinks: [
