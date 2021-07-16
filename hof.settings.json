@@ -2,7 +2,7 @@
   "appName": "Refugee Integration Loan",
   "theme": "govUK",
   "behaviours": [
-    "./apps/common/behaviours/clear-session",
+    "hof/components/clear-session",
     "./apps/common/behaviours/fields-filter"
   ],
   "translations": "./apps/common/translations",
