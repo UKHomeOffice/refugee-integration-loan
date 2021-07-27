@@ -72,7 +72,7 @@ spec:
                   name: ril-notify-key
                   key: ril-notify-key
               {{ end }}
-            {{ if or (eq .KUBE_NAMESPACE .STG_ENV) (eq .KUBE_NAMESPACE .PROD_ENV) }}
+            {{ if not (eq .KUBE_NAMESPACE .BRANCH_ENV) }}
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
