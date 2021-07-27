@@ -190,9 +190,6 @@ Feature: Joint Application
     Then I should see 'Other details' on the page
     Then I should see 'Now send your application' on the page
     Then I submit the application
-    Then I should be on the 'complete' page showing 'Application sent'
-    Then I should see 'What happens next' on the page
-    Then I should see 'If your details change' on the page
 
   Scenario: Simple application - Phone Only with new address
     Given I start the 'apply' application journey
