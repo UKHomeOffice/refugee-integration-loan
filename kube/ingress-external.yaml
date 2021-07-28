@@ -4,9 +4,6 @@ kind: Ingress
 metadata:
   name: {{ .APP_NAME }}-external
 {{ file .INGRESS_EXTERNAL_ANNOTATIONS | indent 2 }}
-    {{ if eq .KUBE_NAMESPACE .UAT_ENV }}
-    ingress.kubernetes.io/whitelist-source-range: "81.111.254.178/32"
-    {{ end }}
 spec:
   tls:
     - hosts:
