@@ -19,8 +19,6 @@ Feature: Accept Application
     Then I should be on the 'confirm' page showing 'Accept your offer'
     Then I should see 'Loan reference: 12345' on the page
     Then I submit the application
-    Then I should be on the 'complete-acceptance' page showing 'Offer accepted'
-    Then I should see 'What happens next' on the page
 
   Scenario: Complete Application - Phone Only
     Given I start the 'accept' application journey
