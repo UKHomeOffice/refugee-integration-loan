@@ -2,45 +2,16 @@
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
-const pdfPuppeteer = require('../../common/behaviours/pdf-puppeteer');
-const uuid = require('uuid');
 const config = require('../../../config');
 const utilities = require('../../../lib/utilities');
 const _ = require('lodash');
 const NotifyClient = utilities.NotifyClient;
 const libPhoneNumber = require('libphonenumber-js/max');
-
-const tempLocation = path.resolve(config.pdf.tempLocation);
+const PDFModel = require('hof').apis.pdfConverter;
 
 module.exports = class UploadPDFBase {
   constructor(behaviourConfig) {
     this.behaviourConfig = behaviourConfig;
-  }
-
-  async createPDF(req, html) {
-    try {
-      const applicationUuid = uuid.v1();
-      const appName = this.behaviourConfig.app;
-      const file = await pdfPuppeteer.generate(req, html, tempLocation, `${applicationUuid}.pdf`, appName);
-
-      req.log('info', `ril.form.${appName}.submit_form.create_pdf.successful with uuid: ${applicationUuid}`);
-
-      return file;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  deleteFile(req, fileToDelete) {
-    const appName = this.behaviourConfig.app;
-
-    fs.unlink(fileToDelete, err => {
-      if (err) {
-        req.log('error', `ril.form.${appName}.submit_form.delete_pdf.error [${fileToDelete}]`, err.message || err);
-      } else {
-        req.log('info', `ril.form.${appName}.submit_form.delete_pdf.successful [${fileToDelete}]`);
-      }
-    });
   }
 
   readCss() {
@@ -59,12 +30,6 @@ module.exports = class UploadPDFBase {
         }
         return resolve(`data:image/png;base64,${data.toString('base64')}`);
       });
-    });
-  }
-
-  readPdf(pdfFile) {
-    return new Promise((resolve, reject) => {
-      fs.readFile(pdfFile, (err, data) => err ? reject(err) : resolve(data));
     });
   }
 
@@ -87,7 +52,7 @@ module.exports = class UploadPDFBase {
     });
   }
 
-  async sendEmailWithAttachment(req, pdfFile) {
+  async sendEmailWithAttachment(req, pdfData) {
     const personalisations = this.behaviourConfig.notifyPersonalisations;
     const appName = this.behaviourConfig.app;
     const appComponent = this.behaviourConfig.component;
@@ -101,11 +66,9 @@ module.exports = class UploadPDFBase {
         req.log('warn', '*** Notify API Key set to USE_MOCK. Ensure disabled in production! ***');
       }
 
-      const data = await this.readPdf(pdfFile);
-
       await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
         personalisation: Object.assign({}, personalisations, {
-          'form id': notifyClient.prepareUpload(data)
+          'form id': notifyClient.prepareUpload(pdfData)
         })
       });
 
@@ -117,11 +80,9 @@ module.exports = class UploadPDFBase {
 
       return await this.sendReceipt(req, notifyClient);
     } catch (err) {
-      req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, err.message || err);
-      // **Important** - this is here to ensure no accidental logging of file data in production
-      throw new Error(err.message || err);
-    } finally {
-      this.deleteFile(req, pdfFile);
+      const error = _.get(err, 'response.data.errors[0]', err.message || err);
+      req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, error);
+      throw new Error(error);
     }
   }
 
@@ -183,6 +144,16 @@ module.exports = class UploadPDFBase {
       return config.govukNotify.templateAcceptTextReceipt;
     }
     return '';
+  }
+
+  async send(req, res, locals) {
+    const html = await this.renderHTML(req, res, locals);
+
+    const pdfModel = new PDFModel();
+    pdfModel.set({ template: html });
+    const pdfData = await pdfModel.save();
+
+    return await this.sendEmailWithAttachment(req, pdfData);
   }
 
   sortSections(locals) {

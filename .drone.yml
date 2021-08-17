@@ -14,9 +14,8 @@ environment:
   IMAGE_REPO: sas/refugee-integration-loans
   GIT_REPO: cto/refugee-integration-loans
   HOF_CONFIG: hof-services-config/Refugee_Integration_Loan
-  NON_PROD_AVAILABILITY: Mon-Fri 08:00-19:00 Europe/London
+  NON_PROD_AVAILABILITY: Mon-Fri 08:00-23:59 Europe/London
   READY_FOR_TEST_DELAY: 20s
-  NOTIFY_STUB: off
 
 trigger:
   branch:
@@ -27,7 +26,7 @@ linting: &linting
   pull: if-not-exists
   image: node:14
   environment:
-    NOTIFY_KEY: USE_MOCK
+    NOTIFY_STUB: true
   commands:
     - yarn run test:lint
 
@@ -35,7 +34,7 @@ unit_tests: &unit_tests
   pull: if-not-exists
   image: node:14
   environment:
-    NOTIFY_KEY: USE_MOCK
+    NOTIFY_STUB: true
   commands:
     - yarn run test:unit
 
@@ -49,7 +48,7 @@ integration_tests: &integration_tests
   pull: if-not-exists
   image: node:14
   environment:
-    NOTIFY_KEY: USE_MOCK
+    NOTIFY_STUB: true
   commands:
     - yarn run test:integration
 
@@ -57,7 +56,7 @@ accessibility_tests: &accessibility_tests
   pull: if-not-exists
   image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
   environment:
-    NOTIFY_KEY: USE_MOCK
+    NOTIFY_STUB: true
     ENVIRONMENT: DRONE
   volumes:
     - name: dockersock
@@ -86,11 +85,11 @@ steps:
         - feature/*
       event: [push, pull_request]
 
-  - name: setup
+  - name: setup_deploy
     pull: if-not-exists
     image: node:14
     environment:
-      NOTIFY_KEY: USE_MOCK
+      NOTIFY_STUB: true
     commands:
       - yarn install --frozen-lockfile
       - yarn run postinstall
@@ -98,8 +97,7 @@ steps:
       branch:
         include:
         - master
-        - feature/*
-      event: [push, pull_request]
+      event: push
 
   - name: linting_deploy
     <<: *linting
@@ -107,7 +105,6 @@ steps:
       branch:
         include:
           - master
-          - feature/*
       event: push
 
   - name: unit_tests_deploy
@@ -116,7 +113,6 @@ steps:
       branch:
         include:
           - master
-          - feature/*
       event: push
 
   - name: sonar_scanner_deploy
@@ -125,7 +121,6 @@ steps:
       branch:
         include:
           - master
-          - feature/*
       event: push
 
   - name: integration_tests_deploy
@@ -134,7 +129,6 @@ steps:
       branch:
         include:
           - master
-          - feature/*
       event: push
 
   - name: accessibility_tests_deploy
@@ -143,7 +137,6 @@ steps:
       branch:
         include:
           - master
-          - feature/*
       event: push
 
   - name: build_image
@@ -179,7 +172,6 @@ steps:
     pull: if-not-exists
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
     environment:
-      NOTIFY_STUB: stub
       KUBE_SERVER: https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
       KUBE_TOKEN_RIL_ACP_NOTPROD:
         from_secret: kube_token_ril_acp_notprod
@@ -191,12 +183,28 @@ steps:
       - export NGINX_SETTINGS=$${HOF_CONFIG}/nginx-settings.yaml
       - export DRONE_SOURCE_BRANCH=$(echo $${DRONE_SOURCE_BRANCH} | tr '[:upper:]' '[:lower:]')
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/html-pdf-service.yml -f kube/html-pdf-network-policy.yml -f kube/html-pdf-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - sleep $${READY_FOR_TEST_DELAY}
       - echo "UAT Branch - $${APP_NAME}-$${DRONE_SOURCE_BRANCH}.branch.internal.sas-notprod.homeoffice.gov.uk"
     when:
       branch: master
+      event: pull_request
+
+  - name: setup_branch
+    pull: if-not-exists
+    image: node:14
+    environment:
+      NOTIFY_STUB: true
+    commands:
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
       event: pull_request
 
   - name: linting_branch
@@ -258,7 +266,7 @@ steps:
     pull: if-not-exists
     image: node:14
     environment:
-      NOTIFY_KEY: USE_MOCK
+      NOTIFY_STUB: true
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:
@@ -298,6 +306,7 @@ steps:
       - export CONFIGMAP_VALUES=$${HOF_CONFIG}/configmap-values.yaml
       - export NGINX_SETTINGS=$${HOF_CONFIG}/nginx-settings.yaml
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/html-pdf-service.yml -f kube/html-pdf-network-policy.yml -f kube/html-pdf-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify -f kube/ingress-external.yaml -f kube/networkpolicy-external.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
@@ -353,6 +362,7 @@ steps:
       - export DRONE_SOURCE_BRANCH=$(cat /root/.dockersock/branch_name.txt)
       - kubectl="kubectl --insecure-skip-tls-verify --server=$${KUBE_SERVER} --namespace=$${KUBE_NAMESPACE} --token=$${KUBE_TOKEN}"
       - kd --delete --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --delete --insecure-skip-tls-verify --check-interval 10s -f kube/html-pdf-service.yml -f kube/html-pdf-network-policy.yml -f kube/html-pdf-deployment.yml
       - kd --delete --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --delete --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - $${kubectl} delete secret $${APP_NAME}-internal-$${DRONE_SOURCE_BRANCH} --ignore-not-found=true
@@ -376,6 +386,7 @@ steps:
       - export CONFIGMAP_VALUES=$${HOF_CONFIG}/configmap-values.yaml
       - export NGINX_SETTINGS=$${HOF_CONFIG}/nginx-settings.yaml
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/html-pdf-service.yml -f kube/html-pdf-network-policy.yml -f kube/html-pdf-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-internal.yaml -f kube/networkpolicy-internal.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - sleep $${READY_FOR_TEST_DELAY}
@@ -430,6 +441,7 @@ steps:
       - export CONFIGMAP_VALUES=$${HOF_CONFIG}/configmap-values.yaml
       - export NGINX_SETTINGS=$${HOF_CONFIG}/nginx-settings.yaml
       - kd --insecure-skip-tls-verify --check-interval 10s -f kube/redis-service.yml -f kube/redis-network-policy.yml -f kube/redis-deployment.yml
+      - kd --insecure-skip-tls-verify --check-interval 10s -f kube/html-pdf-service.yml -f kube/html-pdf-network-policy.yml -f kube/html-pdf-deployment.yml
       - kd --insecure-skip-tls-verify -f kube/configmap.yaml -f kube/ingress-external.yaml -f kube/networkpolicy-external.yaml -f kube/service.yaml
       - kd --insecure-skip-tls-verify --timeout 10m --check-interval 10s -f kube/deployment.yaml
       - sleep $${READY_FOR_TEST_DELAY}
@@ -482,7 +494,7 @@ steps:
     pull: if-not-exists
     image: node:14
     environment:
-      NOTIFY_KEY: USE_MOCK
+      NOTIFY_STUB: true
       SNYK_TOKEN:
         from_secret: snyk_token
     commands:

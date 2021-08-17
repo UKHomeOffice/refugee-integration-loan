@@ -8,8 +8,6 @@ apps/**/translations/**/*
 !apps/**/translations/src/
 !apps/**/translations/src/**/*
 test/_accessibility/tmp/*
-pdf-form-submissions/*.pdf
-!pdf-form-submissions/pdf-form-submissions-test.pdf
 coverage
 .nyc_output
 anchore-reports/

@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
 
-const request = require('../../../../helpers/request');
-const response = require('../../../../helpers/response');
 const { expect } = require('chai');
 
 describe('Feedback behaviour', () => {

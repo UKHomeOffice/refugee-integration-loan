@@ -1,6 +1,4 @@
 
-const request = require('../../../../helpers/request');
-const response = require('../../../../helpers/response');
 const FieldsFilter = require('../../../../../apps/common/behaviours/fields-filter');
 
 describe('Fields filter behaviour', () => {

@@ -1,7 +1,5 @@
 
 const path = require('path');
-const request = require('../helpers/request');
-const response = require('../helpers/response');
 
 describe('Server.js app file', () => {
   let hofStub;

@@ -1,11 +1,6 @@
 
-const request = require('../../../../helpers/request');
-const response = require('../../../../helpers/response');
-
 describe('Base Upload PDF Behaviour', () => {
   const mockData = '<html></html>';
-  const mockPath = './pdf-form-submissions_test.pdf';
-
 
   const getProxyquiredInstance = (overrides, behaviourConfig) => {
     overrides['../translations/src/en/pages.json'] = overrides['../translations/src/en/pages.json'] ||
@@ -26,40 +21,6 @@ describe('Base Upload PDF Behaviour', () => {
 
     return new Behaviour(defaults);
   };
-
-  describe('assorted functions', () => {
-    it('createPDF should call pdfPuppeteer.generatePDF', async () => {
-      const req = request();
-
-      const pdfPuppeteerMock = { generate: sinon.stub().returns(mockPath) };
-
-      const instance = getProxyquiredInstance(
-        {
-          '../../common/behaviours/pdf-puppeteer': pdfPuppeteerMock,
-          uuid: { v1: sinon.stub().returns('abc123') }
-        });
-
-      const result = await instance.createPDF(req, mockData);
-
-      const expectedTempName = 'abc123.pdf';
-      result.should.eql(mockPath);
-      pdfPuppeteerMock.generate.withArgs(req, mockData, sinon.match.any, expectedTempName, 'apply')
-        .calledOnce.should.be.true;
-    });
-
-    it('readPdf should read a PDF from the correct path', async () => {
-      const fsMock = {
-        readFile: sinon.stub().callsFake((p, cb) => cb(null, mockData))
-      };
-
-      const instance = getProxyquiredInstance({ fs: fsMock });
-
-      const result = await instance.readPdf(mockPath);
-
-      result.should.eql(mockData);
-      fsMock.readFile.withArgs(mockPath).calledOnce.should.be.true;
-    });
-  });
 
   describe('getEmailReceiptTemplateId', () => {
     const configMock = {
@@ -328,7 +289,7 @@ describe('Base Upload PDF Behaviour', () => {
       };
     });
 
-    it('should send the correct details to the email service and delete the pdf', async () => {
+    it('should send the correct details to the email service', async () => {
       const req = request({ session: { fullName: 'Jane Smith' } });
       const emailReceiptTemplateId = 'test';
       const applicantEmail = 'test@example.org';
@@ -339,11 +300,12 @@ describe('Base Upload PDF Behaviour', () => {
         '../../../lib/utilities': notifyClientMock,
         '../../../config': configMock
       });
+      const bufferData = Buffer.from(mockData);
 
       instance.sendReceipt = sinon.stub().resolves();
       instance.notifyByEmail = sinon.stub().resolves();
 
-      await instance.sendEmailWithAttachment(req, mockPath);
+      await instance.sendEmailWithAttachment(req, bufferData);
 
       const expectedEmailContent = {
         personalisation: {
@@ -354,8 +316,7 @@ describe('Base Upload PDF Behaviour', () => {
         }
       };
 
-      fsMock.readFile.withArgs(mockPath).should.be.calledOnce;
-      prepareUploadStub.withArgs(mockData).should.be.calledOnce;
+      prepareUploadStub.withArgs(bufferData).should.be.calledOnce;
 
       sendEmailStub.should.be.calledOnceWith(configMock.govukNotify.templateForm.apply,
         configMock.govukNotify.caseworkerEmail,
@@ -363,22 +324,6 @@ describe('Base Upload PDF Behaviour', () => {
 
       instance.sendReceipt.withArgs(req).should.be.calledOnce;
       instance.notifyByEmail.withArgs(emailReceiptTemplateId, applicantEmail, appName);
-
-      fsMock.unlink.calledOnce.should.be.true;
-    });
-
-    it('should reject on send email error', async () => {
-      sendEmailStub.callsFake(() => Promise.reject({}));
-
-      const req = request({ session: { 'session.started.timestamp': '7357' } });
-
-      const instance = getProxyquiredInstance({
-        fs: fsMock,
-        '../../../lib/utilities': notifyClientMock,
-        '../../../config': configMock
-      });
-
-      await instance.sendEmailWithAttachment(req, mockPath).should.be.rejected;
     });
   });
 });
