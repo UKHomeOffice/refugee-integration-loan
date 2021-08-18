@@ -1,6 +1,4 @@
 
-const request = require('../../../../helpers/request');
-const response = require('../../../../helpers/response');
 const FeedbackSubmittedBehaviour = require('../../../../../apps/common/behaviours/feedback-submitted');
 const Model = require('hof').model;
 

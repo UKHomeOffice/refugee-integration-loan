@@ -1,6 +1,4 @@
 
-const request = require('../../../../helpers/request');
-const response = require('../../../../helpers/response');
 const AggregatorBehaviour = require('../../../../../apps/common/behaviours/aggregator');
 const Model = require('hof').model;
 const moment = require('moment');

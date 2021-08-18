@@ -5,6 +5,8 @@ process.env.PORT = 9080;
 process.env.NODE_ENV = 'test';
 process.env.NOTIFY_KEY = 'UNIT_TEST';
 
+const reqres = require('hof').utils.reqres;
+
 global.chai = require('chai')
   .use(require('sinon-chai'))
   .use(require('chai-as-promised'))
@@ -17,6 +19,8 @@ global.proxyquire = require('proxyquire');
 global.path = require('path');
 global.config = require('../config');
 global._ = require('lodash');
+global.request = reqres.req;
+global.response = reqres.res;
 
 const utils = require('./helpers/supertest_session/supertest-utilities.js');
 global.getSupertestApp = (subApp, subAppPath, pages) => utils.getSupertestApp(subApp, subAppPath, pages);

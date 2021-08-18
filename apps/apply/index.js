@@ -367,9 +367,6 @@ module.exports = {
     [confirmStep]: {
       behaviours: [Summary, UploadPDF],
       sections: require('./sections/summary-data-sections'),
-      pdfSections: require('./sections/summary-data-sections'),
-      uploadPdfShared: false,
-      submitted: false,
       next: '/complete'
     },
     '/complete': {

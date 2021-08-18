@@ -1,4 +1,4 @@
-FROM zenika/alpine-chrome:with-puppeteer@sha256:386def808d7db8af04bb6815f58647591d5a21d6a27d15613a0630e3d7661c7f
+FROM node:14-alpine@sha256:5c33bc6f021453ae2e393e6e20650a4df0a4737b1882d389f17069dc1933fdc5
 
 USER root
 

@@ -1,6 +1,4 @@
 
-const request = require('../../../../helpers/request');
-const response = require('../../../../helpers/response');
 const SetContinueLinkBehaviour = require('../../../../../apps/common/behaviours/set-continue-link');
 const config = require('../../../../../config');
 

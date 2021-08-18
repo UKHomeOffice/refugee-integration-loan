@@ -6,14 +6,11 @@ module.exports = {
   DATE_FORMAT: 'YYYY-MM-DD',
   PRETTY_DATE_FORMAT: 'Do MMMM YYYY',
   dateTimeFormat: 'DD MMM YYYY HH:mm:ss',
-  pdf: {
-    tempLocation: 'pdf-form-submissions'
-  },
   hosts: {
     acceptanceTests: process.env.ACCEPTANCE_HOST_NAME || `http://localhost:${process.env.PORT || 8080}`
   },
   govukNotify: {
-    notifyApiKey: process.env.NOTIFY_KEY,
+    notifyApiKey: process.env.NOTIFY_STUB === 'true' ? 'USE_MOCK' : process.env.NOTIFY_KEY,
     caseworkerEmail: process.env.CASEWORKER_EMAIL,
     feedbackEmail: process.env.FEEDBACK_EMAIL,
     templateForm: {
@@ -28,6 +25,9 @@ module.exports = {
   },
   routes: {
     confirmStep: '/confirm'
+  },
+  pdf: {
+    url: process.env.PDF_CONVERTER_URL
   },
   govukLandingPageUrl: new URL('https://www.gov.uk/refugee-integration-loan')
 };
