@@ -362,7 +362,7 @@ steps:
       DRONE_TOKEN:
         from_secret: drone_token
     commands:
-      - bin/sanity_check_build.sh
+      - ./bin/sanity_check_build.sh
     when:
       target: PROD
       event: promote
