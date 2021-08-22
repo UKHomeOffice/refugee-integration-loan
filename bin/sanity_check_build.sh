@@ -7,7 +7,7 @@ export EVENT=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Event}
 export REFS=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Ref}})
 
 if [[ "$STATUS" != "success" || "$BRANCH" != "master" || "$EVENT" != "push" || "$REFS" != "refs/heads/master" ]]; then
-  exit 1
+  return 1
 fi
 
-exit 0
+return 0
