@@ -16,7 +16,7 @@ if [[ $1 == 'tear_down' ]]; then
   $kd --delete -f kube/configmaps/configmap.yml
   $kd --delete -f kube/redis -f kube/html-pdf -f kube/app
   echo "Torn Down UAT Branch - $APP_NAME-$DRONE_SOURCE_BRANCH.internal.$BRANCH_ENV.homeoffice.gov.uk"
-  return 1
+  exit 0
 fi
 
 export KUBE_NAMESPACE=$1
