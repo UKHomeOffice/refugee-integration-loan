@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/sh
 set -e
 
 export STATUS=$(drone build info $GIT_REPO $DRONE_BUILD_PARENT --format {{.Status}})
