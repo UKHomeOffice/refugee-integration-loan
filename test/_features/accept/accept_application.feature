@@ -32,6 +32,3 @@ Feature: Accept Application
     Then I should be on the 'contact' page showing 'How would you like us to contact you?'
     Then I select 'Phone'
     Then I fill 'phone' with '07955555555'
-    Then I submit the application
-    Then I should be on the 'confirm' page showing 'Accept your offer'
-    Then I should see 'Loan reference: 12345' on the page
