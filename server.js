@@ -16,20 +16,20 @@ settings = Object.assign({}, settings, {
 
 const app = hof(settings);
 
+// Terms & Cookies added to have visibility on accessibility statement
+// in the footer. Once HOF has updated with that we can remove these
+// including the getTerms: false, getCookies: false config
 app.use('/terms-and-conditions', (req, res, next) => {
   res.locals = Object.assign({}, res.locals, req.translate('terms'));
   next();
 });
 
 app.use('/cookies', (req, res, next) => {
-  res.locals = Object.assign({
-    cookieName: settings.session.name
-  }, res.locals, req.translate('cookies'));
+  res.locals = Object.assign({}, res.locals, req.translate('cookies'));
   next();
 });
 
 app.use((req, res, next) => {
-  res.locals.appName = 'Refugee integration loan service';
   res.locals.htmlLang = 'en';
   res.locals.feedbackUrl = '/feedback';
   res.locals.footerSupportLinks = [
