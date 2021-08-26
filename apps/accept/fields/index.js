@@ -15,7 +15,8 @@ module.exports = {
     formatter: ['uppercase']
   },
   dateOfBirth: dateComponent('dateOfBirth', {
-    validate: ['required', { type: 'after', arguments: ['1900'] }, 'before', 'over18']
+    validate: ['required', { type: 'after', arguments: ['1900'] }, 'before', 'over18'],
+    autocomplete: 'bday'
   }),
   contactTypes: {
     mixin: 'checkbox-group',
@@ -41,13 +42,15 @@ module.exports = {
     dependent: {
       field: 'contactTypes',
       value: 'email'
-    }
+    },
+    autocomplete: 'email'
   },
   phone: {
     validate: ['required'],
     dependent: {
       field: 'contactTypes',
       value: 'phone'
-    }
+    },
+    autocomplete: 'tel'
   }
 };
