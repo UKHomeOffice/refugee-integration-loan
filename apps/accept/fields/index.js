@@ -44,7 +44,7 @@ module.exports = {
     }
   },
   phone: {
-    validate: ['required', 'internationalPhoneNumber'],
+    validate: ['required'],
     dependent: {
       field: 'contactTypes',
       value: 'phone'
