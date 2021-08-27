@@ -28,7 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "^19.9.6",
+    "hof": "^19.9.8",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

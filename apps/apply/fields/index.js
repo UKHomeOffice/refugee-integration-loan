@@ -57,10 +57,12 @@ module.exports = {
     }
   },
   dateOfBirth: dateComponent('dateOfBirth', {
-    validate: ['required', after1900Validator, 'before', 'over18']
+    validate: ['required', after1900Validator, 'before', 'over18'],
+    autocomplete: 'bday'
   }),
   fullName: {
-    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
+    autocomplete: 'name'
   },
   brpNumber: {
     validate: ['required', brpNumber],
@@ -79,7 +81,8 @@ module.exports = {
     }
   },
   otherName: {
-    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
+    autocomplete: 'additional-name'
   },
   addAnotherDependant: {
     omitFromSummary: true
@@ -151,11 +154,13 @@ module.exports = {
     }]
   },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
-    validate: ['required', after1900Validator, 'before', 'over18']
+    validate: ['required', after1900Validator, 'before', 'over18'],
+    autocomplete: 'bday'
   }),
   partnerFullName: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
-    className: 'govuk-input'
+    className: 'govuk-input',
+    autocomplete: 'name'
   },
   partnerBrpNumber: {
     formatter: ['removespaces', 'uppercase'],
@@ -175,7 +180,8 @@ module.exports = {
     }
   },
   partnerOtherName: {
-    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
+    autocomplete: 'additional-name'
   },
   hasDependants: {
     mixin: 'radio-group',
@@ -186,31 +192,37 @@ module.exports = {
     }
   },
   dependantFullName: {
-    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
+    autocomplete: 'name'
   },
   dependantDateOfBirth: dateComponent('dependantDateOfBirth', {
     validate: ['required', 'before', after1900Validator],
+    autocomplete: 'bday',
     parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
   }),
   dependantRelationship: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
   building: {
-    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }],
+    autocomplete: 'address-line1'
   },
   street: {
     validate: ['notUrl', { type: 'maxlength', arguments: 50 }],
-    labelClassName: 'visuallyhidden'
+    labelClassName: 'visuallyhidden',
+    autocomplete: 'address-line2'
   },
   townOrCity: {
     validate: ['required', 'notUrl',
       { type: 'regex', arguments: /^([^0-9]*)$/ },
       { type: 'maxlength', arguments: 100 }
-    ]
+    ],
+    autocomplete: 'address-level2'
   },
   postcode: {
     validate: ['required', 'postcode'],
-    formatter: ['removespaces', 'uppercase']
+    formatter: ['removespaces', 'uppercase'],
+    autocomplete: 'postal-code'
   },
   incomeTypes: {
     mixin: 'checkbox-group',
@@ -695,14 +707,16 @@ module.exports = {
     dependent: {
       field: 'contactTypes',
       value: 'email'
-    }
+    },
+    autocomplete: 'email'
   },
   phone: {
-    validate: ['required', 'internationalPhoneNumber'],
+    validate: ['required'],
     dependent: {
       field: 'contactTypes',
       value: 'phone'
-    }
+    },
+    autocomplete: 'tel'
   },
   likelyToMove: {
     mixin: 'radio-group',
@@ -723,7 +737,8 @@ module.exports = {
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
-    }
+    },
+    autocomplete: 'address-line1'
   },
   outcomeStreet: {
     validate: ['notUrl', { type: 'maxlength', arguments: 100 }],
@@ -731,14 +746,16 @@ module.exports = {
       field: 'likelyToMove',
       value: 'yes'
     },
-    labelClassName: 'visuallyhidden'
+    labelClassName: 'visuallyhidden',
+    autocomplete: 'address-line2'
   },
   outcomeTownOrCity: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
-    }
+    },
+    autocomplete: 'address-level2'
   },
   outcomePostcode: {
     validate: ['required', 'postcode'],
@@ -746,7 +763,8 @@ module.exports = {
     dependent: {
       field: 'likelyToMove',
       value: 'yes'
-    }
+    },
+    autocomplete: 'postal-code'
   },
   hadHelp: {
     mixin: 'radio-group',
@@ -765,7 +783,8 @@ module.exports = {
     }
   },
   helpFullName: {
-    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
+    autocomplete: 'name'
   },
   helpRelationship: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
@@ -791,13 +810,15 @@ module.exports = {
     dependent: {
       field: 'helpContactTypes',
       value: 'email'
-    }
+    },
+    autocomplete: 'email'
   },
   helpPhone: {
     validate: ['required', 'ukPhoneNumber'],
     dependent: {
       field: 'helpContactTypes',
       value: 'phone'
-    }
+    },
+    autocomplete: 'tel'
   }
 };
