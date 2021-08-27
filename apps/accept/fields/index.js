@@ -46,7 +46,7 @@ module.exports = {
     autocomplete: 'email'
   },
   phone: {
-    validate: ['required'],
+    validate: ['required', 'notUrl'],
     dependent: {
       field: 'contactTypes',
       value: 'phone'

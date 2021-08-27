@@ -711,7 +711,7 @@ module.exports = {
     autocomplete: 'email'
   },
   phone: {
-    validate: ['required'],
+    validate: ['required', 'notUrl'],
     dependent: {
       field: 'contactTypes',
       value: 'phone'
@@ -814,7 +814,7 @@ module.exports = {
     autocomplete: 'email'
   },
   helpPhone: {
-    validate: ['required', 'ukPhoneNumber'],
+    validate: ['required', 'notUrl'],
     dependent: {
       field: 'helpContactTypes',
       value: 'phone'
