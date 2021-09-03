@@ -1,0 +1,20 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: apply-govuk-external
+{{ file .INGRESS_EXTERNAL_ANNOTATIONS | indent 2 }}
+    ingress.kubernetes.io/app-root: /apply
+spec:
+  tls:
+    - hosts:
+        - www.apply-for-refugee-integration-loan.service.gov.uk
+      secretName: apply-govuk-external
+  rules:
+    - host: www.apply-for-refugee-integration-loan.service.gov.uk
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .APP_NAME }}
+              servicePort: 10443

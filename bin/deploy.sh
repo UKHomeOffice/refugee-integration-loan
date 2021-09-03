@@ -34,6 +34,7 @@ elif [[ ${KUBE_NAMESPACE} == ${STG_ENV} ]]; then
 elif [[ ${KUBE_NAMESPACE} == ${PROD_ENV} ]]; then
   $kd -f kube/configmaps/configmap.yml -f kube/app/service.yml
   $kd -f kube/app/networkpolicy-external.yml -f kube/app/ingress-external.yml
+  $kd -f kube/app/apply-govuk-ingress.yml -f kube/app/accept-govuk-ingress.yml
   $kd -f kube/redis -f kube/html-pdf -f kube/app/deployment.yml
 fi
 

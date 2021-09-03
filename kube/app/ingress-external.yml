@@ -8,6 +8,7 @@ metadata:
   name: {{ .APP_NAME }}-external
   {{ end }}
 {{ file .INGRESS_EXTERNAL_ANNOTATIONS | indent 2 }}
+    ingress.kubernetes.io/app-root: /apply
 spec:
   tls:
     - hosts:
