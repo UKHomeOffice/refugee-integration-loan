@@ -43,7 +43,7 @@ Feature: Joint Application
     Then I fill 'homeOfficeReference' with 'a1234567'
     Then I click the 'Continue' button
     Then I should be on the 'partner-brp' page showing 'What are your partner’s biometric residence permit (BRP) details?'
-    Then I fill 'partnerBrpNumber' with 'ZU87654321'
+    Then I fill 'partnerBrpNumber' with 'ZU7654321'
     Then I fill 'partnerFullName' with 'Mrs Test'
     Then I enter a 'partner' date of birth for a 28 year old
     Then I click the 'Continue' button
@@ -217,7 +217,7 @@ Feature: Joint Application
     Then I fill 'homeOfficeReference' with 'a1234567'
     Then I click the 'Continue' button
     Then I should be on the 'partner-brp' page showing 'What are your partner’s biometric residence permit (BRP) details?'
-    Then I fill 'partnerBrpNumber' with 'ZU87654321'
+    Then I fill 'partnerBrpNumber' with 'ZU7654321'
     Then I fill 'partnerFullName' with 'Mrs Test'
     Then I enter a 'partner' date of birth for a 28 year old
     Then I click the 'Continue' button
