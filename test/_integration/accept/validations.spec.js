@@ -51,7 +51,7 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your date of birth in the correct format; for example, 31 3 1980/);
     });
@@ -77,7 +77,7 @@ describe('validation checks of the accept journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         dateOfBirth: now.subtract(18, 'years').format('YYYY-MM-DD')
       });
 
@@ -92,7 +92,7 @@ describe('validation checks of the accept journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         dateOfBirth: '1900-01-01'
       });
 
@@ -109,7 +109,7 @@ describe('validation checks of the accept journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         dateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
       });
 
@@ -126,7 +126,7 @@ describe('validation checks of the accept journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         dateOfBirth: '1900-01-02'
       });
 
@@ -151,14 +151,14 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
     });
 
     it('does not pass the BRP page if the BRP number is more than 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU123456789',
+        brpNumber: 'ZU12345679',
         dateOfBirth: '2000-12-31'
       });
 
@@ -168,7 +168,7 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
     });
   });
 

@@ -7,7 +7,7 @@ const after1900Validator = { type: 'after', arguments: ['1900'] };
 
 const brpNumber = {
   type: 'regex',
-  arguments: /(?=(?:.){10})[a-zA-Z]{2,3}?\d{7,8}$/
+  arguments: /^(?=(?:.){9})[a-zA-Z]{2}[xX0-9]{1}\d{6}$/
 };
 
 const niNumber = {

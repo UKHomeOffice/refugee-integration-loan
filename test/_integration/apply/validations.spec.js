@@ -115,7 +115,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your full name/);
       expect(validationSummary.html())
@@ -126,7 +126,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         fullName: 'Joe Bloggs',
         dateOfBirth: now.subtract(18, 'years').add(1, 'days').format('YYYY-MM-DD')
       });
@@ -144,7 +144,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         fullName: 'Joe Bloggs',
         dateOfBirth: now.subtract(18, 'years').format('YYYY-MM-DD')
       });
@@ -160,7 +160,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         fullName: 'Joe Bloggs',
         dateOfBirth: '1900-01-01'
       });
@@ -178,7 +178,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         fullName: 'Joe Bloggs',
         dateOfBirth: '1900-01-02'
       });
@@ -194,7 +194,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU12345678',
+        brpNumber: 'ZU1234567',
         fullName: 'Joe Bloggs',
         dateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
       });
@@ -224,14 +224,14 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
     });
 
     it('does not pass the BRP page if the BRP number is more than 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU123456789',
+        brpNumber: 'ZU1234567',
         fullName: 'Joe Bloggs',
         dateOfBirth: '2000-12-31'
       });
@@ -242,7 +242,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
     });
   });
 
@@ -414,7 +414,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your partner's full name/);
       expect(validationSummary.html())
@@ -425,7 +425,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
-        partnerBrpNumber: 'ZU12345678',
+        partnerBrpNumber: 'ZU1234567',
         partnerFullName: 'Joe Bloggs',
         partnerDateOfBirth: now.subtract(18, 'years').add(1, 'days').format('YYYY-MM-DD')
       });
@@ -443,7 +443,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
-        partnerBrpNumber: 'ZU12345678',
+        partnerBrpNumber: 'ZU1234567',
         partnerFullName: 'Joe Bloggs',
         partnerDateOfBirth: now.subtract(18, 'years').format('YYYY-MM-DD')
       });
@@ -459,7 +459,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
-        partnerBrpNumber: 'ZU12345678',
+        partnerBrpNumber: 'ZU1234567',
         partnerFullName: 'Joe Bloggs',
         partnerDateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
       });
@@ -477,7 +477,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
-        partnerBrpNumber: 'ZU12345678',
+        partnerBrpNumber: 'ZU1234567',
         partnerFullName: 'Joe Bloggs',
         partnerDateOfBirth: '1900-01-01'
       });
@@ -495,7 +495,7 @@ describe('validation checks of the apply journey', () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {
-        partnerBrpNumber: 'ZU12345678',
+        partnerBrpNumber: 'ZU1234567',
         partnerFullName: 'Joe Bloggs',
         partnerDateOfBirth: '1900-01-02'
       });
@@ -522,7 +522,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZU1234567’/);
     });
 
     it('does not pass the Partner BRP page if the BRP number is more than 9 characters', async () => {
@@ -540,7 +540,7 @@ describe('validation checks of the apply journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your partner\'s BRP number in the correct format; for example, ‘ZU12345678’/);
+        .to.match(/Enter your partner\'s BRP number in the correct format; for example, ‘ZU1234567’/);
     });
   });
 

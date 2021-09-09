@@ -68,6 +68,10 @@ Pa11y CI runs accessibility tests against multiple URLs and reports on any issue
 ```bash
 yarn run test:_accessibility          // requires app to be running
 ```
+### BRP Number Validations
+BRP Numbers should contain 2 letters, followed by either an 'X' or a digit, and then 6 digits:
+
+- for example, ZUX123456 or ZU1234567
 
 ### Anchore/Snyk image testing
 

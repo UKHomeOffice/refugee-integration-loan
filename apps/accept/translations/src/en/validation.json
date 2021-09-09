@@ -3,7 +3,7 @@
     "default": "Enter your loan reference number in the correct format"
   },
   "brpNumber": {
-    "default": "Enter your BRP number in the correct format; for example, ‘ZU12345678’"
+    "default": "Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’"
   },
   "dateOfBirth": {
     "default": "Enter your date of birth in the correct format; for example, 31 3 1980",

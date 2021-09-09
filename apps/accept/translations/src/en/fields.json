@@ -5,7 +5,7 @@
   },
   "brpNumber": {
     "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘ZU12345678’."
+    "hint": "For example, ‘ZUX123456 or ZU1234567’."
   },
   "dateOfBirth": {
     "legend": "Date of Birth",

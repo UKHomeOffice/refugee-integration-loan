@@ -9,7 +9,7 @@ Feature: Accept Application
     Then I fill 'loanReference' with '12345'
     Then I click the 'Continue' button
     Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
-    Then I fill 'brpNumber' with 'ZU12345678'
+    Then I fill 'brpNumber' with 'ZU1234567'
     Then I enter a date of birth for a 30 year old
     Then I click the 'Continue' button
     Then I should be on the 'contact' page showing 'How would you like us to contact you?'
@@ -26,7 +26,7 @@ Feature: Accept Application
     Then I fill 'loanReference' with '12345'
     Then I click the 'Continue' button
     Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
-    Then I fill 'brpNumber' with 'ZU12345678'
+    Then I fill 'brpNumber' with 'ZU1234567'
     Then I enter a date of birth for a 30 year old
     Then I click the 'Continue' button
     Then I should be on the 'contact' page showing 'How would you like us to contact you?'

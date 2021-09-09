@@ -11,7 +11,7 @@ Feature: Single Application
     Then I choose 'No'
     Then I click the 'Continue' button
     Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
-    Then I fill 'brpNumber' with 'ZU12345678'
+    Then I fill 'brpNumber' with 'ZU1234567'
     Then I fill 'fullName' with 'Single Test Application'
     Then I enter a date of birth for a 30 year old
     Then I click the 'Continue' button
@@ -168,7 +168,7 @@ Feature: Single Application
     Then I choose 'No'
     Then I click the 'Continue' button
     Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
-    Then I fill 'brpNumber' with 'ZU12345678'
+    Then I fill 'brpNumber' with 'ZU1234567'
     Then I fill 'fullName' with 'Mr Test'
     Then I enter a date of birth for a 30 year old
     Then I click the 'Continue' button

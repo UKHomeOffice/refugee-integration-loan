@@ -26,7 +26,7 @@ describe('the journey of a single or joint accept application', () => {
     const URI = '/brp';
     await initSession(URI);
     const response = await passStep(URI, {
-      brpNumber: 'ZU12345678',
+      brpNumber: 'ZU1234567',
       dateOfBirth: '1954-11-22'
     });
 
