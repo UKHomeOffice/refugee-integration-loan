@@ -22,6 +22,9 @@ module.exports = {
     },
     '/feedback-submitted': {
       behaviours: [FeedbackSubmitted]
+    },
+    '/improve-our-services': {
+      behaviours: [SetContinueLink]
     }
   }
 };
