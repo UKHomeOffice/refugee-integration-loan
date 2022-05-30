@@ -35,7 +35,8 @@ app.use((req, res, next) => {
   res.locals.footerSupportLinks = [
     { path: '/cookies', property: 'base.cookies' },
     { path: '/terms-and-conditions', property: 'base.terms' },
-    { path: '/accessibility', property: 'base.accessibility' }
+    { path: '/accessibility', property: 'base.accessibility' },
+    { path: '/improve-our-services', property: 'base.improve-our-services' }
   ];
   next();
 });

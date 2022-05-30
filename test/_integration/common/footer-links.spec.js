@@ -49,4 +49,16 @@ describe('Footer links', () => {
 
     header.html().should.match(/Accessibility statement for Applying for and Accepting a Refugee Integration Loan/);
   });
+
+  it('should mount the improve our services page on the app', async () => {
+    const URI = '/improve-our-services';
+    await initSession(URI);
+    await getUrl(URI);
+    const res = await getUrl(URI);
+    const docu = await parseHtml(res);
+
+    const header = docu.find('header h1');
+
+    header.html().should.match(/Help improve our services/);
+  });
 });

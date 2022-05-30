@@ -39,6 +39,7 @@ describe('Server.js app file', () => {
     appsCommonStub = sinon.stub();
     appsApplyStub = sinon.stub();
     appsAcceptStub = sinon.stub();
+    appsImproveOurServicesStub = sinon.stub();
     behavioursClearSessionStub = sinon.stub();
 
     useStub.onCall(0);
@@ -117,7 +118,8 @@ describe('Server.js app file', () => {
         footerSupportLinks: [
           { path: '/cookies', property: 'base.cookies' },
           { path: '/terms-and-conditions', property: 'base.terms' },
-          { path: '/accessibility', property: 'base.accessibility' }
+          { path: '/accessibility', property: 'base.accessibility' },
+          { path: '/improve-our-services', property: 'base.improve-our-services' }
         ]
       });
     });

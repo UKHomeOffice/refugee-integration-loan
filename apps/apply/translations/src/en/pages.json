@@ -232,5 +232,8 @@
     "header": "You cannot apply for a loan",
     "text1": "As you or your partner have already received an integration loan, you cannot apply again.",
     "text2": "Your local refugee community organisation may be able to tell you what other support is available."
+  },
+  "improve-our-services" : {
+    "surveyLink": "https://www.homeofficesurveys.homeoffice.gov.uk/s/ETDNXL/"
   }
 }
