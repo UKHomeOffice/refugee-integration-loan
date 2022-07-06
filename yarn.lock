@@ -3084,10 +3084,10 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hof@^19.9.15:
-  version "19.13.20"
-  resolved "https://registry.yarnpkg.com/hof/-/hof-19.13.20.tgz#5142e7fd91fde85e4f36f744d765775bb894055e"
-  integrity sha512-Wsk8zLsUW35tr9cBTk2/Lxyap8obFElmsAzP7wueqDhT8C53SNp/obxTo1Ei9wEqY+KSysEgnD7U+XIu8ZJuaw==
+hof@^19.14.11:
+  version "19.14.11"
+  resolved "https://registry.yarnpkg.com/hof/-/hof-19.14.11.tgz#a9f903da687a44642f9de2120ecda41f62f60a0e"
+  integrity sha512-G4E0udN0eeoxceXbAGhqi9i6ZiAiQuJv4ZPRhr2MIp4POKTxZokzfwf9R5n4MS4XWs8ZX7yaSNIY/e1drb5eDg==
   dependencies:
     aliasify "^2.1.0"
     bluebird "^3.7.2"
@@ -3125,7 +3125,6 @@ hof@^19.9.15:
     minimatch "^3.0.3"
     minimist "^1.2.6"
     mixwith "^0.1.1"
-    mkdirp "^0.5.1"
     moment "^2.29.2"
     morgan "^1.10.0"
     mustache "^2.3.0"
@@ -4197,13 +4196,6 @@ mkdirp@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.0.tgz#1bbf5ab1ba827af23575143490426455f481fe1e"
   integrity sha1-G79asbqCevI1dRQ0kEJkVfSB/h4=
-
-mkdirp@^0.5.1:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.6.tgz#7def03d2432dcae4ba1d611445c48396062255f6"
-  integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
-  dependencies:
-    minimist "^1.2.6"
 
 mocha@^8.2.0:
   version "8.4.0"
