@@ -74,7 +74,6 @@ BRP Numbers should contain 2 letters, followed by either an 'X' or a digit, and 
 - for example, ZUX123456 or ZU1234567
 
 
-
 ### Anchore/Snyk image testing
 
 When the Drone pipeline runs, Anchore will check if the Docker image has any security vulnerabilities. Anything raised can be downloaded via the Drone UI as a manifest detailing the dependencies needing investigation and either needs whitelisting or updating.   
