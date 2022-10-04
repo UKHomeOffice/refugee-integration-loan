@@ -7,6 +7,7 @@ const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 const confirmStep = config.routes.confirmStep;
 const AddSpacePostcode = require('./behaviours/add-space-postcode');
+const decimalPrefixValidator = require('./behaviours/decimal-prefix-validator')
 
 module.exports = {
   name: 'apply',
@@ -14,11 +15,11 @@ module.exports = {
   baseUrl: '/apply',
   steps: {
     '/previously-applied': {
-      fields: ['previouslyApplied'],
       behaviours: [setRadioButtonErrorLink],
-      next: '/previous',
+      fields: ['previouslyApplied'],
+      next: '/income',
       forks: [{
-        target: '/partner',
+        target: '/income',
         condition: {
           field: 'previouslyApplied',
           value: 'no'
@@ -218,6 +219,7 @@ module.exports = {
       }]
     },
     '/income': {
+      behaviours: [decimalPrefixValidator],
       fields: [
         'incomeTypes',
         'salaryAmount',
@@ -229,6 +231,7 @@ module.exports = {
       next: '/outgoings'
     },
     '/outgoings': {
+      behaviours: [decimalPrefixValidator],
       fields: [
         'outgoingTypes',
         'rentAmount',
