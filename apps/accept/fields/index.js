@@ -9,6 +9,7 @@ module.exports = {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   dateOfBirth: dateComponent('dateOfBirth', {
+    mixin: 'input-date',
     validate: ['required', { type: 'after', arguments: ['1900'] }, 'before', 'over18'],
     autocomplete: 'bday'
   }),
