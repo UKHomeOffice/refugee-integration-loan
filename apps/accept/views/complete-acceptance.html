@@ -2,12 +2,12 @@
 
 {{<partials-page}}
   {{$page-content}}
-    <!-- alert-complete is the HOF supported class currently, should be using the govuk-styles -->
-    <div class="govuk-panel alert-complete govuk-panel--confirmation">
-      <h1 class="govuk-panel__title">
-        {{#t}}pages.complete.confirmed{{/t}}
-      </h1>
-    </div>
+
+  <div class="govuk-panel govuk-panel--confirmation">
+    <h1 class="govuk-panel__title">
+      {{#t}}pages.complete.confirmed{{/t}}
+    </h1>
+  </div>
 
     <h2 class="govuk-heading-m">{{#t}}pages.complete.header2{{/t}}</h2>
 
@@ -27,3 +27,4 @@
     <a href="{{#t}}pages.improve-our-services.surveyLink{{/t}}" class="button" role="button">{{#t}}buttons.signUp{{/t}}</a>
   {{/page-content}}
 {{/partials-page}}
+
