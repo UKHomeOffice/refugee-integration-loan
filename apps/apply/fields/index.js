@@ -1,4 +1,3 @@
-
 const moment = require('moment');
 const config = require('../../../config');
 const dateComponent = require('hof').components.date;
@@ -57,6 +56,7 @@ module.exports = {
     }
   },
   dateOfBirth: dateComponent('dateOfBirth', {
+    mixin: 'input-date',
     validate: ['required', after1900Validator, 'before', 'over18'],
     autocomplete: 'bday'
   }),
@@ -154,6 +154,7 @@ module.exports = {
     }]
   },
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
+    mixin: 'input-date',
     validate: ['required', after1900Validator, 'before', 'over18'],
     autocomplete: 'bday'
   }),
@@ -164,7 +165,6 @@ module.exports = {
   },
   partnerBrpNumber: {
     formatter: ['removespaces', 'uppercase'],
-    className: 'govuk-input govuk-input--width-10',
     validate: ['required', brpNumber]
   },
   partnerNiNumber: {
@@ -196,6 +196,7 @@ module.exports = {
     autocomplete: 'name'
   },
   dependantDateOfBirth: dateComponent('dependantDateOfBirth', {
+    mixin: 'input-date',
     validate: ['required', 'before', after1900Validator],
     autocomplete: 'bday',
     parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
@@ -230,27 +231,27 @@ module.exports = {
       {
         value: 'salary',
         toggle: 'salaryAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'universal_credit',
         toggle: 'universalCreditAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'child_benefit',
         toggle: 'childBenefitAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'housing_benefit',
         toggle: 'housingBenefitAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'other',
         toggle: 'otherIncomeAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       }
     ],
     legend: {
@@ -304,27 +305,27 @@ module.exports = {
       {
         value: 'salary',
         toggle: 'combinedSalaryAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'universal_credit',
         toggle: 'combinedUniversalCreditAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'child_benefit',
         toggle: 'combinedChildBenefitAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'housing_benefit',
         toggle: 'combinedHousingBenefitAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'other',
         toggle: 'combinedOtherIncomeAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       }
     ],
     legend: {
@@ -378,42 +379,42 @@ module.exports = {
       {
         value: 'rent',
         toggle: 'rentAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'household_bills',
         toggle: 'householdBillsAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'food_toiletries_cleaning_supplies',
         toggle: 'foodToiletriesAndCleaningSuppliesAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'mobile_phone',
         toggle: 'mobilePhoneAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'travel',
         toggle: 'travelAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'clothing_and_footwear',
         toggle: 'clothingAndFootwearAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'universal_credit_deductions',
         toggle: 'universalCreditDeductionsAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'other',
         toggle: 'otherOutgoingAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       }
     ],
     legend: {
@@ -491,42 +492,42 @@ module.exports = {
       {
         value: 'rent',
         toggle: 'combinedRentAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'household_bills',
         toggle: 'combinedHouseholdBillsAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'food_toiletries_cleaning_supplies',
         toggle: 'combinedFoodToiletriesAndCleaningSuppliesAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'mobile_phone',
         toggle: 'combinedMobilePhoneAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'travel',
         toggle: 'combinedTravelAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'clothing_and_footwear',
         toggle: 'combinedClothingAndFootwearAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'universal_credit_deductions',
         toggle: 'combinedUniversalCreditDeductionsAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'other',
         toggle: 'combinedOtherOutgoingAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       }
     ],
     legend: {
@@ -604,7 +605,7 @@ module.exports = {
       {
         value: 'yes',
         toggle: 'savingsAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-radio-buttons'
       },
       {
         value: 'no'
@@ -629,7 +630,7 @@ module.exports = {
       {
         value: 'yes',
         toggle: 'combinedSavingsAmount',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-radio-buttons'
       },
       {
         value: 'no'
@@ -692,12 +693,12 @@ module.exports = {
       {
         value: 'email',
         toggle: 'email',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'phone',
         toggle: 'phone',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       }
     ],
     validate: 'required',
@@ -798,12 +799,12 @@ module.exports = {
       {
         value: 'email',
         toggle: 'helpEmail',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       },
       {
         value: 'phone',
         toggle: 'helpPhone',
-        child: 'partials/details-summary-input-text'
+        child: 'partials/details-summary-input-text-checkboxes'
       }
     ],
     validate: 'required'
