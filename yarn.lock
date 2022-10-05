@@ -3072,7 +3072,7 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hof@^20.0.0-beta.35:
+hof@^20.0.0-beta.37:
   version "20.0.0-beta.37"
   resolved "https://registry.yarnpkg.com/hof/-/hof-20.0.0-beta.37.tgz#d08985eda91c7a3c7effc8db0deaf09b177ffa2b"
   integrity sha512-dugv66jC6NuFBt+2NkTnO7BGRuXJpS6E2Jtezxn+dstzpTAi6pZa9r0U4WqrU8RGfTNHPd+kgqYc0yU1Vtgolw==
