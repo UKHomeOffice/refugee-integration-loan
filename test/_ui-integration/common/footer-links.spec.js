@@ -1,4 +1,3 @@
-
 describe('Footer links', () => {
   let testApp;
   let getUrl;
@@ -21,7 +20,7 @@ describe('Footer links', () => {
     const res = await getUrl(URI);
     const docu = await parseHtml(res);
 
-    const header = docu.find('header h1');
+    const header = docu.find('.govuk-heading-l');
 
     header.html().should.match(/Cookies/);
   });
@@ -33,7 +32,7 @@ describe('Footer links', () => {
     const res = await getUrl(URI);
     const docu = await parseHtml(res);
 
-    const header = docu.find('header h1');
+    const header = docu.find('.govuk-heading-l');
 
     header.html().should.match(/Terms and conditions/);
   });
@@ -45,7 +44,7 @@ describe('Footer links', () => {
     const res = await getUrl(URI);
     const docu = await parseHtml(res);
 
-    const header = docu.find('header h1');
+    const header = docu.find('.govuk-heading-l');
 
     header.html().should.match(/Accessibility statement for Applying for and Accepting a Refugee Integration Loan/);
   });
@@ -57,7 +56,7 @@ describe('Footer links', () => {
     const res = await getUrl(URI);
     const docu = await parseHtml(res);
 
-    const header = docu.find('header h1');
+    const header = docu.find('.govuk-heading-l');
 
     header.html().should.match(/Help improve Home Office services/);
   });
