@@ -1,7 +1,22 @@
 @import "hof/frontend/themes/gov-uk/styles/govuk";
-@import "./prefix.scss";
 
 span.form-hint {
     padding-top: 0; 
     margin-bottom: 0;
+}
+
+a {
+    @extend .govuk-link;
+  }
+
+.govuk-heading-s {
+    margin-top: 10px;
+}
+
+.govuk-heading-m {
+    margin-top: 1.875em;
+}
+
+.govuk-header__logotype{
+    display: inline;
 }
