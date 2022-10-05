@@ -1,4 +1,10 @@
-{
+{ 
+  "cookies": {
+    "header": "Cookies"
+  },
+  "terms-and-conditions" : {
+    "header": "Terms and conditions"
+  },
   "accessibility": {
     "header": "Accessibility statement for Applying for and Accepting a Refugee Integration Loan",
     "intro": "This accessibility statement applies to the 'Apply for a refugee integration loan' and 'Accepting your integration loan' services.",
