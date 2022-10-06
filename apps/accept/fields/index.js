@@ -41,6 +41,7 @@ module.exports = {
     autocomplete: 'email'
   },
   phone: {
+    className: ['govuk-input', 'govuk-input--width-20'],
     validate: ['required', 'notUrl'],
     dependent: {
       field: 'contactTypes',

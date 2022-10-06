@@ -214,6 +214,7 @@ module.exports = {
     autocomplete: 'address-line2'
   },
   townOrCity: {
+    className: ['govuk-input', 'govuk-!-width-two-thirds'],
     validate: ['required', 'notUrl',
       { type: 'regex', arguments: /^([^0-9]*)$/ },
       { type: 'maxlength', arguments: 100 }
@@ -221,6 +222,7 @@ module.exports = {
     autocomplete: 'address-level2'
   },
   postcode: {
+    className: ['govuk-input', 'govuk-input--width-10'],
     validate: ['required', 'postcode'],
     formatter: ['removespaces', 'uppercase'],
     autocomplete: 'postal-code'
@@ -715,6 +717,7 @@ module.exports = {
     autocomplete: 'email'
   },
   phone: {
+    className: ['govuk-input', 'govuk-input--width-20'],
     validate: ['required', 'notUrl'],
     dependent: {
       field: 'contactTypes',
@@ -754,6 +757,7 @@ module.exports = {
     autocomplete: 'address-line2'
   },
   outcomeTownOrCity: {
+    className: ['govuk-input', 'govuk-!-width-two-thirds'],
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }],
     dependent: {
       field: 'likelyToMove',
@@ -762,6 +766,7 @@ module.exports = {
     autocomplete: 'address-level2'
   },
   outcomePostcode: {
+    className: ['govuk-input', 'govuk-input--width-10'],
     validate: ['required', 'postcode'],
     formatter: ['removespaces', 'uppercase'],
     dependent: {
@@ -818,6 +823,7 @@ module.exports = {
     autocomplete: 'email'
   },
   helpPhone: {
+    className: ['govuk-input', 'govuk-input--width-20'],
     validate: ['required', 'notUrl'],
     dependent: {
       field: 'helpContactTypes',
