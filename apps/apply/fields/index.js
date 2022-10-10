@@ -165,6 +165,7 @@ module.exports = {
   },
   partnerBrpNumber: {
     formatter: ['removespaces', 'uppercase'],
+    className: 'govuk-input govuk-input--width-10',
     validate: ['required', brpNumber]
   },
   partnerNiNumber: {
