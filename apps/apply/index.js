@@ -7,7 +7,7 @@ const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 const confirmStep = config.routes.confirmStep;
 const AddSpacePostcode = require('./behaviours/add-space-postcode');
-const decimalPrefixValidator = require('./behaviours/decimal-prefix-validator')
+const removePrefix = require('./behaviours/remove-prefix');
 
 module.exports = {
   name: 'apply',
@@ -17,9 +17,9 @@ module.exports = {
     '/previously-applied': {
       behaviours: [setRadioButtonErrorLink],
       fields: ['previouslyApplied'],
-      next: '/income',
+      next: '/previous',
       forks: [{
-        target: '/income',
+        target: '/partner',
         condition: {
           field: 'previouslyApplied',
           value: 'no'
@@ -219,7 +219,7 @@ module.exports = {
       }]
     },
     '/income': {
-      behaviours: [decimalPrefixValidator],
+      behaviours: [removePrefix],
       fields: [
         'incomeTypes',
         'salaryAmount',
@@ -231,7 +231,7 @@ module.exports = {
       next: '/outgoings'
     },
     '/outgoings': {
-      behaviours: [decimalPrefixValidator],
+      behaviours: [removePrefix],
       fields: [
         'outgoingTypes',
         'rentAmount',
@@ -247,14 +247,17 @@ module.exports = {
     },
     '/savings': {
       fields: ['savings', 'savingsAmount'],
-      behaviours: [setRadioButtonErrorLink],
-      next: '/amount'
+      behaviours: [setRadioButtonErrorLink, removePrefix],
+      next: '/amount',
+      continueOnEdit: true
     },
     '/amount': {
+      behaviours: [removePrefix],
       fields: ['amount'],
       next: '/purpose'
     },
     '/combined-income': {
+      behaviours: [removePrefix],
       fields: [
         'combinedIncomeTypes',
         'combinedSalaryAmount',
@@ -266,6 +269,7 @@ module.exports = {
       next: '/combined-outgoings'
     },
     '/combined-outgoings': {
+      behaviours: [removePrefix],
       fields: [
         'combinedOutgoingTypes',
         'combinedRentAmount',
@@ -281,10 +285,12 @@ module.exports = {
     },
     '/combined-savings': {
       fields: ['combinedSavings', 'combinedSavingsAmount'],
-      behaviours: [setRadioButtonErrorLink],
-      next: '/combined-amount'
+      behaviours: [setRadioButtonErrorLink, removePrefix],
+      next: '/combined-amount',
+      continueOnEdit: true
     },
     '/combined-amount': {
+      behaviours: [removePrefix],
       fields: ['jointAmount'],
       next: '/purpose'
     },
