@@ -65,10 +65,12 @@ module.exports = {
     autocomplete: 'name'
   },
   brpNumber: {
+    className: ['govuk-input govuk-input--width-10'],
     validate: ['required', brpNumber],
     formatter: ['uppercase']
   },
   niNumber: {
+    className: ['govuk-input govuk-input--width-10'],
     validate: ['required', niNumber],
     formatter: ['removespaces', 'uppercase']
   },
@@ -94,6 +96,7 @@ module.exports = {
     omitFromSummary: true
   },
   homeOfficeReference: {
+    className: ['govuk-input govuk-input--width-10'],
     validate: ['required']
   },
   convicted: {
@@ -169,6 +172,7 @@ module.exports = {
     validate: ['required', brpNumber]
   },
   partnerNiNumber: {
+    className: ['govuk-input govuk-input--width-10'],
     validate: ['required', niNumber],
     formatter: ['removespaces', 'uppercase']
   },
@@ -681,13 +685,16 @@ module.exports = {
     validate: ['notUrl', 'required', { type: 'maxlength', arguments: 200 }]
   },
   sortCode: {
+    className: ['govuk-input govuk-input--width-5'],
     validate: ['required', { type: 'regex', arguments: /^[0-9]{6}$/ }],
     formatter: ['removehyphens', 'removespaces']
   },
   accountNumber: {
+    className: ['govuk-input govuk-input--width-10'],
     validate: ['required', 'numeric', { type: 'minlength', arguments: 6 }, { type: 'maxlength', arguments: 8 }]
   },
   rollNumber: {
+    className: ['govuk-input govuk-input--width-10'],
     validate: 'notUrl'
   },
   contactTypes: {
