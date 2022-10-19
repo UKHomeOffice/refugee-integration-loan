@@ -3,7 +3,8 @@ const dateComponent = require('hof').components.date;
 
 module.exports = {
   loanReference: {
-    validate: ['required', 'numeric', {type: 'minlength', arguments: [5]}, {type: 'maxlength', arguments: [5]}]
+    validate: ['required', 'numeric', {type: 'minlength', arguments: [5]}, {type: 'maxlength', arguments: [5]}],
+    className: ['govuk-input govuk-input--width-10']
   },
   name: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
