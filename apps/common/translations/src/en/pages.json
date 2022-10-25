@@ -94,6 +94,8 @@
     "maybeVouchers" : "There may be vouchers to be offered, depending on the research.",
     "takePartResearch" : "If you take part in research online, you’ll be given a task to do on a service. You do not need to travel anywhere for these sessions but you’ll need your own internet connection, computer, phone or tablet to take part. The sessions usually last 30 minutes.",
     "contactHomeOffice" : "Contact Home Office",
-    "contactEmail": "You can contact the Home Office research team at research@digital.homeoffice.gov.uk for more information or to update your details."
+    "contactEmail": "You can contact the Home Office research team at",
+    "researchEmail" : "research@digital.homeoffice.gov.uk",
+    "moreInformation": "for more information or to update your details."
   }
 }
