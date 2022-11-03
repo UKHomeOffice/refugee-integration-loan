@@ -1,12 +1,13 @@
 {{<partials-page}}
 
-
 {{$propositionHeader}}
-  <div class="govuk-header__content">
-      <a href="/improve-our-services" class="govuk-header__link govuk-header__link--service-name" id="proposition-name">
-        Help improve Home Office services
-      </a>
-  </div>
+<a href="#" class="govuk-header__link govuk-header__link--homepage">
+  <span class="govuk-header__logotype">
+    <span class="govuk-header__logotype-text">
+          Help improve Home Office services
+      </span>
+  </span>
+</a>
 {{/propositionHeader}}
 
   {{$page-content}}
@@ -15,7 +16,7 @@
   <p class="govuk-body">{{#t}}pages.improve-our-services.needsYourHelp{{/t}}</p>
   <p class="govuk-body">{{#t}}pages.improve-our-services.toJoin{{/t}}</p>
 
-  <ul class="list list-bullet">
+  <ul class="govuk-list govuk-list--bullet">
     <li>{{#t}}pages.improve-our-services.bullet18+{{/t}}</li>
     <li>{{#t}}pages.improve-our-services.bulletUkEu{{/t}}</li>
   </ul>
@@ -24,14 +25,14 @@
   <p class="govuk-body">{{#t}}pages.improve-our-services.voucher{{/t}}</p>
   <p class="govuk-body">{{#t}}pages.improve-our-services.youCanSayNo{{/t}}</p>
 
-  <a href={{#t}}pages.improve-our-services.surveyLink{{/t}} class="button" role="button">{{#t}}buttons.signUp{{/t}}</a>
+  <a href={{#t}}pages.improve-our-services.surveyLink{{/t}} class="govuk-button" role="button">{{#t}}buttons.signUp{{/t}}</a>
 
   <h2 class="govuk-heading-m">{{#t}}pages.improve-our-services.whatsInvolved{{/t}}</h2>
   <p class="govuk-body">{{#t}}pages.improve-our-services.whatsInvolvedParagraph{{/t}}</p>
   <p class="govuk-body">{{#t}}pages.improve-our-services.notGoodWithComputers{{/t}}</p>
   <p class="govuk-body">{{#t}}pages.improve-our-services.youMightBeAsked{{/t}}</p>
 
-  <ul class="list list-bullet">
+  <ul class="govuk-list govuk-list--bullet">
     <li>{{#t}}pages.improve-our-services.bulletNewTransactions{{/t}}</li>
     <li>{{#t}}pages.improve-our-services.bulletAnswerQuestions{{/t}}</li>
     <li>{{#t}}pages.improve-our-services.bulletTalkToResearchers{{/t}}</li>
@@ -44,7 +45,7 @@
   <h2 class="govuk-heading-m">{{#t}}pages.improve-our-services.inPerson{{/t}}</h2>
   <p class="govuk-body">{{#t}}pages.improve-our-services.weMightAsk{{/t}}</p>
 
-  <ul class="list list-bullet">
+  <ul class="govuk-list govuk-list--bullet">
     <li>{{#t}}pages.improve-our-services.bulletYouVisit{{/t}}</li>
     <li>{{#t}}pages.improve-our-services.bulletVisitHomeWork{{/t}}</li>
   </ul>
@@ -62,7 +63,7 @@
 
   <p class="govuk-body">
     {{#t}}pages.improve-our-services.contactEmail{{/t}}
-    <a href="mailto:{{#t}}pages.improve-our-services.researchEmail{{/t}}">{{#t}}pages.improve-our-services.researchEmail{{/t}}</a>
+    <a href="mailto:{{#t}}pages.improve-our-services.researchEmail{{/t}}" class="govuk-link">{{#t}}pages.improve-our-services.researchEmail{{/t}}</a>
     {{#t}}pages.improve-our-services.moreInformation{{/t}} 
   </p>
 
