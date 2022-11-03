@@ -122,7 +122,7 @@ module.exports = {
       field: 'convicted',
       value: 'yes'
     },
-    className: 'form-textarea--revealed',
+    className: 'govuk-textarea',
     attributes: [{
       attribute: 'rows',
       value: 8
@@ -150,7 +150,7 @@ module.exports = {
       field: 'convictedJoint',
       value: 'yes'
     },
-    className: 'form-textarea--revealed',
+    className: 'govuk-textarea',
     attributes: [{
       attribute: 'rows',
       value: 8
