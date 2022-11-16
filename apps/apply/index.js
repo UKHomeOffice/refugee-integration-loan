@@ -24,7 +24,6 @@ module.exports = {
         }
       }],
       returnToSummary: false,
-      continueOnEdit: true
     },
     '/previous': {
       fields: ['previouslyHadIntegrationLoan'],
@@ -38,7 +37,6 @@ module.exports = {
         }
       }],
       returnToSummary: false,
-      continueOnEdit: true
     },
     '/who-received-previous-loan': {
       fields: ['whoReceivedPreviousLoan'],
@@ -52,7 +50,6 @@ module.exports = {
         }
       }],
       returnToSummary: false,
-      continueOnEdit: true
     },
     '/partner': {
       fields: ['partner'],
@@ -66,26 +63,22 @@ module.exports = {
         }
       }],
       returnToSummary: true,
-      continueOnEdit: true
     },
     '/joint': {
       returnToSummary: true,
       fields: ['joint'],
       behaviours: [setRadioButtonErrorLink],
       next: '/brp',
-      continueOnEdit: true
     },
     '/brp': {
       fields: ['brpNumber', 'fullName', 'dateOfBirth'],
       behaviours: [setDateErrorLink],
       next: '/ni-number',
       template: 'brp',
-      continueOnEdit: true
     },
     '/ni-number': {
       fields: ['niNumber'],
       next: '/has-other-names',
-      continueOnEdit: true
     },
     '/has-other-names': {
       fields: ['hasOtherNames'],
@@ -98,12 +91,10 @@ module.exports = {
           value: 'yes'
         }
       }],
-      continueOnEdit: true
     },
     '/add-other-name': {
       backLink: 'has-other-names',
       fields: ['otherName'],
-      continueOnEdit: true,
       next: '/other-names'
     },
     '/other-names': {
@@ -116,7 +107,6 @@ module.exports = {
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/home-office-reference',
-      continueOnEdit: true
     },
     '/home-office-reference': {
       fields: ['homeOfficeReference'],
@@ -128,26 +118,22 @@ module.exports = {
           value: 'yes'
         }
       }],
-      continueOnEdit: true
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
       behaviours: [setRadioButtonErrorLink],
       next: '/has-dependants',
-      continueOnEdit: true
     },
     '/partner-brp': {
       fields: ['partnerBrpNumber', 'partnerFullName', 'partnerDateOfBirth'],
       behaviours: [setDateErrorLink],
       next: '/partner-ni-number',
       template: 'brp',
-      continueOnEdit: true
     },
     '/partner-ni-number': {
       fields: ['partnerNiNumber'],
       next: '/partner-has-other-names',
       template: 'ni-number',
-      continueOnEdit: true
     },
     '/partner-has-other-names': {
       fields: ['partnerHasOtherNames'],
@@ -160,12 +146,10 @@ module.exports = {
           value: 'yes'
         }
       }],
-      continueOnEdit: true
     },
     '/partner-add-other-name': {
       backLink: 'partner-has-other-names',
       fields: ['partnerOtherName'],
-      continueOnEdit: true,
       next: '/partner-other-names'
     },
     '/partner-other-names': {
@@ -178,13 +162,11 @@ module.exports = {
       addAnotherLinkText: 'name',
       template: 'add-another',
       next: '/convictions-joint',
-      continueOnEdit: true
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
       behaviours: [setRadioButtonErrorLink],
       next: '/has-dependants',
-      continueOnEdit: true
     },
     '/has-dependants': {
       fields: ['hasDependants'],
@@ -197,7 +179,6 @@ module.exports = {
           value: 'yes'
         }
       }],
-      continueOnEdit: true
     },
     '/add-dependant': {
       backLink: 'has-dependants',
@@ -207,7 +188,6 @@ module.exports = {
         'dependantRelationship'
       ],
       behaviours: [setDateErrorLink],
-      continueOnEdit: true,
       next: '/dependant-details'
     },
     '/dependant-details': {
@@ -224,7 +204,6 @@ module.exports = {
       addAnotherLinkText: 'dependant',
       template: 'add-another',
       next: '/address',
-      continueOnEdit: true
     },
     '/address': {
       fields: ['building', 'street', 'townOrCity', 'postcode'],
@@ -236,7 +215,6 @@ module.exports = {
           value: 'yes'
         }
       }],
-      continueOnEdit: true
     },
     '/income': {
       fields: [
@@ -248,7 +226,6 @@ module.exports = {
         'otherIncomeAmount'
       ],
       next: '/outgoings',
-      continueOnEdit: true
     },
     '/outgoings': {
       fields: [
@@ -263,18 +240,15 @@ module.exports = {
         'otherOutgoingAmount'
       ],
       next: '/savings',
-      continueOnEdit: true
     },
     '/savings': {
       fields: ['savings', 'savingsAmount'],
       behaviours: [setRadioButtonErrorLink],
       next: '/amount',
-      continueOnEdit: true
     },
     '/amount': {
       fields: ['amount'],
       next: '/purpose',
-      continueOnEdit: true
     },
     '/combined-income': {
       fields: [
@@ -286,7 +260,6 @@ module.exports = {
         'combinedOtherIncomeAmount'
       ],
       next: '/combined-outgoings',
-      continueOnEdit: true
     },
     '/combined-outgoings': {
       fields: [
@@ -301,28 +274,23 @@ module.exports = {
         'combinedOtherOutgoingAmount'
       ],
       next: '/combined-savings',
-      continueOnEdit: true
     },
     '/combined-savings': {
       fields: ['combinedSavings', 'combinedSavingsAmount'],
       behaviours: [setRadioButtonErrorLink],
       next: '/combined-amount',
-      continueOnEdit: true
     },
     '/combined-amount': {
       fields: ['jointAmount'],
       next: '/purpose',
-      continueOnEdit: true
     },
     '/purpose': {
       fields: ['purposeTypes'],
       next: '/bank-details',
-      continueOnEdit: true
     },
     '/bank-details': {
       fields: ['accountName', 'bankName', 'sortCode', 'accountNumber', 'rollNumber'],
       next: '/contact',
-      continueOnEdit: true
     },
     '/contact': {
       fields: ['contactTypes', 'email', 'phone'],
@@ -332,14 +300,12 @@ module.exports = {
         condition: req =>
           req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
       }],
-      continueOnEdit: true
     },
     '/outcome': {
       fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],
       behaviours: [setRadioButtonErrorLink],
       template: 'outcome',
       next: '/help',
-      continueOnEdit: true
     },
     '/help': {
       fields: ['hadHelp'],
@@ -352,17 +318,14 @@ module.exports = {
           value: 'yes'
         }
       }],
-      continueOnEdit: true
     },
     '/help-reasons': {
       fields: ['helpReasons'],
       next: '/who-helped',
-      continueOnEdit: true
     },
     '/who-helped': {
       fields: ['helpFullName', 'helpRelationship', 'helpContactTypes', 'helpEmail', 'helpPhone'],
       next: '/confirm',
-      continueOnEdit: true
     },
     [confirmStep]: {
       behaviours: [Summary, UploadPDF],
