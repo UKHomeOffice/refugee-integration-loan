@@ -332,7 +332,8 @@ module.exports = {
         condition: req =>
           req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
       }],
-      continueOnEdit: true
+      continueOnEdit: true,
+      template: 'contact'
     },
     '/outcome': {
       fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],

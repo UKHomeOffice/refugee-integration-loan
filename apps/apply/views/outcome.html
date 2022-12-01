@@ -1,5 +1,9 @@
 {{<partials-page}}
-  {{$page-content}}
+  {{$page-content}} 
+  <div class="govuk-inset-text">
+    <p>We will be able to answer your enquiry quicker if we are able to contact you by email. Requesting to be contacted by post may result in delays.</p>
+  </div>
+
     <p>{{#t}}pages.outcome.postTo{{/t}} <span class="govuk-font-weight-bold">{{values.building}}{{#values.street}} {{values.street}}{{/values.street}}, {{values.townOrCity}}, {{values.postcode}}</span>.</p>
     {{#fields}}
       {{#renderField}}{{/renderField}}
