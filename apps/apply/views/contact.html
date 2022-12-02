@@ -3,7 +3,9 @@
   <div class="govuk-inset-text">
     <p>We will be able to answer your enquiry quicker if we are able to contact you by email. Requesting to be contacted by post may result in delays.</p>
   </div>
-  {{#renderField}}contactTypes{{/renderField}}
+  {{#fields}}
+  {{#renderField}}{{/renderField}}
+  {{/fields}}
   {{#input-submit}}continue{{/input-submit}}
   {{/page-content}}
 {{/partials-page}}

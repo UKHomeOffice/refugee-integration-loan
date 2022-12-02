@@ -150,7 +150,7 @@ Feature: Joint Application
     Then I fill 'rollNumber' with '23'
     Then I click the 'Continue' button
     Then I should be on the 'contact' page showing 'How would you like us to contact you?'
-    Then I select 'Email'
+    Then I check 'contactTypes-email'
     Then I fill 'email' with 'sas-hof-test@digital.homeoffice.gov.uk'
     Then I click the 'Continue' button
     Then I should be on the 'help' page showing 'Did you get any help making this application?'
