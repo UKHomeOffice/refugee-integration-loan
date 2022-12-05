@@ -230,7 +230,8 @@ describe('the journey of a single apply application', () => {
       accountName: 'Mr Joe',
       sortCode: '111111',
       accountNumber: '222222',
-      rollNumber: '12'
+      rollNumber: '12',
+      bankName: 'Bank of the World'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/contact');
