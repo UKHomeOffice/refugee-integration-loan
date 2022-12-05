@@ -1,7 +1,7 @@
 
 const moment = require('moment');
 
-describe.only('validation checks of the apply journey', () => {
+describe('validation checks of the apply journey', () => {
   let testApp;
   let passStep;
   let initSession;

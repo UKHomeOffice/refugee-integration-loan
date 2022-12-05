@@ -1,6 +1,9 @@
 {
   "loanReference": {
-    "default": "Enter your loan reference number in the correct format"
+    "default": "Enter your loan reference number in the correct format",
+    "numeric": "Your loan reference number must be a number",
+    "minlength": "Your loan reference number must be five digits",
+    "maxlength": "Your loan reference number must be five digits"
   },
   "brpNumber": {
     "default": "Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’"
