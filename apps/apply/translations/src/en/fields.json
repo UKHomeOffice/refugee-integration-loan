@@ -468,6 +468,9 @@
     "label": "Building society or credit union number (if you have one)",
     "hint": "You can find this on your card, statement or passbook"
   },
+  "bankName": {
+    "label": "Name of your bank or building society" 
+  },
   "contactTypes": {
     "legend": "How would you like us to contact you?",
     "hint": "Select at least one option.",

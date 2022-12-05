@@ -673,6 +673,9 @@ module.exports = {
   accountName: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]
   },
+  bankName: {
+    validate: ['notUrl', 'required', { type: 'maxlength', arguments: 200 }]
+  },
   sortCode: {
     validate: ['required', { type: 'regex', arguments: /^[0-9]{6}$/ }],
     formatter: ['removehyphens', 'removespaces']

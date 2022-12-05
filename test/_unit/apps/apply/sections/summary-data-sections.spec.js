@@ -60,6 +60,7 @@ describe('Apply Summary Data Sections', () => {
       const sectionFields = mappedSections['pdf-bank-account-details'];
       const expectedFields = [
         'accountName',
+        'bankName',
         'sortCode',
         'accountNumber',
         'rollNumber'

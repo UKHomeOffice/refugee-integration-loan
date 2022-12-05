@@ -116,6 +116,7 @@ Feature: Single Application
     Then I click the 'Continue' button
     Then I should be on the 'bank-details' page showing 'What are your bank or building society account details?'
     Then I fill 'accountName' with 'Account name'
+    Then I fill 'bankName' with 'The Bank of the world'
     Then I fill 'sortCode' with '111111'
     Then I fill 'accountNumber' with '222222'
     Then I fill 'rollNumber' with '23'
@@ -212,6 +213,7 @@ Feature: Single Application
     Then I click the 'Continue' button
     Then I should be on the 'bank-details' page showing 'What are your bank or building society account details?'
     Then I fill 'accountName' with 'Account name'
+    Then I fill 'bankName' with 'The Bank of the world'
     Then I fill 'sortCode' with '111111'
     Then I fill 'accountNumber' with '222222'
     Then I fill 'rollNumber' with '23'
