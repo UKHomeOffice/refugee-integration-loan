@@ -16,7 +16,7 @@ describe('the journey of a single or joint accept application', () => {
     const URI = '/reference-number';
     await initSession(URI);
     const response = await passStep(URI, {
-      loanReference: 'LR12345'
+      loanReference: '12345'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /accept/brp');

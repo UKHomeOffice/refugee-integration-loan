@@ -8,7 +8,7 @@ const brpNumber = {
 
 module.exports = {
   loanReference: {
-    validate: 'required'
+    validate: ['required', 'numeric', {type: 'minlength', arguments: [5]}, {type: 'maxlength', arguments: [5]}]
   },
   brpNumber: {
     validate: ['required', brpNumber],

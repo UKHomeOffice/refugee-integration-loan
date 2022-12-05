@@ -37,6 +37,49 @@ describe('validation checks of the accept journey', () => {
       expect(validationSummary.html())
         .to.match(/Enter your loan reference number in the correct format/);
     });
+
+    it('does not pass the Reference Number page if the loan reference field contains a letter', async () => {
+      const URI = '/reference-number';
+      await initSession(URI);
+      await passStep(URI, {
+        loanReference: '1234a'
+      });
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Your loan reference number must be a number/);
+    });
+    it('does not pass the Reference Number page if the loan reference field contains 4 numbers', async () => {
+      const URI = '/reference-number';
+      await initSession(URI);
+      await passStep(URI, {
+        loanReference: '1234'
+      });
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Your loan reference number must be five digits/);
+    });
+    it('does not pass the Reference Number page if the loan reference field contains 6 numbers', async () => {
+      const URI = '/reference-number';
+      await initSession(URI);
+      await passStep(URI, {
+        loanReference: '123456'
+      });
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Your loan reference number must be five digits/);
+    });
   });
 
   describe('BRP Validations', () => {
@@ -51,7 +94,7 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your date of birth in the correct format; for example, 31 3 1980/);
     });
@@ -137,11 +180,11 @@ describe('validation checks of the accept journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if the BRP number is less than 10 characters', async () => {
+    it('does not pass the BRP page if the BRP number is 8 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU1234567',
+        brpNumber: 'ZU123456',
         dateOfBirth: '2000-12-31'
       });
 
@@ -151,10 +194,10 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
     });
 
-    it('does not pass the BRP page if the BRP number is more than 10 characters', async () => {
+    it('does not pass the BRP page if the BRP number is 10 characters', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {
@@ -168,7 +211,7 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZU1234567’/);
+        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
     });
   });
 

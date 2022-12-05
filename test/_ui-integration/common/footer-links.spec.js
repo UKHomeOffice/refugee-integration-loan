@@ -59,6 +59,6 @@ describe('Footer links', () => {
 
     const header = docu.find('header h1');
 
-    header.html().should.match(/Help improve our services/);
+    header.html().should.match(/Help improve Home Office services/);
   });
 });
