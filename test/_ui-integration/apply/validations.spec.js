@@ -1724,7 +1724,8 @@ describe.only('validation checks of the apply journey', () => {
         accountName: 'Mr Joe',
         sortCode: '111111',
         accountNumber: '22221111',
-        rollNumber: '12'
+        rollNumber: '12',
+        bankName: 'Bank of the World'
       });
 
       const res = await getUrl(URI);
@@ -1741,7 +1742,8 @@ describe.only('validation checks of the apply journey', () => {
         accountName: 'Mr Joe',
         sortCode: '111111',
         accountNumber: '222222',
-        rollNumber: ''
+        rollNumber: '',
+        bankName: 'Bank of the World'
       });
 
       const res = await getUrl(URI);

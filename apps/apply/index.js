@@ -320,7 +320,7 @@ module.exports = {
       continueOnEdit: true
     },
     '/bank-details': {
-      fields: ['accountName', 'sortCode', 'accountNumber', 'rollNumber'],
+      fields: ['accountName', 'bankName', 'sortCode', 'accountNumber', 'rollNumber'],
       next: '/contact',
       continueOnEdit: true
     },

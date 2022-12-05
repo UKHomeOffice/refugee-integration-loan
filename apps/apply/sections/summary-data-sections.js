@@ -59,6 +59,7 @@ module.exports = {
   ],
   'pdf-bank-account-details': [
     'accountName',
+    'bankName',
     'sortCode',
     'accountNumber',
     'rollNumber'

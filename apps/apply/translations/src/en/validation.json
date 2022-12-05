@@ -276,6 +276,9 @@
   "accountNumber": {
     "default": "Enter your 6 to 8 digit account number"
   },
+  "bankName": {
+    "default" : "Enter the name of your bank or building society"
+  },
   "contactTypes": {
     "default": "Select how we can contact you"
   },
