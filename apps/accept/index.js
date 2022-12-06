@@ -12,10 +12,10 @@ module.exports = {
   steps: {
     '/reference-number': {
       fields: ['loanReference'],
-      next: '/brp'
+      next: '/your-details'
     },
-    '/brp': {
-      fields: ['brpNumber', 'dateOfBirth'],
+    '/your-details': {
+      fields: ['name', 'dateOfBirth'],
       behaviours: [setDateErrorLink],
       next: '/contact'
     },

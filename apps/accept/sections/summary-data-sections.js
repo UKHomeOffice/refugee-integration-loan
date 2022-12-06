@@ -5,7 +5,7 @@ const config = require('../../../config');
 module.exports = {
   'pdf-applicant-details': [
     'loanReference',
-    'brpNumber',
+    'name',
     {
       field: 'dateOfBirth',
       parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)

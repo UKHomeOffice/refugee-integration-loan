@@ -5,8 +5,8 @@
     "minlength": "Your loan reference number must be five digits",
     "maxlength": "Your loan reference number must be five digits"
   },
-  "brpNumber": {
-    "default": "Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’"
+  "name": {
+    "default": "Enter your full name"
   },
   "dateOfBirth": {
     "default": "Enter your date of birth in the correct format; for example, 31 3 1980",

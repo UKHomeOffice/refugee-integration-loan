@@ -83,8 +83,8 @@ describe('validation checks of the accept journey', () => {
   });
 
   describe('BRP Validations', () => {
-    it('does not pass the BRP page if BRP Number and DOB are not entered', async () => {
-      const URI = '/brp';
+    it('does not pass the your details page if name and DOB are not entered', async () => {
+      const URI = '/your-details';
       await initSession(URI);
       await passStep(URI, {});
 
@@ -94,16 +94,16 @@ describe('validation checks of the accept journey', () => {
 
       expect(validationSummary.length === 1).to.be.true;
       expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
+        .to.match(/Enter your full name/);
       expect(validationSummary.html())
         .to.match(/Enter your date of birth in the correct format; for example, 31 3 1980/);
     });
 
-    it('does not pass the BRP page if DOB younger than 18 years old', async () => {
-      const URI = '/brp';
+    it('does not pass the your details page if DOB younger than 18 years old', async () => {
+      const URI = '/your-details';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU1234567',
+        name: 'Ron Johnson',
         dateOfBirth: now.subtract(18, 'years').add(1, 'days').format('YYYY-MM-DD')
       });
 
@@ -116,11 +116,11 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter a valid date of birth. You must be over 18 to accept/);
     });
 
-    it('does pass the BRP page if DOB is 18 years old or older', async () => {
-      const URI = '/brp';
+    it('does pass the your details page if DOB is 18 years old or older', async () => {
+      const URI = '/your-details';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU1234567',
+        name: 'Ron Johnson',
         dateOfBirth: now.subtract(18, 'years').format('YYYY-MM-DD')
       });
 
@@ -131,11 +131,11 @@ describe('validation checks of the accept journey', () => {
       expect(validationSummary.length === 1).to.be.false;
     });
 
-    it('does not pass the BRP page if DOB earlier than 1900-01-01', async () => {
-      const URI = '/brp';
+    it('does not pass the your details page if DOB earlier than 1900-01-01', async () => {
+      const URI = '/your-details';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU1234567',
+        name: 'Ron Johnson',
         dateOfBirth: '1900-01-01'
       });
 
@@ -149,10 +149,10 @@ describe('validation checks of the accept journey', () => {
     });
 
     it('does not pass the BRP page if DOB is in the future', async () => {
-      const URI = '/brp';
+      const URI = '/your-details';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU1234567',
+        name: 'Ron Johnson',
         dateOfBirth: now.add(1, 'days').format('YYYY-MM-DD')
       });
 
@@ -165,11 +165,11 @@ describe('validation checks of the accept journey', () => {
         .to.match(/Enter a date that is in the past/);
     });
 
-    it('does pass the BRP page if DOB later than 1900-01-02', async () => {
-      const URI = '/brp';
+    it('does pass the your details page if DOB later than 1900-01-02', async () => {
+      const URI = '/your-details';
       await initSession(URI);
       await passStep(URI, {
-        brpNumber: 'ZU1234567',
+        name: 'Ron Johnson',
         dateOfBirth: '1900-01-02'
       });
 
@@ -178,40 +178,6 @@ describe('validation checks of the accept journey', () => {
       const validationSummary = docu.find('.validation-summary');
 
       expect(validationSummary.length === 1).to.be.false;
-    });
-
-    it('does not pass the BRP page if the BRP number is 8 characters', async () => {
-      const URI = '/brp';
-      await initSession(URI);
-      await passStep(URI, {
-        brpNumber: 'ZU123456',
-        dateOfBirth: '2000-12-31'
-      });
-
-      const res = await getUrl(URI);
-      const docu = await parseHtml(res);
-      const validationSummary = docu.find('.validation-summary');
-
-      expect(validationSummary.length === 1).to.be.true;
-      expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
-    });
-
-    it('does not pass the BRP page if the BRP number is 10 characters', async () => {
-      const URI = '/brp';
-      await initSession(URI);
-      await passStep(URI, {
-        brpNumber: 'ZU12345679',
-        dateOfBirth: '2000-12-31'
-      });
-
-      const res = await getUrl(URI);
-      const docu = await parseHtml(res);
-      const validationSummary = docu.find('.validation-summary');
-
-      expect(validationSummary.length === 1).to.be.true;
-      expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
     });
   });
 

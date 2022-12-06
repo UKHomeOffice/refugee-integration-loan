@@ -22,7 +22,7 @@ describe('Accept PDF Data Sections', () => {
       const sectionFields = mappedSections['pdf-applicant-details'];
       const expectedFields = [
         'loanReference',
-        'brpNumber',
+        'name',
         'dateOfBirth'
       ];
 
