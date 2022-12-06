@@ -12,21 +12,21 @@ describe('the journey of a single or joint accept application', () => {
     initSession = testApp.initSession;
   });
 
-  it('goes to the BRP page when a user submits a loan reference number', async () => {
+  it('goes to the your details page when a user submits a loan reference number', async () => {
     const URI = '/reference-number';
     await initSession(URI);
     const response = await passStep(URI, {
       loanReference: '12345'
     });
 
-    expect(response.text).to.contain('Found. Redirecting to /accept/brp');
+    expect(response.text).to.contain('Found. Redirecting to /accept/your-details');
   });
 
-  it('goes to the Contact page when a user submits their BRP details', async () => {
-    const URI = '/brp';
+  it('goes to the Contact page when a user submits their details', async () => {
+    const URI = '/your-details';
     await initSession(URI);
     const response = await passStep(URI, {
-      brpNumber: 'ZU1234567',
+      name: 'Ron Johnson',
       dateOfBirth: '1954-11-22'
     });
 

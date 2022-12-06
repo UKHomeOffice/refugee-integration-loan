@@ -3,9 +3,8 @@
     "label": "Loan reference number",
     "hint": "For example, ‘12345’. You can find this in your loan offer email or letter."
   },
-  "brpNumber": {
-    "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘ZUX123456 or ZU1234567’."
+  "name": {
+    "label": "Full name"
   },
   "dateOfBirth": {
     "legend": "Date of Birth",

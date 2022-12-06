@@ -1,18 +1,12 @@
 
 const dateComponent = require('hof').components.date;
 
-const brpNumber = {
-  type: 'regex',
-  arguments: /^(?=(?:.){9})[a-zA-Z]{2}[xX0-9]{1}\d{6}$/
-};
-
 module.exports = {
   loanReference: {
     validate: ['required', 'numeric', {type: 'minlength', arguments: [5]}, {type: 'maxlength', arguments: [5]}]
   },
-  brpNumber: {
-    validate: ['required', brpNumber],
-    formatter: ['uppercase']
+  name: {
+    validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }]
   },
   dateOfBirth: dateComponent('dateOfBirth', {
     validate: ['required', { type: 'after', arguments: ['1900'] }, 'before', 'over18'],
