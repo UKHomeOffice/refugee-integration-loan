@@ -843,6 +843,62 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Other income must be in pounds and pence; for example £100.00/);
     });
 
+    it('does not pass the Income page if other income explanation field is empty', async () => {
+      const URI = '/income';
+      await initSession(URI);
+      await passStep(URI, {
+        incomeTypes: [
+          'salary',
+          'universal_credit',
+          'child_benefit',
+          'housing_benefit',
+          'other'
+        ],
+        salaryAmount: '2000',
+        universalCreditAmount: '100',
+        childBenefitAmount: '200',
+        housingBenefitAmount: '300',
+        otherIncomeAmount: '400',
+        otherIncomeExplain: ''
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter details about your other income/);
+    });
+
+    it('does not pass the Income page if other income explanation field is more than 200 characters', async () => {
+      const URI = '/income';
+      await initSession(URI);
+      await passStep(URI, {
+        incomeTypes: [
+          'salary',
+          'universal_credit',
+          'child_benefit',
+          'housing_benefit',
+          'other'
+        ],
+        salaryAmount: '2000',
+        universalCreditAmount: '100',
+        childBenefitAmount: '200',
+        housingBenefitAmount: '300',
+        otherIncomeAmount: '400',
+        otherIncomeExplain: 'orem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel orci ut odio luctus tristique nec accumsan mi. Nam finibus rutrum volutpat. Praesent viverra sit amet erat id aliquet. Sed ornare nonf felis.'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.validation-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Other income details must be 200 characters or less/);
+    });
+
     it('does not pass the Income page if income types selected with no amounts', async () => {
       const URI = '/income';
       await initSession(URI);

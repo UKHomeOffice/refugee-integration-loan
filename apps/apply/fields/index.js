@@ -258,7 +258,7 @@ module.exports = {
       {
         value: 'other',
         toggle: 'otherIncomeAmount',
-        child: 'partials/details-summary-input-text-checkboxes'
+        child: 'partials/details-summary-input-text-textarea'
       }
     ],
     legend: {
@@ -301,6 +301,14 @@ module.exports = {
   otherIncomeAmount: {
     validate: ['required', { type: 'min', arguments: 0.01 }, 'decimal'],
     attributes: [{ prefix: '£' }],
+    dependent: {
+      field: 'incomeTypes',
+      value: 'other'
+    }
+  },
+  otherIncomeExplain: {
+    mixin: 'textarea',
+    validate: ['required', { type: 'maxlength', arguments: 200 }],
     dependent: {
       field: 'incomeTypes',
       value: 'other'

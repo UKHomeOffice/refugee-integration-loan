@@ -222,7 +222,8 @@ module.exports = {
         'universalCreditAmount',
         'childBenefitAmount',
         'housingBenefitAmount',
-        'otherIncomeAmount'
+        'otherIncomeAmount',
+        'otherIncomeExplain'
       ],
       next: '/outgoings'
     },

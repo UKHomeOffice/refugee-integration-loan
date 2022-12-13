@@ -81,6 +81,7 @@ Feature: Single Application
     Then I fill 'housingBenefitAmount' with '300'
     Then I check 'incomeTypes-other'
     Then I fill 'otherIncomeAmount' with '400'
+    Then I fill 'otherIncomeExplain' text area with 'Selling some old things on eBay clothing etc.'
     Then I click the 'Continue' button
     Then I should be on the 'outgoings' page showing 'How much money do you spend each month?'
     Then I check 'outgoingTypes-rent'

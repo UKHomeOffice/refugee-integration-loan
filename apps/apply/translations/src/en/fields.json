@@ -245,6 +245,10 @@
   "otherIncomeAmount": {
     "label": "Total other income amount per month"
   },
+  "otherIncomeExplain": {
+    "label": "Other Income Explanation",
+    "hint": "Please specify below"
+  },
   "combinedIncomeTypes": {
     "legend": "You and your partner’s combined monthly income",
     "hint": "Select all options that apply to you.",
