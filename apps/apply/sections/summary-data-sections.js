@@ -88,7 +88,8 @@ module.exports = {
           'combinedUniversalCreditAmount',
           'combinedChildBenefitAmount',
           'combinedHousingBenefitAmount',
-          'combinedOtherIncomeAmount'
+          'combinedOtherIncomeAmount',
+          'combinedOtherIncomeExplain'
         ],
         combiner: sumValues
       }
@@ -103,7 +104,8 @@ module.exports = {
     { field: 'combinedUniversalCreditAmount', omitFromPdf: true },
     { field: 'combinedChildBenefitAmount', omitFromPdf: true },
     { field: 'combinedHousingBenefitAmount', omitFromPdf: true },
-    { field: 'combinedOtherIncomeAmount', omitFromPdf: true }
+    { field: 'combinedOtherIncomeAmount', omitFromPdf: true },
+    { field: 'combinedOtherIncomeExplain', omitFromPdf: true }
   ],
   'pdf-outgoings': [
     'outgoingTypes',

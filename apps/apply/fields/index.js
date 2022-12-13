@@ -258,7 +258,7 @@ module.exports = {
       {
         value: 'other',
         toggle: 'otherIncomeAmount',
-        child: 'partials/details-summary-input-text-textarea'
+        child: 'partials/details-summary-input-text-textarea-single'
       }
     ],
     legend: {
@@ -340,7 +340,7 @@ module.exports = {
       {
         value: 'other',
         toggle: 'combinedOtherIncomeAmount',
-        child: 'partials/details-summary-input-text-checkboxes'
+        child: 'partials/details-summary-input-text-textarea-combined'
       }
     ],
     legend: {
@@ -383,6 +383,14 @@ module.exports = {
   combinedOtherIncomeAmount: {
     validate: ['required', 'decimal', { type: 'min', arguments: 0.01 }],
     attributes: [{ prefix: '£' }],
+    dependent: {
+      field: 'combinedIncomeTypes',
+      value: 'other'
+    }
+  },
+  combinedOtherIncomeExplain: {
+    mixin: 'textarea',
+    validate: ['required', { type: 'maxlength', arguments: 200 }],
     dependent: {
       field: 'combinedIncomeTypes',
       value: 'other'

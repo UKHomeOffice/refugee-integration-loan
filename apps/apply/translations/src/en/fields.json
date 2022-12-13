@@ -286,6 +286,10 @@
   "combinedOtherIncomeAmount": {
     "label": "Total other income amount per month"
   },
+  "combinedOtherIncomeExplain": {
+    "label": "Other Income Explanation",
+    "hint": "Please specify below"
+  },
   "outgoingTypes": {
     "legend": "How much money do you spend each month?",
     "hint": "Select all options that currently apply to you.",
