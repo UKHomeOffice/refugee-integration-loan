@@ -315,13 +315,11 @@ describe('Apply Summary Data Sections', () => {
         'childBenefitAmount',
         'housingBenefitAmount',
         'otherIncomeAmount',
-        'otherIncomeExplain',
         'combinedSalaryAmount',
         'combinedUniversalCreditAmount',
         'combinedChildBenefitAmount',
         'combinedHousingBenefitAmount',
-        'combinedOtherIncomeAmount',
-        'combinedOtherIncomeExplain'
+        'combinedOtherIncomeAmount'
       ];
       const result = areOrderedEqual(derivationFields, expectedFields);
       expect(fieldObj.field).to.eql('totalIncome');

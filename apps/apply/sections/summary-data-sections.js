@@ -83,13 +83,11 @@ module.exports = {
           'childBenefitAmount',
           'housingBenefitAmount',
           'otherIncomeAmount',
-          'otherIncomeExplain',
           'combinedSalaryAmount',
           'combinedUniversalCreditAmount',
           'combinedChildBenefitAmount',
           'combinedHousingBenefitAmount',
-          'combinedOtherIncomeAmount',
-          'combinedOtherIncomeExplain'
+          'combinedOtherIncomeAmount'
         ],
         combiner: sumValues
       }
