@@ -73,6 +73,8 @@ module.exports = {
   'pdf-income': [
     'incomeTypes',
     'combinedIncomeTypes',
+    'otherIncomeExplain',
+    'combinedOtherIncomeExplain',
     {
       omitFromSummary: true,
       field: 'totalIncome',
