@@ -83,28 +83,28 @@ describe('Apply Summary Data Sections', () => {
       expect(result).to.be.true;
     });
 
-    // it('pdf-income', () => {
-    //   const sectionFields = mappedSections['pdf-income'];
-    //   const expectedFields = [
-    //     'incomeTypes',
-    //     'combinedIncomeTypes',
-    //     'totalIncome',
-    //     'salaryAmount',
-    //     'universalCreditAmount',
-    //     'childBenefitAmount',
-    //     'housingBenefitAmount',
-    //     'otherIncomeAmount',
-    //     'otherIncomeExplain',
-    //     'combinedSalaryAmount',
-    //     'combinedUniversalCreditAmount',
-    //     'combinedChildBenefitAmount',
-    //     'combinedHousingBenefitAmount',
-    //     'combinedOtherIncomeAmount',
-    //     'combinedOtherIncomeExplain'
-    //   ];
-    //   const result = areOrderedEqual(sectionFields, expectedFields);
-    //   expect(result).to.be.true;
-    // });
+    it('pdf-income', () => {
+      const sectionFields = mappedSections['pdf-income'];
+      const expectedFields = [
+        'incomeTypes',
+        'combinedIncomeTypes',
+        'totalIncome',
+        'salaryAmount',
+        'universalCreditAmount',
+        'childBenefitAmount',
+        'housingBenefitAmount',
+        'otherIncomeAmount',
+        'otherIncomeExplain',
+        'combinedSalaryAmount',
+        'combinedUniversalCreditAmount',
+        'combinedChildBenefitAmount',
+        'combinedHousingBenefitAmount',
+        'combinedOtherIncomeAmount',
+        'combinedOtherIncomeExplain'
+      ];
+      const result = areOrderedEqual(sectionFields, expectedFields);
+      expect(result).to.be.true;
+    });
 
     it('pdf-outgoings', () => {
       const sectionFields = mappedSections['pdf-outgoings'];
