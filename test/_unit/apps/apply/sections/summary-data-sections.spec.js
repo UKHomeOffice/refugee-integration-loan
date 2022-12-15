@@ -306,25 +306,25 @@ describe('Apply Summary Data Sections', () => {
   });
 
   describe('Section Derivations', () => {
-    // it('pdf-income totalIncome', () => {
-    //   const fieldObj = sections['pdf-income'][2];
-    //   const derivationFields = fieldObj.derivation.fromFields;
-    //   const expectedFields = [
-    //     'salaryAmount',
-    //     'universalCreditAmount',
-    //     'childBenefitAmount',
-    //     'housingBenefitAmount',
-    //     'otherIncomeAmount',
-    //     'combinedSalaryAmount',
-    //     'combinedUniversalCreditAmount',
-    //     'combinedChildBenefitAmount',
-    //     'combinedHousingBenefitAmount',
-    //     'combinedOtherIncomeAmount'
-    //   ];
-    //   const result = areOrderedEqual(derivationFields, expectedFields);
-    //   expect(fieldObj.field).to.eql('totalIncome');
-    //   expect(result).to.be.true;
-    // });
+    it('pdf-income totalIncome', () => {
+      const fieldObj = sections['pdf-income'][2];
+      const derivationFields = fieldObj.derivation.fromFields;
+      const expectedFields = [
+        'salaryAmount',
+        'universalCreditAmount',
+        'childBenefitAmount',
+        'housingBenefitAmount',
+        'otherIncomeAmount',
+        'combinedSalaryAmount',
+        'combinedUniversalCreditAmount',
+        'combinedChildBenefitAmount',
+        'combinedHousingBenefitAmount',
+        'combinedOtherIncomeAmount'
+      ];
+      const result = areOrderedEqual(derivationFields, expectedFields);
+      expect(fieldObj.field).to.eql('totalIncome');
+      expect(result).to.be.true;
+    });
 
     it('pdf-outgoings totalOutgoings', () => {
       const fieldObj = sections['pdf-outgoings'][1];
