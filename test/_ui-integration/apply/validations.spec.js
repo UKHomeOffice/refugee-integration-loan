@@ -888,7 +888,7 @@ describe('validation checks of the apply journey', () => {
         childBenefitAmount: '200',
         housingBenefitAmount: '300',
         otherIncomeAmount: '400',
-        otherIncomeExplain: 'orem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel orci ut odio luctus tristique nec accumsan mi. Nam finibus rutrum volutpat. Praesent viverra sit amet erat id aliquet. Sed ornare nonf felis.'
+        otherIncomeExplain: 'I bought a few items from eBay and sold them on for a profit. I bought these items around two years ago but only managed to sell them last week, but then I had to issue a refund for one of items because the customer was not happy with it.'
       });
 
       const res = await getUrl(URI);
