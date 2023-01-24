@@ -31,7 +31,7 @@ describe('#process', () => {
   });
 
   describe('initialisation', () => {
-    it('returns a thing', () => {
+    it('should be an instance', () => {
       expect(behaviour).to.be.an.instanceOf(Base);
     });
     it('should call super.process', () => {
