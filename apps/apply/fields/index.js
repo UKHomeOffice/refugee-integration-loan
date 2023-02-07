@@ -229,7 +229,7 @@ module.exports = {
   postcode: {
     className: ['govuk-input', 'govuk-input--width-10'],
     validate: ['required', 'postcode'],
-    formatter: ['uppercase'],
+    formatter: ['uppercase', 'removespaces'],
     autocomplete: 'postal-code'
   },
   incomeTypes: {
