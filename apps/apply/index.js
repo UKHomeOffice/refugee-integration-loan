@@ -290,7 +290,7 @@ module.exports = {
     },
     '/bank-details': {
       fields: ['accountName', 'bankName', 'sortCode', 'accountNumber', 'rollNumber'],
-      next: '/contact',
+      next: '/contact'
     },
     '/contact': {
       fields: ['contactTypes', 'email', 'phone'],
