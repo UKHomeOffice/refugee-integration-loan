@@ -15,6 +15,6 @@
     "./apps/common/views"
   ],
   "session": {
-    "name": "refugee-integration-loans.hof.sid"
+    "name": "refugee-integration-loan.hof.sid"
   }
 }

@@ -75,7 +75,7 @@ describe('Server.js app file', () => {
           appsAcceptStub
         ],
         views: [path.resolve(__dirname, '../../apps/common/views')],
-        session: { name: 'refugee-integration-loans.hof.sid' },
+        session: { name: 'refugee-integration-loan.hof.sid' },
         getTerms: false,
         getCookies: false
       });

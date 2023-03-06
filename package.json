@@ -57,7 +57,7 @@
   "resolutions": {
     "underscore": "^1.12.1"
   },
-  "name": "refugee-integration-loans",
+  "name": "refugee-integration-loan",
   "version": "1.0.0",
   "main": "index.js",
   "keywords": [],
