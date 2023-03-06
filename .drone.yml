@@ -12,7 +12,7 @@ environment:
   PRODUCTION_URL: www.apply-for-refugee-integration-loan.homeoffice.gov.uk
   IMAGE_URL: 340268328991.dkr.ecr.eu-west-2.amazonaws.com
   IMAGE_REPO: sas/refugee-integration-loans
-  GIT_REPO: refugee-integration-loan
+  GIT_REPO: UKHomeOffice/refugee-integration-loan
   HOF_CONFIG: hof-services-config/Refugee_Integration_Loan
   NON_PROD_AVAILABILITY: Mon-Fri 00:01-23:59 Europe/London
   READY_FOR_TEST_DELAY: 20s
