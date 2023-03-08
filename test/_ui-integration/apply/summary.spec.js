@@ -1,4 +1,3 @@
-
 describe('the journey of a single apply application', () => {
   let testApp;
   let getUrl;
@@ -29,7 +28,7 @@ describe('the journey of a single apply application', () => {
       const res = await getUrl(URI);
       const docu = await parseHtml(res);
 
-      const header = docu.find('header h1');
+      const header = docu.find('.govuk-heading-l');
 
       header.html().should.match(/Check your answers before sending your application/);
     });

@@ -2,9 +2,9 @@
     {{$header}}{{#t}}errors.submissionFailed.title{{/t}}{{/header}}
     {{$content}}
         <p class="govuk-body">{{#t}}errors.submissionFailed.text1{{/t}}
-          <a href="mailto:{{#t}}errors.submissionFailed.helpEmail{{/t}}">{{#t}}errors.submissionFailed.helpEmail{{/t}}</a>.
+          <a href="mailto:{{#t}}errors.submissionFailed.helpEmail{{/t}}" class="govuk-link">{{#t}}errors.submissionFailed.helpEmail{{/t}}</a>.
         </p>
-        <a href="" class="button" role="button">{{#t}}buttons.try-again{{/t}}</a>
+        <a href="" class="govuk-button" role="button">{{#t}}buttons.try-again{{/t}}</a>
         {{#showStack}}
         <pre>
             {{error.stack}}

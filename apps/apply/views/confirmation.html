@@ -3,7 +3,7 @@
 {{<partials-page}}
   {{$page-content}}
     <!-- alert-complete is the HOF supported class currently, should be using the govuk-styles -->
-    <div class="govuk-panel alert-complete govuk-panel--confirmation">
+    <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel__title">
             {{#t}}pages.confirmation.confirmed{{/t}}
         </h1>
@@ -13,18 +13,18 @@
     <p class="govuk-body">{{#t}}pages.confirmation.text2{{/t}}</p>
     <p class="govuk-body">{{#t}}pages.confirmation.text3{{/t}}</p>
     <h2 class="govuk-heading-m">{{#t}}pages.confirmation.header3{{/t}}</h2>
-    <p class="govuk-body">{{#t}}pages.confirmation.text4{{/t}} <a href="mailto:{{#t}}pages.confirmation.email{{/t}}">{{#t}}pages.confirmation.email{{/t}}</a></p>
-    <p class="govuk-body"><a href="{{feedbackUrl}}">{{#t}}pages.confirmation.feedbackLink{{/t}}</a> {{#t}}pages.confirmation.feedbackTime{{/t}}</p>
+    <p class="govuk-body">{{#t}}pages.confirmation.text4{{/t}} <a href="mailto:{{#t}}pages.confirmation.email{{/t}}" class="govuk-link">{{#t}}pages.confirmation.email{{/t}}</a></p>
+    <p class="govuk-body"><a href="{{feedbackUrl}}" class="govuk-link">{{#t}}pages.confirmation.feedbackLink{{/t}}</a> {{#t}}pages.confirmation.feedbackTime{{/t}}</p>
     <h2 class="govuk-heading-m">{{#t}}pages.confirmation.helpUsImprove{{/t}}</h2>
     <p class="govuk-body">{{#t}}pages.confirmation.helpUsImproveParagraph{{/t}}</p>
     <p class="govuk-body">{{#t}}pages.confirmation.helpUsImproveParagraph2{{/t}}</p>
     <p class="govuk-body">{{#t}}pages.confirmation.helpUsImproveParagraph3{{/t}}</p>
     <p class="govuk-body">{{#t}}pages.confirmation.helpUsImproveParagraphVoucher{{/t}}</p>
 
-    <p class="govuk-body"><a href="/improve-our-services">{{#t}}pages.confirmation.findOutMore{{/t}}</a></p>
+    <p class="govuk-body"><a href="/improve-our-services" class="govuk-link">{{#t}}pages.confirmation.findOutMore{{/t}}</a></p>
 
 
-    <a href="{{#t}}pages.improve-our-services.surveyLink{{/t}}" class="button" role="button">{{#t}}buttons.signUp{{/t}}</a>
+    <a href="{{#t}}pages.improve-our-services.surveyLink{{/t}}" class="govuk-button" role="button">{{#t}}buttons.signUp{{/t}}</a>
 
   {{/page-content}}
 {{/partials-page}}

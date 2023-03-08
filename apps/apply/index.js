@@ -23,8 +23,7 @@ module.exports = {
           value: 'no'
         }
       }],
-      returnToSummary: false,
-      continueOnEdit: true
+      returnToSummary: false
     },
     '/previous': {
       fields: ['previouslyHadIntegrationLoan'],
@@ -37,8 +36,7 @@ module.exports = {
           value: 'no'
         }
       }],
-      returnToSummary: false,
-      continueOnEdit: true
+      returnToSummary: false
     },
     '/who-received-previous-loan': {
       fields: ['whoReceivedPreviousLoan'],
@@ -51,8 +49,7 @@ module.exports = {
           value: 'someoneElse'
         }
       }],
-      returnToSummary: false,
-      continueOnEdit: true
+      returnToSummary: false
     },
     '/partner': {
       fields: ['partner'],
@@ -65,27 +62,23 @@ module.exports = {
           value: 'no'
         }
       }],
-      returnToSummary: true,
-      continueOnEdit: true
+      returnToSummary: true
     },
     '/joint': {
       returnToSummary: true,
       fields: ['joint'],
       behaviours: [setRadioButtonErrorLink],
-      next: '/brp',
-      continueOnEdit: true
+      next: '/brp'
     },
     '/brp': {
       fields: ['brpNumber', 'fullName', 'dateOfBirth'],
       behaviours: [setDateErrorLink],
       next: '/ni-number',
-      template: 'brp',
-      continueOnEdit: true
+      template: 'brp'
     },
     '/ni-number': {
       fields: ['niNumber'],
-      next: '/has-other-names',
-      continueOnEdit: true
+      next: '/has-other-names'
     },
     '/has-other-names': {
       fields: ['hasOtherNames'],
@@ -97,13 +90,11 @@ module.exports = {
           field: 'hasOtherNames',
           value: 'yes'
         }
-      }],
-      continueOnEdit: true
+      }]
     },
     '/add-other-name': {
       backLink: 'has-other-names',
       fields: ['otherName'],
-      continueOnEdit: true,
       next: '/other-names'
     },
     '/other-names': {
@@ -115,8 +106,7 @@ module.exports = {
       addStep: 'add-other-name',
       addAnotherLinkText: 'name',
       template: 'add-another',
-      next: '/home-office-reference',
-      continueOnEdit: true
+      next: '/home-office-reference'
     },
     '/home-office-reference': {
       fields: ['homeOfficeReference'],
@@ -127,27 +117,23 @@ module.exports = {
           field: 'joint',
           value: 'yes'
         }
-      }],
-      continueOnEdit: true
+      }]
     },
     '/convictions': {
       fields: ['convicted', 'detailsOfCrime'],
       behaviours: [setRadioButtonErrorLink],
-      next: '/has-dependants',
-      continueOnEdit: true
+      next: '/has-dependants'
     },
     '/partner-brp': {
       fields: ['partnerBrpNumber', 'partnerFullName', 'partnerDateOfBirth'],
       behaviours: [setDateErrorLink],
       next: '/partner-ni-number',
-      template: 'brp',
-      continueOnEdit: true
+      template: 'brp'
     },
     '/partner-ni-number': {
       fields: ['partnerNiNumber'],
       next: '/partner-has-other-names',
-      template: 'ni-number',
-      continueOnEdit: true
+      template: 'ni-number'
     },
     '/partner-has-other-names': {
       fields: ['partnerHasOtherNames'],
@@ -159,13 +145,11 @@ module.exports = {
           field: 'partnerHasOtherNames',
           value: 'yes'
         }
-      }],
-      continueOnEdit: true
+      }]
     },
     '/partner-add-other-name': {
       backLink: 'partner-has-other-names',
       fields: ['partnerOtherName'],
-      continueOnEdit: true,
       next: '/partner-other-names'
     },
     '/partner-other-names': {
@@ -177,14 +161,12 @@ module.exports = {
       titleField: 'partnerOtherName',
       addAnotherLinkText: 'name',
       template: 'add-another',
-      next: '/convictions-joint',
-      continueOnEdit: true
+      next: '/convictions-joint'
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
       behaviours: [setRadioButtonErrorLink],
-      next: '/has-dependants',
-      continueOnEdit: true
+      next: '/has-dependants'
     },
     '/has-dependants': {
       fields: ['hasDependants'],
@@ -196,8 +178,7 @@ module.exports = {
           field: 'hasDependants',
           value: 'yes'
         }
-      }],
-      continueOnEdit: true
+      }]
     },
     '/add-dependant': {
       backLink: 'has-dependants',
@@ -207,7 +188,6 @@ module.exports = {
         'dependantRelationship'
       ],
       behaviours: [setDateErrorLink],
-      continueOnEdit: true,
       next: '/dependant-details'
     },
     '/dependant-details': {
@@ -223,8 +203,7 @@ module.exports = {
       addStep: 'add-dependant',
       addAnotherLinkText: 'dependant',
       template: 'add-another',
-      next: '/address',
-      continueOnEdit: true
+      next: '/address'
     },
     '/address': {
       fields: ['building', 'street', 'townOrCity', 'postcode'],
@@ -235,8 +214,7 @@ module.exports = {
           field: 'joint',
           value: 'yes'
         }
-      }],
-      continueOnEdit: true
+      }]
     },
     '/income': {
       fields: [
@@ -247,8 +225,7 @@ module.exports = {
         'housingBenefitAmount',
         'otherIncomeAmount'
       ],
-      next: '/outgoings',
-      continueOnEdit: true
+      next: '/outgoings'
     },
     '/outgoings': {
       fields: [
@@ -262,19 +239,16 @@ module.exports = {
         'universalCreditDeductionsAmount',
         'otherOutgoingAmount'
       ],
-      next: '/savings',
-      continueOnEdit: true
+      next: '/savings'
     },
     '/savings': {
       fields: ['savings', 'savingsAmount'],
       behaviours: [setRadioButtonErrorLink],
-      next: '/amount',
-      continueOnEdit: true
+      next: '/amount'
     },
     '/amount': {
       fields: ['amount'],
-      next: '/purpose',
-      continueOnEdit: true
+      next: '/purpose'
     },
     '/combined-income': {
       fields: [
@@ -285,8 +259,7 @@ module.exports = {
         'combinedHousingBenefitAmount',
         'combinedOtherIncomeAmount'
       ],
-      next: '/combined-outgoings',
-      continueOnEdit: true
+      next: '/combined-outgoings'
     },
     '/combined-outgoings': {
       fields: [
@@ -300,29 +273,24 @@ module.exports = {
         'combinedUniversalCreditDeductionsAmount',
         'combinedOtherOutgoingAmount'
       ],
-      next: '/combined-savings',
-      continueOnEdit: true
+      next: '/combined-savings'
     },
     '/combined-savings': {
       fields: ['combinedSavings', 'combinedSavingsAmount'],
       behaviours: [setRadioButtonErrorLink],
-      next: '/combined-amount',
-      continueOnEdit: true
+      next: '/combined-amount'
     },
     '/combined-amount': {
       fields: ['jointAmount'],
-      next: '/purpose',
-      continueOnEdit: true
+      next: '/purpose'
     },
     '/purpose': {
       fields: ['purposeTypes'],
-      next: '/bank-details',
-      continueOnEdit: true
+      next: '/bank-details'
     },
     '/bank-details': {
       fields: ['accountName', 'bankName', 'sortCode', 'accountNumber', 'rollNumber'],
-      next: '/contact',
-      continueOnEdit: true
+      next: '/contact'
     },
     '/contact': {
       fields: ['contactTypes', 'email', 'phone'],
@@ -331,15 +299,13 @@ module.exports = {
         target: '/outcome',
         condition: req =>
           req.form.values.contactTypes && !(req.form.values.contactTypes.includes('email'))
-      }],
-      continueOnEdit: true
+      }]
     },
     '/outcome': {
       fields: ['likelyToMove', 'outcomeBuilding', 'outcomeStreet', 'outcomeTownOrCity', 'outcomePostcode'],
       behaviours: [setRadioButtonErrorLink],
       template: 'outcome',
-      next: '/help',
-      continueOnEdit: true
+      next: '/help'
     },
     '/help': {
       fields: ['hadHelp'],
@@ -351,18 +317,15 @@ module.exports = {
           field: 'hadHelp',
           value: 'yes'
         }
-      }],
-      continueOnEdit: true
+      }]
     },
     '/help-reasons': {
       fields: ['helpReasons'],
-      next: '/who-helped',
-      continueOnEdit: true
+      next: '/who-helped'
     },
     '/who-helped': {
       fields: ['helpFullName', 'helpRelationship', 'helpContactTypes', 'helpEmail', 'helpPhone'],
-      next: '/confirm',
-      continueOnEdit: true
+      next: '/confirm'
     },
     [confirmStep]: {
       behaviours: [Summary, UploadPDF],
