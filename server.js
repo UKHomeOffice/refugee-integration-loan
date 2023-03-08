@@ -61,5 +61,4 @@ if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
   });
 }
 
-
 module.exports = app;
