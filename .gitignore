@@ -11,3 +11,4 @@ test/_accessibility/tmp/*
 coverage
 .nyc_output
 anchore-reports/
+.env
