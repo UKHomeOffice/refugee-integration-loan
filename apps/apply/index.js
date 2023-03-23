@@ -23,7 +23,6 @@ module.exports = {
           value: 'no'
         }
       }],
-      returnToSummary: false
     },
     '/previous': {
       fields: ['previouslyHadIntegrationLoan'],
@@ -36,7 +35,6 @@ module.exports = {
           value: 'no'
         }
       }],
-      returnToSummary: false
     },
     '/who-received-previous-loan': {
       fields: ['whoReceivedPreviousLoan'],
@@ -49,7 +47,6 @@ module.exports = {
           value: 'someoneElse'
         }
       }],
-      returnToSummary: false
     },
     '/partner': {
       fields: ['partner'],
@@ -62,10 +59,8 @@ module.exports = {
           value: 'no'
         }
       }],
-      returnToSummary: true
     },
     '/joint': {
-      returnToSummary: true,
       fields: ['joint'],
       behaviours: [setRadioButtonErrorLink],
       next: '/brp'
@@ -90,12 +85,13 @@ module.exports = {
           field: 'hasOtherNames',
           value: 'yes'
         }
-      }]
+      }],
     },
     '/add-other-name': {
       backLink: 'has-other-names',
       fields: ['otherName'],
-      next: '/other-names'
+      next: '/other-names',
+      continueOnEdit: true
     },
     '/other-names': {
       backLink: 'has-other-names',
@@ -106,7 +102,8 @@ module.exports = {
       addStep: 'add-other-name',
       addAnotherLinkText: 'name',
       template: 'add-another',
-      next: '/home-office-reference'
+      next: '/home-office-reference',
+      continueOnEdit: true
     },
     '/home-office-reference': {
       fields: ['homeOfficeReference'],
@@ -150,7 +147,8 @@ module.exports = {
     '/partner-add-other-name': {
       backLink: 'partner-has-other-names',
       fields: ['partnerOtherName'],
-      next: '/partner-other-names'
+      next: '/partner-other-names',
+      continueOnEdit: true
     },
     '/partner-other-names': {
       behaviours: [Aggregate],
@@ -161,7 +159,8 @@ module.exports = {
       titleField: 'partnerOtherName',
       addAnotherLinkText: 'name',
       template: 'add-another',
-      next: '/convictions-joint'
+      next: '/convictions-joint',
+      continueOnEdit: true
     },
     '/convictions-joint': {
       fields: ['convictedJoint', 'detailsOfCrimeJoint'],
