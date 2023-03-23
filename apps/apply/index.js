@@ -22,7 +22,7 @@ module.exports = {
           field: 'previouslyApplied',
           value: 'no'
         }
-      }],
+      }]
     },
     '/previous': {
       fields: ['previouslyHadIntegrationLoan'],
@@ -34,7 +34,7 @@ module.exports = {
           field: 'previouslyHadIntegrationLoan',
           value: 'no'
         }
-      }],
+      }]
     },
     '/who-received-previous-loan': {
       fields: ['whoReceivedPreviousLoan'],
@@ -46,7 +46,7 @@ module.exports = {
           field: 'whoReceivedPreviousLoan',
           value: 'someoneElse'
         }
-      }],
+      }]
     },
     '/partner': {
       fields: ['partner'],
@@ -58,7 +58,7 @@ module.exports = {
           field: 'partner',
           value: 'no'
         }
-      }],
+      }]
     },
     '/joint': {
       fields: ['joint'],
@@ -85,7 +85,7 @@ module.exports = {
           field: 'hasOtherNames',
           value: 'yes'
         }
-      }],
+      }]
     },
     '/add-other-name': {
       backLink: 'has-other-names',
