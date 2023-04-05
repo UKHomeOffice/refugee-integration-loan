@@ -68,7 +68,7 @@ module.exports = class UploadPDFBase {
 
       await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
         personalisation: Object.assign({}, personalisations, {
-          'form id': notifyClient.prepareUpload(pdfData)
+          'form id': notifyClient.prepareUpload(pdfData, { confirmEmailBeforeDownload: false })
         })
       });
 
