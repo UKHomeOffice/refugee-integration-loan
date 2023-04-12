@@ -28,7 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "20.2.3",
+    "hof": "20.2.8",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "notifications-node-client": "6.0.0"
