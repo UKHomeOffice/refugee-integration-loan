@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  image: ghcr.io/puppeteer/puppeteer:latest
   environment:
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
