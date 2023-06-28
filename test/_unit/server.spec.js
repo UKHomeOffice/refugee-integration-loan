@@ -77,7 +77,19 @@ describe('Server.js app file', () => {
         views: [path.resolve(__dirname, '../../apps/common/views')],
         session: { name: 'refugee-integration-loan.hof.sid' },
         getTerms: false,
-        getCookies: false
+        getCookies: false,
+        csp: {
+          imgSrc: [
+            'www.google-analytics.com',
+            'ssl.gstatic.com',
+            'www.google.co.uk/ads/ga-audiences'
+          ],
+          connectSrc: [
+            'https://www.google-analytics.com',
+            'https://region1.google-analytics.com',
+            'https://region1.analytics.google.com'
+          ]
+        }
       });
     });
 
