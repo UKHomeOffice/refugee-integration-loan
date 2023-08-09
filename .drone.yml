@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: ghcr.io/puppeteer/puppeteer:latest
+  image: ghcr.io/puppeteer/puppeteer:20.9.0
   environment:
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
@@ -518,5 +518,3 @@ services:
 volumes:
   - name: dockersock
     temp: {}
-
-...

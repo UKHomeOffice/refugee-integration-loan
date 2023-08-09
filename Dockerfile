@@ -1,6 +1,7 @@
-FROM node:lts-alpine@sha256:19eaf41f3b8c2ac2f609ac8103f9246a6a6d46716cdbe49103fdb116e55ff0cc
+FROM node:18.17.0-alpine3.18@sha256:246a76f6c920dfed6f047704f923dcee11cdafa451385999d1cc0a36a3cfeba2
 
 USER root
+
 
 # Update packages as a result of Anchore security vulnerability checks
 RUN apk update && \
