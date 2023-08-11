@@ -2,9 +2,10 @@ FROM node:18.17.0-alpine3.18@sha256:246a76f6c920dfed6f047704f923dcee11cdafa45138
 
 USER root
 
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 # Update packages as a result of Anchore security vulnerability checks
 RUN apk update && \
-    apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2
+    apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2 chromium
 
 # Setup nodejs group & nodejs user
 RUN addgroup --system nodejs --gid 998 && \
