@@ -24,7 +24,7 @@ trigger:
 
 linting: &linting
   pull: if-not-exists
-  image: node:16
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -32,7 +32,7 @@ linting: &linting
 
 unit_tests: &unit_tests
   pull: if-not-exists
-  image: node:16
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -46,7 +46,7 @@ sonar_scanner: &sonar_scanner
 
 ui_integration_tests: &ui_integration_tests
   pull: if-not-exists
-  image: node:16
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: node:16
+  image: ghcr.io/puppeteer/puppeteer:19.2.2
   environment:
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
@@ -87,7 +87,7 @@ steps:
 
   - name: setup_deploy
     pull: if-not-exists
-    image: node:16
+    image: node:18
     environment:
       NOTIFY_STUB: true
     commands:
@@ -184,7 +184,7 @@ steps:
 
   - name: setup_branch
     pull: if-not-exists
-    image: node:16
+    image: node:18
     environment:
       NOTIFY_STUB: true
     commands:
@@ -255,7 +255,7 @@ steps:
   # Snyk & Anchore security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
     pull: if-not-exists
-    image: node:16
+    image: node:18
     environment:
       NOTIFY_STUB: true
       SNYK_TOKEN:
@@ -437,7 +437,7 @@ steps:
 
   - name: cron_snyk_scan
     pull: if-not-exists
-    image: node:16
+    image: node:18
     environment:
       NOTIFY_STUB: true
       SNYK_TOKEN:
