@@ -114,3 +114,11 @@ Here is an example for updating a dev_dependency bringing in the latest patch fi
 ```
 yarn upgrade mocha@"<8.3.0"
 ```
+
+## UPDATE
+
+After upgrading to Node version 18, the docker image for running accessibility tests in the drone pipeline is no longer compatible (buildkite/puppeteer:8.0.0.
+
+A new docker image (ghcr.io/puppeteer/puppeteer:latest) should be the right one to replace it, but it seems that drone keeps complaining about it (this issue is referenced in JIRA ticket RIL-377)
+
+Need to find a docker image that supports Node 18 and passes in Drone pipeline. For now, the accessibility run step has been commented out until a fix is found
