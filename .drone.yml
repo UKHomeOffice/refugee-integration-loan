@@ -52,23 +52,23 @@ ui_integration_tests: &ui_integration_tests
   commands:
     - yarn run test:ui-integration
 
-#accessibility_tests: &accessibility_tests
-#  pull: if-not-exists
-#  image: ghcr.io/puppeteer/puppeteer:20.9.0
-#  environment:
-#    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-#    NOTIFY_STUB: true
-#    ENVIRONMENT: DRONE
-#    DRONE_DEBUG: true
-#    DRONE_TRACE: true
-#    DRONE_LOGS_TEXT: true
-#    DRONE_LOGS_PRETTY: true
-#    DRONE_LOGS_COLOR: true
-#  volumes:
-#    - name: dockersock
-#      path: /root/.dockersock
-#  commands:
-#    - yarn run test:accessibility
+accessibility_tests: &accessibility_tests
+  pull: if-not-exists
+  image: ghcr.io/puppeteer/puppeteer:20.9.0
+  environment:
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    NOTIFY_STUB: true
+    ENVIRONMENT: DRONE
+    DRONE_DEBUG: true
+    DRONE_TRACE: true
+    DRONE_LOGS_TEXT: true
+    DRONE_LOGS_PRETTY: true
+    DRONE_LOGS_COLOR: true
+  volumes:
+    - name: dockersock
+      path: /root/.dockersock
+  commands:
+    - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
