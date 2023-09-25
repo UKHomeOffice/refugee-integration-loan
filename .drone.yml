@@ -137,13 +137,13 @@ steps:
           - master
       event: push
 
-#  - name: accessibility_tests_deploy
-#    <<: *accessibility_tests
-#    when:
-#      branch:
-#        include:
-#          - master
-#      event: push
+  - name: accessibility_tests_deploy
+    <<: *accessibility_tests
+    when:
+      branch:
+        include:
+          - master
+      event: push
 
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -239,14 +239,14 @@ steps:
           - feature/*
       event: pull_request
 
-#  - name: accessibility_tests_branch
-#    <<: *accessibility_tests
-#    when:
-#      branch:
-#        include:
-#          - master
-#          - feature/*
-#      event: pull_request
+  - name: accessibility_tests_branch
+    <<: *accessibility_tests
+    when:
+      branch:
+        include:
+          - master
+          - feature/*
+      event: pull_request
 
   - name: acceptance_tests_branch
     <<: *acceptance_tests
