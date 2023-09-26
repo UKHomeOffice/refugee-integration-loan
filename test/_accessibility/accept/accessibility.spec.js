@@ -65,20 +65,11 @@ describe('the journey of an accessible accept application', async () => {
         return success;
       });
 
-      const options = {
-        log: {
-          debug: console.log,
-          error: console.error,
-          info: console.log
-        },
-        standard:'WCAG2AAA',
-        includeWarnings: true,
+      return pa11y(testHtmlFile, {
         chromeLaunchConfig: {
           args: ['--no-sandbox']
         }
-      }
-
-      return pa11y(testHtmlFile, options).then(async r => {
+      }).then(async r => {
         const result = r;
 
         result.step = `/${SUBAPP}${uri}`;

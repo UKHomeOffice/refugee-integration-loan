@@ -2,12 +2,8 @@ FROM node:lts-alpine@sha256:19eaf41f3b8c2ac2f609ac8103f9246a6a6d46716cdbe49103fd
 
 USER root
 
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
-
 # Update packages as a result of Anchore security vulnerability checks
 RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache && \
     apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2
 
 # Setup nodejs group & nodejs user
