@@ -1,4 +1,4 @@
-FROM node:18.17.1-bullseye-slim@sha256:08d187358b802c329c9a83ca999426891bf925f7dbd5d76fb3de8da76d308a54
+FROM node:lts-alpine@sha256:19eaf41f3b8c2ac2f609ac8103f9246a6a6d46716cdbe49103fdb116e55ff0cc
 
 USER root
 
