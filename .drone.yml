@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: ghcr.io/puppeteer/puppeteer:21.3.5
+  image: ghcr.io/puppeteer/puppeteer:16.1.0
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     NOTIFY_STUB: true
@@ -65,7 +65,7 @@ accessibility_tests: &accessibility_tests
     DRONE_LOGS_PRETTY: true
     DRONE_LOGS_COLOR: true
   commands:
-      - apt-get update
+      #- apt-get update
       #- chown -R 999:998 /drone/src/node_modules/*
       #- rm -rf /drone/src/node_modules/*
       #- yarn install --frozen-lockfile
