@@ -67,10 +67,7 @@ accessibility_tests: &accessibility_tests
   volumes:
     - name: dockersock
       path: /root/.dockersock
-  commands:
-    - yarn install --frozen-lockfile
-    - yarn run postinstall
-    - yarn run test:accessibility
+
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
@@ -141,6 +138,10 @@ steps:
 
   - name: accessibility_tests_deploy
     <<: *accessibility_tests
+    commands:
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
+      - yarn run test:accessibility
     when:
       branch:
         include:
