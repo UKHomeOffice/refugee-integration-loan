@@ -138,10 +138,6 @@ steps:
 
   - name: accessibility_tests_deploy
     <<: *accessibility_tests
-    commands:
-      - yarn install --frozen-lockfile
-      - yarn run postinstall
-      - yarn run test:accessibility
     when:
       branch:
         include:
@@ -244,6 +240,10 @@ steps:
 
   - name: accessibility_tests_branch
     <<: *accessibility_tests
+    commands:
+      - yarn install --frozen-lockfile
+      - yarn run postinstall
+      - yarn run test:accessibility
     when:
       branch:
         include:
