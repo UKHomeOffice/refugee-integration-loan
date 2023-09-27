@@ -13,7 +13,7 @@ describe('the journey of an accessible accept application', async () => {
   // let testApp;
   // let initSession;
   // let getUrl;
-   let uris = [];
+  let uris = [];
   const accessibilityResults = [];
 
   const SUBAPP = 'accept';
