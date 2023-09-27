@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: ghcr.io/puppeteer/puppeteer:16.1.0
+  image: ghcr.io/puppeteer/puppeteer:18.2.1
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     NOTIFY_STUB: true
@@ -71,10 +71,7 @@ accessibility_tests: &accessibility_tests
       #- yarn install --frozen-lockfile
       #- yarn run postinstall
       - yarn run test:accessibility  
-  volumes:
-    - name: dockersock
-      path: /root/.dockersock
-
+  
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
