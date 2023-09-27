@@ -64,6 +64,9 @@ accessibility_tests: &accessibility_tests
     DRONE_LOGS_TEXT: true
     DRONE_LOGS_PRETTY: true
     DRONE_LOGS_COLOR: true
+  volumes:
+    - name: dockersock
+      path: /root/.dockersock
   commands:
       #- apt-get update
       #- chown -R 999:998 /drone/src/node_modules/*
