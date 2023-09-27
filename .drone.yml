@@ -64,6 +64,13 @@ accessibility_tests: &accessibility_tests
     DRONE_LOGS_TEXT: true
     DRONE_LOGS_PRETTY: true
     DRONE_LOGS_COLOR: true
+  commands:
+      - apt-get update
+      #- chown -R 999:998 /drone/src/node_modules/*
+      #- rm -rf /drone/src/node_modules/*
+      #- yarn install --frozen-lockfile
+      #- yarn run postinstall
+      - yarn run test:accessibility  
   volumes:
     - name: dockersock
       path: /root/.dockersock
@@ -240,12 +247,6 @@ steps:
 
   - name: accessibility_tests_branch
     <<: *accessibility_tests
-    commands:
-      - chown -R 999:998 /drone/src/node_modules/*
-      - rm -rf /drone/src/node_modules/*
-      - yarn install --frozen-lockfile
-      - yarn run postinstall
-      - yarn run test:accessibility
     when:
       branch:
         include:
