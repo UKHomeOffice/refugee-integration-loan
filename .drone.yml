@@ -68,7 +68,8 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
-    - yarn install
+    - yarn install --frozen-lockfile
+    - yarn run postinstall
     - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
