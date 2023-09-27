@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: femtopixel/google-lighthouse-puppeteer:latest
+  image: ghcr.io/puppeteer/puppeteer:21.3.5
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     NOTIFY_STUB: true
@@ -64,9 +64,6 @@ accessibility_tests: &accessibility_tests
     DRONE_LOGS_TEXT: true
     DRONE_LOGS_PRETTY: true
     DRONE_LOGS_COLOR: true
-  volumes:
-    - name: dockersock
-      path: /root/.dockersock
   commands:
     - yarn run test:accessibility
 
