@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: mcr.microsoft.com/playwright:v1.12.3-focal
+  image: ghcr.io/puppeteer/puppeteer:21.3.5
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     NOTIFY_STUB: true
@@ -68,6 +68,7 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
+    - yarn install
     - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
