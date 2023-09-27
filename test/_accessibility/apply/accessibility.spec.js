@@ -1,5 +1,7 @@
 /* eslint no-console: 0 */
 const pa11y = require('pa11y');
+const puppeteer = require('puppeteer');
+const {readFile} = require('fs/promises');
 const settings = require('../../../hof.settings.json');
 const path = require('path');
 const fs = require('fs');
@@ -38,6 +40,10 @@ describe('the journey of an accessible apply application', async () => {
     initSession = testApp.initSession;
     getUrl = testApp.getUrl;
   });
+
+  async function content(path) {  
+    return await readFile(path, 'utf8')
+  }
 
   it('check apply accessibility issues', async () => {
     await initSession(URI);
@@ -78,26 +84,26 @@ describe('the journey of an accessible apply application', async () => {
         return success;
       });
 
-      return pa11y(testHtmlFile, {
-        chromeLaunchConfig: {
-          args: ['--no-sandbox']
-        }
-      }).then(async r => {
-        let result = r;
+      const testHtmlFileText = await content(testHtmlFile) 
+      const htmlCode = testHtmlFileText
+      const browser = await puppeteer.launch({args: ['--no-sandbox'],headless: "new"})
+      const page = await browser.newPage()
+    
+      await page.setContent(htmlCode, {
+        waitUntil: 'domcontentloaded',
+      })
+    
+      const url = page.url()
+      let a11y = await pa11y(url, {
+        ignoreUrl: true,
+        browser,
+        page,
+      })
+      a11y.step = `/${SUBAPP}${uri}`;
 
-        result.step = `/${SUBAPP}${uri}`;
-
-        result = codeExemptions(result);
-
-        console.log(result);
-
-        accessibilityResults.push(result);
-
-        await fs.unlink(testHtmlFile, (err, success) => {
-          if (err) return console.log(err);
-          return success;
-        });
-      });
+      a11y = codeExemptions(a11y);
+      accessibilityResults.push(a11y);
+      await browser.close()
     }, Promise.resolve());
 
     accessibilityResults.forEach(result => {

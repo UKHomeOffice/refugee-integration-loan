@@ -1,5 +1,7 @@
 /* eslint no-console: 0 */
 const pa11y = require('pa11y');
+const puppeteer = require('puppeteer');
+const {readFile} = require('fs/promises');
 const settings = require('../../../hof.settings.json');
 const path = require('path');
 const fs = require('fs');
@@ -29,6 +31,10 @@ describe('the journey of an accessible accept application', async () => {
     initSession = testApp.initSession;
     getUrl = testApp.getUrl;
   });
+
+  async function content(path) {  
+    return await readFile(path, 'utf8')
+  }
 
   it('check accept accessibility issues', async () => {
     await initSession(URI);
@@ -65,23 +71,25 @@ describe('the journey of an accessible accept application', async () => {
         return success;
       });
 
-      return pa11y(testHtmlFile, {
-        chromeLaunchConfig: {
-          args: ['--no-sandbox']
-        }
-      }).then(async r => {
-        const result = r;
-
-        result.step = `/${SUBAPP}${uri}`;
-        console.log(result);
-
-        accessibilityResults.push(result);
-
-        await fs.unlink(testHtmlFile, (err, success) => {
-          if (err) return console.log(err);
-          return success;
-        });
-      });
+      const testHtmlFileText = await content(testHtmlFile) 
+      const htmlCode = testHtmlFileText
+      const browser = await puppeteer.launch({args: ['--no-sandbox'],headless: "new"})
+      const page = await browser.newPage()
+    
+      await page.setContent(htmlCode, {
+        waitUntil: 'domcontentloaded',
+      })
+    
+      const url = page.url()
+      const a11y = await pa11y(url, {
+        ignoreUrl: true,
+        browser,
+        page,
+      })
+    
+      accessibilityResults.push(a11y);
+    
+      await browser.close()
     }, Promise.resolve());
 
     accessibilityResults.forEach(result => {
