@@ -241,6 +241,7 @@ steps:
   - name: accessibility_tests_branch
     <<: *accessibility_tests
     commands:
+      - chown -R 999:998 /drone/src/node_modules/*
       - rm -rf /drone/src/node_modules/*
       - yarn install --frozen-lockfile
       - yarn run postinstall
