@@ -32,8 +32,8 @@ describe('the journey of an accessible accept application', async () => {
     getUrl = testApp.getUrl;
   });
 
-  async function content(path) {  
-    return await readFile(path, 'utf8')
+  async function content(pathValue) {
+    return await readFile(pathValue, 'utf8');
   }
 
   it('check accept accessibility issues', async () => {
@@ -71,25 +71,25 @@ describe('the journey of an accessible accept application', async () => {
         return success;
       });
 
-      const testHtmlFileText = await content(testHtmlFile) 
-      const htmlCode = testHtmlFileText
-      const browser = await puppeteer.launch({args: ['--no-sandbox'],headless: "new"})
-      const page = await browser.newPage()
-    
+      const testHtmlFileText = await content(testHtmlFile);
+      const htmlCode = testHtmlFileText;
+      const browser = await puppeteer.launch({args: ['--no-sandbox'], headless: 'new'});
+      const page = await browser.newPage();
+
       await page.setContent(htmlCode, {
-        waitUntil: 'domcontentloaded',
-      })
-    
-      const url = page.url()
-      let a11y = await pa11y(url, {
+        waitUntil: 'domcontentloaded'
+      });
+
+      const url = page.url();
+      const a11y = await pa11y(url, {
         ignoreUrl: true,
         browser,
-        page,
-      })
+        page
+      });
       a11y.step = `/${SUBAPP}${uri}`;
       accessibilityResults.push(a11y);
-    
-      await browser.close()
+      await browser.close();
+      return a11y;
     }, Promise.resolve());
 
     accessibilityResults.forEach(result => {
