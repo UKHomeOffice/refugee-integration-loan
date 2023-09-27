@@ -79,14 +79,15 @@ describe('the journey of an accessible apply application', async () => {
 
       const res = await getUrl(uri);
 
-      await fs.writeFile(testHtmlFile, res.text, (err, success) => {
+      fs.writeFile(testHtmlFile, res.text, (err, success) => {
         if (err) return console.log(err);
         return success;
       });
 
       const testHtmlFileText = await content(testHtmlFile);
       const htmlCode = testHtmlFileText;
-      const browser = await puppeteer.launch({args: ['--no-sandbox'], headless: false});
+      const browser = await puppeteer.launch({
+        headless: 'new'});
       const page = await browser.newPage();
 
       await page.setContent(htmlCode, {
@@ -100,8 +101,8 @@ describe('the journey of an accessible apply application', async () => {
         page
       });
       a11y.step = `/${SUBAPP}${uri}`;
-
       a11y = codeExemptions(a11y);
+      console.log(a11y);
       accessibilityResults.push(a11y);
       await browser.close();
       return a11y;
