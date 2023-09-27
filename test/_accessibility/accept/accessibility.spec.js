@@ -81,12 +81,12 @@ describe('the journey of an accessible accept application', async () => {
       })
     
       const url = page.url()
-      const a11y = await pa11y(url, {
+      let a11y = await pa11y(url, {
         ignoreUrl: true,
         browser,
         page,
       })
-    
+      a11y.step = `/${SUBAPP}${uri}`;
       accessibilityResults.push(a11y);
     
       await browser.close()
