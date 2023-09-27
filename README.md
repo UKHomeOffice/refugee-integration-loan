@@ -4,7 +4,7 @@
 
 ### NPM Local Development Setup
 ```
-nvm install 18.12.1.
+nvm install 18.12.1
 nvm use 18.12.1
 yarn
 brew install redis
