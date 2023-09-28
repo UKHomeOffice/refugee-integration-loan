@@ -55,7 +55,7 @@ ui_integration_tests: &ui_integration_tests
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
   image: node:18
-  options: --user pptruser
+  options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     NOTIFY_STUB: true
@@ -74,20 +74,17 @@ accessibility_tests: &accessibility_tests
       path: /root/.dockersock  
   commands:
     - apt-get update
-    - apt-get install -y wget gnupg
-    - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' 
+    - apt-get install curl gnupg -y 
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' 
     - apt-get update 
-    - apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 --no-install-recommends \
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium 
+    - apt-get install google-chrome-stable -y --no-install-recommends 
     - rm -rf /var/lib/apt/lists/*
     - yarn install
     - yarn add puppeteer
     - yarn add pa11y
-    - groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-    - mkdir -p /home/pptruser/Downloads 
-    - chown -R pptruser:pptruser /home/pptruser 
-    - chown -R pptruser:pptruser /node_modules 
-    - chown -R pptruser:pptruser /package.json 
-    - chown -R pptruser:pptruser /package-lock.json
+    - which google-chrome-stable
     - yarn run test:accessibility  
       
 
