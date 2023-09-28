@@ -74,8 +74,8 @@ describe('the journey of an accessible accept application', async () => {
       console.log('testHtmlFile: ', testHtmlFile);
       const testHtmlFileText = await content(testHtmlFile);
       const htmlCode = testHtmlFileText;
-      const browser = await puppeteer.launch({headless: 'new',
-       args: ['--no-sandbox', '--disable-setuid-sandbox'],}
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']}
       );
       const page = await browser.newPage();
 
