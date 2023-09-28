@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: ghcr.io/puppeteer/puppeteer:20.1.0
+  image: ghcr.io/puppeteer/puppeteer:21.3.5
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
