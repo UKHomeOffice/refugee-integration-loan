@@ -12,7 +12,7 @@ const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
 describe('the journey of an accessible apply application', async () => {
   let testApp;
   let initSession;
-  // let getUrl;
+  let getUrl;
   let uris = [];
   const accessibilityResults = [];
 
@@ -57,6 +57,7 @@ describe('the journey of an accessible apply application', async () => {
       '/complete'
     ];
 
+    console.log('uris: ', uris);
     await uris.reduce(async (previous, uri) => {
       await previous;
 
@@ -77,13 +78,13 @@ describe('the journey of an accessible apply application', async () => {
         `/root/.dockersock${uri}.html` :
         `${process.cwd()}/test/_accessibility/tmp${uri}.html`;
 
-      // const res = await getUrl(uri);
+      const res = await getUrl(uri);
 
-      // fs.writeFile(testHtmlFile, res.text, (err, success) => {
-      //  if (err) return console.log(err);
-      //   return success;
-      // });
-
+      fs.writeFile(testHtmlFile, res.text, (err, success) => {
+        if (err) return console.log(err);
+        return success;
+      });
+      console.log('testHtmlFile: ', testHtmlFile);
       const testHtmlFileText = await content(testHtmlFile);
       const htmlCode = testHtmlFileText;
       const browser = await puppeteer.launch({
@@ -105,6 +106,10 @@ describe('the journey of an accessible apply application', async () => {
       console.log(a11y);
       accessibilityResults.push(a11y);
       await browser.close();
+      await fs.unlink(testHtmlFile, (err, success) => {
+        if (err) return console.log(err);
+        return success;
+      });
       return a11y;
     }, Promise.resolve());
 
