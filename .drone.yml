@@ -71,14 +71,14 @@ accessibility_tests: &accessibility_tests
       from_secret: drone_token
   volumes:
     - name: dockersock
-      path: /root/.dockersock
+      path: /drone/src
   commands:
       #- apt-get update
       #- chown -R 999:998 /drone/src/node_modules/*
       #- rm -rf /drone/src/node_modules/*
       #- yarn install --frozen-lockfile
       #- yarn run postinstall
-      #- yarn run test:accessibility  
+      - yarn run test:accessibility  
       - echo `pwd` 
   
 
