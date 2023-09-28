@@ -10,14 +10,14 @@ const testDir = `${process.cwd()}/test/_accessibility/tmp`;
 const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
 
 describe('the journey of an accessible apply application', async () => {
-  // let testApp;
-  // let initSession;
+  let testApp;
+  let initSession;
   // let getUrl;
   let uris = [];
   const accessibilityResults = [];
 
   const SUBAPP = 'apply';
-  // const URI = '/confirm';
+  const URI = '/confirm';
 
   const codeExemptions = result => {
     const updatedResult = result;
@@ -36,9 +36,9 @@ describe('the journey of an accessible apply application', async () => {
       }
     });
 
-    // testApp = getSupertestApp(SUBAPP);
-    // initSession = testApp.initSession;
-    // getUrl = testApp.getUrl;
+    testApp = getSupertestApp(SUBAPP);
+    initSession = testApp.initSession;
+    getUrl = testApp.getUrl;
   });
 
   async function content(pathValue) {
@@ -46,7 +46,7 @@ describe('the journey of an accessible apply application', async () => {
   }
 
   it('check apply accessibility issues', async () => {
-    // await initSession(URI);
+    await initSession(URI);
 
     const exclusions = [
       '/other-names',
