@@ -10,14 +10,14 @@ const testDir = `${process.cwd()}/test/_accessibility/tmp`;
 const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
 
 describe('the journey of an accessible apply application', async () => {
-   let testApp;
-   let initSession;
-   let getUrl;
+  // let testApp;
+  // let initSession;
+  // let getUrl;
   let uris = [];
   const accessibilityResults = [];
 
   const SUBAPP = 'apply';
-   const URI = '/confirm';
+  // const URI = '/confirm';
 
   const codeExemptions = result => {
     const updatedResult = result;
@@ -36,9 +36,9 @@ describe('the journey of an accessible apply application', async () => {
       }
     });
 
-     testApp = getSupertestApp(SUBAPP);
-     initSession = testApp.initSession;
-     getUrl = testApp.getUrl;
+    // testApp = getSupertestApp(SUBAPP);
+    // initSession = testApp.initSession;
+    // getUrl = testApp.getUrl;
   });
 
   async function content(pathValue) {
@@ -46,7 +46,7 @@ describe('the journey of an accessible apply application', async () => {
   }
 
   it('check apply accessibility issues', async () => {
-    await initSession(URI);
+    // await initSession(URI);
 
     const exclusions = [
       '/other-names',
@@ -77,12 +77,12 @@ describe('the journey of an accessible apply application', async () => {
         `/root/.dockersock${uri}.html` :
         `${process.cwd()}/test/_accessibility/tmp${uri}.html`;
 
-       const res = await getUrl(uri);
+      // const res = await getUrl(uri);
 
-       fs.writeFile(testHtmlFile, res.text, (err, success) => {
-        if (err) return console.log(err);
-         return success;
-       });
+      // fs.writeFile(testHtmlFile, res.text, (err, success) => {
+      //  if (err) return console.log(err);
+      //   return success;
+      // });
 
       const testHtmlFileText = await content(testHtmlFile);
       const htmlCode = testHtmlFileText;
@@ -92,11 +92,6 @@ describe('the journey of an accessible apply application', async () => {
 
       await page.setContent(htmlCode, {
         waitUntil: 'domcontentloaded'
-      });
-
-      await fs.unlink(testHtmlFile, (err, success) => {
-        if (err) return console.log(err);
-        return success;
       });
 
       const url = page.url();
