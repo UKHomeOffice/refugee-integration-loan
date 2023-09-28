@@ -1,7 +1,7 @@
 /* eslint no-console: 0 */
 const pa11y = require('pa11y');
 const puppeteer = require('puppeteer');
-const {readFile} = require('fs/promises');
+const {readFile, writeFile} = require('fs/promises');
 const settings = require('../../../hof.settings.json');
 const path = require('path');
 const fs = require('fs');
@@ -33,10 +33,17 @@ describe('the journey of an accessible accept application', async () => {
   });
 
   async function content(pathValue) {
-    return await readFile(pathValue, 'utf8');
+    try{
+      const htmlText =  await readFile(pathValue, 'utf8');
+      return htmlText;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
   }
 
   it('check accept accessibility issues', async () => {
+    let browser;
     await initSession(URI);
 
     const exclusions = [
@@ -67,17 +74,22 @@ describe('the journey of an accessible accept application', async () => {
 
       const res = await getUrl(uri);
 
-      fs.writeFileSync(testHtmlFile, res.text, (err, success) => {
-        if (err) return console.log(err);
-        return success;
-      });
+      try{
+        await writeFile(testHtmlFile, res.text);
+      } catch(err) {
+        return console.log(err);
+      }
       console.log('testHtmlFile: ', testHtmlFile);
       const testHtmlFileText = await content(testHtmlFile);
       const htmlCode = testHtmlFileText;
-      const browser = await puppeteer.launch({headless: 'new',
-        executablePath: '/usr/bin/google-chrome-stable',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']}
-      );
+      if(isDroneEnv) {
+        browser = await puppeteer.launch({headless: 'new',
+          executablePath: '/usr/bin/google-chrome-stable',
+          args: ['--no-sandbox', '--disable-setuid-sandbox']});
+      } else {
+        browser = await puppeteer.launch({headless: 'new',
+          args: ['--no-sandbox', '--disable-setuid-sandbox']});
+      }
       const page = await browser.newPage();
 
       await page.setContent(htmlCode, {
