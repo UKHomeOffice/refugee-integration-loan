@@ -69,24 +69,15 @@ accessibility_tests: &accessibility_tests
       from_secret: drone_server
     DRONE_TOKEN:
       from_secret: drone_token
-  before_script:
-    - apt-get update    
-  script:
-    - yarn install
-    - yarn install pa11y
-    - yarn install mocha
-    - yarn install puppeteer
   volumes:
     - name: dockersock
       path: /root/.dockersock  
   commands:
-      #- apt-get update
-      #- chown -R 999:998 /drone/src/node_modules/*
-      #- rm -rf /drone/src/node_modules/*
-      #- yarn install --frozen-lockfile
-      #- yarn run postinstall
-      - echo `pwd` 
-      - yarn run test:accessibility  
+    - apt-get update
+    - yarn install --frozen-lockfile
+    - yarn run postinstall
+    - echo `pwd` 
+    - yarn run test:accessibility  
       
 
 acceptance_tests: &acceptance_tests
