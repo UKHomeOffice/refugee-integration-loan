@@ -10,14 +10,14 @@ const testDir = `${process.cwd()}/test/_accessibility/tmp`;
 const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
 
 describe('the journey of an accessible accept application', async () => {
-  // let testApp;
-  // let initSession;
-  // let getUrl;
+   let testApp;
+   let initSession;
+   let getUrl;
   let uris = [];
   const accessibilityResults = [];
 
   const SUBAPP = 'accept';
-  // const URI = '/contact';
+  const URI = '/contact';
 
   before(async () => {
     settings.routes.map(route => {
@@ -27,9 +27,9 @@ describe('the journey of an accessible accept application', async () => {
       }
     });
 
-    // testApp = getSupertestApp(SUBAPP);
-    // initSession = testApp.initSession;
-    // getUrl = testApp.getUrl;
+     testApp = getSupertestApp(SUBAPP);
+     initSession = testApp.initSession;
+     getUrl = testApp.getUrl;
   });
 
   async function content(pathValue) {
@@ -37,7 +37,7 @@ describe('the journey of an accessible accept application', async () => {
   }
 
   it('check accept accessibility issues', async () => {
-    // await initSession(URI);
+    await initSession(URI);
 
     const exclusions = [
       '/confirm',
@@ -64,20 +64,28 @@ describe('the journey of an accessible accept application', async () => {
         `/root/.dockersock${uri}.html` :
         `${process.cwd()}/test/_accessibility/tmp${uri}.html`;
 
-      // const res = await getUrl(uri);
+      const res = await getUrl(uri);
 
-      // await fs.writeFile(testHtmlFile, res.text, (err, success) => {
-      // if (err) return console.log(err);
-      //  return success;
-      // });
+      await fs.writeFile(testHtmlFile, res.text, (err, success) => {
+       if (err) return console.log(err);
+        return success;
+      });
 
       const testHtmlFileText = await content(testHtmlFile);
       const htmlCode = testHtmlFileText;
-      const browser = await puppeteer.launch({headless: 'new'});
+      const browser = await puppeteer.launch({headless: 'new',
+      slowMo: 100,
+      timeout: 10000,
+      args: ['--no-sandbox']});
       const page = await browser.newPage();
 
       await page.setContent(htmlCode, {
         waitUntil: 'domcontentloaded'
+      });
+
+      await fs.unlink(testHtmlFile, (err, success) => {
+        if (err) return console.log(err);
+        return success;
       });
 
       const url = page.url();
