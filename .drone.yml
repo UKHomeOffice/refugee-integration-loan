@@ -64,6 +64,10 @@ accessibility_tests: &accessibility_tests
     DRONE_LOGS_TEXT: true
     DRONE_LOGS_PRETTY: true
     DRONE_LOGS_COLOR: true
+    DRONE_SERVER:
+      from_secret: drone_server
+    DRONE_TOKEN:
+      from_secret: drone_token
   volumes:
     - name: dockersock
       path: /root/.dockersock
