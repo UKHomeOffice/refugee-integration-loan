@@ -61,7 +61,7 @@ describe('the journey of an accessible accept application', async () => {
       }
 
       const testHtmlFile = isDroneEnv ?
-        `/root/.dockersock${uri}.html` :
+        `/root/.docker.sock${uri}.html` :
         `${process.cwd()}/test/_accessibility/tmp${uri}.html`;
 
       // const res = await getUrl(uri);
