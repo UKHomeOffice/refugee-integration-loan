@@ -79,7 +79,7 @@ accessibility_tests: &accessibility_tests
       #- yarn install --frozen-lockfile
       #- yarn run postinstall
       #- yarn run test:accessibility  
-      - echo `pwd`
+      - echo `pwd` 
   
 
 acceptance_tests: &acceptance_tests
