@@ -74,9 +74,7 @@ accessibility_tests: &accessibility_tests
       path: /root/.dockersock  
   commands:
     - apt-get update
-    - yarn install --frozen-lockfile
-    - yarn run postinstall
-    - echo `pwd` 
+    - yarn install
     - yarn run test:accessibility  
       
 
