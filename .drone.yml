@@ -75,6 +75,8 @@ accessibility_tests: &accessibility_tests
   commands:
     - apt-get update
     - yarn install
+    - yarn install puppeteer
+    - yarn install pa11y
     - yarn run test:accessibility  
       
 
