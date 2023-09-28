@@ -70,12 +70,15 @@ accessibility_tests: &accessibility_tests
     DRONE_TOKEN:
       from_secret: drone_token
   before_script:
-   - apt-get update    
+    - apt-get update    
   script:
     - yarn install
     - yarn install pa11y
     - yarn install mocha
     - yarn install puppeteer
+  volumes:
+    - name: dockersock
+      path: /root/.dockersock  
   commands:
       #- apt-get update
       #- chown -R 999:998 /drone/src/node_modules/*
