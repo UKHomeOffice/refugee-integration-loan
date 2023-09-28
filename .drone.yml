@@ -54,7 +54,7 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: ghcr.io/puppeteer/puppeteer:21.3.5
+  image: node:18
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
@@ -69,6 +69,13 @@ accessibility_tests: &accessibility_tests
       from_secret: drone_server
     DRONE_TOKEN:
       from_secret: drone_token
+  before_script:
+   - apt-get update    
+  script:
+    - yarn install
+    - yarn install pa11y
+    - yarn install mocha
+    - yarn install puppeteer
   commands:
       #- apt-get update
       #- chown -R 999:998 /drone/src/node_modules/*
