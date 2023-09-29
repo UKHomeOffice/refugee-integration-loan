@@ -4,8 +4,8 @@
 
 ### NPM Local Development Setup
 ```
-nvm install 14.15.0
-nvm use 14.15.0
+nvm install 18.12.1
+nvm use 21.3.5
 yarn
 brew install redis
 brew services start redis
