@@ -52,23 +52,40 @@ ui_integration_tests: &ui_integration_tests
   commands:
     - yarn run test:ui-integration
 
-#accessibility_tests: &accessibility_tests
-#  pull: if-not-exists
-#  image: ghcr.io/puppeteer/puppeteer:20.9.0
-#  environment:
-#    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-#    NOTIFY_STUB: true
-#    ENVIRONMENT: DRONE
-#    DRONE_DEBUG: true
-#    DRONE_TRACE: true
-#    DRONE_LOGS_TEXT: true
-#    DRONE_LOGS_PRETTY: true
-#    DRONE_LOGS_COLOR: true
-#  volumes:
-#    - name: dockersock
-#      path: /root/.dockersock
-#  commands:
-#    - yarn run test:accessibility
+accessibility_tests: &accessibility_tests
+  pull: if-not-exists
+  image: node:18
+  options: --user root
+  environment:
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    NOTIFY_STUB: true
+    ENVIRONMENT: DRONE
+    DRONE_DEBUG: true
+    DRONE_TRACE: true
+    DRONE_LOGS_TEXT: true
+    DRONE_LOGS_PRETTY: true
+    DRONE_LOGS_COLOR: true
+    DRONE_SERVER:
+      from_secret: drone_server
+    DRONE_TOKEN:
+      from_secret: drone_token
+  volumes:
+    - name: dockersock
+      path: /root/.dockersock  
+  commands:
+    - apt-get update
+    - apt-get install curl gnupg -y 
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' 
+    - apt-get update 
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium 
+    - apt-get install google-chrome-stable -y --no-install-recommends 
+    - rm -rf /var/lib/apt/lists/*
+    - yarn install
+    - yarn add puppeteer
+    - yarn add pa11y
+    - which google-chrome-stable
+    - yarn run test:accessibility  
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists

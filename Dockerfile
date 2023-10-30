@@ -1,16 +1,12 @@
-FROM node:18.17.1-bullseye-slim@sha256:08d187358b802c329c9a83ca999426891bf925f7dbd5d76fb3de8da76d308a54
+FROM node:lts-alpine@sha256:19eaf41f3b8c2ac2f609ac8103f9246a6a6d46716cdbe49103fdb116e55ff0cc
 
 USER root
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
 # Update packages as a result of Anchore security vulnerability checks
-RUN apt-get update && apt-get install curl gnupg -y \
-    && curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
-    && apt-get update \
-    && apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium \
-    && apt-get install google-chrome-stable -y --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    apk add --upgrade gnutls binutils nodejs npm apk-tools libjpeg-turbo libcurl libx11 libxml2
 
 # Setup nodejs group & nodejs user
 RUN addgroup --system nodejs --gid 998 && \

@@ -1,5 +1,7 @@
 /* eslint no-console: 0 */
 const pa11y = require('pa11y');
+const puppeteer = require('puppeteer');
+const {readFile, writeFile} = require('fs/promises');
 const settings = require('../../../hof.settings.json');
 const path = require('path');
 const fs = require('fs');
@@ -30,7 +32,18 @@ describe('the journey of an accessible accept application', async () => {
     getUrl = testApp.getUrl;
   });
 
+  async function content(pathValue) {
+    try{
+      const htmlText =  await readFile(pathValue, 'utf8');
+      return htmlText;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
   it('check accept accessibility issues', async () => {
+    let browser;
     await initSession(URI);
 
     const exclusions = [
@@ -38,6 +51,7 @@ describe('the journey of an accessible accept application', async () => {
       '/complete-acceptance'
     ];
 
+    console.log('uris: ', uris);
     await uris.reduce(async (previous, uri) => {
       await previous;
 
@@ -60,28 +74,42 @@ describe('the journey of an accessible accept application', async () => {
 
       const res = await getUrl(uri);
 
-      await fs.writeFile(testHtmlFile, res.text, (err, success) => {
+      try{
+        await writeFile(testHtmlFile, res.text);
+      } catch(err) {
+        return console.log(err);
+      }
+      console.log('testHtmlFile: ', testHtmlFile);
+      const testHtmlFileText = await content(testHtmlFile);
+      const htmlCode = testHtmlFileText;
+      if(isDroneEnv) {
+        browser = await puppeteer.launch({headless: 'new',
+          executablePath: '/usr/bin/google-chrome-stable',
+          args: ['--no-sandbox', '--disable-setuid-sandbox']});
+      } else {
+        browser = await puppeteer.launch({headless: 'new',
+          args: ['--no-sandbox', '--disable-setuid-sandbox']});
+      }
+      const page = await browser.newPage();
+
+      await page.setContent(htmlCode, {
+        waitUntil: 'domcontentloaded'
+      });
+
+      const url = page.url();
+      const a11y = await pa11y(url, {
+        ignoreUrl: true,
+        browser,
+        page
+      });
+      a11y.step = `/${SUBAPP}${uri}`;
+      accessibilityResults.push(a11y);
+      await browser.close();
+      await fs.unlink(testHtmlFile, (err, success) => {
         if (err) return console.log(err);
         return success;
       });
-
-      return pa11y(testHtmlFile, {
-        chromeLaunchConfig: {
-          args: ['--no-sandbox']
-        }
-      }).then(async r => {
-        const result = r;
-
-        result.step = `/${SUBAPP}${uri}`;
-        console.log(result);
-
-        accessibilityResults.push(result);
-
-        await fs.unlink(testHtmlFile, (err, success) => {
-          if (err) return console.log(err);
-          return success;
-        });
-      });
+      return a11y;
     }, Promise.resolve());
 
     accessibilityResults.forEach(result => {
