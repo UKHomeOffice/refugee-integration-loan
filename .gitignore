@@ -8,6 +8,8 @@ apps/**/translations/**/*
 !apps/**/translations/src/
 !apps/**/translations/src/**/*
 test/_accessibility/tmp/*
+test/_accessibility/tmp-bk/*
 coverage
 .nyc_output
 anchore-reports/
+.env

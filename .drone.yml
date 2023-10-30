@@ -24,7 +24,7 @@ trigger:
 
 linting: &linting
   pull: if-not-exists
-  image: node:14
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -32,7 +32,7 @@ linting: &linting
 
 unit_tests: &unit_tests
   pull: if-not-exists
-  image: node:14
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -46,7 +46,7 @@ sonar_scanner: &sonar_scanner
 
 ui_integration_tests: &ui_integration_tests
   pull: if-not-exists
-  image: node:14
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -54,15 +54,39 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  image: node:18
+  options: --user root
   environment:
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
+    DRONE_DEBUG: true
+    DRONE_TRACE: true
+    DRONE_LOGS_TEXT: true
+    DRONE_LOGS_PRETTY: true
+    DRONE_LOGS_COLOR: true
+    DRONE_SERVER:
+      from_secret: drone_server
+    DRONE_TOKEN:
+      from_secret: drone_token
   volumes:
     - name: dockersock
-      path: /root/.dockersock
+      path: /root/.dockersock  
   commands:
-    - yarn run test:accessibility
+    - apt-get update
+    - apt-get install curl gnupg -y 
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' 
+    - apt-get update 
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium 
+    - apt-get install google-chrome-stable -y --no-install-recommends 
+    - rm -rf /var/lib/apt/lists/*
+    - yarn install
+    - yarn add puppeteer
+    - yarn add pa11y
+    - which google-chrome-stable
+    - yarn run test:accessibility  
+      
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
@@ -87,7 +111,7 @@ steps:
 
   - name: setup_deploy
     pull: if-not-exists
-    image: node:14
+    image: node:18
     environment:
       NOTIFY_STUB: true
     commands:
@@ -184,7 +208,7 @@ steps:
 
   - name: setup_branch
     pull: if-not-exists
-    image: node:14
+    image: node:18
     environment:
       NOTIFY_STUB: true
     commands:
@@ -255,7 +279,7 @@ steps:
   # Snyk & Anchore security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
     pull: if-not-exists
-    image: node:14
+    image: node:18
     environment:
       NOTIFY_STUB: true
       SNYK_TOKEN:
@@ -437,7 +461,7 @@ steps:
 
   - name: cron_snyk_scan
     pull: if-not-exists
-    image: node:14
+    image: node:18
     environment:
       NOTIFY_STUB: true
       SNYK_TOKEN:
@@ -518,5 +542,3 @@ services:
 volumes:
   - name: dockersock
     temp: {}
-
-...

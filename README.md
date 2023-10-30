@@ -4,8 +4,8 @@
 
 ### NPM Local Development Setup
 ```
-nvm install 14.15.0
-nvm use 14.15.0
+nvm install 18.12.1
+nvm use 18.12.1
 yarn
 brew install redis
 brew services start redis
@@ -114,4 +114,3 @@ Here is an example for updating a dev_dependency bringing in the latest patch fi
 ```
 yarn upgrade mocha@"<8.3.0"
 ```
-
