@@ -71,22 +71,21 @@ accessibility_tests: &accessibility_tests
       from_secret: drone_token
   volumes:
     - name: dockersock
-      path: /root/.dockersock  
+      path: /root/.dockersock
   commands:
     - apt-get update
-    - apt-get install curl gnupg -y 
-    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
-    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' 
-    - apt-get update 
-    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium 
-    - apt-get install google-chrome-stable -y --no-install-recommends 
+    - apt-get install curl gnupg -y
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
+    - apt-get install google-chrome-stable -y --no-install-recommends
     - rm -rf /var/lib/apt/lists/*
     - yarn install
     - yarn add puppeteer
     - yarn add pa11y
     - which google-chrome-stable
-    - yarn run test:accessibility  
-      
+    - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
@@ -192,6 +191,26 @@ steps:
       branch: master
       event: [push, pull_request]
 
+  # Trivy Security Scannner
+  - name: scan-image
+    pull: always
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
+    resources:
+      limits:
+        cpu: 1000
+        memory: 1024Mi
+    environment:
+      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+      SEVERITY: MEDIUM,HIGH,CRITICAL
+      FAIL_ON_DETECTION: false
+      IGNORE_UNFIXED: true
+      ALLOW_CVE_LIST_FILE: hof-services-config/Refugee_Integration_Loan/trivy-cve-exceptions.txt
+    when:
+      event:
+      - pull_request
+      - push
+      - tag
+
   # Deploy to pull request UAT environment
   - name: deploy_to_branch
     pull: if-not-exists
@@ -276,7 +295,7 @@ steps:
       branch: master
       event: pull_request
 
-  # Snyk & Anchore security scans which run after branch deployment to prevent blocking of PR UAT tests
+  # Snyk security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
     pull: if-not-exists
     image: node:18
@@ -291,18 +310,6 @@ steps:
         include:
           - master
           - feature/*
-      event: pull_request
-
-  - name: anchore_scan
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
-    pull: always
-    environment:
-      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      LOCAL_IMAGE: true
-      TOLERATE: medium
-      WHITELIST_FILE: hof-services-config/Refugee_Integration_Loan/anchore-cve-exceptions.txt
-    when:
-      branch: master
       event: pull_request
 
   # Deploy to Master UAT environment
@@ -434,7 +441,7 @@ steps:
       cron: tear_down_pr_envs
       event: cron
 
-  # CRON job steps that runs security scans using Snyk & Anchore
+  # CRON job steps that runs security scans using Snyk & Trivy
   - name: cron_clone_repos
     image: alpine/git
     environment:
@@ -474,14 +481,15 @@ steps:
       cron: security_scans
       event: cron
 
-  - name: cron_anchore_scan
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
+  - name: cron_trivy_scan
+    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
     pull: always
     environment:
       IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      LOCAL_IMAGE: true
-      TOLERATE: medium
-      WHITELIST_FILE: hof-services-config/Refugee_Integration_Loan/anchore-cve-exceptions.txt
+      SEVERITY: MEDIUM,HIGH,CRITICAL
+      FAIL_ON_DETECTION: false
+      IGNORE_UNFIXED: true
+      ALLOW_CVE_LIST_FILE: hof-services-config/Refugee_Integration_Loan/trivy-cve-exceptions.txt
     when:
       cron: security_scans
       event: cron
@@ -524,13 +532,6 @@ steps:
 services:
   - name: docker
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
-
-  # Anchore scanning needs background service to run
-  - name: anchore-submission-server
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/anchore-submission:latest
-    pull: always
-    commands:
-      - /run.sh server
 
   # Redis session setup in background so ui integration tests can run
   - name: session
