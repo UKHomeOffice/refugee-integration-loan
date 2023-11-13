@@ -97,11 +97,13 @@ module.exports = {
     { field: 'childBenefitAmount', omitFromPdf: true },
     { field: 'housingBenefitAmount', omitFromPdf: true },
     { field: 'otherIncomeAmount', omitFromPdf: true },
+    { field: 'otherIncomeExplain', omitFromPdf: false },
     { field: 'combinedSalaryAmount', omitFromPdf: true },
     { field: 'combinedUniversalCreditAmount', omitFromPdf: true },
     { field: 'combinedChildBenefitAmount', omitFromPdf: true },
     { field: 'combinedHousingBenefitAmount', omitFromPdf: true },
-    { field: 'combinedOtherIncomeAmount', omitFromPdf: true }
+    { field: 'combinedOtherIncomeAmount', omitFromPdf: true },
+    { field: 'combinedOtherIncomeExplain', omitFromPdf: false }
   ],
   'pdf-outgoings': [
     'outgoingTypes',

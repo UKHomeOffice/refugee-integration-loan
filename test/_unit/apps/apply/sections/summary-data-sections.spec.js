@@ -94,11 +94,13 @@ describe('Apply Summary Data Sections', () => {
         'childBenefitAmount',
         'housingBenefitAmount',
         'otherIncomeAmount',
+        'otherIncomeExplain',
         'combinedSalaryAmount',
         'combinedUniversalCreditAmount',
         'combinedChildBenefitAmount',
         'combinedHousingBenefitAmount',
-        'combinedOtherIncomeAmount'
+        'combinedOtherIncomeAmount',
+        'combinedOtherIncomeExplain'
       ];
       const result = areOrderedEqual(sectionFields, expectedFields);
       expect(result).to.be.true;

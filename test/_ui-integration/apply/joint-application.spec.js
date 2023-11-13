@@ -204,7 +204,8 @@ describe('the journey of a joint apply application', () => {
       combinedUniversalCreditAmount: '100',
       combinedChildBenefitAmount: '200',
       combinedHousingBenefitAmount: '300',
-      combinedOtherIncomeAmount: '400'
+      combinedOtherIncomeAmount: '400',
+      combinedOtherIncomeExplain: 'Selling some old things on eBay clothing etc.'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/combined-outgoings');

@@ -226,7 +226,8 @@ module.exports = {
         'universalCreditAmount',
         'childBenefitAmount',
         'housingBenefitAmount',
-        'otherIncomeAmount'
+        'otherIncomeAmount',
+        'otherIncomeExplain'
       ],
       next: '/outgoings'
     },
@@ -264,7 +265,8 @@ module.exports = {
         'combinedUniversalCreditAmount',
         'combinedChildBenefitAmount',
         'combinedHousingBenefitAmount',
-        'combinedOtherIncomeAmount'
+        'combinedOtherIncomeAmount',
+        'combinedOtherIncomeExplain'
       ],
       next: '/combined-outgoings'
     },

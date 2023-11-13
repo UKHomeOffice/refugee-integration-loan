@@ -147,10 +147,18 @@
     "min": "Other income amount must be greater than zero",
     "decimal":"Other income must be in pounds and pence; for example £100.00"
   },
+  "otherIncomeExplain": {
+    "default": "Enter details about your other income",
+    "maxlength": "Other income details must be 200 characters or less"
+  },
   "combinedOtherIncomeAmount": {
     "default": "Enter total other income amount per month",
     "min": "Other income amount must be greater than zero",
     "decimal":"Other income must be in pounds and pence; for example £100.00"
+  },
+  "combinedOtherIncomeExplain": {
+    "default": "Enter details about your other income",
+    "maxlength": "Other income details must be 200 characters or less"
   },
   "outgoingTypes": {
     "default": "Select at least one option for your monthly outgoings"

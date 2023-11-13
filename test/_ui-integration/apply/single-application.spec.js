@@ -153,7 +153,8 @@ describe('the journey of a single apply application', () => {
       universalCreditAmount: '100',
       childBenefitAmount: '200',
       housingBenefitAmount: '300',
-      otherIncomeAmount: '400'
+      otherIncomeAmount: '400',
+      otherIncomeExplain: 'Selling some old things on eBay clothing etc.'
     });
 
     expect(response.text).to.contain('Found. Redirecting to /apply/outgoings');

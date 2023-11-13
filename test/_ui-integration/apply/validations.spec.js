@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 
 const moment = require('moment');
 
@@ -151,7 +152,7 @@ describe('validation checks of the apply journey', () => {
 
       const res = await getUrl(URI);
       const docu = await parseHtml(res);
-      const validationSummary = docu.find('.validation-summary');
+      const validationSummary = docu.find('.govuk-error-summary');
 
       expect(validationSummary.length === 1).to.be.false;
     });
@@ -185,7 +186,7 @@ describe('validation checks of the apply journey', () => {
 
       const res = await getUrl(URI);
       const docu = await parseHtml(res);
-      const validationSummary = docu.find('.validation-summary');
+      const validationSummary = docu.find('.govuk-error-summary');
 
       expect(validationSummary.length === 1).to.be.false;
     });
@@ -841,6 +842,62 @@ describe('validation checks of the apply journey', () => {
         .to.match(/Housing benefit must be in pounds and pence; for example £100.00/);
       expect(validationSummary.html())
         .to.match(/Other income must be in pounds and pence; for example £100.00/);
+    });
+
+    it('does not pass the Income page if other income explanation field is empty', async () => {
+      const URI = '/income';
+      await initSession(URI);
+      await passStep(URI, {
+        incomeTypes: [
+          'salary',
+          'universal_credit',
+          'child_benefit',
+          'housing_benefit',
+          'other'
+        ],
+        salaryAmount: '2000',
+        universalCreditAmount: '100',
+        childBenefitAmount: '200',
+        housingBenefitAmount: '300',
+        otherIncomeAmount: '400',
+        otherIncomeExplain: ''
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.govuk-error-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Enter details about your other income/);
+    });
+
+    it('does not pass the Income page if other income explanation field is more than 200 characters', async () => {
+      const URI = '/income';
+      await initSession(URI);
+      await passStep(URI, {
+        incomeTypes: [
+          'salary',
+          'universal_credit',
+          'child_benefit',
+          'housing_benefit',
+          'other'
+        ],
+        salaryAmount: '2000',
+        universalCreditAmount: '100',
+        childBenefitAmount: '200',
+        housingBenefitAmount: '300',
+        otherIncomeAmount: '400',
+        otherIncomeExplain: 'I bought a few items from eBay and sold them on for a profit. I bought these items around two years ago but only managed to sell them last week, but then I had to issue a refund for one of items because the customer was not happy with it.'
+      });
+
+      const res = await getUrl(URI);
+      const docu = await parseHtml(res);
+      const validationSummary = docu.find('.govuk-error-summary');
+
+      expect(validationSummary.length === 1).to.be.true;
+      expect(validationSummary.html())
+        .to.match(/Other income details must be 200 characters or less/);
     });
 
     it('does not pass the Income page if income types selected with no amounts', async () => {

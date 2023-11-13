@@ -110,6 +110,7 @@ Feature: Joint Application
     Then I fill 'combinedHousingBenefitAmount' with '300'
     Then I check 'combinedIncomeTypes-other'
     Then I fill 'combinedOtherIncomeAmount' with '400'
+    Then I fill 'combinedOtherIncomeExplain' text area with 'Selling some old things on eBay clothing etc.'
     Then I click the 'Continue' button
     Then I should be on the 'combined-outgoings' page showing 'You and your partner’s combined monthly outgoings'
     Then I check 'combinedOutgoingTypes-rent'
