@@ -6,6 +6,7 @@ const Summary = require('hof').components.summary;
 const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 const confirmStep = config.routes.confirmStep;
+const AddSpacePostcode = require('./behaviours/add-space-postcode');
 
 module.exports = {
   name: 'apply',
@@ -205,6 +206,7 @@ module.exports = {
       next: '/address'
     },
     '/address': {
+      behaviours: [AddSpacePostcode],
       fields: ['building', 'street', 'townOrCity', 'postcode'],
       next: '/income',
       forks: [{
