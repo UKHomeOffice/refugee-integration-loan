@@ -1,4 +1,4 @@
-const removePrefixBehaviour = require('../../../../../apps/apply/behaviours/remove-prefix');
+const RemovePrefixBehaviour = require('../../../../../apps/apply/behaviours/remove-prefix');
 
 describe('#process', () => {
   let behaviour;
@@ -25,7 +25,7 @@ describe('#process', () => {
 
     Base.prototype.process = superProcessStub;
 
-    Behaviour = removePrefixBehaviour;
+    Behaviour = RemovePrefixBehaviour;
     Behaviour = Behaviour(Base);
     behaviour = new Behaviour();
   });
