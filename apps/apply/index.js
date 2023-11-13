@@ -7,6 +7,7 @@ const UploadPDF = require('./behaviours/upload-pdf');
 const config = require('../../config');
 const confirmStep = config.routes.confirmStep;
 const AddSpacePostcode = require('./behaviours/add-space-postcode');
+const RemovePrefix = require('./behaviours/remove-prefix');
 
 module.exports = {
   name: 'apply',
@@ -14,8 +15,8 @@ module.exports = {
   baseUrl: '/apply',
   steps: {
     '/previously-applied': {
-      fields: ['previouslyApplied'],
       behaviours: [setRadioButtonErrorLink],
+      fields: ['previouslyApplied'],
       next: '/previous',
       forks: [{
         target: '/partner',
@@ -218,6 +219,7 @@ module.exports = {
       }]
     },
     '/income': {
+      behaviours: [RemovePrefix],
       fields: [
         'incomeTypes',
         'salaryAmount',
@@ -229,6 +231,7 @@ module.exports = {
       next: '/outgoings'
     },
     '/outgoings': {
+      behaviours: [RemovePrefix],
       fields: [
         'outgoingTypes',
         'rentAmount',
@@ -244,14 +247,17 @@ module.exports = {
     },
     '/savings': {
       fields: ['savings', 'savingsAmount'],
-      behaviours: [setRadioButtonErrorLink],
-      next: '/amount'
+      behaviours: [setRadioButtonErrorLink, RemovePrefix],
+      next: '/amount',
+      continueOnEdit: true
     },
     '/amount': {
+      behaviours: [RemovePrefix],
       fields: ['amount'],
       next: '/purpose'
     },
     '/combined-income': {
+      behaviours: [RemovePrefix],
       fields: [
         'combinedIncomeTypes',
         'combinedSalaryAmount',
@@ -263,6 +269,7 @@ module.exports = {
       next: '/combined-outgoings'
     },
     '/combined-outgoings': {
+      behaviours: [RemovePrefix],
       fields: [
         'combinedOutgoingTypes',
         'combinedRentAmount',
@@ -278,10 +285,12 @@ module.exports = {
     },
     '/combined-savings': {
       fields: ['combinedSavings', 'combinedSavingsAmount'],
-      behaviours: [setRadioButtonErrorLink],
-      next: '/combined-amount'
+      behaviours: [setRadioButtonErrorLink, RemovePrefix],
+      next: '/combined-amount',
+      continueOnEdit: true
     },
     '/combined-amount': {
+      behaviours: [RemovePrefix],
       fields: ['jointAmount'],
       next: '/purpose'
     },
