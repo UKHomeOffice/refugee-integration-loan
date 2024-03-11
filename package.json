@@ -1,7 +1,7 @@
 {
   "license": "MIT",
   "engines": {
-    "node": "^18.12.1"
+    "node": ">=18.12.1"
   },
   "scripts": {
     "start": "node server.js",
@@ -28,7 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "20.2.8",
+    "hof": "21.0.0-axios-beta.3",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "notifications-node-client": "6.0.0",
