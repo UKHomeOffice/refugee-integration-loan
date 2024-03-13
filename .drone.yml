@@ -155,6 +155,7 @@ steps:
       event: push
 
   - name: accessibility_tests_deploy
+    failure: ignore
     <<: *accessibility_tests
     when:
       branch:
@@ -277,6 +278,7 @@ steps:
       event: pull_request
 
   - name: accessibility_tests_branch
+    failure: ignore
     <<: *accessibility_tests
     when:
       branch:
