@@ -13,7 +13,7 @@ module.exports = superclass => class extends superclass {
           'loan reference': req.sessionModel.get('loanReference')
         }
       });
-
+      //  test
       await uploadPdfShared.send(req, res, super.locals(req, res));
 
       req.log('info', 'ril.form.accept.submit_form.successful');
