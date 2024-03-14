@@ -31,8 +31,7 @@
     "hof": "20.2.8",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
-    "notifications-node-client": "6.0.0",
-    "puppeteer": "^21.3.5"
+    "notifications-node-client": "6.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^7.2.1",
