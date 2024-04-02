@@ -114,3 +114,4 @@ Here is an example for updating a dev_dependency bringing in the latest patch fi
 ```
 yarn upgrade mocha@"<8.3.0"
 ```
+pally upgrade
