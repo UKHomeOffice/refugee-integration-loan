@@ -56,7 +56,8 @@ ui_integration_tests: &ui_integration_tests
 # as it is not compatible with the node engine 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  # image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  image: buildkite/puppeteer:latest@sha256:f4c9e3973bf90276a14bd62e3805ef3e126a92f1c50344bd5c9ebca1aa671434
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
