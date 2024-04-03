@@ -56,8 +56,7 @@ ui_integration_tests: &ui_integration_tests
 # as it is not compatible with the node engine 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  # image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
-  image: buildkite/puppeteer:latest@sha256:f4c9e3973bf90276a14bd62e3805ef3e126a92f1c50344bd5c9ebca1aa671434
+  image: node:18
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
@@ -76,6 +75,30 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
+    - apt-get update
+    - apt-get install curl gnupg -y
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
+    - apt-get install google-chrome-stable -y --no-install-recommends
+    - rm -rf /var/lib/apt/lists/*
+    - yarn install
+    - yarn add puppeteer
+    - yarn add pa11y
+    - which google-chrome-stable
+    - yarn run test:accessibility- apt-get update
+    - apt-get install curl gnupg -y
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
+    - apt-get install google-chrome-stable -y --no-install-recommends
+    - rm -rf /var/lib/apt/lists/*
+    - yarn install
+    - yarn add puppeteer
+    - yarn add pa11y
+    - which google-chrome-stable
     - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
