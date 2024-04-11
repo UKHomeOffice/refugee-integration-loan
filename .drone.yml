@@ -52,11 +52,9 @@ ui_integration_tests: &ui_integration_tests
   commands:
     - yarn run test:ui-integration
     
-# The Image will require update once pa11y version 8 is released
-# as it is not compatible with the node engine 
 accessibility_tests: &accessibility_tests
   pull: if-not-exists
-  image: buildkite/puppeteer:8.0.0@sha256:b6cebc17bfa8e7a7abfc3ab14d6f2ddbdf42b9e81b8ad786c6693385665998d5
+  image: node:18
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
@@ -75,6 +73,18 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
+    - apt-get update
+    - apt-get install curl gnupg -y
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
+    - apt-get install google-chrome-stable -y --no-install-recommends
+    - rm -rf /var/lib/apt/lists/*
+    - yarn install
+    - yarn add puppeteer
+    - yarn add pa11y
+    - which google-chrome-stable
     - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
@@ -143,10 +153,8 @@ steps:
         include:
           - master
       event: push
-
-  # Remove failure: ignore once pa11y has been updated to version 8
+  
   - name: accessibility_tests_deploy
-    failure: ignore
     <<: *accessibility_tests
     when:
       branch:
@@ -267,10 +275,8 @@ steps:
           - master
           - feature/*
       event: pull_request
-
-  # Remove failure: ignore once pa11y has been updated to version 8
+  
   - name: accessibility_tests_branch
-    failure: ignore
     <<: *accessibility_tests
     when:
       branch:
