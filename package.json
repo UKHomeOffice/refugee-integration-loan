@@ -28,10 +28,10 @@
     ""
   ],
   "dependencies": {
-    "hof": "~21.1.0",
+    "hof": "~21.0.0",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
-    "notifications-node-client": "^8.0.0",
+    "notifications-node-client": "~8.0.0",
     "puppeteer": "^22.4.1"
   },
   "devDependencies": {
