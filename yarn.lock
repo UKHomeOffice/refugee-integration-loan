@@ -1042,7 +1042,7 @@ axe-core@~4.8.4:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.8.4.tgz#90db39a2b316f963f00196434d964e6e23648643"
   integrity sha512-CZLSKisu/bhJ2awW4kJndluz2HLZYIHh5Uy1+ZwDRkJi69811xgIXXfdU9HSLX0Th+ILrHj8qfL/5wzamsFtQg==
 
-axios@^1.5.1, axios@^1.7.2:
+axios@^1.5.1, axios@^1.6.1, axios@^1.7.2:
   version "1.7.7"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.7.tgz#2f554296f9892a72ac8d8e4c5b79c14a91d0a47f"
   integrity sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==
@@ -3565,10 +3565,10 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hof@~21.1.0:
-  version "21.1.1"
-  resolved "https://registry.yarnpkg.com/hof/-/hof-21.1.1.tgz#1f70c0a4c30ac82293761541c0524032042da11b"
-  integrity sha512-zQwFIrr4s9ev2ag5Aq4XZUb1agZC8Zw7DzzSqVX/gCen+hseC+swV8jIo5psvjUN8moAVaDDQG1Lwi4j54XzYg==
+hof@~21.0.0:
+  version "21.0.12"
+  resolved "https://registry.yarnpkg.com/hof/-/hof-21.0.12.tgz#cbc232d8aa0c94b49b9dff48dffa3586c0099399"
+  integrity sha512-WqUpmPX7ZXW9KRwYELU2M9MQiWjuHxpwPGV+x/74+Du6aD0+oCha1B9kDpZRa3uh1Aru8pN+/XKQV7GoAR27UQ==
   dependencies:
     aliasify "^2.1.0"
     axios "^1.5.1"
@@ -4326,7 +4326,7 @@ jsonpath@^1.1.1:
     static-eval "2.0.2"
     underscore "1.12.1"
 
-jsonwebtoken@^9.0.2:
+jsonwebtoken@^9.0.0, jsonwebtoken@^9.0.2:
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-9.0.2.tgz#65ff91f4abef1784697d40952bb1998c504caaf3"
   integrity sha512-PRp66vJ865SSqOlgqS8hujT5U4AOgMfhrwYIuIhfKaoSCZcirrmASQr8CX7cUg+RMih+hgznrjp99o+W4pJLHQ==
@@ -4969,13 +4969,21 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-notifications-node-client@^8.0.0, notifications-node-client@^8.2.0:
+notifications-node-client@^8.2.0:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/notifications-node-client/-/notifications-node-client-8.2.1.tgz#6b3e0d855c675bcb706f0f773e25eb738b46688f"
   integrity sha512-wyZh/NbjN8S2uQX18utYtCyC726BBaGeTc4HeUpdhZv5sYKuaQY94N31v9syh8SzVgehyMzW37y08EePmi+k3Q==
   dependencies:
     axios "^1.7.2"
     jsonwebtoken "^9.0.2"
+
+notifications-node-client@~8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/notifications-node-client/-/notifications-node-client-8.0.0.tgz#474dd69c60a91a41f629be145bb6d361ccee63b6"
+  integrity sha512-65BxorFYVFOpJ9c2lud/4Ju+Bfn3L/vkih+FuzMhBw1wcOPjwgu4doVH6xO91fHYiAi/0uIx0Mc+NorXeANMHw==
+  dependencies:
+    axios "^1.6.1"
+    jsonwebtoken "^9.0.0"
 
 nwsapi@^2.2.0:
   version "2.2.12"
