@@ -134,3 +134,10 @@ spec:
       volumes:
         - name: public
           emptyDir: {}
+        - name: certs
+          secret:
+            {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+            secretName: branch-tls-external
+            {{ else if not (eq .KUBE_NAMESPACE .PROD_ENV) }}
+            secretName: ingress-internal
+            {{ end }}
