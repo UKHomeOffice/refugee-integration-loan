@@ -53,7 +53,7 @@ module.exports = class UploadPDFBase {
   }
 
   async sendEmailWithAttachment(req, pdfData) {
-    console.log('*************** BEHAVIOUR CONFIG ', this.behaviourConfig)
+    console.log('*************** BEHAVIOUR CONFIG ', this.behaviourConfig);
     const personalisations = this.behaviourConfig.notifyPersonalisations;
     const appName = this.behaviourConfig.app;
     const appComponent = this.behaviourConfig.component;
@@ -67,7 +67,7 @@ module.exports = class UploadPDFBase {
         req.log('warn', '*** Notify API Key set to USE_MOCK. Ensure disabled in production! ***');
       }
 
-      Console.log(notifyClient.prepareUpload(pdfData, { confirmEmailBeforeDownload: false }))
+      console.log(notifyClient.prepareUpload(pdfData, { confirmEmailBeforeDownload: false }));
 
       await notifyClient.sendEmail(config.govukNotify.templateForm[appName], caseworkerEmail, {
         personalisation: Object.assign({}, personalisations, {
@@ -156,7 +156,7 @@ module.exports = class UploadPDFBase {
     const pdfModel = new PDFModel();
     pdfModel.set({ template: html });
     const pdfData = await pdfModel.save();
-    console.log('*******************PDF DATA ', pdfData)
+    console.log('*******************PDF DATA ', pdfData);
 
     return await this.sendEmailWithAttachment(req, pdfData);
   }
