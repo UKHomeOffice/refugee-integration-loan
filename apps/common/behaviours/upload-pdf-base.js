@@ -80,6 +80,7 @@ module.exports = class UploadPDFBase {
 
       return await this.sendReceipt(req, notifyClient);
     } catch (err) {
+      console.log('********************* PDF ERROR ', err);
       const error = _.get(err, 'response.data.errors[0]', err.message || err);
       req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, error);
       throw new Error(error);
