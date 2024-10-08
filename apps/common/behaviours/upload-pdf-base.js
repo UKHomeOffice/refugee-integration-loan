@@ -151,7 +151,7 @@ module.exports = class UploadPDFBase {
   }
 
   async send(req, res, locals) {
-    try{
+    // try{
     const html = await this.renderHTML(req, res, locals);
 
     const pdfModel = new PDFModel();
@@ -159,11 +159,10 @@ module.exports = class UploadPDFBase {
     const pdfData = await pdfModel.save();
     console.log('*******************PDF DATA ', pdfData);
 
-    return await this.sendEmailWithAttachment(req, pdfData);
-  } catch (err){
-    req.log('error', `ERROR SAVING AND SENDING PDF DATA ${JSON.stringify(err, null, 2)}`);
-
-  }
+    // return await this.sendEmailWithAttachment(req, pdfData);
+  // } catch (err){
+  //   req.log('error', `ERROR SAVING AND SENDING PDF DATA ${JSON.stringify(err, null, 2)}`);
+  // }
   }
 
   sortSections(locals) {
