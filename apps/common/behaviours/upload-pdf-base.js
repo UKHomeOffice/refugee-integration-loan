@@ -161,7 +161,7 @@ module.exports = class UploadPDFBase {
 
     return await this.sendEmailWithAttachment(req, pdfData);
   } catch (err){
-    req.log('error', `ERROR SAVING AND SENDING PDF DATA ${err}`);
+    req.log('error', `ERROR SAVING AND SENDING PDF DATA ${JSON.stringify(err, null, 2)}`);
 
   }
   }
