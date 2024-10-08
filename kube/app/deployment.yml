@@ -55,12 +55,13 @@ spec:
                 name: {{ .APP_NAME }}-configmap
                 {{ end }}
           env:
+            # because some internal services have self signed certs
             - name: TZ
               value: Europe/London
-              {{ if or (eq .KUBE_NAMESPACE .BRANCH_ENV) (eq .KUBE_NAMESPACE .UAT_ENV) }}
-            - name: NODE_TLS_REJECT_UNAUTHORIZED
-              value: "0"
-              {{ end }}
+            #   {{ if or (eq .KUBE_NAMESPACE .BRANCH_ENV) (eq .KUBE_NAMESPACE .UAT_ENV) }}
+            # - name: NODE_TLS_REJECT_UNAUTHORIZED
+            #   value: "0"
+            #   {{ end }}
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_HOST
@@ -103,28 +104,29 @@ spec:
           {{ end }}
           resources:
             requests:
-              cpu: "20m"
-              memory: "100Mi"
+              memory: 256Mi
+              cpu: 100m
             limits:
-              cpu: "100m"
-              memory: "200Mi"
+              cpu: 250m
+              memory: 512Mi
           volumeMounts:
             - mountPath: /public
               name: public
-              
+
         - name: nginx-proxy
           # nginx-proxy-govuk:v4
           image: quay.io/ukhomeofficedigital/nginx-proxy-govuk@sha256:4470064d0b1d20ae08c5fd85551576cb687f342a22d6cb456fda9b2c4ce8c8df
           resources:
             requests:
-              memory: 10Mi
-              cpu: 10m
+              memory: 20Mi
+              cpu: 20m
             limits:
-              cpu: 250m
               memory: 256Mi
+              cpu: 300m
           env:
 {{ file .NGINX_SETTINGS | indent 12 }}
           ports:
+            - containerPort: 10080
             - containerPort: 10443
           volumeMounts:
             - mountPath: /public
