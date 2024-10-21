@@ -57,6 +57,9 @@ spec:
           env:
             - name: TZ
               value: Europe/London
+            # FIXME: This is a temporary fix because some internal services have self signed certs. This will need to be removed and certs will need to be reenabled in the future
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_HOST
