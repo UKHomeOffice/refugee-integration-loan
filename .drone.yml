@@ -368,7 +368,7 @@ steps:
     commands:
       - bin/deploy.sh tear_down
     when:
-      branch: master
+      #branch: master
       event: push
 
   # Deploy to Staging environment
