@@ -14,7 +14,7 @@ Feature: Joint Application
     Then I should be on the 'joint' page showing 'Are you applying for a loan together with your partner?'
     Then I choose 'Yes'
     Then I click the 'Continue' button
-    Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
+    Then I should be on the 'brp' page showing 'Biometric residence permit details'
     Then I fill 'brpNumber' with 'ZU1234567'
     Then I fill 'fullName' with 'Joint Test Application'
     Then I enter a date of birth for a 30 year old
@@ -204,7 +204,7 @@ Feature: Joint Application
     Then I should be on the 'joint' page showing 'Are you applying for a loan together with your partner?'
     Then I choose 'Yes'
     Then I click the 'Continue' button
-    Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
+    Then I should be on the 'brp' page showing 'Biometric residence permit details'
     Then I fill 'brpNumber' with 'ZU1234567'
     Then I fill 'fullName' with 'Mr Test'
     Then I enter a date of birth for a 30 year old

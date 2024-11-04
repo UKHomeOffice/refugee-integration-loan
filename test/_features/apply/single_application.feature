@@ -10,7 +10,7 @@ Feature: Single Application
     Then I should be on the 'partner' page showing 'Do you have a partner with you in the UK?'
     Then I choose 'No'
     Then I click the 'Continue' button
-    Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
+    Then I should be on the 'brp' page showing 'Biometric residence permit details'
     Then I fill 'brpNumber' with 'ZU1234567'
     Then I fill 'fullName' with 'Single Test Application'
     Then I enter a date of birth for a 30 year old
@@ -169,7 +169,7 @@ Feature: Single Application
     Then I should be on the 'partner' page showing 'Do you have a partner with you in the UK?'
     Then I choose 'No'
     Then I click the 'Continue' button
-    Then I should be on the 'brp' page showing 'What are your biometric residence permit (BRP) details?'
+    Then I should be on the 'brp' page showing 'Biometric residence permit details'
     Then I fill 'brpNumber' with 'ZU1234567'
     Then I fill 'fullName' with 'Mr Test'
     Then I enter a date of birth for a 30 year old
