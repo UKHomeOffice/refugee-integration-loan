@@ -59,14 +59,19 @@ module.exports = {
   dateOfBirth: dateComponent('dateOfBirth', {
     mixin: 'input-date',
     validate: ['required', after1900Validator, 'before', 'over18'],
-    autocomplete: 'bday'
+    autocomplete: 'bday',
+    legend: {
+      className: 'govuk-heading-s bold'
+    }
   }),
   fullName: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
-    autocomplete: 'name'
+    autocomplete: 'name',
+    labelClassName: ['govuk-heading-s', 'bold']
   },
   brpNumber: {
     className: ['govuk-input govuk-input--width-10'],
+    labelClassName: ['govuk-heading-s', 'bold'],
     validate: [brpNumber],
     formatter: ['uppercase']
   },
