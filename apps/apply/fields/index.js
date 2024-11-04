@@ -6,7 +6,8 @@ const after1900Validator = { type: 'after', arguments: ['1900'] };
 
 const brpNumber = {
   type: 'regex',
-  arguments: /^(?=(?:.){9})[a-zA-Z]{2}[xX0-9]{1}\d{6}$/
+  // Regex matches both BRP and the empty string as BRP is optional
+  arguments: /^(?:[a-zA-Z]{2}[xX0-9]{1}\d{6}|)$/
 };
 
 const niNumber = {
@@ -66,7 +67,7 @@ module.exports = {
   },
   brpNumber: {
     className: ['govuk-input govuk-input--width-10'],
-    validate: ['required', brpNumber],
+    validate: [brpNumber],
     formatter: ['uppercase']
   },
   niNumber: {
