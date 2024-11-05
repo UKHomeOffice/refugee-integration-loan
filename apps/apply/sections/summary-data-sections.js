@@ -6,7 +6,16 @@ const sumValues = values => values.map(it => Number(it)).reduce((a, b) => a + b,
 
 module.exports = {
   'pdf-applicant-details': [
-    'brpNumber',
+    {
+      step: '/brp',
+      field: 'brpNumber',
+      parse: (list, req) => {
+        if (!req.sessionModel.get('steps').includes('/brp')) {
+          return null;
+        }
+        return req.sessionModel.get('brpNumber') || '<None supplied>';
+      }
+    },
     'niNumber',
     'fullName',
     {
@@ -32,7 +41,16 @@ module.exports = {
     }
   ],
   'pdf-partner-details': [
-    'partnerBrpNumber',
+    {
+      step: '/partner-brp',
+      field: 'partnerBrpNumber',
+      parse: (list, req) => {
+        if (!req.sessionModel.get('steps').includes('/partner-brp')) {
+          return null;
+        }
+        return req.sessionModel.get('partnerBrpNumber') || '<None supplied>';
+      }
+    },
     'partnerNiNumber',
     'partnerFullName',
     {
