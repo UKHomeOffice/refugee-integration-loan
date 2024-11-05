@@ -46,8 +46,8 @@
     "header": "What is your Home Office reference number?"
   },
   "partner-brp": {
-    "header": "What are your partner’s biometric residence permit (BRP) details?",
-    "intro": "Enter details as they appear on your partner’s BRP."
+    "header": "Your partner’s biometric residence permit details",
+    "intro": "If you have a biometric residence permit (BRP), enter your details as they appear on the card. You can still use details from expired BRP cards."
   },
   "partner-ni-number": {
     "header": "What is your partner’s National Insurance number?"

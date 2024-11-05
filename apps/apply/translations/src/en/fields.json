@@ -123,7 +123,7 @@
     "changeLinkDescription": "Partner date of birth"
   },
   "partnerBrpNumber": {
-    "label": "Biometric residence permit (BRP) number",
+    "label": "BRP number (optional)",
     "hint": "For example, ‘ZUX123456 or ZU1234567’.",
     "changeLinkDescription": "Partner biometric residence permit (BRP) number"
   },
