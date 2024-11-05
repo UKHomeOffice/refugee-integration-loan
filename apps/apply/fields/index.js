@@ -6,7 +6,8 @@ const after1900Validator = { type: 'after', arguments: ['1900'] };
 
 const brpNumber = {
   type: 'regex',
-  arguments: /^(?=(?:.){9})[a-zA-Z]{2}[xX0-9]{1}\d{6}$/
+  // Regex matches both BRP and the empty string as BRP is optional
+  arguments: /^(?:[a-zA-Z]{2}[xX0-9]{1}\d{6}|)$/
 };
 
 const niNumber = {
@@ -58,15 +59,20 @@ module.exports = {
   dateOfBirth: dateComponent('dateOfBirth', {
     mixin: 'input-date',
     validate: ['required', after1900Validator, 'before', 'over18'],
-    autocomplete: 'bday'
+    autocomplete: 'bday',
+    legend: {
+      className: 'govuk-heading-s bold'
+    }
   }),
   fullName: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
-    autocomplete: 'name'
+    autocomplete: 'name',
+    labelClassName: ['govuk-heading-s', 'bold']
   },
   brpNumber: {
     className: ['govuk-input govuk-input--width-10'],
-    validate: ['required', brpNumber],
+    labelClassName: ['govuk-heading-s', 'bold'],
+    validate: [brpNumber],
     formatter: ['uppercase']
   },
   niNumber: {

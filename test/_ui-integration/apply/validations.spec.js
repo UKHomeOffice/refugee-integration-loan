@@ -105,7 +105,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('BRP Validations', () => {
-    it('does not pass the BRP page if BRP Number, Name and DOB are not entered', async () => {
+    it('does not pass the BRP page if Name and DOB are not entered', async () => {
       const URI = '/brp';
       await initSession(URI);
       await passStep(URI, {});
@@ -115,8 +115,6 @@ describe('validation checks of the apply journey', () => {
       const validationSummary = docu.find('.govuk-error-summary');
 
       expect(validationSummary.length === 1).to.be.true;
-      expect(validationSummary.html())
-        .to.match(/Enter your BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your full name/);
       expect(validationSummary.html())

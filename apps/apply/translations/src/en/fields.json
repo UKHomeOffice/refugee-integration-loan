@@ -67,8 +67,8 @@
     "changeLinkDescription": "Your date of birth"
   },
   "brpNumber": {
-    "label": "Biometric residence permit (BRP) number",
-    "hint": "For example, ‘ZUX123456 or ZU1234567’.",
+    "label": "BRP number (optional)",
+    "hint": "For example, ZUX123456 or ZU1234567",
     "changeLinkDescription": "Your Biometric residence permit (BRP) number"
   },
   "niNumber": {

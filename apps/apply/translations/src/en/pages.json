@@ -16,8 +16,11 @@
     "header": "Are you applying for a loan together with your partner?"
   },
   "brp": {
-    "header": "What are your biometric residence permit (BRP) details?",
-    "intro": "Enter your details as they appear on your BRP."
+    "header": "Biometric residence permit details",
+    "intro": "If you have a biometric residence permit (BRP), enter your details as they appear on the card. You can still use details from expired BRP cards.",
+    "image-alt": "The biometric residence permit number in the top right hand corner of the biometric residence permit.",
+    "detail-summary": "Where to find your BRP number",
+    "detail-text": "BRP numbers are on the top right hand corner of the card, on the same side as the personal information."
   },
   "ni-number": {
     "header": "What is your National Insurance number?"

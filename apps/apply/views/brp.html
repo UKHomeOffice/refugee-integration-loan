@@ -1,10 +1,27 @@
 {{<partials-page}}
   {{$page-content}}
+
       <div class="govuk-form-group">
-          <img src="{{assetPath}}/images/card-example-xsmall.png" width="300px" alt="The biometric residence permit number in the top right hand corner of the biometric residence permit.">
-          {{#fields}}
-              {{#renderField}}{{/renderField}}
-          {{/fields}}
+
+          {{#renderField}}brpNumber{{/renderField}}
+
+          <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">
+                {{#t}}pages.brp.detail-summary{{/t}}
+              </span>
+            </summary>
+            <div class="govuk-details__text">
+              <p class="govuk-body">{{#t}}pages.brp.detail-text{{/t}}</p>
+              <div class="image-wrapper">
+                <img src="{{assetPath}}/images/card-example-xsmall.png" width="360px" alt="">
+              </div>
+            </div>
+          </details>
+      
+          {{#renderField}}fullName{{/renderField}}
+          {{#renderField}}dateOfBirth{{/renderField}}
+    
       </div>
 
       {{#input-submit}}continue{{/input-submit}}

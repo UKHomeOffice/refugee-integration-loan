@@ -127,7 +127,7 @@ module.exports = {
       fields: ['partnerBrpNumber', 'partnerFullName', 'partnerDateOfBirth'],
       behaviours: [setDateErrorLink],
       next: '/partner-ni-number',
-      template: 'brp'
+      template: 'partner-brp'
     },
     '/partner-ni-number': {
       fields: ['partnerNiNumber'],
