@@ -165,17 +165,22 @@ module.exports = {
   partnerDateOfBirth: dateComponent('partnerDateOfBirth', {
     mixin: 'input-date',
     validate: ['required', after1900Validator, 'before', 'over18'],
-    autocomplete: 'bday'
+    autocomplete: 'bday',
+    legend: {
+      className: 'govuk-heading-s bold'
+    }
   }),
   partnerFullName: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 200 }],
     className: 'govuk-input',
-    autocomplete: 'name'
+    autocomplete: 'name',
+    labelClassName: ['govuk-heading-s', 'bold']
   },
   partnerBrpNumber: {
-    formatter: ['removespaces', 'uppercase'],
     className: 'govuk-input govuk-input--width-10',
-    validate: ['required', brpNumber]
+    labelClassName: ['govuk-heading-s', 'bold'],
+    validate: [brpNumber],
+    formatter: ['removespaces', 'uppercase']
   },
   partnerNiNumber: {
     className: ['govuk-input govuk-input--width-10'],

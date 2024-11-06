@@ -402,7 +402,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   describe('Partner BRP Validations', () => {
-    it('does not pass the Partner BRP page if BRP Number, Name and DOB are not entered', async () => {
+    it('does not pass the Partner BRP page if Name and DOB are not entered', async () => {
       const URI = '/partner-brp';
       await initSession(URI);
       await passStep(URI, {});
@@ -412,8 +412,6 @@ describe('validation checks of the apply journey', () => {
       const validationSummary = docu.find('.govuk-error-summary');
 
       expect(validationSummary.length === 1).to.be.true;
-      expect(validationSummary.html())
-        .to.match(/Enter your partner's BRP number in the correct format; for example, ‘ZUX123456 or ZU1234567’/);
       expect(validationSummary.html())
         .to.match(/Enter your partner's full name/);
       expect(validationSummary.html())
