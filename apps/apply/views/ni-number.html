@@ -1,11 +1,17 @@
 {{<partials-page}}
   {{$page-content}}
-    <div class="govuk-form-group">
-      <img src="{{assetPath}}/images/brp-back.svg" width="300px" alt="">
-      {{#fields}}
-        {{#renderField}}{{/renderField}}
-      {{/fields}}
-    </div>
+
+    <ul class="list list-bullet">
+        <li>{{#t}}pages.ni-number.bullet1{{/t}}</li>
+        <li>{{#t}}pages.ni-number.bullet2{{/t}}</li>
+        <li>{{#t}}pages.ni-number.bullet3{{/t}}</li>
+        <li>{{#t}}pages.ni-number.bullet4{{/t}}</li>
+        <li>{{#t}}pages.ni-number.bullet5{{/t}}</li>
+    </ul>
+
+    {{#fields}}
+      {{#renderField}}{{/renderField}}
+    {{/fields}}
 
     {{#input-submit}}continue{{/input-submit}}
   {{/page-content}}
