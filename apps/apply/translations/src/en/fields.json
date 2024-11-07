@@ -128,8 +128,8 @@
     "changeLinkDescription": "Partner biometric residence permit (BRP) number"
   },
   "partnerNiNumber": {
-    "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your partner’s biometric residence permit (BRP).",
+    "label": "What is your partner’s National Insurance number?",
+    "hint": "For example, ‘QQ 12 34 56 C’",
     "changeLinkDescription": "Partner national insurance number"
   },
   "partnerHasOtherNames": {
