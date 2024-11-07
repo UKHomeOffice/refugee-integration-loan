@@ -23,7 +23,13 @@
     "detail-text": "BRP numbers are on the top right hand corner of the card, on the same side as the personal information."
   },
   "ni-number": {
-    "header": "What is your National Insurance number?"
+    "header": "National Insurance number",
+    "intro": "You can find your National Insurance number:",
+    "bullet1": "on your National Insurance card",
+    "bullet2": "benefit letters",
+    "bullet3": "payslips",
+    "bullet4": "P60s",
+    "bullet5": "on the back of your biometric residence permit"
   },
   "has-other-names": {
     "header": "Have you been known by any other names?"

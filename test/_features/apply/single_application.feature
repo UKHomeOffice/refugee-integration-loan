@@ -15,7 +15,7 @@ Feature: Single Application
     Then I fill 'fullName' with 'Single Test Application'
     Then I enter a date of birth for a 30 year old
     Then I click the 'Continue' button
-    Then I should be on the 'ni-number' page showing 'What is your National Insurance number?'
+    Then I should be on the 'ni-number' page showing 'National Insurance number'
     Then I fill 'niNumber' with 'js111111d'
     Then I click the 'Continue' button
     Then I should be on the 'has-other-names' page showing 'Have you been known by any other names?'
@@ -174,7 +174,7 @@ Feature: Single Application
     Then I fill 'fullName' with 'Mr Test'
     Then I enter a date of birth for a 30 year old
     Then I click the 'Continue' button
-    Then I should be on the 'ni-number' page showing 'What is your National Insurance number?'
+    Then I should be on the 'ni-number' page showing 'National Insurance number'
     Then I fill 'niNumber' with 'js111111d'
     Then I click the 'Continue' button
     Then I should be on the 'has-other-names' page showing 'Have you been known by any other names?'

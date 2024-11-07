@@ -72,8 +72,8 @@
     "changeLinkDescription": "Your Biometric residence permit (BRP) number"
   },
   "niNumber": {
-    "label": "National Insurance number",
-    "hint": "For example, ‘QQ 12 34 56 C’. You can find this on the back of your biometric residence permit (BRP).",
+    "label": "What is your National Insurance number?",
+    "hint": "For example, ‘QQ 12 34 56 C’",
     "changeLinkDescription": "Your national insurance number"
   },
   "hasOtherNames": {
