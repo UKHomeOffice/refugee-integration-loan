@@ -56,7 +56,8 @@
     "intro": "If you have a biometric residence permit (BRP), enter your details as they appear on the card. You can still use details from expired BRP cards."
   },
   "partner-ni-number": {
-    "header": "What is your partner’s National Insurance number?"
+    "header": "Your partner’s National Insurance number",
+    "intro": "You can find your partner’s National Insurance number:"
   },
   "partner-has-other-names": {
     "header": "Has your partner been known by any other names?"

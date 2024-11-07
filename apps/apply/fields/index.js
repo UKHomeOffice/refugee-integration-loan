@@ -185,6 +185,7 @@ module.exports = {
   },
   partnerNiNumber: {
     className: ['govuk-input govuk-input--width-10'],
+    labelClassName: ['govuk-heading-s', 'bold'],
     validate: ['required', niNumber],
     formatter: ['removespaces', 'uppercase']
   },
