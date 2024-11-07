@@ -47,7 +47,7 @@ Feature: Joint Application
     Then I fill 'partnerFullName' with 'Mrs Test'
     Then I enter a 'partner' date of birth for a 28 year old
     Then I click the 'Continue' button
-    Then I should be on the 'partner-ni-number' page showing 'What is your partner’s National Insurance number?'
+    Then I should be on the 'partner-ni-number' page showing 'Your partner’s National Insurance number'
     Then I fill 'partnerNiNumber' with 'sj222222c'
     Then I click the 'Continue' button
     Then I should be on the 'partner-has-other-names' page showing 'Has your partner been known by any other names?'
@@ -223,7 +223,7 @@ Feature: Joint Application
     Then I fill 'partnerFullName' with 'Mrs Test'
     Then I enter a 'partner' date of birth for a 28 year old
     Then I click the 'Continue' button
-    Then I should be on the 'partner-ni-number' page showing 'What is your partner’s National Insurance number?'
+    Then I should be on the 'partner-ni-number' page showing 'Your partner’s National Insurance number'
     Then I fill 'partnerNiNumber' with 'sj222222c'
     Then I click the 'Continue' button
     Then I should be on the 'partner-has-other-names' page showing 'Has your partner been known by any other names?'
