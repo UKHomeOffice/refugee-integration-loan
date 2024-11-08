@@ -13,7 +13,7 @@ module.exports = {
         if (!req.sessionModel.get('steps').includes('/brp')) {
           return null;
         }
-        return req.sessionModel.get('brpNumber') || '<None supplied>';
+        return req.sessionModel.get('brpNumber') || '';
       }
     },
     'niNumber',
@@ -48,7 +48,7 @@ module.exports = {
         if (!req.sessionModel.get('steps').includes('/partner-brp')) {
           return null;
         }
-        return req.sessionModel.get('partnerBrpNumber') || '<None supplied>';
+        return req.sessionModel.get('partnerBrpNumber') || '';
       }
     },
     'partnerNiNumber',
