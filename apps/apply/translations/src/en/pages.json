@@ -22,6 +22,9 @@
     "detail-summary": "Where to find your BRP number",
     "detail-text": "BRP numbers are on the top right hand corner of the card, on the same side as the personal information."
   },
+  "dependant-details": {
+    "header": "Your dependants"
+  },
   "ni-number": {
     "header": "National Insurance number",
     "intro": "You can find your National Insurance number:",
