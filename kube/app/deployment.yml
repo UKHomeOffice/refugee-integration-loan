@@ -110,13 +110,8 @@ spec:
           volumeMounts:
             - mountPath: /public
               name: public
-            - name: certs
-              secret:
-                {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-                secretName: tls
-                {{ else }}
-                secretName: file-vault-cert
-                {{ end }}
+            - mountPath: /certs
+              name: certs
             - name: bundle
               configMap:
                 name: bundle
