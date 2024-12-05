@@ -145,6 +145,9 @@ spec:
                 BasicRule wl:1500 "mz:FILE_EXT";
             - name: ADD_NGINX_SERVER_CFG
               value: |-
+                ssl_stapling on;
+                ssl_stapling_verify on;
+                ssl_trusted_certificate /etc/keys/crt;
                 add_header Cache-Control private;
                 add_header X-Frame-Options "SAMEORIGIN" always;
                 add_header X-Content-Type-Options "nosniff" always;
@@ -156,9 +159,6 @@ spec:
                   add_header X-XSS-Protection "1; mode=block" always;
                   alias /public;
                 }
-                ssl_stapling on;
-                ssl_stapling_verify on;
-                ssl_trusted_certificate /etc/keys/crt;
 # {{ file .NGINX_SETTINGS | indent 12 }}
           ports:
             - containerPort: 10443
