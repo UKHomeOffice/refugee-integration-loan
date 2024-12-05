@@ -111,12 +111,12 @@ spec:
             - mountPath: /public
               name: public
             - name: certs
-            secret:
-              {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-              secretName: tls
-              {{ else }}
-              secretName: file-vault-cert
-              {{ end }}
+              secret:
+                {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+                secretName: tls
+                {{ else }}
+                secretName: file-vault-cert
+                {{ end }}
             - name: bundle
               configMap:
                 name: bundle
