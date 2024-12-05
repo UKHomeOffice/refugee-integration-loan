@@ -50,6 +50,15 @@ spec:
           env:
             - name: APP_PORT
               value: "8001"
+          volumeMounts:
+            - mountPath: /public
+              name: public
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+            - name: bundle
+              mountPath: /etc/ssl/certs
+              readOnly: true
           securityContext:
             runAsNonRoot: true
 
