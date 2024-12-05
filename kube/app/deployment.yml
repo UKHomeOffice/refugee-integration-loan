@@ -158,7 +158,7 @@ spec:
                 }
                 ssl_stapling on;
                 ssl_stapling_verify on;
-                ssl_trusted_certificate /etc/nginx/certs/tls.crt;
+                ssl_trusted_certificate /etc/keys/crt;
 # {{ file .NGINX_SETTINGS | indent 12 }}
           ports:
             - containerPort: 10443
