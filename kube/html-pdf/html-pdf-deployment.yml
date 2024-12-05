@@ -87,9 +87,15 @@ spec:
               value: "FALSE"
             - name: ERROR_REDIRECT_CODES
               value: "599"
+            - name: SERVER_CERT
+              value: /certs/tls.crt
+            - name: SERVER_KEY
+              value: /certs/tls.key
             - name: ADD_NGINX_SERVER_CFG
               value: |-
-                ssl_trusted_certificate /etc/keys/crt;
+                ssl_certificate /etc/nginx/certs/tls.crt;
+                ssl_certificate_key /etc/nginx/certs/tls.key;
+                ssl_trusted_certificate /etc/nginx/certs/ca.crt;
           volumeMounts:
             - mountPath: /public
               name: public

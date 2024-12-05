@@ -147,14 +147,14 @@ spec:
               value: |-
                 ssl_stapling on;
                 ssl_stapling_verify on;
-                ssl_trusted_certificate /etc/keys/crt;
+                ssl_certificate /etc/nginx/certs/tls.crt;
+                ssl_certificate_key /etc/nginx/certs/tls.key;
+                ssl_trusted_certificate /etc/nginx/certs/ca.crt;
                 add_header Cache-Control private;
-                add_header X-Frame-Options "SAMEORIGIN" always;
                 add_header X-Content-Type-Options "nosniff" always;
                 add_header X-XSS-Protection "1; mode=block" always;
                 location /public {
                   add_header Cache-Control max-age=86400;
-                  add_header X-Frame-Options "SAMEORIGIN" always;
                   add_header X-Content-Type-Options "nosniff" always;
                   add_header X-XSS-Protection "1; mode=block" always;
                   alias /public;
