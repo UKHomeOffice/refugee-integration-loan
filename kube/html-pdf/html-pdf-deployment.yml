@@ -80,11 +80,31 @@ spec:
               value: "599"
             - name: ADD_NGINX_SERVER_CFG
               value: |-
-                ssl_stapling on;
-                ssl_stapling_verify on;
                 ssl_trusted_certificate /etc/keys/crt;
+          volumeMounts:
+            - mountPath: /public
+              name: public
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+            - name: bundle
+              mountPath: /etc/ssl/certs
+              readOnly: true      
           securityContext:
             runAsNonRoot: true
           ports:
             - containerPort: 10080
             - containerPort: 10443
+      volumes:
+        - name: public
+          emptyDir: {}
+        - name: certs
+          secret:
+            {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+            secretName: tls
+            {{ else }}
+            secretName: tls-cert
+            {{ end }}
+        - name: bundle
+          configMap:
+            name: bundle
