@@ -12,7 +12,6 @@
 #     kind: ClusterIssuer
 #     name: letsencrypt-prod
 #   secretName: branch-tls-external
-
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
