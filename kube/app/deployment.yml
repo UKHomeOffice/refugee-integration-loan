@@ -110,6 +110,16 @@ spec:
           volumeMounts:
             - mountPath: /public
               name: public
+            - name: certs
+            secret:
+              {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+              secretName: tls
+              {{ else }}
+              secretName: file-vault-cert
+              {{ end }}
+            - name: bundle
+              configMap:
+                name: bundle
               
         - name: nginx-proxy
           # nginx-proxy-govuk:v4
@@ -128,8 +138,24 @@ spec:
           volumeMounts:
             - mountPath: /public
               name: public
+            - mountPath: /certs
+              name: certs
+              readOnly: true
+            - name: bundle
+              mountPath: /etc/ssl/certs
+              readOnly: true
           securityContext:
             runAsNonRoot: true
       volumes:
         - name: public
           emptyDir: {}
+        - name: certs
+          secret:
+            {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
+            secretName: tls
+            {{ else }}
+            secretName: tls-cert
+            {{ end }}
+        - name: bundle
+          configMap:
+            name: bundle
