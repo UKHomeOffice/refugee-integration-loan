@@ -82,7 +82,7 @@ spec:
               value: |-
                 ssl_stapling on;
                 ssl_stapling_verify on;
-                ssl_trusted_certificate /etc/nginx/certs/tls.crt;
+                ssl_trusted_certificate /etc/keys/crt;
           securityContext:
             runAsNonRoot: true
           ports:
