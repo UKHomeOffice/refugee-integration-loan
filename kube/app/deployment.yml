@@ -147,9 +147,9 @@ spec:
               value: |-
                 ssl_stapling on;
                 ssl_stapling_verify on;
-                ssl_certificate /etc/keys/tls.crt;
-                ssl_certificate_key /etc/keys/tls.key;
-                ssl_trusted_certificate /etc/keys/ca.crt;
+                ssl_certificate /etc/keys/crt;
+                ssl_certificate_key /etc/keys/key;
+                ssl_trusted_certificate /etc/keys/crt;
                 add_header Cache-Control private;
                 add_header X-Content-Type-Options "nosniff" always;
                 add_header X-XSS-Protection "1; mode=block" always;

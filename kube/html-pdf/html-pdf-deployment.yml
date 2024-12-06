@@ -93,9 +93,9 @@ spec:
               value: /certs/tls.key
             - name: ADD_NGINX_SERVER_CFG
               value: |-
-                ssl_certificate /etc/keys/tls.crt;
-                ssl_certificate_key /etc/keys/tls.key;
-                ssl_trusted_certificate /etc/keys/ca.crt;
+                ssl_certificate /etc/keys/crt;
+                ssl_certificate_key /etc/keys/key;
+                ssl_trusted_certificate /etc/keys/crt;
           volumeMounts:
             - mountPath: /public
               name: public
