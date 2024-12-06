@@ -147,7 +147,7 @@ spec:
               value: |-
                 ssl_stapling on;
                 ssl_stapling_verify on;
-                ssl_verify_client on;
+                ssl_stapling_responder http://x1.i.lencr.org;
                 resolver 8.8.8.8 8.8.4.4;
                 ssl_certificate /certs/tls.crt;
                 ssl_certificate_key /certs/tls.key;
