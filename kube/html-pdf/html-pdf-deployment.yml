@@ -95,7 +95,7 @@ spec:
               value: |-
                 ssl_certificate /certs/tls.crt;
                 ssl_certificate_key /certs/tls.key;
-                ssl_trusted_certificate /certs/ca.crt;
+                ssl_trusted_certificate /certs/tls.crt;
           volumeMounts:
             - mountPath: /public
               name: public
