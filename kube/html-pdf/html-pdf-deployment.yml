@@ -95,7 +95,8 @@ spec:
               value: |-
                 resolver 8.8.8.8 8.8.4.4;
                 ssl_stapling_verify on;
-                ssl_stapling_url http://ocsp-responder-url.com;
+                ssl_verify_client on;
+                ssl_ocsp on;
                 ssl_certificate /certs/tls.crt;
                 ssl_certificate_key /certs/tls.key;
                 ssl_trusted_certificate /certs/tls.crt;
