@@ -146,7 +146,9 @@ spec:
             - name: ADD_NGINX_SERVER_CFG
               value: |-
                 ssl_stapling on;
-                ssl_stapling_verify off;
+                ssl_stapling_verify on;
+                ssl_stapling_url http://x1.i.lencr.org
+                resolver 8.8.8.8 8.8.4.4;
                 ssl_certificate /certs/tls.crt;
                 ssl_certificate_key /certs/tls.key;
                 ssl_trusted_certificate /certs/tls.crt;
