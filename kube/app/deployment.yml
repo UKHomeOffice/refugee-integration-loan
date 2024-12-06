@@ -5,8 +5,8 @@ metadata:
   {{ if eq .KUBE_NAMESPACE .PROD_ENV }}
   name: {{ .APP_NAME }}
   {{ else if eq .KUBE_NAMESPACE .BRANCH_ENV }}
-  annotations:
-    downscaler/uptime: {{ .NON_PROD_AVAILABILITY }}
+  # annotations:
+  #   downscaler/uptime: {{ .NON_PROD_AVAILABILITY }}
   name: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}
   {{ else }}
   annotations:
