@@ -17,6 +17,8 @@ spec:
         - {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}.{{ .BRANCH_ENV }}.homeoffice.gov.uk
       {{ else if eq .KUBE_NAMESPACE .UAT_ENV }}
         - {{ .APP_NAME }}.uat.sas-notprod.homeoffice.gov.uk
+      {{ else if eq .KUBE_NAMESPACE .STG_ENV }}
+        - {{ .APP_NAME }}.stg.sas.homeoffice.gov.uk
       {{ else }}
         - {{ .PRODUCTION_URL }}
       {{ end }}
@@ -30,6 +32,8 @@ spec:
     - host: {{ .APP_NAME }}-{{ .DRONE_SOURCE_BRANCH }}.{{ .BRANCH_ENV }}.homeoffice.gov.uk
     {{ else if eq .KUBE_NAMESPACE .UAT_ENV }}
     - host: {{ .APP_NAME }}.uat.sas-notprod.homeoffice.gov.uk
+    {{ else if eq .KUBE_NAMESPACE .STG_ENV }}
+    - host: {{ .APP_NAME }}.stg.sas.homeoffice.gov.uk
     {{ else }}
     - host: {{ .PRODUCTION_URL }}
     {{ end }}
