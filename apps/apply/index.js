@@ -350,6 +350,7 @@ module.exports = {
     },
     '/ineligible': {
       template: 'ineligible'
-    }
+    },
+    '/exit': {}
   }
 };

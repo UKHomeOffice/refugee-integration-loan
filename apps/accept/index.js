@@ -30,6 +30,7 @@ module.exports = {
     },
     '/complete-acceptance': {
       clearSession: true
-    }
+    },
+    '/exit': {}
   }
 };

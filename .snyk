@@ -5,21 +5,25 @@ ignore:
   SNYK-JS-INFLIGHT-6095116:
     - '*':
       reason: No update available.
-      expires: '2024-10-03T00:00:00.000Z'
+      expires: '2025-06-13T00:00:00.000Z'
   SNYK-JS-MARKDOWNIT-6483324:
     - hof > markdown-it:
       reason: Need to update markdown-it in HOF to version 13.0.2.
-      expires: '2024-10-03T00:00:00.000Z'
+      expires: '2025-06-13T00:00:00.000Z'
   SNYK-JS-PATHTOREGEXP-7925106:
     - '*':
       reason: No direct update available.
-      expires: '2024-12-12T00:00:00.000Z'
+      expires: '2025-06-13T00:00:00.000Z'
   SNYK-JS-ELLIPTIC-8187303:
     - '*':
       reason: No direct update available.
-      expires: '2025-01-21T00:00:00.000Z'
+      expires: '2025-06-13T00:00:00.000Z'
   SNYK-JS-AXIOS-6671926:
     - '*':
       reason: No direct update available.
-      expires: '2025-01-21T00:00:00.000Z'
+      expires: '2025-06-13T00:00:00.000Z'
+  SNYK-JS-PATHTOREGEXP-8482416:
+    - '*':
+      reason: No direct update available.
+      expires: '2025-06-13T00:00:00.000Z'
 patch: {}

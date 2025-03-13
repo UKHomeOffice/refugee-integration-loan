@@ -7,6 +7,7 @@ describe('Server.js app file', () => {
   let sendStub;
   let translateStub;
   let behavioursFieldFilterStub;
+  let behavioursSessionTimeoutWarningStub;
   let appsCommonStub;
   let appsApplyStub;
   let appsAcceptStub;
@@ -41,6 +42,7 @@ describe('Server.js app file', () => {
     appsAcceptStub = sinon.stub();
     appsImproveOurServicesStub = sinon.stub();
     behavioursClearSessionStub = sinon.stub();
+    behavioursSessionTimeoutWarningStub = sinon.stub();
 
     useStub.onCall(0);
     useStub.onCall(1);
@@ -52,6 +54,7 @@ describe('Server.js app file', () => {
       hof: hofStub,
       'hof/components/clear-session': behavioursClearSessionStub,
       './apps/common/behaviours/fields-filter': behavioursFieldFilterStub,
+      'hof/components/session-timeout-warning': behavioursSessionTimeoutWarningStub,
       './apps/common': appsCommonStub,
       './apps/apply/': appsApplyStub,
       './apps/accept/': appsAcceptStub,
@@ -66,7 +69,8 @@ describe('Server.js app file', () => {
         theme: 'govUK',
         behaviours: [
           behavioursClearSessionStub,
-          behavioursFieldFilterStub
+          behavioursFieldFilterStub,
+          behavioursSessionTimeoutWarningStub
         ],
         translations: './apps/common/translations',
         routes: [
