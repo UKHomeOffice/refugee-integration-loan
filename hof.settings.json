@@ -3,7 +3,8 @@
   "theme": "govUK",
   "behaviours": [
     "hof/components/clear-session",
-    "./apps/common/behaviours/fields-filter"
+    "./apps/common/behaviours/fields-filter",
+    "hof/components/session-timeout-warning"
   ],
   "translations": "./apps/common/translations",
   "routes": [
