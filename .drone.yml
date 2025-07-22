@@ -17,10 +17,18 @@ environment:
   NON_PROD_AVAILABILITY: Mon-Fri 00:01-23:59 Europe/London
   READY_FOR_TEST_DELAY: 20s
 
+include_default_branch: &include_default_branch
+  include:
+    - master
+
+include_default_and_feature_branches: &include_default_and_feature_branches
+  include:
+    - master
+    - feature/*
+  
 trigger:
   branch:
-    - feature/*
-    - master
+    <<: *include_default_and_feature_branches
 
 node_image: &node_image
   pull: if-not-exists
@@ -108,7 +116,20 @@ steps:
         - feature/*
       event: [push, pull_request]
 
-  - name: setup_deploy
+  # - name: setup_deploy
+  #   <<: *node_image
+  #   environment:
+  #     NOTIFY_STUB: true
+  #   commands:
+  #     - yarn install --frozen-lockfile
+  #     - yarn run postinstall
+  #   when:
+  #     branch:
+  #       include:
+  #       - master
+  #     event: push
+
+  - name: setup
     <<: *node_image
     environment:
       NOTIFY_STUB: true
@@ -117,49 +138,114 @@ steps:
       - yarn run postinstall
     when:
       branch:
-        include:
-        - master
-      event: push
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
 
-  - name: linting_deploy
+  # - name: linting_deploy
+  #   <<: *linting
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #     event: push
+  #   depends_on:
+  #     - setup_deploy
+
+  # - name: unit_tests_deploy
+  #   <<: *unit_tests
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #     event: push
+  #   depends_on:
+  #     - setup_deploy
+
+  # - name: sonar_scanner_deploy
+  #   <<: *sonar_scanner
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #     event: push
+
+
+  # - name: ui_integration_tests_deploy
+  #   <<: *ui_integration_tests
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #     event: push
+  #   depends_on:
+  #     - setup_deploy
+
+  # - name: accessibility_tests_deploy
+  #   <<: *accessibility_tests
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #     event: push
+  #   depends_on:
+  #     - setup_deploy
+  
+  - name: linting
     <<: *linting
     when:
       branch:
-        include:
-          - master
-      event: push
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+    depends_on:
+      - setup
 
   - name: unit_tests_deploy
     <<: *unit_tests
     when:
       branch:
-        include:
-          - master
-      event: push
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+    depends_on:
+      - setup
 
-  - name: sonar_scanner_deploy
+  - name: sonar_scanner
     <<: *sonar_scanner
     when:
       branch:
-        include:
-          - master
-      event: push
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
 
-  - name: ui_integration_tests_deploy
+
+  - name: ui_integration_tests
     <<: *ui_integration_tests
     when:
       branch:
-        include:
-          - master
-      event: push
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+    depends_on:
+      - setup
 
-  - name: accessibility_tests_deploy
+  - name: accessibility_tests
     <<: *accessibility_tests
     when:
       branch:
-        include:
-          - master
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+    depends_on:
+      - setup
+
+  - name: acceptance_tests_uat
+    <<: *acceptance_tests
+    commands:
+      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
+      - npx playwright install
+      - npm run test:acceptance
+    when:
+      branch:
+        <<: *include_default_branch
       event: push
+    depends_on:
+      - setup
 
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -170,10 +256,14 @@ steps:
       - name: dockersock
         path: /var/run
     when:
-      branch: master
+      branch:
+        <<: *include_default_branch
       event: [push, pull_request]
+    depends_on: 
+      - linting
+      - unit_tests
 
-  - name: create_artefact
+  - name: image_to_ecr
     image: plugins/ecr
     settings:
       access_key:
@@ -187,8 +277,10 @@ steps:
         - latest_${DRONE_BRANCH}
         - ${DRONE_COMMIT_SHA}
     when:
-      branch: master
+      <<: *include_default_and_feature_branches
       event: [push, pull_request]
+    depends_on: 
+      - build_image
 
   # Trivy Security Scannner
   - name: scan-image
@@ -209,6 +301,8 @@ steps:
       - pull_request
       - push
       - tag
+    depends_on:
+      - build_image
 
   # Deploy to pull request UAT environment
   - name: deploy_to_branch
@@ -221,67 +315,77 @@ steps:
     commands:
       - bin/deploy.sh $${BRANCH_ENV}
     when:
-      branch: master
+      <<: *include_default_and_feature_branches
       event: pull_request
+    depends_on:
+      - image_to_ecr
 
-  - name: setup_branch
-    <<: *node_image
-    environment:
-      NOTIFY_STUB: true
-    commands:
-      - yarn install --frozen-lockfile
-      - yarn run postinstall
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
+  # - name: setup_branch
+  #   <<: *node_image
+  #   environment:
+  #     NOTIFY_STUB: true
+  #   commands:
+  #     - yarn install --frozen-lockfile
+  #     - yarn run postinstall
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #         - feature/*
+  #     event: pull_request
 
-  - name: linting_branch
-    <<: *linting
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
+  # - name: linting_branch
+  #   <<: *linting
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #         - feature/*
+  #     event: pull_request
+  #   depends_on:
+  #     - setup_branch
 
-  - name: unit_tests_branch
-    <<: *unit_tests
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
+  # - name: unit_tests_branch
+  #   <<: *unit_tests
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #         - feature/*
+  #     event: pull_request
+  #   depends_on:
+  #     - setup_branch
 
-  - name: sonar_scanner_branch
-    <<: *sonar_scanner
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
+  # - name: sonar_scanner_branch
+  #   <<: *sonar_scanner
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #         - feature/*
+  #     event: pull_request
 
-  - name: ui_integration_tests_branch
-    <<: *ui_integration_tests
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
+  # - name: ui_integration_tests_branch
+  #   <<: *ui_integration_tests
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #         - feature/*
+  #     event: pull_request
+  #   depends_on:
+  #     - setup_branch
 
-  - name: accessibility_tests_branch
-    <<: *accessibility_tests
-    when:
-      branch:
-        include:
-          - master
-          - feature/*
-      event: pull_request
+  # - name: accessibility_tests_branch
+  #   <<: *accessibility_tests
+  #   when:
+  #     branch:
+  #       include:
+  #         - master
+  #         - feature/*
+  #     event: pull_request
+  #   depends_on:
+  #     - setup_branch
 
   - name: acceptance_tests_branch
     <<: *acceptance_tests
@@ -290,8 +394,11 @@ steps:
       - npx playwright install
       - npm run test:acceptance
     when:
-      branch: master
+      branch:
+        <<: *include_default_and_feature_branches
       event: pull_request
+    depends_on:
+      - setup
 
   # Snyk security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
@@ -304,10 +411,10 @@ steps:
       - yarn run test:snyk
     when:
       branch:
-        include:
-          - master
-          - feature/*
+        <<: *include_default_and_feature_branches
       event: pull_request
+    depends_on: 
+      - build_image
 
   # Deploy to Master UAT environment
   - name: deploy_to_uat
@@ -320,18 +427,11 @@ steps:
     commands:
       - bin/deploy.sh $${UAT_ENV}
     when:
-      branch: master
+      branch:
+        <<: *include_default_branch
       event: push
-
-  - name: acceptance_tests_uat
-    <<: *acceptance_tests
-    commands:
-      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
-      - npx playwright install
-      - npm run test:acceptance
-    when:
-      branch: master
-      event: push
+    depends_on:
+      - image_to_ecr
 
   # Get pull request branch so correct PR UAT environment is torn down in the tear_down_branch step that follows
   - name: get_pr_branch
@@ -348,7 +448,8 @@ steps:
     commands:
       - drone build info $GIT_REPO $DRONE_BUILD_NUMBER --format {{.Message}} | grep -o " '.*' " | tr -d "[ ']" | tr '[:upper:]' '[:lower:]' | tr '/' '-' > /root/.dockersock/branch_name.txt
     when:
-      branch: master
+      branch:
+        <<: *include_default_branch
       event: push
 
   # Tear down pull request UAT environment
@@ -365,8 +466,12 @@ steps:
     commands:
       - bin/deploy.sh tear_down
     when:
-      branch: master
+      branch:
+        <<: *include_default_branch
       event: push
+    depends_on:
+      - get_pr_branch
+      - deploy_to_uat
 
   # Deploy to Staging environment
   - name: deploy_to_stg
@@ -379,8 +484,12 @@ steps:
     commands:
       - bin/deploy.sh $${STG_ENV}
     when:
-      branch: master
+      branch:
+        <<: *include_default_branch
       event: push
+    depends_on:
+      - image_to_ecr
+      - deploy_to_uat
 
   # Checks a build being promoted has passed, is on master which effectively means a healthy build on Staging
   - name: sanity_check_build_prod
@@ -476,6 +585,8 @@ steps:
     when:
       cron: security_scans
       event: cron
+    depends_on:
+      - cron_build_image
 
   - name: cron_trivy_scan
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
@@ -507,6 +618,8 @@ steps:
       cron: tear_down_pr_envs
       event: cron
       status: failure
+    depends_on:
+      - cron_tear_down
 
   - name: cron_notify_slack_security_scans
     pull: if-not-exists
@@ -524,6 +637,9 @@ steps:
       cron: security_scans
       event: cron
       status: failure
+    depends_on:
+      - cron_snyk_scan
+      - cron_trivy_scan
 
 services:
   - name: docker
