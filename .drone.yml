@@ -62,12 +62,12 @@ ui_integration_tests: &ui_integration_tests
     - yarn run test:ui-integration
 
 accessibility_tests: &accessibility_tests
-  <<: *node_image
-  # image: node:20
+  # <<: *node_image
+  image: node:20
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+    # PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
     DRONE_DEBUG: true
@@ -83,27 +83,27 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
-    # - apt-get update
-    # - apt-get install curl gnupg -y
-    # - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-    # - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    # - apt-get update
-    # - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
-    # - apt-get install google-chrome-stable -y --no-install-recommends
-    # - rm -rf /var/lib/apt/lists/*
-    # - yarn install
-    # - yarn add puppeteer
-    # - yarn add pa11y
-    # - which google-chrome-stable
-    # - yarn run test:accessibility
-    - apk update
-    - apk upgrade
-    - apk add --no-cache curl gnupg chromium nss nodejs npm yarn
+    - apt-get update
+    - apt-get install curl gnupg -y
+    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    - apt-get update
+    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
+    - apt-get install google-chrome-stable -y --no-install-recommends
+    - rm -rf /var/lib/apt/lists/*
     - yarn install
     - yarn add puppeteer
     - yarn add pa11y
-    - if [ -x /usr/bin/google-chrome-stable ]; then export PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable; else export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser; fi
+    - which google-chrome-stable
     - yarn run test:accessibility
+    # - apk update
+    # - apk upgrade
+    # - apk add --no-cache curl gnupg chromium nss nodejs npm yarn
+    # - yarn install
+    # - yarn add puppeteer
+    # - yarn add pa11y
+    # - if [ -x /usr/bin/google-chrome-stable ]; then export PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable; else export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser; fi
+    # - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
@@ -165,6 +165,15 @@ steps:
 
   - name: ui_integration_tests
     <<: *ui_integration_tests
+    when:
+      branch:
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+    depends_on:
+      - setup
+
+  - name: accessibility_tests
+    <<: *accessibility_tests
     when:
       branch:
         <<: *include_default_and_feature_branches
@@ -244,15 +253,6 @@ steps:
       event: pull_request
     depends_on:
       - image_to_ecr
-  
-  - name: accessibility_tests
-    <<: *accessibility_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
-    depends_on:
-      - deploy_to_branch
   
   - name: acceptance_tests_branch
     failure: ignore
