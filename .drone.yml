@@ -216,8 +216,8 @@ steps:
     depends_on: 
       - build_image
 
-  # Trivy Security Scannner
-  - name: scan-image
+  # Trivy Security Scannner for scanning OS related vulnerabilities in Base image of Dockerfile
+  - name: scan_image_os
     pull: always
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
     resources:
@@ -239,7 +239,6 @@ steps:
       - build_image
   
    # Trivy Security Scannner for scanning nodejs packages in Yarn
- 
   - name: scan_node_packages
     pull: always
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
@@ -282,7 +281,7 @@ steps:
     <<: *acceptance_tests
     commands:
       - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}-$${DRONE_SOURCE_BRANCH}.internal.$${BRANCH_ENV}.homeoffice.gov.uk
-      - npx playwright install-deps
+      # - npx playwright install-deps
       - npx playwright install
       - yarn run test:acceptance
     when:
@@ -291,23 +290,6 @@ steps:
       event: pull_request
     depends_on:
       - deploy_to_branch
-
-  # # Snyk security scans which run after branch deployment to prevent blocking of PR UAT tests
-  # - name: snyk_scan
-  #   <<: *node_image
-  #   environment:
-  #     NOTIFY_STUB: true
-  #     SNYK_TOKEN:
-  #       from_secret: snyk_token
-  #   commands:
-  #     - yarn run test:snyk
-  #   when:
-  #     branch:
-  #       <<: *include_default_and_feature_branches
-  #     event: pull_request
-  #   depends_on: 
-  #     - build_image
-  #     - deploy_to_branch
 
   # Deploy to Master UAT environment
   - name: deploy_to_uat
@@ -481,22 +463,6 @@ steps:
       cron: security_scans
       event: cron
 
-  # - name: cron_snyk_scan
-  #   <<: *node_image
-  #   environment:
-  #     NOTIFY_STUB: true
-  #     SNYK_TOKEN:
-  #       from_secret: snyk_token
-  #   commands:
-  #     - yarn install --frozen-lockfile
-  #     - yarn run postinstall
-  #     - yarn run test:snyk
-  #   when:
-  #     cron: security_scans
-  #     event: cron
-  #   depends_on:
-  #     - cron_build_image
-  
   - name: cron_trivy_scan_image_os
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
     pull: always
