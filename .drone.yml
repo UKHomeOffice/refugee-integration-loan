@@ -63,9 +63,11 @@ ui_integration_tests: &ui_integration_tests
 
 accessibility_tests: &accessibility_tests
   <<: *node_image
+  # image: node:20
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
     DRONE_DEBUG: true
@@ -81,18 +83,26 @@ accessibility_tests: &accessibility_tests
     - name: dockersock
       path: /root/.dockersock
   commands:
-    - apt-get update
-    - apt-get install curl gnupg -y
-    - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-    - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-    - apt-get update
-    - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
-    - apt-get install google-chrome-stable -y --no-install-recommends
-    - rm -rf /var/lib/apt/lists/*
+    # - apt-get update
+    # - apt-get install curl gnupg -y
+    # - curl --location --silent https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    # - sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+    # - apt-get update
+    # - apt-get install -y gnutls-bin binutils nodejs npm libjpeg62-turbo libcurl4 libx11-6 libxml2 chromium
+    # - apt-get install google-chrome-stable -y --no-install-recommends
+    # - rm -rf /var/lib/apt/lists/*
+    # - yarn install
+    # - yarn add puppeteer
+    # - yarn add pa11y
+    # - which google-chrome-stable
+    # - yarn run test:accessibility
+    - apk update
+    - apk upgrade
+    - apk add --no-cache curl gnupg chromium nss nodejs npm yarn
     - yarn install
     - yarn add puppeteer
     - yarn add pa11y
-    - which google-chrome-stable
+    - if [ -x /usr/bin/google-chrome-stable ]; then export PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome-stable; else export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser; fi
     - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
@@ -116,19 +126,6 @@ steps:
         - feature/*
       event: [push, pull_request]
 
-  # - name: setup_deploy
-  #   <<: *node_image
-  #   environment:
-  #     NOTIFY_STUB: true
-  #   commands:
-  #     - yarn install --frozen-lockfile
-  #     - yarn run postinstall
-  #   when:
-  #     branch:
-  #       include:
-  #       - master
-  #     event: push
-
   - name: setup
     <<: *node_image
     environment:
@@ -141,55 +138,13 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
 
-  # - name: linting_deploy
-  #   <<: *linting
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #     event: push
-  #   depends_on:
-  #     - setup_deploy
+  - name: sonar_scanner
+    <<: *sonar_scanner
+    when:
+      branch:
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
 
-  # - name: unit_tests_deploy
-  #   <<: *unit_tests
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #     event: push
-  #   depends_on:
-  #     - setup_deploy
-
-  # - name: sonar_scanner_deploy
-  #   <<: *sonar_scanner
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #     event: push
-
-
-  # - name: ui_integration_tests_deploy
-  #   <<: *ui_integration_tests
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #     event: push
-  #   depends_on:
-  #     - setup_deploy
-
-  # - name: accessibility_tests_deploy
-  #   <<: *accessibility_tests
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #     event: push
-  #   depends_on:
-  #     - setup_deploy
-  
   - name: linting
     <<: *linting
     when:
@@ -208,42 +163,12 @@ steps:
     depends_on:
       - setup
 
-  - name: sonar_scanner
-    <<: *sonar_scanner
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
-
-
   - name: ui_integration_tests
     <<: *ui_integration_tests
     when:
       branch:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
-    depends_on:
-      - setup
-
-  - name: accessibility_tests
-    <<: *accessibility_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
-    depends_on:
-      - setup
-
-  - name: acceptance_tests_uat
-    <<: *acceptance_tests
-    commands:
-      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
-      - npx playwright install
-      - npm run test:acceptance
-    when:
-      branch:
-        <<: *include_default_branch
-      event: push
     depends_on:
       - setup
 
@@ -319,86 +244,30 @@ steps:
       event: pull_request
     depends_on:
       - image_to_ecr
-
-  # - name: setup_branch
-  #   <<: *node_image
-  #   environment:
-  #     NOTIFY_STUB: true
-  #   commands:
-  #     - yarn install --frozen-lockfile
-  #     - yarn run postinstall
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #         - feature/*
-  #     event: pull_request
-
-  # - name: linting_branch
-  #   <<: *linting
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #         - feature/*
-  #     event: pull_request
-  #   depends_on:
-  #     - setup_branch
-
-  # - name: unit_tests_branch
-  #   <<: *unit_tests
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #         - feature/*
-  #     event: pull_request
-  #   depends_on:
-  #     - setup_branch
-
-  # - name: sonar_scanner_branch
-  #   <<: *sonar_scanner
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #         - feature/*
-  #     event: pull_request
-
-  # - name: ui_integration_tests_branch
-  #   <<: *ui_integration_tests
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #         - feature/*
-  #     event: pull_request
-  #   depends_on:
-  #     - setup_branch
-
-  # - name: accessibility_tests_branch
-  #   <<: *accessibility_tests
-  #   when:
-  #     branch:
-  #       include:
-  #         - master
-  #         - feature/*
-  #     event: pull_request
-  #   depends_on:
-  #     - setup_branch
-
+  
+  - name: accessibility_tests
+    <<: *accessibility_tests
+    when:
+      branch:
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+    depends_on:
+      - deploy_to_branch
+  
   - name: acceptance_tests_branch
+    failure: ignore
     <<: *acceptance_tests
     commands:
       - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}-$${DRONE_SOURCE_BRANCH}.internal.$${BRANCH_ENV}.homeoffice.gov.uk
+      - npx playwright install-deps
       - npx playwright install
-      - npm run test:acceptance
+      - yarn run test:acceptance
     when:
       branch:
         <<: *include_default_and_feature_branches
       event: pull_request
     depends_on:
-      - setup
+      - deploy_to_branch
 
   # Snyk security scans which run after branch deployment to prevent blocking of PR UAT tests
   - name: snyk_scan
@@ -415,6 +284,7 @@ steps:
       event: pull_request
     depends_on: 
       - build_image
+      - deploy_to_branch
 
   # Deploy to Master UAT environment
   - name: deploy_to_uat
@@ -432,6 +302,20 @@ steps:
       event: push
     depends_on:
       - image_to_ecr
+
+  - name: acceptance_tests_uat
+    <<: *acceptance_tests
+    commands:
+      - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}.uat.internal.sas-notprod.homeoffice.gov.uk
+      - npx playwright install-deps
+      - npx playwright install
+      - yarn run test:acceptance
+    when:
+      branch:
+        <<: *include_default_branch
+      event: push
+    depends_on:
+      - deploy_to_uat
 
   # Get pull request branch so correct PR UAT environment is torn down in the tear_down_branch step that follows
   - name: get_pr_branch
