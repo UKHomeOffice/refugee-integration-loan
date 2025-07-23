@@ -277,11 +277,10 @@ steps:
       - image_to_ecr
   
   - name: acceptance_tests_branch
-    failure: ignore
     <<: *acceptance_tests
     commands:
+      - export DRONE_SOURCE_BRANCH=$(echo $DRONE_SOURCE_BRANCH | tr '[:upper:]' '[:lower:]' | tr '/' '-')
       - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}-$${DRONE_SOURCE_BRANCH}.internal.$${BRANCH_ENV}.homeoffice.gov.uk
-      # - npx playwright install-deps
       - npx playwright install
       - yarn run test:acceptance
     when:
