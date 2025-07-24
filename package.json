@@ -28,7 +28,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "~22.2.2",
+    "hof": "~22.8.4",
     "libphonenumber-js": "^1.8.4",
     "lodash": "^4.17.21",
     "notifications-node-client": "^8.0.0",
@@ -44,7 +44,7 @@
     "eslint-config-hof": "^1.2.1",
     "jquery": "^3.5.1",
     "jsdom": "^16.4.0",
-    "mocha": "^8.2.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "pa11y": "^8.0.0",
     "playwright": "^1.12.3",
