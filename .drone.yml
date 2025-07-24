@@ -169,8 +169,8 @@ steps:
       branch:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
-    depends_on:
-      - setup
+    # depends_on:
+    #   - setup
 
   - name: accessibility_tests
     <<: *accessibility_tests
