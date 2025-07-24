@@ -281,7 +281,7 @@ steps:
     commands:
       - export DRONE_SOURCE_BRANCH=$(echo $DRONE_SOURCE_BRANCH | tr '[:upper:]' '[:lower:]' | tr '/' '-')
       - export ACCEPTANCE_HOST_NAME=https://$${APP_NAME}-$${DRONE_SOURCE_BRANCH}.internal.$${BRANCH_ENV}.homeoffice.gov.uk
-      - npx playwright install
+      - yarn add playwright
       - yarn run test:acceptance
     when:
       branch:
