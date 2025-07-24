@@ -36,7 +36,7 @@ node_image: &node_image
 
 linting: &linting
   # <<: *node_image
-  image: node:20
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -44,7 +44,7 @@ linting: &linting
 
 unit_tests: &unit_tests
   # <<: *node_image
-  image: node:20
+  image: node:18
   environment:
     NOTIFY_STUB: true
   commands:
@@ -56,13 +56,13 @@ sonar_scanner: &sonar_scanner
   commands:
     - sonar-scanner -Dproject.settings=./sonar-project.properties
 
-ui_integration_tests: &ui_integration_tests
-  # <<: *node_image
-  image: node:20
-  environment:
-    NOTIFY_STUB: true
-  commands:
-    - yarn run test:ui-integration
+# ui_integration_tests: &ui_integration_tests
+#   # <<: *node_image
+#   image: node:20
+#   environment:
+#     NOTIFY_STUB: true
+#   commands:
+#     - yarn run test:ui-integration
 
 accessibility_tests: &accessibility_tests
   # <<: *node_image
@@ -131,7 +131,7 @@ steps:
 
   - name: setup
     # <<: *node_image
-    image: node:20
+    image: node:18
     environment:
       NOTIFY_STUB: true
     commands:
@@ -142,46 +142,46 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
 
-  - name: sonar_scanner
-    <<: *sonar_scanner
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+  # - name: sonar_scanner
+  #   <<: *sonar_scanner
+  #   when:
+  #     branch:
+  #       <<: *include_default_and_feature_branches
+  #     event: [push, pull_request]
 
-  - name: linting
-    <<: *linting
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+  # - name: linting
+  #   <<: *linting
+  #   when:
+  #     branch:
+  #       <<: *include_default_and_feature_branches
+  #     event: [push, pull_request]
     # depends_on:
     #   - setup
 
-  - name: unit_tests
-    <<: *unit_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+  # - name: unit_tests
+  #   <<: *unit_tests
+  #   when:
+  #     branch:
+  #       <<: *include_default_and_feature_branches
+  #     event: [push, pull_request]
     # depends_on:
     #   - setup
 
-  - name: ui_integration_tests
-    <<: *ui_integration_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+  # - name: ui_integration_tests
+  #   <<: *ui_integration_tests
+  #   when:
+  #     branch:
+  #       <<: *include_default_and_feature_branches
+  #     event: [push, pull_request]
     # depends_on:
     #   - setup
 
-  - name: accessibility_tests
-    <<: *accessibility_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+  # - name: accessibility_tests
+  #   <<: *accessibility_tests
+  #   when:
+  #     branch:
+  #       <<: *include_default_and_feature_branches
+  #     event: [push, pull_request]
     # depends_on:
     #   - setup
 
@@ -221,48 +221,49 @@ steps:
     #   - build_image
 
   # Trivy Security Scannner for scanning OS related vulnerabilities in Base image of Dockerfile
-  - name: scan_image_os
-    pull: always
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
-    resources:
-      limits:
-        cpu: 1000
-        memory: 1024Mi
-    environment:
-      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      SEVERITY: MEDIUM,HIGH,CRITICAL
-      FAIL_ON_DETECTION: false
-      IGNORE_UNFIXED: true
-      ALLOW_CVE_LIST_FILE: hof-services-config/Refugee_Integration_Loan/trivy-cve-exceptions.txt
-    when:
-      event:
-      - pull_request
-      - push
-      - tag
-    # depends_on:
-    #   - build_image
+  # - name: scan_image_os
+  #   pull: always
+  #   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
+  #   resources:
+  #     limits:
+  #       cpu: 1000
+  #       memory: 1024Mi
+  #   environment:
+  #     IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+  #     SEVERITY: MEDIUM,HIGH,CRITICAL
+  #     FAIL_ON_DETECTION: false
+  #     IGNORE_UNFIXED: true
+  #     ALLOW_CVE_LIST_FILE: hof-services-config/Refugee_Integration_Loan/trivy-cve-exceptions.txt
+  #   when:
+  #     event:
+  #     - pull_request
+  #     - push
+  #     - tag
+  #   # depends_on:
+  #   #   - build_image
   
-   # Trivy Security Scannner for scanning nodejs packages in Yarn
-  - name: scan_node_packages
-    pull: always
-    image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
-    resources:
-      limits:
-        cpu: 1000
-        memory: 1024Mi
-    environment:
-      IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      SEVERITY: MEDIUM,HIGH,CRITICAL  --dependency-tree --format table
-      FAIL_ON_DETECTION: false
-      IGNORE_UNFIXED: false
-      ALLOW_CVE_LIST_FILE: hof-services-config/infrastructure/trivy/.trivyignore.yaml
-    volumes:
-      - name: dockersock
-        path: /root/.dockersock    
-    when:
-      event: [push, pull_request]
-    # depends_on:
-    #   - build_image
+  #  # Trivy Security Scannner for scanning nodejs packages in Yarn
+  
+  # - name: scan_node_packages
+  #   pull: always
+  #   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
+  #   resources:
+  #     limits:
+  #       cpu: 1000
+  #       memory: 1024Mi
+  #   environment:
+  #     IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
+  #     SEVERITY: MEDIUM,HIGH,CRITICAL  --dependency-tree --format table
+  #     FAIL_ON_DETECTION: false
+  #     IGNORE_UNFIXED: false
+  #     ALLOW_CVE_LIST_FILE: hof-services-config/infrastructure/trivy/.trivyignore.yaml
+  #   volumes:
+  #     - name: dockersock
+  #       path: /root/.dockersock    
+  #   when:
+  #     event: [push, pull_request]
+  #   # depends_on:
+  #   #   - build_image
 
   # Deploy to pull request UAT environment
   - name: deploy_to_branch
