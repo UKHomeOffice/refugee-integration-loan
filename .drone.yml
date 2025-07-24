@@ -151,8 +151,8 @@ steps:
       branch:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
-    depends_on:
-      - setup
+    # depends_on:
+    #   - setup
 
   - name: unit_tests
     <<: *unit_tests
@@ -160,8 +160,8 @@ steps:
       branch:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
-    depends_on:
-      - setup
+    # depends_on:
+    #   - setup
 
   - name: ui_integration_tests
     <<: *ui_integration_tests
@@ -178,8 +178,8 @@ steps:
       branch:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
-    depends_on:
-      - setup
+    # depends_on:
+    #   - setup
 
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
@@ -193,9 +193,9 @@ steps:
       branch:
         <<: *include_default_branch
       event: [push, pull_request]
-    depends_on: 
-      - linting
-      - unit_tests
+    # depends_on: 
+    #   - linting
+    #   - unit_tests
 
   - name: image_to_ecr
     image: plugins/ecr
@@ -213,8 +213,8 @@ steps:
     when:
       <<: *include_default_and_feature_branches
       event: [push, pull_request]
-    depends_on: 
-      - build_image
+    # depends_on: 
+    #   - build_image
 
   # Trivy Security Scannner for scanning OS related vulnerabilities in Base image of Dockerfile
   - name: scan_image_os
@@ -235,8 +235,8 @@ steps:
       - pull_request
       - push
       - tag
-    depends_on:
-      - build_image
+    # depends_on:
+    #   - build_image
   
    # Trivy Security Scannner for scanning nodejs packages in Yarn
   - name: scan_node_packages
@@ -257,8 +257,8 @@ steps:
         path: /root/.dockersock    
     when:
       event: [push, pull_request]
-    depends_on:
-      - build_image
+    # depends_on:
+    #   - build_image
 
   # Deploy to pull request UAT environment
   - name: deploy_to_branch
@@ -273,8 +273,8 @@ steps:
     when:
       <<: *include_default_and_feature_branches
       event: pull_request
-    depends_on:
-      - image_to_ecr
+    # depends_on:
+    #   - image_to_ecr
   
   - name: acceptance_tests_branch
     <<: *acceptance_tests
@@ -287,8 +287,8 @@ steps:
       branch:
         <<: *include_default_and_feature_branches
       event: pull_request
-    depends_on:
-      - deploy_to_branch
+    # depends_on:
+    #   - deploy_to_branch
 
   # Deploy to Master UAT environment
   - name: deploy_to_uat
@@ -304,8 +304,8 @@ steps:
       branch:
         <<: *include_default_branch
       event: push
-    depends_on:
-      - image_to_ecr
+    # depends_on:
+    #   - image_to_ecr
 
   - name: acceptance_tests_uat
     <<: *acceptance_tests
@@ -318,8 +318,8 @@ steps:
       branch:
         <<: *include_default_branch
       event: push
-    depends_on:
-      - deploy_to_uat
+    # depends_on:
+    #   - deploy_to_uat
 
   # Get pull request branch so correct PR UAT environment is torn down in the tear_down_branch step that follows
   - name: get_pr_branch
@@ -357,9 +357,9 @@ steps:
       branch:
         <<: *include_default_branch
       event: push
-    depends_on:
-      - get_pr_branch
-      - deploy_to_uat
+    # depends_on:
+    #   - get_pr_branch
+    #   - deploy_to_uat
 
   # Deploy to Staging environment
   - name: deploy_to_stg
@@ -375,9 +375,9 @@ steps:
       branch:
         <<: *include_default_branch
       event: push
-    depends_on:
-      - image_to_ecr
-      - deploy_to_uat
+    # depends_on:
+    #   - image_to_ecr
+    #   - deploy_to_uat
 
   # Checks a build being promoted has passed, is on master which effectively means a healthy build on Staging
   - name: sanity_check_build_prod
@@ -420,8 +420,8 @@ steps:
     when:
       target: PROD
       event: promote
-    depends_on:
-      - clone_repos_prod
+    # depends_on:
+    #   - clone_repos_prod
 
   # CRON job step that tears down our pull request UAT environments
   - name: cron_tear_down
@@ -473,8 +473,8 @@ steps:
     when:
       cron: security_scans
       event: cron
-    depends_on:
-      - cron_build_image
+    # depends_on:
+    #   - cron_build_image
 
   - name: cron_trivy_scan
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
@@ -488,8 +488,8 @@ steps:
     when:
       cron: security_scans
       event: cron
-    depends_on:
-      - cron_build_image
+    # depends_on:
+    #   - cron_build_image
 
   # Slack notification upon a CRON job fail
   - name: cron_notify_slack_tear_down_pr_envs
@@ -508,8 +508,8 @@ steps:
       cron: tear_down_pr_envs
       event: cron
       status: failure
-    depends_on:
-      - cron_tear_down
+    # depends_on:
+    #   - cron_tear_down
 
   - name: cron_notify_slack_security_scans
     pull: if-not-exists
@@ -527,9 +527,9 @@ steps:
       cron: security_scans
       event: cron
       status: failure
-    depends_on:
-      - cron_trivy_scan_image_os
-      - cron_trivy_scan
+    # depends_on:
+    #   - cron_trivy_scan_image_os
+    #   - cron_trivy_scan
 
 services:
   - name: docker
