@@ -36,6 +36,7 @@ node_image: &node_image
 
 linting: &linting
   <<: *node_image
+  image: node:20
   environment:
     NOTIFY_STUB: true
   commands:
@@ -43,6 +44,7 @@ linting: &linting
 
 unit_tests: &unit_tests
   <<: *node_image
+  image: node:20
   environment:
     NOTIFY_STUB: true
   commands:
@@ -56,6 +58,7 @@ sonar_scanner: &sonar_scanner
 
 ui_integration_tests: &ui_integration_tests
   <<: *node_image
+  image: node:20
   environment:
     NOTIFY_STUB: true
   commands:
@@ -128,6 +131,7 @@ steps:
 
   - name: setup
     <<: *node_image
+    image: node:20
     environment:
       NOTIFY_STUB: true
     commands:
