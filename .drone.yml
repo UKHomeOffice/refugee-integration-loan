@@ -84,7 +84,6 @@ accessibility_tests: &accessibility_tests
     - apk update
     - apk add --no-cache curl gnupg nodejs npm libjpeg-turbo libcurl libx11 libxml2 chromium gnutls-utils binutils
     - rm -rf /var/cache/apk/*
-    - npm install -g yarn
     - yarn install
     - yarn add puppeteer
     - yarn add pa11y
