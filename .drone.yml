@@ -62,8 +62,7 @@ ui_integration_tests: &ui_integration_tests
     - yarn run test:ui-integration
 
 accessibility_tests: &accessibility_tests
-  pull: if-not-exists
-  image: node:20
+  <<: *node_image
   options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
