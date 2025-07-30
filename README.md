@@ -4,8 +4,8 @@
 
 ### NPM Local Development Setup
 ```
-nvm install 18.12.1
-nvm use 18.12.1
+nvm install 20.19.0
+nvm use 20.19.0
 yarn
 brew install redis
 brew services start redis
@@ -73,33 +73,17 @@ BRP Numbers should contain 2 letters, followed by either an 'X' or a digit, and 
 
 - for example, ZUX123456 or ZU1234567
 
-### Anchore/Snyk image testing
+### Trivy image testing
 
-When the Drone pipeline runs, Anchore will check if the Docker image has any security vulnerabilities. Anything raised can be downloaded via the Drone UI as a manifest detailing the dependencies needing investigation and either needs whitelisting or updating.   
+When the Drone pipeline runs, Trivy will check if the Docker image has any security vulnerabilities. Anything raised can be downloaded via the Drone UI as a manifest detailing the dependencies needing investigation and either needs whitelisting or updating.   
 
 Anything whitelisted should be added to this git repo where a check is carried out against it in Drone:
-https://github.com/UKHomeOfficeForms/hof-cve-exceptions
+https://github.com/UKHomeOfficeForms/hof-services-config/infrastructure/trivy/.trivyignore.yaml
 
-### Local Snyk setup
-For anything needing fixing, you can use Snyk on your local machine to debug vulnerability issues. They tend to align with what Anchore has raised and are more detailed in how to fix issues.
-Just `export SNYK_TOKEN=<your_token>` in your `~/.bashrc` or bash_profile or before executing the following command:
-```
-yarn run test:snyk
-```
-This will run Snyk tests just against the code base. You can also run `snyk wizard` to assist with repo level fixes. This will also generate/update the `.snyk` policy which others in the project can reuse for focusing on new errors and ignoring previously audited issues.
-
-### Dockerfile image scanning with Snyk & Anchore
-However, the following creates a test Docker image from the repo and run Snyk and Anchore tests against the Docker image dependencies. This should help you debug any issues found with Anchore APK package issues as opposed to npm modules which might have security flaws:
-```
-./image_check.sh
-```
-<strong>You need to ensure you have snyk globally installed using npm `npm install snyk -g`, setup a SNYK_TOKEN for snyk authentication, and Docker for this to work.</strong>
-
-This will create a Snyk report in your terminal for assessing vulnerabilities and will also create an Anchore report in this project's `anchore-reports` directory for your reference.
 
 ### Updating vulnerable dependencies
 #### Docker Image APK
-This should be as simple as extending what apk packages to upgrade to. The registry is already being updated in the Dockerfile, so if anything is raised by Anchore you just need to add the dependency to the following line in it:
+This should be as simple as extending what apk packages to upgrade to. The registry is already being updated in the Dockerfile, so if anything is raised by Trivy you just need to add the dependency to the following line in it:
 ```
 apk add --upgrade gnutls <dependency1_to_update> <dependency2_to_update> etc etc...
 ```
