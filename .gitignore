@@ -11,4 +11,4 @@ test/_accessibility/tmp/*
 test/_accessibility/tmp-bk/*
 coverage
 .nyc_output
-.env
+*.env
