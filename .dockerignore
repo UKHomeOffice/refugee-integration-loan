@@ -2,3 +2,8 @@ node_modules
 npm-debug.log
 public
 hof-services-config
+apps/**/translations/**/default.json
+LICENSE.md
+README.md
+CONTRIBUTING.md
+.devcontainer

@@ -36,8 +36,6 @@ node_image: &node_image
 
 linting: &linting
   <<: *node_image
-  environment:
-    NOTIFY_STUB: true
   commands:
     - yarn run test:lint
 
@@ -101,7 +99,7 @@ accessibility_tests: &accessibility_tests
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
-  image: mcr.microsoft.com/playwright:v1.12.3-focal
+  image: mcr.microsoft.com/playwright:v1.48.2-focal-amd64
 
 steps:
   - name: clone_repos
@@ -186,8 +184,10 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
     depends_on: 
-      - setup
+      - linting
+      - unit_tests
       - accessibility_tests
+      - ui_integration_tests
 
   - name: image_to_ecr
     image: plugins/ecr
@@ -229,7 +229,7 @@ steps:
       - push
       - tag
     depends_on:
-      - build_image
+      - clone_repos
   
   # Trivy Security Scannner for scanning nodejs packages in Yarn
   - name: scan_node_packages
@@ -252,6 +252,7 @@ steps:
     when:
       event: [push, pull_request]
     depends_on:
+      - clone_repos
       - build_image
 
   # Deploy to pull request UAT environment
@@ -269,6 +270,7 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
     depends_on:
+      - clone_repos
       - image_to_ecr
 
   - name: acceptance_tests_branch
@@ -282,7 +284,6 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
     depends_on:
-      - setup
       - deploy_to_branch
 
   # Deploy to Master UAT environment
@@ -313,7 +314,6 @@ steps:
         <<: *include_default_branch
       event: push
     depends_on:
-      - setup
       - deploy_to_uat
 
   # Get pull request branch so correct PR UAT environment is torn down in the tear_down_branch step that follows
@@ -456,6 +456,8 @@ steps:
     when:
       cron: security_scans
       event: cron
+    depends_on:
+      - cron_clone_repos
 
   - name: cron_trivy_scan_image_os
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
@@ -469,7 +471,7 @@ steps:
       cron: security_scans
       event: cron
     depends_on:
-      - cron_build_image
+      - cron_clone_repos
 
   - name: cron_trivy_scan
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/trivy/client:latest
@@ -477,13 +479,17 @@ steps:
     environment:
       IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
       SEVERITY: MEDIUM,HIGH,CRITICAL
-      FAIL_ON_DETECTION: false
-      IGNORE_UNFIXED: true
+      FAIL_ON_DETECTION: true
+      IGNORE_UNFIXED: false
       ALLOW_CVE_LIST_FILE: hof-services-config/Refugee_Integration_Loan/trivy-cve-exceptions.txt
     when:
       cron: security_scans
       event: cron
+      status:
+        - success
+        - failure
     depends_on:
+      - cron_clone_repos
       - cron_build_image
 
   # Slack notification upon a CRON job fail

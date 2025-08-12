@@ -1,5 +1,3 @@
-
-const _ = require('lodash');
 const config = require('../../../config');
 const utilities = require('../../../lib/utilities');
 const capitalize = utilities.capitalize;
@@ -7,10 +5,10 @@ const NotifyClient = utilities.NotifyClient;
 
 module.exports = superclass => class extends superclass {
   getValues(req, res, next) {
-    const referer = _.get(req, 'headers.referer') || `${req.get('origin')}/apply`;
+    const referer = req.headers?.referer || `${req.get('origin')}/apply`;
     const url = new URL(referer);
     const refs = url.pathname.match(/^\/([\w-_.+!*'(),$]+)\/(.*)$/);
-    const redirectApp = _.get(refs, '[1]');
+    const redirectApp = refs?.[1];
     const notRedirectedFromFeedbackPage = redirectApp !== 'feedback';
 
     if (redirectApp && notRedirectedFromFeedbackPage) {
