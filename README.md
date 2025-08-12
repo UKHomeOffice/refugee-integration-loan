@@ -19,6 +19,7 @@ Refugee Integration Loans (RIL) application, is used by the public to apply for 
 
 - This form is built using the [HOF framework](https://github.com/UKHomeOfficeForms/hof)
 - [Gov.uk Notify](https://www.notifications.service.gov.uk) is used to send notification emails
+- [HTML to PDF converter](https://github.com/UKHomeOffice/html-pdf-converter) service is used to generate PDF documents for submitted applications
 
 ## Install & Run the Application locally
 
@@ -26,6 +27,7 @@ Refugee Integration Loans (RIL) application, is used by the public to apply for 
 
 - [Node.js](https://nodejs.org/en/) - v.20.19.0
 - [Redis server](http://redis.io/download) running on default port 6379
+- [HTML to PDF converter](https://github.com/UKHomeOffice/html-pdf-converter), running as a separate service
 
 ### Setup
 
