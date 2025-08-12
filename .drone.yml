@@ -99,7 +99,7 @@ accessibility_tests: &accessibility_tests
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
-  image: mcr.microsoft.com/playwright:v1.12.3-focal
+  image: mcr.microsoft.com/playwright:v1.48.2-focal-amd64
 
 steps:
   - name: clone_repos
@@ -188,6 +188,7 @@ steps:
       - unit_tests
       - accessibility_tests
       - ui_integration_tests
+      - acceptance_tests
 
   - name: image_to_ecr
     image: plugins/ecr
