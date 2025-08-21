@@ -1,6 +1,3 @@
-
-const _ = require('lodash');
-
 const config = require('../../../config');
 
 module.exports = superclass => class extends superclass {
@@ -17,7 +14,7 @@ module.exports = superclass => class extends superclass {
 
     const allowedPaths = ['accept', 'apply'];
 
-    const refererHeader = _.get(req, 'headers.referer');
+    const refererHeader = req.headers?.referer;
     const refererUrl = refererHeader ? new URL(refererHeader) : undefined;
 
     if (refererUrl && refererIsInternal(refererUrl)) {

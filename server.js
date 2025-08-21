@@ -1,7 +1,6 @@
 
 const hof = require('hof');
 const config = require('./config');
-const _ = require('lodash');
 const path = require('path');
 
 let settings = require('./hof.settings');
@@ -57,11 +56,11 @@ if (config.nodeEnv === 'development' || config.nodeEnv === 'test') {
   app.use('/test/bootstrap-session', (req, res) => {
     const appName = req.body.appName;
 
-    if (!_.get(req, 'session[`hof-wizard-${appName}`]')) {
-      if (!req.session) {
-        throw new Error('Redis is not running!');
-      }
+    if (!req.session) {
+      throw new Error('Redis is not running!');
+    }
 
+    if (!req.session[`hof-wizard-${appName}`]) {
       req.session[`hof-wizard-${appName}`] = {};
     }
 

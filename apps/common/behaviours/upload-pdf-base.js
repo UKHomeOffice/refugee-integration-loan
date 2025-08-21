@@ -4,7 +4,6 @@ const path = require('path');
 const moment = require('moment');
 const config = require('../../../config');
 const utilities = require('../../../lib/utilities');
-const _ = require('lodash');
 const NotifyClient = utilities.NotifyClient;
 const libPhoneNumber = require('libphonenumber-js/max');
 const PDFModel = require('hof').apis.pdfConverter;
@@ -80,7 +79,7 @@ module.exports = class UploadPDFBase {
 
       return await this.sendReceipt(req, notifyClient);
     } catch (err) {
-      const error = _.get(err, 'response.data.errors[0]', err.message || err);
+      const error = err?.response?.data?.errors?.[0] ?? err.message ?? err;
       req.log('error', `ril.form.${appName}.submit_form.create_email_with_file_notify.error`, error);
       throw new Error(error);
     }
@@ -161,7 +160,7 @@ module.exports = class UploadPDFBase {
 
     const translations = require(`../../${appName}/translations/src/en/pages.json`);
     const sectionHeaders = Object.values(translations.confirm.sections);
-    const orderedSections = _.map(sectionHeaders, obj => obj.header);
+    const orderedSections = sectionHeaders.map(obj => obj.header);
     let rows = locals.rows;
 
     rows = rows.slice().sort((a, b) => orderedSections.indexOf(a.section) - orderedSections.indexOf(b.section));
