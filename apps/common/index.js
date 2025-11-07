@@ -26,7 +26,6 @@ module.exports = {
     '/improve-our-services': {
       behaviours: [SetContinueLink]
     },
-    '/session-timeout': {},
     '/exit': {}
   }
 };
