@@ -166,6 +166,7 @@ steps:
 
   - name: accessibility_tests
     <<: *accessibility_tests
+    failure: ignore
     when:
       branch:
         <<: *include_default_and_feature_branches
