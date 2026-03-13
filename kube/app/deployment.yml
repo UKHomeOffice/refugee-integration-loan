@@ -101,12 +101,12 @@ spec:
             periodSeconds: 5
           {{ end }}
           resources:
-            requests:         
+            requests:
               cpu: "20m"
               memory: "100Mi"
             limits:
               cpu: "100m"
-              memory: "200Mi" 
+              memory: "200Mi"
           volumeMounts:
             - mountPath: /public
               name: public
