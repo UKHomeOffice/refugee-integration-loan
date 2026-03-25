@@ -268,7 +268,7 @@ steps:
     when:
       branch:
         <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+      event: pull_request
     depends_on:
       - clone_repos
       - image_to_ecr
@@ -282,7 +282,7 @@ steps:
     when:
       branch: 
         <<: *include_default_and_feature_branches
-      event: [push, pull_request]
+      event: pull_request
     depends_on:
       - deploy_to_branch
 
