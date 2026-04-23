@@ -73,13 +73,11 @@ spec:
                 secretKeyRef:
                   name: ril-notify-key
                   key: ril-notify-key
-            {{ if not (eq .KUBE_NAMESPACE .BRANCH_ENV) }}
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
                   name: redis
                   key: session_secret
-            {{ end }}
             - name: PDF_CONVERTER_URL
               {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
               value: https://html-pdf-converter-{{ .DRONE_SOURCE_BRANCH }}:10443/convert
