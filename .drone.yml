@@ -49,6 +49,7 @@ unit_tests: &unit_tests
   environment:
     NOTIFY_STUB: true
   commands:
+    - yarn install --frozen-lockfile
     - yarn run test:unit
 
 sonar_scanner: &sonar_scanner
