@@ -84,7 +84,7 @@ describe('the journey of an accessible accept application', async () => {
       const htmlCode = testHtmlFileText;
       if(isDroneEnv) {
         browser = await puppeteer.launch({headless: 'new',
-          executablePath: '/usr/bin/google-chrome-stable',
+          executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
           args: ['--no-sandbox', '--disable-setuid-sandbox']});
       } else {
         browser = await puppeteer.launch({headless: 'new',
