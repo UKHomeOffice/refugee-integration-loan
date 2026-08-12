@@ -9,8 +9,8 @@ process.env.SESSION_SECRET = 'cea113d678b50749404504dbb3ee4d78';
 const reqres = require('hof').utils.reqres;
 
 global.chai = require('chai')
-  .use(require('sinon-chai'))
-  .use(require('chai-as-promised'))
+  .use(require('sinon-chai').default)
+  .use(require('chai-as-promised').default)
   .use(require('chai-subset'));
 global.should = chai.should();
 global.expect = chai.expect;
