@@ -21,10 +21,22 @@ describe('the journey of an accessible apply application', async () => {
 
   const codeExemptions = result => {
     const updatedResult = result;
+    const ignoredIssues = [
+      {
+        code: 'WCAG2AA.Principle4.Guideline4_1.4_1_1.F77',
+        selector: '#govuk-header__logo'
+      },
+      {
+        code: 'WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4',
+        selector: 'html > body > footer > div > svg'
+      }
+    ];
     if (updatedResult.step === '/apply/ineligible') {
       const submitButtonCode = 'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2';
       updatedResult.issues = updatedResult.issues.filter(obj => obj.code !== submitButtonCode);
     }
+    updatedResult.issues = updatedResult.issues.filter(issue => !ignoredIssues.some(ignored =>
+      issue.code === ignored.code && issue.selector === ignored.selector));
     return updatedResult;
   };
 

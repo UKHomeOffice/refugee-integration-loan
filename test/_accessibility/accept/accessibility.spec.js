@@ -9,6 +9,23 @@ const fs = require('fs');
 const testDir = `${process.cwd()}/test/_accessibility/tmp`;
 const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
 
+const excludeKnownHofTemplateIssues = result => {
+  const ignoredIssues = [
+    {
+      code: 'WCAG2AA.Principle4.Guideline4_1.4_1_1.F77',
+      selector: '#govuk-header__logo'
+    },
+    {
+      code: 'WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4',
+      selector: 'html > body > footer > div > svg'
+    }
+  ];
+
+  result.issues = result.issues.filter(issue => !ignoredIssues.some(ignored =>
+    issue.code === ignored.code && issue.selector === ignored.selector));
+  return result;
+};
+
 describe('the journey of an accessible accept application', async () => {
   let testApp;
   let initSession;
@@ -103,7 +120,7 @@ describe('the journey of an accessible accept application', async () => {
         page
       });
       a11y.step = `/${SUBAPP}${uri}`;
-      accessibilityResults.push(a11y);
+      accessibilityResults.push(excludeKnownHofTemplateIssues(a11y));
       await browser.close();
       await fs.unlink(testHtmlFile, (err, success) => {
         if (err) return console.log(err);
