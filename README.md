@@ -25,7 +25,7 @@ Refugee Integration Loans (RIL) application, is used by the public to apply for 
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/en/) - v.20.19.0
+- [Node.js](https://nodejs.org/en/) - for supported versions see `engines.node` in [package.json](package.json)
 - [Redis server](http://redis.io/download) running on default port 6379
 - [HTML to PDF converter](https://github.com/UKHomeOffice/html-pdf-converter), running as a separate service
 
