@@ -4,7 +4,6 @@
 process.env.PORT = 9080;
 process.env.NODE_ENV = 'test';
 process.env.NOTIFY_KEY = 'UNIT_TEST';
-process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'cea113d678b50749404504dbb3ee4d78';
 
 const reqres = require('hof').utils.reqres;
 
