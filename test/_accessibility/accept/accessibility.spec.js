@@ -9,7 +9,6 @@ const fs = require('fs');
 const testDir = `${process.cwd()}/test/_accessibility/tmp`;
 const isDroneEnv = process.env.ENVIRONMENT === 'DRONE';
 
-
 describe('the journey of an accessible accept application', async () => {
   let testApp;
   let initSession;
