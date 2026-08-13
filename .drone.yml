@@ -70,7 +70,7 @@ accessibility_tests: &accessibility_tests
       limits:
         cpu: 2000
         memory: 2048Mi
-  #options: --user root
+  # options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
