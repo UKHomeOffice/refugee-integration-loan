@@ -77,7 +77,8 @@ accessibility_tests: &accessibility_tests
   # options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+    PUPPETEER_EXECUTABLE_PATH:
+      from_secret: puppeteer_path
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
     DRONE_DEBUG: true
