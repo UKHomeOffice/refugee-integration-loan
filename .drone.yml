@@ -70,7 +70,7 @@ accessibility_tests: &accessibility_tests
       limits:
         cpu: 2000
         memory: 2048Mi
-  options: --user root
+  #options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
     PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
@@ -108,6 +108,7 @@ steps:
         from_secret: drone_git_token
     commands:
       - git clone https://$${DRONE_GIT_USERNAME}:$${DRONE_GIT_TOKEN}@github.com/UKHomeOfficeForms/hof-services-config.git
+      - find hof-services-config/* | grep -v $HOF_CONFIG | grep -v 'infrastructure' | xargs rm -rf
     when:
       branch:
         include:
@@ -216,7 +217,7 @@ steps:
         memory: 1024Mi
     environment:
       IMAGE_NAME: quay.io/ukhomeofficedigital/hof-nodejs:24.19.0-alpine3.24@sha256:a70b2f29d55a9aebcf89690e7f64f4889725dab87a3b22663d102ca17c5f888e
-      SEVERITY: MEDIUM,HIGH,CRITICAL --dependency-tree
+      SEVERITY: MEDIUM,HIGH,CRITICAL --pkg-types os,library --dependency-tree
       FAIL_ON_DETECTION: false
       IGNORE_UNFIXED: true
       ALLOW_CVE_LIST_FILE: hof-services-config/infrastructure/trivy/.trivyignore.yaml
@@ -239,7 +240,7 @@ steps:
         memory: 1024Mi
     environment:
       IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      SEVERITY: MEDIUM,HIGH,CRITICAL  --dependency-tree --format table
+      SEVERITY: MEDIUM,HIGH,CRITICAL  --pkg-types os,library --dependency-tree
       FAIL_ON_DETECTION: false
       IGNORE_UNFIXED: false
       ALLOW_CVE_LIST_FILE: hof-services-config/infrastructure/trivy/.trivyignore.yaml
@@ -395,6 +396,7 @@ steps:
         from_secret: drone_git_token
     commands:
       - git clone https://$${DRONE_GIT_USERNAME}:$${DRONE_GIT_TOKEN}@github.com/UKHomeOfficeForms/hof-services-config.git
+      - find hof-services-config/* | grep -v $HOF_CONFIG | grep -v 'infrastructure' | xargs rm -rf
     when:
       target: PROD
       event: promote
@@ -475,7 +477,7 @@ steps:
     pull: always
     environment:
       IMAGE_NAME: sas/refugee-integration-loans:${DRONE_COMMIT_SHA}
-      SEVERITY: MEDIUM,HIGH,CRITICAL
+      SEVERITY: MEDIUM,HIGH,CRITICAL  --pkg-types os,library
       FAIL_ON_DETECTION: true
       IGNORE_UNFIXED: false
       ALLOW_CVE_LIST_FILE: hof-services-config/Refugee_Integration_Loan/trivy-cve-exceptions.txt
