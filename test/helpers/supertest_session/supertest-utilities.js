@@ -2,8 +2,6 @@
 const supertestSession = require('supertest-session');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const jquery = require('jquery');
-let $;
 
 function getUrl(app, url, expectedStatus) {
   return new Promise((resolve, reject) => {
@@ -28,8 +26,31 @@ function postUrl(app, url, data, expectedStatus, token) {
 
 function parseHtml(response) {
   const dom = new JSDOM(response.text);
-  $ = jquery(dom.window);
-  return Promise.resolve($(dom.window.document));
+  const previousWindow = global.window;
+  const previousDocument = global.document;
+
+  global.window = dom.window;
+  global.document = dom.window.document;
+
+  let jq;
+  try {
+    // jQuery v4 evaluates the module expecting a document in scope.
+    jq = require('jquery');
+  } finally {
+    if (typeof previousWindow === 'undefined') {
+      delete global.window;
+    } else {
+      global.window = previousWindow;
+    }
+
+    if (typeof previousDocument === 'undefined') {
+      delete global.document;
+    } else {
+      global.document = previousDocument;
+    }
+  }
+
+  return Promise.resolve(jq(dom.window.document));
 }
 
 

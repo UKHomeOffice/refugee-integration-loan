@@ -48,6 +48,8 @@ unit_tests: &unit_tests
   <<: *node_image
   environment:
     NOTIFY_STUB: true
+    SESSION_SECRET:
+      from_secret: test_secret
   commands:
     - yarn run test:unit
 
@@ -61,6 +63,8 @@ ui_integration_tests: &ui_integration_tests
   <<: *node_image
   environment:
     NOTIFY_STUB: true
+    SESSION_SECRET:
+      from_secret: test_secret
   commands:
     - yarn run test:ui-integration
 
@@ -85,6 +89,8 @@ accessibility_tests: &accessibility_tests
       from_secret: drone_server
     DRONE_TOKEN:
       from_secret: drone_token
+    SESSION_SECRET:
+      from_secret: test_secret
   volumes:
     - name: dockersock
       path: /root/.dockersock

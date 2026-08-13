@@ -1,13 +1,7 @@
-# version 24
 FROM quay.io/ukhomeofficedigital/hof-nodejs:24.19.0-alpine3.24@sha256:a70b2f29d55a9aebcf89690e7f64f4889725dab87a3b22663d102ca17c5f888e
 
 
 USER root
-
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-
-# Update packages as a result of security vulnerability checks
-RUN apk upgrade --no-cache
 
 # Setup nodejs group & nodejs user
 RUN addgroup --system nodejs --gid 998 && \
