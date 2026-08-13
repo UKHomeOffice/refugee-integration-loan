@@ -77,8 +77,8 @@ spec:
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: redis
-                  key: session_secret
+                  name: session-secret
+                  key: session-secret
             {{ end }}
             - name: PDF_CONVERTER_URL
               {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
