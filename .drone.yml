@@ -42,7 +42,6 @@ node_image: &node_image
 linting: &linting
   <<: *node_image
   commands:
-    - yarn install --frozen-lockfile
     - yarn run test:lint
 
 unit_tests: &unit_tests
@@ -50,7 +49,6 @@ unit_tests: &unit_tests
   environment:
     NOTIFY_STUB: true
   commands:
-    - yarn install --frozen-lockfile
     - yarn run test:unit
 
 sonar_scanner: &sonar_scanner
@@ -64,7 +62,6 @@ ui_integration_tests: &ui_integration_tests
   environment:
     NOTIFY_STUB: true
   commands:
-    - yarn install --frozen-lockfile
     - yarn run test:ui-integration
 
 accessibility_tests: &accessibility_tests
