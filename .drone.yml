@@ -48,8 +48,6 @@ unit_tests: &unit_tests
   <<: *node_image
   environment:
     NOTIFY_STUB: true
-    SESSION_SECRET:
-      from_secret: test_secret
   commands:
     - yarn run test:unit
 
@@ -64,7 +62,7 @@ ui_integration_tests: &ui_integration_tests
   environment:
     NOTIFY_STUB: true
     SESSION_SECRET:
-      from_secret: test_secret
+      from_secret: session_secret_for_tests
   commands:
     - yarn run test:ui-integration
 
@@ -77,8 +75,7 @@ accessibility_tests: &accessibility_tests
   # options: --user root
   environment:
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    PUPPETEER_EXECUTABLE_PATH:
-      from_secret: puppeteer_path
+    PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
     NOTIFY_STUB: true
     ENVIRONMENT: DRONE
     DRONE_DEBUG: true
@@ -91,7 +88,7 @@ accessibility_tests: &accessibility_tests
     DRONE_TOKEN:
       from_secret: drone_token
     SESSION_SECRET:
-      from_secret: test_secret
+      from_secret: session_secret_for_tests
   volumes:
     - name: dockersock
       path: /root/.dockersock
