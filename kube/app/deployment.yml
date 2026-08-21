@@ -78,6 +78,11 @@ spec:
                 secretKeyRef:
                   name: session-secret
                   key: session-secret
+            - name: SAS_HOF_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: sas-hof-email
+                  key: sas-hof-email
             - name: PDF_CONVERTER_URL
               {{ if eq .KUBE_NAMESPACE .BRANCH_ENV }}
               value: https://html-pdf-converter-{{ .DRONE_SOURCE_BRANCH }}:10443/convert

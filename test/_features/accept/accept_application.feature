@@ -14,7 +14,7 @@ Feature: Accept Application
     Then I click the 'Continue' button
     Then I should be on the 'contact' page showing 'How would you like us to contact you?'
     Then I select 'Email'
-    Then I fill 'email' with 'sas-hof-test@digital.homeoffice.gov.uk'
+    Then I fill 'email' with 'test@example.com'
     Then I click the 'Continue' button
     Then I should be on the 'confirm' page showing 'Accept your offer'
     Then I should see 'Loan reference: 12345' on the page

@@ -153,7 +153,7 @@ Feature: Joint Application
     Then I click the 'Continue' button
     Then I should be on the 'contact' page showing 'How would you like us to contact you?'
     Then I select 'Email'
-    Then I fill 'email' with 'sas-hof-test@digital.homeoffice.gov.uk'
+    Then I fill 'email' with 'test@example.com'
     Then I click the 'Continue' button
     Then I should be on the 'help' page showing 'Did you get any help making this application?'
     Then I choose 'Yes'
@@ -169,7 +169,7 @@ Feature: Joint Application
     Then I fill 'helpFullName' with 'Uncle Test'
     Then I fill 'helpRelationship' with 'Uncle'
     Then I select 'Email'
-    Then I fill 'helpEmail' with 'sas-hof-test@digital.homeoffice.gov.uk'
+    Then I fill 'helpEmail' with 'test@example.com'
     Then I click the 'Continue' button
     Then I should be on the 'confirm' page showing 'Check your answers before sending your application'
     Then I should see 'Applicant’s details' on the page
