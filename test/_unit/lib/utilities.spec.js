@@ -24,7 +24,7 @@ describe('Utilities', () => {
           govukNotify: { notifyApiKey: '123456' }
         }
       });
-      notify = new utilities.NotifyClient();
+      notify = new utilities.NotifyClient('123456');
       expect(notify.constructor.name).to.eql('NotifyClient');
     });
   });
