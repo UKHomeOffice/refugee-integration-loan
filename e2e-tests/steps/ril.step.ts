@@ -87,8 +87,8 @@ When('I complete the joint dependents section and continue', async ({ pages }) =
 });
 
 When('I complete the combined loan application details of applicants and continue', async ({ pages }) => {
-  await pages.rilCombineMoneyReceiveEachMonthPage.enterCombinedMoneyReceiveEachMonthDetails(c.ALL_INCOME_OPTIONS, c.PAGE_INPUT_VALUES);
-  await pages.rilCombinedMoneySpentEachMonthPage.enterCombinedMoneySpentEachMonthDetails(c.ALL_EXPENDITURE_OPTIONS, c.PAGE_INPUT_VALUES);
+  await pages.rilCombineMoneyReceiveEachMonthPage.enterCombinedMoneyReceiveEachMonthDetails(c.ALL_INCOME_OPTIONS);
+  await pages.rilCombinedMoneySpentEachMonthPage.enterCombinedMoneySpentEachMonthDetails(c.ALL_EXPENDITURE_OPTIONS);
   await pages.rilCombinedSavingsPage.completeCombinedSavingsPage(c.YES, c.SAVINGS_AMOUNT);
   await pages.rilCombinedLoanAmountPage.completeCombinedLoanAmountPage(c.LOAN_AMOUNT);
   await pages.rilCombinedWhatWillYouUseTheLoanForPage.completeCombinedWhatWillYouUseTheLoanForPage(Object.values(c.LOAN_PURPOSE_LABELS));
@@ -110,8 +110,8 @@ When('I complete the single dependents section and continue', async ({ pages }) 
 });
 
 When('I complete the loan details of an applicant and continue', async ({ pages }) => {
-  await pages.rilMoneyDoYouReceiveEachMonthPage.completeMoneyDoYouReceiveEachMonthPage(c.ALL_INCOME_OPTIONS, c.PAGE_INPUT_VALUES);
-  await pages.rilMoneyDoYouSpentEachMonthPage.completeMoneyDoYouSpentEachMonthPage(c.ALL_EXPENDITURE_OPTIONS, c.PAGE_INPUT_VALUES);
+  await pages.rilMoneyDoYouReceiveEachMonthPage.completeMoneyDoYouReceiveEachMonthPage(c.ALL_INCOME_OPTIONS);
+  await pages.rilMoneyDoYouSpentEachMonthPage.completeMoneyDoYouSpentEachMonthPage(c.ALL_EXPENDITURE_OPTIONS);
   await pages.rilDoYouHaveAnySavingsPage.completeSavingsPage(c.YES, c.SAVINGS_AMOUNT);
   await pages.rilLoanAmountPage.completeLoanAmountPage(c.LOAN_AMOUNT);
   await pages.rilWhatWillYouUseTheLoanForPage.completeWhatWillYouUseTheLoanForPage(Object.values(c.LOAN_PURPOSE_LABELS));
@@ -197,9 +197,9 @@ When("I validate main applicant and dependant sections content and continue", as
 
 When("I validate the loan details of an applicants and continue", async ({ pages }) => {
   await pages.rilCombineMoneyReceiveEachMonthPage.validateCombinedMoneyReceiveEachMonthPageContent();
-  await pages.rilCombineMoneyReceiveEachMonthPage.enterCombinedMoneyReceiveEachMonthDetails(c.VALIDATION_INCOME_OPTIONS, c.PAGE_INPUT_VALUES);
+  await pages.rilCombineMoneyReceiveEachMonthPage.enterCombinedMoneyReceiveEachMonthDetails(c.VALIDATION_INCOME_OPTIONS);
   await pages.rilCombinedMoneySpentEachMonthPage.validateCombinedMoneySpentEachMonthPageContent();
-  await pages.rilCombinedMoneySpentEachMonthPage.enterCombinedMoneySpentEachMonthDetails(c.VALIDATION_EXPENDITURE_OPTIONS, c.PAGE_INPUT_VALUES);
+  await pages.rilCombinedMoneySpentEachMonthPage.enterCombinedMoneySpentEachMonthDetails(c.VALIDATION_EXPENDITURE_OPTIONS);
   await pages.rilCombinedSavingsPage.validateCombinedHaveAnySavingsPageContent();
   await pages.rilCombinedSavingsPage.completeCombinedSavingsPage(c.YES, c.SAVINGS_AMOUNT);
   await pages.rilCombinedLoanAmountPage.validateLoanAmountPageContent();
@@ -233,9 +233,9 @@ When("I validate main applicant and dependant sections errors and continue", asy
   await pages.rilPartnerWithYouInTheUKPage.completePartnerWithYouInTheUKPage(c.YES);
   await pages.rilApplyingLoanTogetherWithYourPartnerPage.validateApplyingLoanTogetherWithYourPartnerPageErrors();
   await pages.rilApplyingLoanTogetherWithYourPartnerPage.completeApplyingLoanTogetherWithYourPartnerPage(c.YES);
-  await pages.rilBiometricResidencePermitDetailsPage.validateBiometricResidencePermitDetailsErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilBiometricResidencePermitDetailsPage.validateBiometricResidencePermitDetailsErrors();
   await pages.rilBiometricResidencePermitDetailsPage.enterBRPDetails(c.BRP_NUMBER, c.FULL_NAME, c.DATE_OF_BIRTH);
-  await pages.rilNationalInsuranceNumberPage.validateNationalInsuranceNumberPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilNationalInsuranceNumberPage.validateNationalInsuranceNumberPageErrors();
   await pages.rilNationalInsuranceNumberPage.completeNationalInsuranceNumberPage(c.NATIONAL_INSURANCE_NUMBER);
   await pages.rilKnownByOtherNamesPage.validateKnownByOtherNamesPageErrors();
   await pages.rilKnownByOtherNamesPage.completeKnownByOtherNamesPage(c.YES);
@@ -244,54 +244,54 @@ When("I validate main applicant and dependant sections errors and continue", asy
   await pages.rilOtherNamesPage.completeOtherNamesPage(c.FULL_NAME);
   await pages.rilHomeOfficeReferenceNumberPage.validateHomeOfficeReferenceNumberPageErrors();
   await pages.rilHomeOfficeReferenceNumberPage.completeHomeOfficeReferenceNumberPage(c.JOINT_HOME_OFFICE_REFERENCE);
-  await pages.rilPartnerBRPDetailsPage.validatePartnerBRPDetailsErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilPartnerBRPDetailsPage.validatePartnerBRPDetailsErrors();
   await pages.rilPartnerBRPDetailsPage.enterPartnerBRPDetails(c.BRP_NUMBER, c.PARTNER_FULL_NAME, c.DATE_OF_BIRTH);
-  await pages.rilPartnerNINumberPage.validatePartnerNINumberPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilPartnerNINumberPage.validatePartnerNINumberPageErrors();
   await pages.rilPartnerNINumberPage.enterPartnerNINumber(c.PARTNER_NI_NUMBER);
   await pages.rilPartnerKnownByOtherNamesPage.validatePartnerKnownByOtherNamesPageErrors();
   await pages.rilPartnerKnownByOtherNamesPage.completePartnerKnownByOtherNamesPage(c.YES);
   await pages.rilPartnerFullNamePage.validatePartnerFullNamePageErrors();
   await pages.rilPartnerFullNamePage.completePartnerFullNamePage(c.PARTNER_OTHER_NAME);
   await pages.rilPartnerOtherNamesPage.completePartnerOtherNamesPage();
-  await pages.rilPartnerConvictedOfACrimeInTheUKPage.validatePartnerConvictedOfACrimePageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilPartnerConvictedOfACrimeInTheUKPage.validatePartnerConvictedOfACrimePageErrors();
   await pages.rilDependantsLivingWithYouPage.validateDependantsLivingWithYouPageErrors();
   await pages.rilDependantsLivingWithYouPage.completeDependantsLivingWithYouPage(c.YES);
-  await pages.rilEnterDetailsOfYourDependantPage.validateDetailsOfYourDependantPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilEnterDetailsOfYourDependantPage.validateDetailsOfYourDependantPageErrors();
   await pages.rilEnterDetailsOfYourDependantPage.enterDetailsOfTheDependants(c.DEPENDANT_FULL_NAME, c.DATE_OF_BIRTH, c.DEPENDANT_RELATIONSHIP);
   await pages.basePage.clickContinueButton();
 });
 
 When("I validate address details errors and continue", async ({ pages }) => {
-  await pages.rilYourAddressInTheUKPage.validateYourAddressPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilYourAddressInTheUKPage.validateYourAddressPageErrors();
   await pages.rilYourAddressInTheUKPage.enterAddressDetails(c.ADDRESS_TEXT, c.ADDRESS_TEXT, c.ADDRESS_TEXT, c.POSTCODE);
 });
 
 When("I validate the loan details of an applicants errors and continue", async ({ pages }) => {
-  await pages.rilCombineMoneyReceiveEachMonthPage.validateCombinedMoneyReceiveEachMonthPageErrors(c.PAGE_INPUT_VALUES);
-  await pages.rilCombineMoneyReceiveEachMonthPage.enterCombinedMoneyReceiveEachMonthDetails(c.VALIDATION_INCOME_OPTIONS, c.PAGE_INPUT_VALUES);
-  await pages.rilCombinedMoneySpentEachMonthPage.validateCombinedMoneySpentEachMonthPageErrors(c.PAGE_INPUT_VALUES);
-  await pages.rilCombinedMoneySpentEachMonthPage.enterCombinedMoneySpentEachMonthDetails(c.VALIDATION_EXPENDITURE_OPTIONS, c.PAGE_INPUT_VALUES);
-  await pages.rilCombinedSavingsPage.validateCombinedHaveAnySavingsPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilCombineMoneyReceiveEachMonthPage.validateCombinedMoneyReceiveEachMonthPageErrors();
+  await pages.rilCombineMoneyReceiveEachMonthPage.enterCombinedMoneyReceiveEachMonthDetails(c.VALIDATION_INCOME_OPTIONS);
+  await pages.rilCombinedMoneySpentEachMonthPage.validateCombinedMoneySpentEachMonthPageErrors();
+  await pages.rilCombinedMoneySpentEachMonthPage.enterCombinedMoneySpentEachMonthDetails(c.VALIDATION_EXPENDITURE_OPTIONS);
+  await pages.rilCombinedSavingsPage.validateCombinedHaveAnySavingsPageErrors();
   await pages.rilCombinedSavingsPage.completeCombinedSavingsPage(c.YES, c.SAVINGS_AMOUNT);
-  await pages.rilCombinedLoanAmountPage.validateLoanAmountPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilCombinedLoanAmountPage.validateLoanAmountPageErrors();
   await pages.rilCombinedLoanAmountPage.completeCombinedLoanAmountPage(c.LOAN_AMOUNT);
   await pages.rilCombinedWhatWillYouUseTheLoanForPage.validateCombinedWhatWillYouUseTheLoanForPageErrors();
   await pages.rilCombinedWhatWillYouUseTheLoanForPage.completeCombinedWhatWillYouUseTheLoanForPage(Object.values(c.LOAN_PURPOSE_LABELS));
 });
 
 When("I validate bank or building society account details errors and continue", async ({ pages }) => {
-  await pages.rilBankOrBuildingSocietyAccountPage.validateBankOrBuildingSocietyPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilBankOrBuildingSocietyAccountPage.validateBankOrBuildingSocietyPageErrors();
   await pages.rilBankOrBuildingSocietyAccountPage.enterBankOrBuildingSocietyDetails(c.BUILDING_SOCIETY_NAME, c.RIL_AMOUNT, c.SORT_CODE, c.ACCOUNT_NUMBER, c.LOAN_AMOUNT);
 });
 
 When("I validate contact and help details selection errors and continue", async ({ pages }) => {
-  await pages.rilHowWouldYouLikeUsToContactYouPage.validateHowWouldYouLikeUsToContactYouPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilHowWouldYouLikeUsToContactYouPage.validateHowWouldYouLikeUsToContactYouPageErrors();
   await pages.rilHowWouldYouLikeUsToContactYouPage.completeHowWouldYouLikeUsToContactYouPage(c.SAS_HOF_EMAIL, c.TELEPHONE);
   await pages.rilYouGetAnyHelpMakingThisApplicationPage.validateYouGetAnyHelpMakingThisApplicationPageErrors();
   await pages.rilYouGetAnyHelpMakingThisApplicationPage.completeYouGetAnyHelpMakingThisApplicationPage(c.YES);
   await pages.rilWhyDidYouNeedHelpPage.validateWhyDidYouNeedHelpPageErrors();
   await pages.rilWhyDidYouNeedHelpPage.selectWhyDidYouNeedHelpPageOptions(c.HELP_REASONS);
-  await pages.rilThePersonWhoHelpedYouPage.validatePersonWhoHelpedYouPageErrors(c.PAGE_INPUT_VALUES);
+  await pages.rilThePersonWhoHelpedYouPage.validatePersonWhoHelpedYouPageErrors();
   await pages.rilThePersonWhoHelpedYouPage.completePersonWhoHelpedYouPage(c.HELPER_FULL_NAME, c.HELPER_RELATIONSHIP, c.SAS_HOF_EMAIL, c.TELEPHONE);
 });
 

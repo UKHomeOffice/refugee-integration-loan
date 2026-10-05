@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilPartnerNINumberPage extends basePage {
   readonly partnerNINumberHeaderText: Locator;
   readonly partnerNINumberText: Locator;
@@ -49,7 +49,7 @@ export class RilPartnerNINumberPage extends basePage {
     await expect(this.partnerYourNINumberText).toHaveText('What is your partner\u2019s National Insurance number?');
     await expect(this.partnerYourNINumberExampleText).toHaveText('For example, \u2018QQ 12 34 56 C\u2019');
   }
-  async validatePartnerNINumberPageErrors(values: PageInputValues): Promise<void> {
+  async validatePartnerNINumberPageErrors(): Promise<void> {
     await expect(this.partnerNINumberBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.partnerNINumberMainError).toHaveText(
@@ -58,21 +58,21 @@ export class RilPartnerNINumberPage extends basePage {
     await expect(this.partnerNINumberSubError).toContainText(
       "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
-    await this.enterPartnerNINumber(values.shortNiNumber);
+    await this.enterPartnerNINumber(ConstantsLib.SHORT_NI_NUMBER);
     await expect(this.partnerNINumberMainError).toHaveText(
       "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
     await expect(this.partnerNINumberSubError).toContainText(
       "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
-    await this.enterPartnerNINumber(values.niNumberWrongOrder);
+    await this.enterPartnerNINumber(ConstantsLib.NI_NUMBER_WRONG_ORDER);
     await expect(this.partnerNINumberMainError).toHaveText(
       "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
     await expect(this.partnerNINumberSubError).toContainText(
       "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
-    await this.enterPartnerNINumber(values.longNiNumber);
+    await this.enterPartnerNINumber(ConstantsLib.LONG_NI_NUMBER);
     await expect(this.partnerNINumberMainError).toHaveText(
       "Enter your partner's National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );

@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilPartnerConvictedOfACrimeInTheUKPage extends basePage {
   readonly partnerConvictedOfACrimeText: Locator;
   readonly partnerConvictedOfACrimeLabel: Locator;
@@ -49,7 +49,7 @@ export class RilPartnerConvictedOfACrimeInTheUKPage extends basePage {
     await expect(this.partnerConvictedOfACrimeDetailsInfo).toHaveText('You have 500 characters remaining');
     await expect(this.partnerConvictedOfACrimeNoLabel).toHaveText('No');
   }
-  async validatePartnerConvictedOfACrimePageErrors(values: PageInputValues): Promise<void> {
+  async validatePartnerConvictedOfACrimePageErrors(): Promise<void> {
     await expect(this.partnerCrimeBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.partnerConvictedOfACrimeMainError).toHaveText(
@@ -62,7 +62,7 @@ export class RilPartnerConvictedOfACrimeInTheUKPage extends basePage {
     await this.clickContinue();
     await expect(this.partnerConvictedOfACrimeDetailsMainError).toHaveText('Enter details of the crime(s)');
     await expect(this.partnerConvictedOfACrimeDetailsSubError).toContainText('Enter details of the crime(s)');
-    await this.clearAndEnterTextInElement(this.partnerConvictedOfACrimeDetailsInput, values.crimeDetails);
+    await this.clearAndEnterTextInElement(this.partnerConvictedOfACrimeDetailsInput, ConstantsLib.CRIME_DETAILS);
     await this.clickContinue();
   }
   async completePartnerConvictedOfACrimePage(option: string): Promise<void> {

@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilEnterDetailsOfYourDependantPage extends basePage {
   readonly detailsOfDependantHeaderText: Locator;
   readonly addMoreDependantsLaterText: Locator;
@@ -59,7 +59,7 @@ export class RilEnterDetailsOfYourDependantPage extends basePage {
     await expect(this.dependantYearText).toHaveText('Year');
     await expect(this.dependantRelationshipText).toHaveText('Relationship to you');
   }
-  async validateDetailsOfYourDependantPageErrors(values: PageInputValues): Promise<void> {
+  async validateDetailsOfYourDependantPageErrors(): Promise<void> {
     await expect(this.detailsOfDependantBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.dependantFullNameMainError).toHaveText("Enter dependant's full name");
@@ -73,9 +73,9 @@ export class RilEnterDetailsOfYourDependantPage extends basePage {
     await expect(this.dependantRelationshipMainError).toHaveText("Enter the dependant's relationship to you");
     await expect(this.dependantRelationshipSubError).toContainText("Enter the dependant's relationship to you");
     await this.enterDetailsOfTheDependants(
-      values.dependantFullName,
-      values.invalidDependantCalendarDate,
-      values.dependantRelationship,
+      ConstantsLib.DEPENDANT_INPUT_FULL_NAME,
+      ConstantsLib.INVALID_DEPENDANT_CALENDAR_DATE,
+      ConstantsLib.DEPENDANT_INPUT_RELATIONSHIP,
     );
     await expect(this.dependantDobMainError).toHaveText(
       "Enter dependant's date of birth in the correct format; for example, 31 3 1980",
@@ -84,9 +84,9 @@ export class RilEnterDetailsOfYourDependantPage extends basePage {
       "Enter dependant's date of birth in the correct format; for example, 31 3 1980",
     );
     await this.enterDetailsOfTheDependants(
-      values.dependantFullName,
-      values.dependantDateWithLetter,
-      values.dependantRelationship,
+      ConstantsLib.DEPENDANT_INPUT_FULL_NAME,
+      ConstantsLib.DEPENDANT_DATE_WITH_LETTER,
+      ConstantsLib.DEPENDANT_INPUT_RELATIONSHIP,
     );
     await expect(this.dependantDobMainError).toHaveText(
       "Enter dependant's date of birth in the correct format; for example, 31 3 1980",

@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilYourAddressInTheUKPage extends basePage {
   readonly yourAddressPageHeaderText: Locator;
   readonly yourAddressText: Locator;
@@ -51,7 +51,7 @@ export class RilYourAddressInTheUKPage extends basePage {
     await expect(this.townOrCityText).toHaveText('Town or city');
     await expect(this.postcodeText).toHaveText('Postcode');
   }
-  async validateYourAddressPageErrors(values: PageInputValues): Promise<void> {
+  async validateYourAddressPageErrors(): Promise<void> {
     await this.getContinueButton();
     await this.clickContinue();
     await expect(this.buildingMainError).toHaveText('Enter details of your building and street');
@@ -61,14 +61,14 @@ export class RilYourAddressInTheUKPage extends basePage {
     await expect(this.postcodeMainError).toHaveText('Enter your postcode');
     await expect(this.postcodeSubError).toContainText('Enter your postcode');
     await this.enterAddressDetails(
-      values.invalidPostcodeBuilding,
-      values.invalidPostcodeStreet,
-      values.invalidPostcodeCity,
-      values.numericPostcode,
+      ConstantsLib.INVALID_POSTCODE_BUILDING,
+      ConstantsLib.INVALID_POSTCODE_STREET,
+      ConstantsLib.INVALID_POSTCODE_CITY,
+      ConstantsLib.NUMERIC_POSTCODE,
     );
     await expect(this.postcodeMainError).toHaveText('Enter your postcode');
     await expect(this.postcodeSubError).toContainText('Enter your postcode');
-    await this.enterAddressDetails(values.building, values.street, values.city, values.shortPostcode);
+    await this.enterAddressDetails(ConstantsLib.BUILDING, ConstantsLib.STREET, ConstantsLib.CITY, ConstantsLib.SHORT_POSTCODE);
     await expect(this.postcodeMainError).toHaveText('Enter your postcode');
     await expect(this.postcodeSubError).toContainText('Enter your postcode');
   }

@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilBankOrBuildingSocietyAccountPage extends basePage {
   readonly bankAccountHeaderText: Locator;
   readonly sendYourLoanText: Locator;
@@ -72,7 +72,7 @@ export class RilBankOrBuildingSocietyAccountPage extends basePage {
     await expect(this.creditUnionNumberLabel).toHaveText('Building society or credit union number (if you have one)');
     await expect(this.creditUnionNumberHintLabel).toHaveText('You can find this on your card, statement or passbook');
   }
-  async validateBankOrBuildingSocietyPageErrors(values: PageInputValues): Promise<void> {
+  async validateBankOrBuildingSocietyPageErrors(): Promise<void> {
     await expect(this.bankAccountBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.accountNameMainError).toHaveText('Enter the name on your account');
@@ -84,42 +84,42 @@ export class RilBankOrBuildingSocietyAccountPage extends basePage {
     await expect(this.accountNumberMainError).toHaveText('Enter your 6 to 8 digit account number');
     await expect(this.accountNumberSubError).toContainText('Enter your 6 to 8 digit account number');
     await this.enterBankOrBuildingSocietyDetails(
-      values.bankValidationAccountName,
-      values.loanAmount,
-      values.shortSortCode,
-      values.shortAccountNumber,
-      values.loanAmount,
+      ConstantsLib.BANK_VALIDATION_ACCOUNT_NAME,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
+      ConstantsLib.SHORT_SORT_CODE,
+      ConstantsLib.SHORT_ACCOUNT_NUMBER,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
     );
     await expect(this.sortCodeMainError).toHaveText('Enter your sort code in the correct format; for example 010101');
     await expect(this.sortCodeSubError).toContainText('Enter your sort code in the correct format; for example 010101');
     await expect(this.accountNumberMainError).toHaveText('Enter your 6 to 8 digit account number');
     await expect(this.accountNumberSubError).toContainText('Enter your 6 to 8 digit account number');
     await this.enterBankOrBuildingSocietyDetails(
-      values.bankValidationAccountName,
-      values.loanAmount,
-      values.longSortCode,
-      values.longAccountNumber,
-      values.loanAmount,
+      ConstantsLib.BANK_VALIDATION_ACCOUNT_NAME,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
+      ConstantsLib.LONG_SORT_CODE,
+      ConstantsLib.LONG_ACCOUNT_NUMBER,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
     );
     await expect(this.sortCodeMainError).toHaveText('Enter your sort code in the correct format; for example 010101');
     await expect(this.sortCodeSubError).toContainText('Enter your sort code in the correct format; for example 010101');
     await this.enterBankOrBuildingSocietyDetails(
-      values.accountName,
-      values.loanAmount,
-      values.sortCodeWithSymbol,
-      values.accountNumberWithSymbol,
-      values.loanAmount,
+      ConstantsLib.ACCOUNT_NAME,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
+      ConstantsLib.SORT_CODE_WITH_SYMBOL,
+      ConstantsLib.ACCOUNT_NUMBER_WITH_SYMBOL,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
     );
     await expect(this.sortCodeMainError).toHaveText('Enter your sort code in the correct format; for example 010101');
     await expect(this.sortCodeSubError).toContainText('Enter your sort code in the correct format; for example 010101');
     await expect(this.accountNumberMainError).toHaveText('Enter your 6 to 8 digit account number');
     await expect(this.accountNumberSubError).toContainText('Enter your 6 to 8 digit account number');
     await this.enterBankOrBuildingSocietyDetails(
-      values.accountName,
-      values.loanAmount,
-      values.sortCodeWithLetters,
-      values.accountNumberWithLetters,
-      values.loanAmount,
+      ConstantsLib.ACCOUNT_NAME,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
+      ConstantsLib.SORT_CODE_WITH_LETTERS,
+      ConstantsLib.ACCOUNT_NUMBER_WITH_LETTERS,
+      ConstantsLib.INPUT_LOAN_AMOUNT,
     );
     await expect(this.sortCodeMainError).toHaveText('Enter your sort code in the correct format; for example 010101');
     await expect(this.sortCodeSubError).toContainText('Enter your sort code in the correct format; for example 010101');

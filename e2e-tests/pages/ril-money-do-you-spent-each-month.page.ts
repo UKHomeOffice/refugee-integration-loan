@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilMoneyDoYouSpentEachMonthPage extends basePage {
   readonly moneyDoYouSpentEachMonthHeaderText: Locator;
   readonly selectAllOptionsText: Locator;
@@ -71,51 +71,51 @@ export class RilMoneyDoYouSpentEachMonthPage extends basePage {
       'How much money do you spend each month? – Apply for a refugee integration loan – GOV.UK'
     );
   }
-  async enterMoneyDoYouSpentEachMonthDetails(options: string, values: PageInputValues): Promise<void> {
+  async enterMoneyDoYouSpentEachMonthDetails(options: string): Promise<void> {
     await this.getContinueButton();
     const optionsList = options.split('-');
     for (const option of optionsList) {
       switch (option) {
         case 'Rent':
           await this.getJavascriptCheckBox('Rent').click();
-          await this.clearAndEnterTextInElement(this.totalRentInput, values.rentAmount);
+          await this.clearAndEnterTextInElement(this.totalRentInput, ConstantsLib.RENT_AMOUNT);
           break;
         case 'Utility bills':
           await this.getJavascriptCheckBox('Utility (household) bills').click();
-          await this.clearAndEnterTextInElement(this.totalUtilitiesBillsInput, values.utilityBillsAmount);
+          await this.clearAndEnterTextInElement(this.totalUtilitiesBillsInput, ConstantsLib.UTILITY_BILLS_AMOUNT);
           break;
         case 'Food cleaning':
           await this.getJavascriptCheckBox('Food, toiletries and cleaning supplies').click();
-          await this.clearAndEnterTextInElement(this.totalFoodBillsInput, values.foodAmount);
+          await this.clearAndEnterTextInElement(this.totalFoodBillsInput, ConstantsLib.FOOD_AMOUNT);
           break;
         case 'Mobile phone':
           await this.getJavascriptCheckBox('Mobile phone').click();
-          await this.clearAndEnterTextInElement(this.totalMobilePhoneInput, values.mobilePhoneAmount);
+          await this.clearAndEnterTextInElement(this.totalMobilePhoneInput, ConstantsLib.MOBILE_PHONE_AMOUNT);
           break;
         case 'Travel':
           await this.getJavascriptCheckBox('Travel').click();
-          await this.clearAndEnterTextInElement(this.totalTravelInput, values.travelAmount);
+          await this.clearAndEnterTextInElement(this.totalTravelInput, ConstantsLib.TRAVEL_AMOUNT);
           break;
         case 'Clothing':
           await this.getJavascriptCheckBox('Clothing and footwear').click();
-          await this.clearAndEnterTextInElement(this.totalClothingFootwearInput, values.clothingAmount);
+          await this.clearAndEnterTextInElement(this.totalClothingFootwearInput, ConstantsLib.CLOTHING_AMOUNT);
           break;
         case 'Universal credit deductions':
           await this.getJavascriptCheckBox('Universal Credit deductions').click();
-          await this.clearAndEnterTextInElement(this.totalUCDeductionsInput, values.universalCreditDeductionsAmount);
+          await this.clearAndEnterTextInElement(this.totalUCDeductionsInput, ConstantsLib.UNIVERSAL_CREDIT_DEDUCTIONS_AMOUNT);
           break;
         case 'Other':
           await this.getJavascriptCheckBox('Other').click();
-          await this.clearAndEnterTextInElement(this.totalOutgoingInput, values.otherOutgoingAmount);
+          await this.clearAndEnterTextInElement(this.totalOutgoingInput, ConstantsLib.OTHER_OUTGOING_AMOUNT);
           break;
         default:
           throw new Error('Invalid option: ' + option);
       }
     }
   }
-  async completeMoneyDoYouSpentEachMonthPage(options: string, values: PageInputValues): Promise<void> {
+  async completeMoneyDoYouSpentEachMonthPage(options: string): Promise<void> {
     await this.assertPageTitle(this.page, await this.expectedPageTitle());
-    await this.enterMoneyDoYouSpentEachMonthDetails(options, values);
+    await this.enterMoneyDoYouSpentEachMonthDetails(options);
     await this.clickContinueButton();
   }
 }

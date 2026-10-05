@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilNationalInsuranceNumberPage extends basePage {
   readonly niNumberHeaderText: Locator;
   readonly niNumberText: Locator;
@@ -49,7 +49,7 @@ export class RilNationalInsuranceNumberPage extends basePage {
     await expect(this.yourNINumberText).toHaveText('What is your National Insurance number?');
     await expect(this.yourNINumberExampleText).toHaveText('For example, \u2018QQ 12 34 56 C\u2019');
   }
-  async validateNationalInsuranceNumberPageErrors(values: PageInputValues): Promise<void> {
+  async validateNationalInsuranceNumberPageErrors(): Promise<void> {
     await expect(this.niNumberBackNavBtn).toBeVisible();
     await this.getContinueButton();
     await this.clickContinue();
@@ -60,7 +60,7 @@ export class RilNationalInsuranceNumberPage extends basePage {
       "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
     await expect(this.niNumberBackNavBtn).toBeVisible();
-    await this.clearAndEnterTextInElement(this.niNumberInput, values.shortNiNumber);
+    await this.clearAndEnterTextInElement(this.niNumberInput, ConstantsLib.SHORT_NI_NUMBER);
     await this.clickContinue();
     await expect(this.niNumberMainError).toHaveText(
       "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
@@ -69,7 +69,7 @@ export class RilNationalInsuranceNumberPage extends basePage {
       "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
     await expect(this.niNumberBackNavBtn).toBeVisible();
-    await this.clearAndEnterTextInElement(this.niNumberInput, values.niNumberWrongOrder);
+    await this.clearAndEnterTextInElement(this.niNumberInput, ConstantsLib.NI_NUMBER_WRONG_ORDER);
     await this.clickContinue();
     await expect(this.niNumberMainError).toHaveText(
       "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
@@ -78,7 +78,7 @@ export class RilNationalInsuranceNumberPage extends basePage {
       "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",
     );
     await expect(this.niNumberBackNavBtn).toBeVisible();
-    await this.clearAndEnterTextInElement(this.niNumberInput, values.longNiNumber);
+    await this.clearAndEnterTextInElement(this.niNumberInput, ConstantsLib.LONG_NI_NUMBER);
     await this.clickContinue();
     await expect(this.niNumberMainError).toHaveText(
       "Enter your National Insurance number in the correct format; for example, 'QQ 12 34 56 C'",

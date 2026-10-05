@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilCombinedMoneySpentEachMonthPage extends basePage {
   readonly combinedMoneySpentEachMonthHeaderText: Locator;
   readonly combinedSelectAllOptionsText: Locator;
@@ -151,45 +151,45 @@ export class RilCombinedMoneySpentEachMonthPage extends basePage {
     await expect(this.combinedTotalOutgoingsText).toHaveText('Total other outgoings per month');
     await this.clickMoneySpentCheckboxes();
   }
-  async enterCombinedMoneySpentEachMonthDetails(options: string, values: PageInputValues): Promise<void> {
+  async enterCombinedMoneySpentEachMonthDetails(options: string): Promise<void> {
     await this.getContinueButton();
     const optionsList = options.split('-');
     for (const option of optionsList) {
       switch (option) {
         case 'Rent':
           await this.getJavascriptCheckBox('Rent').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalRentInput, values.rentAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalRentInput, ConstantsLib.RENT_AMOUNT);
           break;
         case 'Utility bills':
           await this.getJavascriptCheckBox('Utility (household) bills').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalUtilitiesBillsInput, values.utilityBillsAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalUtilitiesBillsInput, ConstantsLib.UTILITY_BILLS_AMOUNT);
           break;
         case 'Food cleaning':
           await this.getJavascriptCheckBox('Food, toiletries and cleaning supplies').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalFoodBillsInput, values.foodAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalFoodBillsInput, ConstantsLib.FOOD_AMOUNT);
           break;
         case 'Mobile phone':
           await this.getJavascriptCheckBox('Mobile phone').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalMobilePhoneInput, values.mobilePhoneAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalMobilePhoneInput, ConstantsLib.MOBILE_PHONE_AMOUNT);
           break;
         case 'Travel':
           await this.getJavascriptCheckBox('Travel').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalTravelInput, values.travelAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalTravelInput, ConstantsLib.TRAVEL_AMOUNT);
           break;
         case 'Clothing':
           await this.getJavascriptCheckBox('Clothing and footwear').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalClothingFootwearInput, values.clothingAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalClothingFootwearInput, ConstantsLib.CLOTHING_AMOUNT);
           break;
         case 'Universal credit deductions':
           await this.getJavascriptCheckBox('Universal Credit deductions').click();
           await this.clearAndEnterTextInElement(
             this.combinedTotalUCDeductionsInput,
-            values.universalCreditDeductionsAmount,
+            ConstantsLib.UNIVERSAL_CREDIT_DEDUCTIONS_AMOUNT,
           );
           break;
         case 'Other':
           await this.getJavascriptCheckBox('Other').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalOutgoingInput, values.otherOutgoingAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalOutgoingInput, ConstantsLib.OTHER_OUTGOING_AMOUNT);
           break;
         default:
           throw new Error('Invalid option: ' + option);
@@ -229,7 +229,7 @@ export class RilCombinedMoneySpentEachMonthPage extends basePage {
     await this.clearAndEnterTextInElement(this.combinedTotalOutgoingInput, total);
     await this.clickContinue();
   }
-  async validateCombinedMoneySpentEachMonthPageErrors(values: PageInputValues): Promise<void> {
+  async validateCombinedMoneySpentEachMonthPageErrors(): Promise<void> {
     await expect(this.combinedMoneySpentBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.combinedMoneyReceiveEachMonthMainError).toHaveText(
@@ -269,14 +269,14 @@ export class RilCombinedMoneySpentEachMonthPage extends basePage {
     await expect(this.combinedTotalOutgoingsMainError).toHaveText('Enter total other outgoings per month');
     await expect(this.combinedTotalOutgoingsSubError).toContainText('Enter total other outgoings per month');
     await this.enterCombinedMoneySpentDetails(
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
     );
     await expect(this.combinedRentAmountMainError).toHaveText('Rent amount must be greater than zero');
     await expect(this.combinedRentAmountSubError).toContainText('Rent amount must be greater than zero');
@@ -311,14 +311,14 @@ export class RilCombinedMoneySpentEachMonthPage extends basePage {
     await expect(this.combinedTotalOutgoingsMainError).toHaveText('Other outgoings amount must be greater than zero');
     await expect(this.combinedTotalOutgoingsSubError).toContainText('Other outgoings amount must be greater than zero');
     await this.enterCombinedMoneySpentDetails(
-      values.negativeSalaryAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
+      ConstantsLib.NEGATIVE_SALARY_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
     );
     await expect(this.combinedRentAmountMainError).toHaveText('Rent amount must be greater than zero');
     await expect(this.combinedRentAmountSubError).toContainText('Rent amount must be greater than zero');
@@ -353,14 +353,14 @@ export class RilCombinedMoneySpentEachMonthPage extends basePage {
     await expect(this.combinedTotalOutgoingsMainError).toHaveText('Other outgoings amount must be greater than zero');
     await expect(this.combinedTotalOutgoingsSubError).toContainText('Other outgoings amount must be greater than zero');
     await this.enterCombinedMoneySpentDetails(
-      values.salaryWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
+      ConstantsLib.SALARY_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
     );
     await expect(this.combinedRentAmountMainError).toHaveText(
       'Rent must be in pounds and pence; for example £100.00',
@@ -411,14 +411,14 @@ export class RilCombinedMoneySpentEachMonthPage extends basePage {
       'Other outgoings amount must be in pounds and pence; for example £100.00',
     );
     await this.enterCombinedMoneySpentDetails(
-      values.rentWithThreeDecimals,
-      values.utilityBillsWithThreeDecimals,
-      values.foodWithThreeDecimals,
-      values.phoneWithThreeDecimals,
-      values.travelWithThreeDecimals,
-      values.clothingWithThreeDecimals,
-      values.deductionsWithThreeDecimals,
-      values.otherOutgoingsWithThreeDecimals,
+      ConstantsLib.RENT_WITH_THREE_DECIMALS,
+      ConstantsLib.UTILITY_BILLS_WITH_THREE_DECIMALS,
+      ConstantsLib.FOOD_WITH_THREE_DECIMALS,
+      ConstantsLib.PHONE_WITH_THREE_DECIMALS,
+      ConstantsLib.TRAVEL_WITH_THREE_DECIMALS,
+      ConstantsLib.CLOTHING_WITH_THREE_DECIMALS,
+      ConstantsLib.DEDUCTIONS_WITH_THREE_DECIMALS,
+      ConstantsLib.OTHER_OUTGOINGS_WITH_THREE_DECIMALS,
     );
     await expect(this.combinedRentAmountMainError).toHaveText(
       'Rent must be in pounds and pence; for example £100.00',

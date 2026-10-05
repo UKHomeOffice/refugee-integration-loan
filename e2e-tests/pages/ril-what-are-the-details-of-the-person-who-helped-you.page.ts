@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilWhatAreTheDetailsOfThePersonWhoHelpedYouPage extends basePage {
   readonly detailsOfThePersonWhoHelpedYouHeaderText: Locator;
   readonly fullNameText: Locator;
@@ -77,7 +77,7 @@ export class RilWhatAreTheDetailsOfThePersonWhoHelpedYouPage extends basePage {
     await expect(this.phoneNumberText).toHaveText('UK telephone number');
     await this.selectCheckboxes();
   }
-  async validatePersonWhoHelpedYouPageErrors(values: PageInputValues): Promise<void> {
+  async validatePersonWhoHelpedYouPageErrors(): Promise<void> {
     await expect(this.personWhoHelpedYouBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.personWhoHelpedYouMainError).toHaveText('Enter the full name of the person who helped you');
@@ -93,20 +93,20 @@ export class RilWhatAreTheDetailsOfThePersonWhoHelpedYouPage extends basePage {
     await this.getContinueButton();
     await this.selectCheckboxes();
     await this.enterPersonWhoHelpedYouDetails(
-      values.helperFullName,
-      values.helperRelationship,
-      values.emptyValue,
-      values.emptyValue,
+      ConstantsLib.INPUT_HELPER_FULL_NAME,
+      ConstantsLib.INPUT_HELPER_RELATIONSHIP,
+      ConstantsLib.EMPTY_VALUE,
+      ConstantsLib.EMPTY_VALUE,
     );
     await expect(this.contactEmailMainError).toHaveText("Enter the person's email address");
     await expect(this.contactEmailSubError).toContainText("Enter the person's email address");
     await expect(this.contactPhoneMainError).toHaveText("Enter the person's phone number");
     await expect(this.contactPhoneSubError).toContainText("Enter the person's phone number");
     await this.enterPersonWhoHelpedYouDetails(
-      values.helperFullName,
-      values.helperRelationship,
-      values.invalidEmail,
-      values.invalidHelperPhone,
+      ConstantsLib.INPUT_HELPER_FULL_NAME,
+      ConstantsLib.INPUT_HELPER_RELATIONSHIP,
+      ConstantsLib.INVALID_EMAIL,
+      ConstantsLib.INVALID_HELPER_PHONE,
     );
     await expect(this.contactEmailMainError).toHaveText("Enter the person's email address");
     await expect(this.contactEmailSubError).toContainText("Enter the person's email address");

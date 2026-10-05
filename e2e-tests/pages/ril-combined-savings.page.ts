@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilCombinedSavingsPage extends basePage {
   readonly combinedAmountOfSavingsHeaderText: Locator;
   readonly combinedAmountOfSavingsYesLabel: Locator;
@@ -39,7 +39,7 @@ export class RilCombinedSavingsPage extends basePage {
     await expect(this.combinedTotalAmountOfSavingsLabel).toHaveText('Total amount of savings');
     await expect(this.combinedAmountOfSavingsNoLabel).toHaveText('No');
   }
-  async validateCombinedHaveAnySavingsPageErrors(values: PageInputValues): Promise<void> {
+  async validateCombinedHaveAnySavingsPageErrors(): Promise<void> {
     await expect(this.combinedAmountOfSavingsBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.combinedAmountOfSavingsMainError).toHaveText('Select if you or your partner have any savings');
@@ -48,19 +48,19 @@ export class RilCombinedSavingsPage extends basePage {
     await this.clickContinue();
     await expect(this.combinedSavingsMainError).toHaveText('Enter total amount of savings');
     await expect(this.combinedSavingsSubError).toContainText('Enter total amount of savings');
-    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, values.zeroAmount);
+    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, ConstantsLib.ZERO_AMOUNT);
     await this.clickContinue();
     await expect(this.combinedSavingsMainError).toHaveText('Total amount of savings must be greater than zero');
     await expect(this.combinedSavingsSubError).toContainText('Total amount of savings must be greater than zero');
-    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, values.negativeAmount);
+    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, ConstantsLib.NEGATIVE_AMOUNT);
     await this.clickContinue();
     await expect(this.combinedSavingsMainError).toHaveText('Total amount of savings must be greater than zero');
     await expect(this.combinedSavingsSubError).toContainText('Total amount of savings must be greater than zero');
-    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, values.currencySymbolAmount);
+    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, ConstantsLib.CURRENCY_SYMBOL_AMOUNT);
     await this.clickContinue();
     await expect(this.combinedSavingsMainError).toHaveText('Total amount of savings must be in pounds and pence; for example £100.00');
     await expect(this.combinedSavingsSubError).toContainText('Total amount of savings must be in pounds and pence; for example £100.00');
-    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, values.threeDecimalAmount);
+    await this.clearAndEnterTextInElement(this.combinedTotalAmountOfSavingsInput, ConstantsLib.THREE_DECIMAL_AMOUNT);
     await this.clickContinue();
     await expect(this.combinedSavingsMainError).toHaveText('Total amount of savings must be in pounds and pence; for example £100.00');
     await expect(this.combinedSavingsSubError).toContainText('Total amount of savings must be in pounds and pence; for example £100.00');

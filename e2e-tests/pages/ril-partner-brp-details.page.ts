@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilPartnerBRPDetailsPage extends basePage {
   readonly brpNumberPageHeaderText: Locator;
   readonly brpNumberEnterYourDetailsText: Locator;
@@ -78,7 +78,7 @@ export class RilPartnerBRPDetailsPage extends basePage {
     await expect(this.monthLabel).toHaveText('Month');
     await expect(this.yearLabel).toHaveText('Year');
   }
-  async validatePartnerBRPDetailsErrors(values: PageInputValues): Promise<void> {
+  async validatePartnerBRPDetailsErrors(): Promise<void> {
     await this.getContinueButton();
     await this.clickContinue();
     await expect(this.fullNameMainError).toHaveText("Enter your partner's full name");
@@ -89,7 +89,7 @@ export class RilPartnerBRPDetailsPage extends basePage {
     await expect(this.dobSubError).toContainText(
       "Enter your partner's date of birth in the correct format; for example, 31 3 1980",
     );
-    await this.enterPartnerBRPDetails(values.brpWithSpace, values.invalidDataFullName, values.invalidDayAndMonth);
+    await this.enterPartnerBRPDetails(ConstantsLib.BRP_WITH_SPACE, ConstantsLib.INVALID_DATA_FULL_NAME, ConstantsLib.INVALID_DAY_AND_MONTH);
     await expect(this.brpNumberFormatMainError).toHaveText(
       "Enter your partner's BRP number in the correct format; for example, \u2018ZUX123456 or ZU1234567\u2019",
     );
@@ -102,7 +102,7 @@ export class RilPartnerBRPDetailsPage extends basePage {
     await expect(this.dobSubError).toContainText(
       "Enter your partner's date of birth in the correct format; for example, 31 3 1980",
     );
-    await this.enterPartnerBRPDetails(values.brpWithSpace, values.invalidDataFullName, values.invalidDayAndMonth);
+    await this.enterPartnerBRPDetails(ConstantsLib.BRP_WITH_SPACE, ConstantsLib.INVALID_DATA_FULL_NAME, ConstantsLib.INVALID_DAY_AND_MONTH);
     await expect(this.brpNumberFormatMainError).toHaveText(
       "Enter your partner's BRP number in the correct format; for example, \u2018ZUX123456 or ZU1234567\u2019",
     );

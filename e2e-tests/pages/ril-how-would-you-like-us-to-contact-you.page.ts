@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilHowWouldYouLikeUsToContactYouPage extends basePage {
   readonly contactYouPageHeaderText: Locator;
   readonly selectAtLeastOneOptionText: Locator;
@@ -61,19 +61,19 @@ export class RilHowWouldYouLikeUsToContactYouPage extends basePage {
     await this.getJavascriptCheckBox('Email').click();
     await this.getJavascriptCheckBox('Phone').click();
   }
-  async validateHowWouldYouLikeUsToContactYouPageErrors(values: PageInputValues): Promise<void> {
+  async validateHowWouldYouLikeUsToContactYouPageErrors(): Promise<void> {
     await expect(this.contactYouBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.noOptionsSelectedMainError).toHaveText('Select how we can contact you');
     await expect(this.noOptionsSelectedSubError).toContainText('Select how we can contact you');
     await this.getContinueButton();
     await this.selectCheckboxes();
-    await this.enterHowDoYouLikeUsToContactYouPage(values.emptyValue, values.emptyValue);
+    await this.enterHowDoYouLikeUsToContactYouPage(ConstantsLib.EMPTY_VALUE, ConstantsLib.EMPTY_VALUE);
     await expect(this.emailMainError).toHaveText('Enter your email address');
     await expect(this.emailSubError).toContainText('Enter your email address');
     await expect(this.phoneMainError).toHaveText('Enter your phone number in the correct format');
     await expect(this.phoneSubError).toContainText('Enter your phone number in the correct format');
-    await this.enterHowDoYouLikeUsToContactYouPage(values.invalidEmail, values.phoneWithLetters);
+    await this.enterHowDoYouLikeUsToContactYouPage(ConstantsLib.INVALID_EMAIL, ConstantsLib.PHONE_WITH_LETTERS);
     await expect(this.emailMainError).toHaveText('Enter your email address');
     await expect(this.emailSubError).toContainText('Enter your email address');
     await this.getContinueButton();

@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilCombineMoneyReceiveEachMonthPage extends basePage {
   readonly combinedMoneyReceiveEachMonthHeaderText: Locator;
   readonly combinedSelectAllOptionsText: Locator;
@@ -110,31 +110,31 @@ export class RilCombineMoneyReceiveEachMonthPage extends basePage {
     await expect(this.combinedCharactersRemainingText).toHaveText('You have 200 characters remaining');
     await this.clickMoneyReceivedCheckboxes();
   }
-  async enterCombinedMoneyReceiveEachMonthDetails(options: string, values: PageInputValues): Promise<void> {
+  async enterCombinedMoneyReceiveEachMonthDetails(options: string): Promise<void> {
     await this.getContinueButton();
     const optionsList = options.split('-');
     for (const option of optionsList) {
       switch (option) {
         case 'Salary':
           await this.getJavascriptCheckBox('Salary (before tax)').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalSalaryInput, values.salaryAmount);
+          await this.clearAndEnterTextInElement(this.combinedTotalSalaryInput, ConstantsLib.SALARY_AMOUNT);
           break;
         case 'Universal Credit':
           await this.getJavascriptCheckBox('Universal Credit').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalUCInput, values.amount99);
+          await this.clearAndEnterTextInElement(this.combinedTotalUCInput, ConstantsLib.AMOUNT_99);
           break;
         case 'Child Benefit':
           await this.getJavascriptCheckBox('Child benefit').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalChildBenefitInput, values.amount99);
+          await this.clearAndEnterTextInElement(this.combinedTotalChildBenefitInput, ConstantsLib.AMOUNT_99);
           break;
         case 'Housing Benefit':
           await this.getJavascriptCheckBox('Housing benefit').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalHousingBenefitInput, values.amount99);
+          await this.clearAndEnterTextInElement(this.combinedTotalHousingBenefitInput, ConstantsLib.AMOUNT_99);
           break;
         case 'Other':
           await this.getJavascriptCheckBox('Other').click();
-          await this.clearAndEnterTextInElement(this.combinedTotalOtherIncomeInput, values.amount99);
-          await this.clearAndEnterTextInElement(this.combinedPleaseSpecifyInput, values.randomText99);
+          await this.clearAndEnterTextInElement(this.combinedTotalOtherIncomeInput, ConstantsLib.AMOUNT_99);
+          await this.clearAndEnterTextInElement(this.combinedPleaseSpecifyInput, ConstantsLib.RANDOM_TEXT_99);
           break;
         default:
           throw new Error('Invalid option: ' + option);
@@ -167,7 +167,7 @@ export class RilCombineMoneyReceiveEachMonthPage extends basePage {
     await this.getJavascriptCheckBox('Housing benefit').click();
     await this.getJavascriptCheckBox('Other').click();
   }
-  async validateCombinedMoneyReceiveEachMonthPageErrors(values: PageInputValues): Promise<void> {
+  async validateCombinedMoneyReceiveEachMonthPageErrors(): Promise<void> {
     await expect(this.combinedMoneyReceivedBackNavBtn).toBeVisible();
     await this.clickContinue();
     await expect(this.combinedMoneyReceiveOptionMainError).toHaveText(
@@ -191,12 +191,12 @@ export class RilCombineMoneyReceiveEachMonthPage extends basePage {
     await expect(this.combinedOtherIncomeDetailsMainError).toHaveText('Enter details about your other income');
     await expect(this.combinedOtherIncomeDetailsSubError).toContainText('Enter details about your other income');
     await this.enterCombinedMoneyReceivedDetails(
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.zeroAmount,
-      values.randomText260,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.ZERO_AMOUNT,
+      ConstantsLib.RANDOM_TEXT_260,
     );
     await expect(this.combinedSalaryMainError).toHaveText('Salary amount must be greater than zero');
     await expect(this.combinedSalarySubError).toContainText('Salary amount must be greater than zero');
@@ -217,12 +217,12 @@ export class RilCombineMoneyReceiveEachMonthPage extends basePage {
       'Other income details must be 200 characters or less',
     );
     await this.enterCombinedMoneyReceivedDetails(
-      values.negativeSalaryAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.negativeAmount,
-      values.randomText10,
+      ConstantsLib.NEGATIVE_SALARY_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.NEGATIVE_AMOUNT,
+      ConstantsLib.RANDOM_TEXT_10,
     );
     await expect(this.combinedSalaryMainError).toHaveText('Salary amount must be greater than zero');
     await expect(this.combinedSalarySubError).toContainText('Salary amount must be greater than zero');
@@ -237,12 +237,12 @@ export class RilCombineMoneyReceiveEachMonthPage extends basePage {
     await expect(this.combinedOtherIncomeMainError).toHaveText('Other income amount must be greater than zero');
     await expect(this.combinedOtherIncomeSubError).toContainText('Other income amount must be greater than zero');
     await this.enterCombinedMoneyReceivedDetails(
-      values.salaryWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.amountWithLetter,
-      values.randomText100,
+      ConstantsLib.SALARY_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.AMOUNT_WITH_LETTER,
+      ConstantsLib.RANDOM_TEXT_100,
     );
     await expect(this.combinedSalaryMainError).toHaveText('Salary amount must be greater than zero');
     await expect(this.combinedSalarySubError).toContainText('Salary amount must be greater than zero');
@@ -271,12 +271,12 @@ export class RilCombineMoneyReceiveEachMonthPage extends basePage {
       'Other income must be in pounds and pence; for example £100.00',
     );
     await this.enterCombinedMoneyReceivedDetails(
-      values.salaryWithThreeDecimals,
-      values.utilityBillsWithThreeDecimals,
-      values.foodWithThreeDecimals,
-      values.threeDecimalAmount,
-      values.threeDecimalAmount,
-      values.randomText100,
+      ConstantsLib.SALARY_WITH_THREE_DECIMALS,
+      ConstantsLib.UTILITY_BILLS_WITH_THREE_DECIMALS,
+      ConstantsLib.FOOD_WITH_THREE_DECIMALS,
+      ConstantsLib.THREE_DECIMAL_AMOUNT,
+      ConstantsLib.THREE_DECIMAL_AMOUNT,
+      ConstantsLib.RANDOM_TEXT_100,
     );
     await expect(this.combinedSalaryMainError).toHaveText(
       'Salary must be in pounds and pence; for example £100.00',

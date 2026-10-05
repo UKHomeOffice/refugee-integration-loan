@@ -17,7 +17,7 @@ Repeated valid inputs and invalid-input values live in
 Steps switch directly on the exact Description and pass named constants into
 the owning pages. No numeric Scenario IDs, applicant objects or scenario-data
 registries are used. `SAS_HOF_EMAIL` remains environment-configured.
-The remaining file under `test-data` declares page-input argument types only.
+Page objects read individual input values directly from `ConstantsLib`.
 Page-owned expected titles, labels and error messages describe the UI contract;
 they are not applicant-input data. No CSV files are loaded at runtime.
 

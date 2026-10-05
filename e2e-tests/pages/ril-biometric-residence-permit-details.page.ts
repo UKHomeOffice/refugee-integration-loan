@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilBiometricResidencePermitDetailsPage extends basePage {
   readonly brpNumberPageHeaderText: Locator;
   readonly brpNumberEnterYourDetailsText: Locator;
@@ -81,7 +81,7 @@ export class RilBiometricResidencePermitDetailsPage extends basePage {
     await expect(this.monthLabel).toHaveText('Month');
     await expect(this.yearLabel).toHaveText('Year');
   }
-  async validateBiometricResidencePermitDetailsErrors(values: PageInputValues): Promise<void> {
+  async validateBiometricResidencePermitDetailsErrors(): Promise<void> {
     await this.getContinueButton();
     await this.clickContinue();
     await expect(this.fullNameMainError).toHaveText('Enter your full name');
@@ -92,7 +92,7 @@ export class RilBiometricResidencePermitDetailsPage extends basePage {
     await expect(this.dobSubError).toContainText(
       'Enter your date of birth in the correct format; for example, 31 3 1980',
     );
-    await this.enterBRPDetails(values.brpWithSpace, values.invalidDataFullName, values.invalidDayAndMonth);
+    await this.enterBRPDetails(ConstantsLib.BRP_WITH_SPACE, ConstantsLib.INVALID_DATA_FULL_NAME, ConstantsLib.INVALID_DAY_AND_MONTH);
     await expect(this.brpNumberFormatMainError).toHaveText(
       'Enter your BRP number in the correct format; for example, \u2018ZUX123456 or ZU1234567\u2019',
     );
@@ -105,7 +105,7 @@ export class RilBiometricResidencePermitDetailsPage extends basePage {
     await expect(this.dobSubError).toContainText(
       'Enter your date of birth in the correct format; for example, 31 3 1980',
     );
-    await this.enterBRPDetails(values.shortBrpNumber, values.fullName, values.invalidCalendarDate);
+    await this.enterBRPDetails(ConstantsLib.SHORT_BRP_NUMBER, ConstantsLib.INPUT_FULL_NAME, ConstantsLib.INVALID_CALENDAR_DATE);
     await expect(this.brpNumberFormatMainError).toHaveText(
       'Enter your BRP number in the correct format; for example, \u2018ZUX123456 or ZU1234567\u2019',
     );

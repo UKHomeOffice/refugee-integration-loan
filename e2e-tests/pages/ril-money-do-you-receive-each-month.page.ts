@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 import { basePage } from './base-page';
-import { PageInputValues } from '../test-data/page-input-values';
+import { ConstantsLib } from '../utility-helper/constants-lib';
 export class RilMoneyDoYouReceiveEachMonthPage extends basePage {
   readonly moneyDoYouReceiveEachMonthHeaderText: Locator;
   readonly selectAllOptionsText: Locator;
@@ -61,40 +61,40 @@ export class RilMoneyDoYouReceiveEachMonthPage extends basePage {
       'How much money do you receive each month? – Apply for a refugee integration loan – GOV.UK'
     );
   }
-  async enterMoneyDoYouReceiveEachMonthDetails(options: string, values: PageInputValues): Promise<void> {
+  async enterMoneyDoYouReceiveEachMonthDetails(options: string): Promise<void> {
     await this.getContinueButton();
     const optionsList = options.split('-');
     for (const option of optionsList) {
       switch (option) {
         case 'Salary':
           await this.getJavascriptCheckBox('Salary (before tax)').click();
-          await this.clearAndEnterTextInElement(this.totalSalaryInput, values.salaryAmount);
+          await this.clearAndEnterTextInElement(this.totalSalaryInput, ConstantsLib.SALARY_AMOUNT);
           break;
         case 'Universal Credit':
           await this.getJavascriptCheckBox('Universal Credit').click();
-          await this.clearAndEnterTextInElement(this.totalUCInput, values.amount99);
+          await this.clearAndEnterTextInElement(this.totalUCInput, ConstantsLib.AMOUNT_99);
           break;
         case 'Child Benefit':
           await this.getJavascriptCheckBox('Child benefit').click();
-          await this.clearAndEnterTextInElement(this.totalChildBenefitInput, values.amount99);
+          await this.clearAndEnterTextInElement(this.totalChildBenefitInput, ConstantsLib.AMOUNT_99);
           break;
         case 'Housing Benefit':
           await this.getJavascriptCheckBox('Housing benefit').click();
-          await this.clearAndEnterTextInElement(this.totalHousingBenefitInput, values.amount99);
+          await this.clearAndEnterTextInElement(this.totalHousingBenefitInput, ConstantsLib.AMOUNT_99);
           break;
         case 'Other':
           await this.getJavascriptCheckBox('Other').click();
-          await this.clearAndEnterTextInElement(this.totalOtherIncomeInput, values.amount99);
-          await this.clearAndEnterTextInElement(this.pleaseSpecifyInput, values.randomText99);
+          await this.clearAndEnterTextInElement(this.totalOtherIncomeInput, ConstantsLib.AMOUNT_99);
+          await this.clearAndEnterTextInElement(this.pleaseSpecifyInput, ConstantsLib.RANDOM_TEXT_99);
           break;
         default:
           throw new Error('Invalid option: ' + option);
       }
     }
   }
-  async completeMoneyDoYouReceiveEachMonthPage(options: string, values: PageInputValues): Promise<void> {
+  async completeMoneyDoYouReceiveEachMonthPage(options: string): Promise<void> {
     await this.assertPageTitle(this.page, await this.expectedPageTitle());
-    await this.enterMoneyDoYouReceiveEachMonthDetails(options, values);
+    await this.enterMoneyDoYouReceiveEachMonthDetails(options);
     await this.clickContinueButton();
   }
 }
