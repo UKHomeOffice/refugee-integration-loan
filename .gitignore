@@ -12,3 +12,6 @@ test/_accessibility/tmp-bk/*
 coverage
 .nyc_output
 *.env
+.features-gen/
+playwright-report/
+test-results/
