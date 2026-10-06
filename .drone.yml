@@ -344,6 +344,9 @@ steps:
   - name: e2e_tests
     pull: if-not-exists
     image: mcr.microsoft.com/playwright:v1.63.0-noble
+    environment:
+      SAS_HOF_EMAIL:
+        from_secret: SAS_HOF_EMAIL
     volumes:
       - name: dockersock
         path: /root/.dockersock
@@ -624,6 +627,8 @@ steps:
     pull: if-not-exists
     image: mcr.microsoft.com/playwright:v1.63.0-noble
     environment:
+      SAS_HOF_EMAIL:
+        from_secret: SAS_HOF_EMAIL
       NIGHTLY_E2E_BASE_URL:
         from_secret: NIGHTLY_E2E_BASE_URL
     volumes:
