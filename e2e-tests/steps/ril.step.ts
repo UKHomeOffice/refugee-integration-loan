@@ -1,7 +1,5 @@
 import { createBdd } from 'playwright-bdd';
-
 import { test } from '../fixture/fixtures';
-
 import { ConstantsLib as c } from '../utility-helper/constants-lib';
 
 export const { Given, When, Then } = createBdd(test);
