@@ -71,7 +71,10 @@ export class basePage {
 
   getJavascriptCheckBox(label: string): Locator {
     if (!label.trim()) throw new Error('Radio or checkbox label cannot be empty');
-    return this.page.getByRole('radio', { name: label }).first();
+    return this.page
+      .getByRole('radio', { name: label })
+      .or(this.page.getByRole('checkbox', { name: label }))
+      .first();
   }
 
   async enterDateOrDob(inputDate: string): Promise<void> {
@@ -103,7 +106,7 @@ export class basePage {
   async clickContinue(): Promise<void> {
     await this.continueButton.click();
   }
-
+  
   async clickContinueButton(): Promise<void> {
     await this.clickContinue();
   }
