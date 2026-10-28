@@ -33,7 +33,7 @@
     ""
   ],
   "dependencies": {
-    "hof": "~24.5.0",
+    "hof": "~24.5.1",
     "libphonenumber-js": "^1.12.25",
     "notifications-node-client": "^8.4.0"
   },

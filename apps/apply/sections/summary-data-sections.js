@@ -1,5 +1,5 @@
 
-const moment = require('moment');
+const dayjs = require('dayjs');
 const config = require('../../../config');
 
 const sumValues = values => values.map(it => Number(it)).reduce((a, b) => a + b, 0);
@@ -20,7 +20,7 @@ module.exports = {
     'fullName',
     {
       field: 'dateOfBirth',
-      parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
+      parse: d => d && dayjs(d).format(config.PRETTY_DATE_FORMAT)
     },
     'homeOfficeReference'
   ],
@@ -55,7 +55,7 @@ module.exports = {
     'partnerFullName',
     {
       field: 'partnerDateOfBirth',
-      parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
+      parse: d => d && dayjs(d).format(config.PRETTY_DATE_FORMAT)
     }
   ],
   'partner-has-other-names': {
