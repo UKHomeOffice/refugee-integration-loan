@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 
-const moment = require('moment');
+const dayjs = require('dayjs');
 
 describe('validation checks of the apply journey', () => {
   let testApp;
@@ -21,7 +21,7 @@ describe('validation checks of the apply journey', () => {
   });
 
   beforeEach(() => {
-    now = moment();
+    now = dayjs();
   });
 
   describe('Previously Applied Validations', () => {

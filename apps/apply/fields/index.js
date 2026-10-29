@@ -1,4 +1,4 @@
-const moment = require('moment');
+const dayjs = require('dayjs');
 const config = require('../../../config');
 const dateComponent = require('hof').components.date;
 
@@ -217,7 +217,7 @@ module.exports = {
     mixin: 'input-date',
     validate: ['required', 'before', after1900Validator],
     autocomplete: 'bday',
-    parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
+    parse: d => d && dayjs(d).format(config.PRETTY_DATE_FORMAT)
   }),
   dependantRelationship: {
     validate: ['required', 'notUrl', { type: 'maxlength', arguments: 100 }]

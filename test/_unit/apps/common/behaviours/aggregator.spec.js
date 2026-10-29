@@ -1,7 +1,7 @@
 
 const AggregatorBehaviour = require('../../../../../apps/common/behaviours/aggregator');
 const Model = require('hof').model;
-const moment = require('moment');
+const dayjs = require('dayjs');
 
 
 describe('aggregator behaviour', () => {
@@ -365,7 +365,7 @@ describe('aggregator behaviour', () => {
         req.sessionModel = new Model({});
 
         req.form.options.fieldsConfig =
-          { dependantDateOfBirth: { parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT) } };
+          { dependantDateOfBirth: { parse: d => d && dayjs(d).format(config.PRETTY_DATE_FORMAT) } };
 
         const value = 1994 - 12 - 12;
 

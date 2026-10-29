@@ -1,7 +1,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const moment = require('moment');
+const dayjs = require('dayjs');
 const config = require('../../../config');
 const utilities = require('../../../lib/utilities');
 const NotifyClient = utilities.NotifyClient;
@@ -40,7 +40,7 @@ module.exports = class UploadPDFBase {
     }
 
     locals.title = `Refugee integration loan ${this.behaviourConfig.component}`;
-    locals.dateTime = moment().format(config.dateTimeFormat);
+    locals.dateTime = dayjs().format(config.dateTimeFormat);
     locals.values = req.sessionModel.toJSON();
     locals.htmlLang = res.locals.htmlLang || 'en';
 
