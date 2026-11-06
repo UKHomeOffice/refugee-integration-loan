@@ -1,4 +1,4 @@
-const moment = require('moment');
+const dayjs = require('dayjs');
 
 describe('validation checks of the accept journey', () => {
   let testApp;
@@ -19,7 +19,7 @@ describe('validation checks of the accept journey', () => {
   });
 
   beforeEach(() => {
-    now = moment();
+    now = dayjs();
   });
 
   describe('Reference Number Validations', () => {

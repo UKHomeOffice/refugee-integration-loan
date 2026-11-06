@@ -1,5 +1,5 @@
 
-const moment = require('moment');
+const dayjs = require('dayjs');
 const config = require('../../../config');
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     'name',
     {
       field: 'dateOfBirth',
-      parse: d => d && moment(d).format(config.PRETTY_DATE_FORMAT)
+      parse: d => d && dayjs(d).format(config.PRETTY_DATE_FORMAT)
     }
   ],
   'pdf-contact-details': [
