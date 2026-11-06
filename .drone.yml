@@ -146,7 +146,7 @@ accessibility_tests: &accessibility_tests
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
-  image: mcr.microsoft.com/playwright:v1.62.0
+  image: mcr.microsoft.com/playwright:v1.63.0-noble
 
 steps:
   - name: generate_github_app_token_for_clone
