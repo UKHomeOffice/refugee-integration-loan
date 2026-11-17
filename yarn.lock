@@ -3615,10 +3615,10 @@ hide-powered-by@1.1.0:
   resolved "https://registry.yarnpkg.com/hide-powered-by/-/hide-powered-by-1.1.0.tgz#be3ea9cab4bdb16f8744be873755ca663383fa7a"
   integrity sha512-Io1zA2yOA1YJslkr+AJlWSf2yWFkKjvkcL9Ni1XSUqnGLr/qRQe2UI3Cn/J9MsJht7yEVCe0SscY1HgVMujbgg==
 
-hof@~24.7.1:
-  version "24.7.1"
-  resolved "https://registry.yarnpkg.com/hof/-/hof-24.7.1.tgz#d0dddbf2d6a09eabafd7309c7e503c8bb60a9a17"
-  integrity sha512-/pphuGiO3VnuRno4mz0Vx+Sieh4/PqlU/KcSjBD48qL13EIgnGhRwXVDWbXdylfICHyVegSMDql+qBR6dH0yVw==
+hof@~24.7.2:
+  version "24.7.2"
+  resolved "https://registry.yarnpkg.com/hof/-/hof-24.7.2.tgz#3a5bc16ee7ef977f81ff528a743ea5a51950538c"
+  integrity sha512-aQTMxjizvc/RmhZJH6AJ8c4wJ3UrRjkSSq1niYiMlbbOBt3ZrcIs0CS5MeaAHwmcN5kHJDlH1IwXiFslsNTsmQ==
   dependencies:
     "@aws-sdk/client-sesv2" "^3.1160.0"
     "@rollup/plugin-commonjs" "^29.0.3"
