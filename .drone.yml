@@ -103,6 +103,40 @@ sonar_scanner: &sonar_scanner
   commands:
     - sonar-scanner -Dproject.settings=./sonar-project.properties
 
+
+accessibility_tests: &accessibility_tests
+  <<: *node_image
+  resources:
+      limits:
+        cpu: 2000
+        memory: 2048Mi
+  # options: --user root
+  environment:
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+    PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
+    NOTIFY_STUB: true
+    ENVIRONMENT: DRONE
+    DRONE_DEBUG: true
+    DRONE_TRACE: true
+    DRONE_LOGS_TEXT: true
+    DRONE_LOGS_PRETTY: true
+    DRONE_LOGS_COLOR: true
+    DRONE_SERVER:
+      from_secret: drone_server
+    DRONE_TOKEN:
+      from_secret: drone_token
+    SESSION_SECRET:
+      from_secret: session_secret_for_tests
+  volumes:
+    - name: dockersock
+      path: /root/.dockersock
+  commands:
+    - apk add --no-cache chromium
+    - test -x "$PUPPETEER_EXECUTABLE_PATH"
+    - yarn install --frozen-lockfile
+    - yarn run test:accessibility
+
+
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
   image: mcr.microsoft.com/playwright:v1.63.0-noble
@@ -168,6 +202,13 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
 
+  - name: accessibility_tests
+    <<: *accessibility_tests
+    when:
+      branch:
+        <<: *include_default_and_feature_branches
+      event: [push, pull_request]
+
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
     commands:
@@ -183,6 +224,7 @@ steps:
     depends_on: 
       - linting
       - unit_tests
+      - accessibility_tests
 
   - name: image_to_ecr
     image: plugins/ecr
