@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "[ -f .env ] && hof-build watch --env || hof-build watch",
-    "test": "yarn run test:lint && yarn run test:unit && yarn run test:ui-integration",
+    "test": "yarn run test:lint && yarn run test:unit && yarn run test:e2e",
     "test:accessibility": "_mocha \"test/_accessibility/**/*.spec.js\" --exit",
     "test:acceptance": "TAGS=\"${TAGS:=@feature}\" npm run test:cucumber",
     "test:acceptance_browser": "ACCEPTANCE_WITH_BROWSER=true TAGS=\"${TAGS:=@feature}\" yarn run test:cucumber",
