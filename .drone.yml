@@ -208,6 +208,8 @@ steps:
       branch:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
+    depends_on:
+      - setup
 
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
