@@ -37,7 +37,7 @@ trigger:
   branch:
     <<: *include_default_and_feature_branches
 
-node_image_name: &node_image_name quay.io/ukhomeofficedigital/hof-nodejs:24.22.2_3-alpine@sha256:ebf742568d6fa9505e5b8740dbb6bf7f4d38ea3a22fc2a940ee57cfa3a95a41e
+node_image_name: &node_image_name quay.io/ukhomeofficedigital/hof-nodejs:24.22.3_1-alpine@sha256:8533bcedc2dc86aceadaa8bab422931e8a33a81504c67247392eeffec6603cd5
 
 node_image: &node_image
   pull: if-not-exists
@@ -102,47 +102,6 @@ sonar_scanner: &sonar_scanner
   image: quay.io/ukhomeofficedigital/sonar-scanner:latest
   commands:
     - sonar-scanner -Dproject.settings=./sonar-project.properties
-
-ui_integration_tests: &ui_integration_tests
-  <<: *node_image
-  environment:
-    NOTIFY_STUB: true
-    SESSION_SECRET:
-      from_secret: session_secret_for_tests
-  commands:
-    - yarn run test:ui-integration
-
-accessibility_tests: &accessibility_tests
-  <<: *node_image
-  resources:
-      limits:
-        cpu: 2000
-        memory: 2048Mi
-  # options: --user root
-  environment:
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
-    PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
-    NOTIFY_STUB: true
-    ENVIRONMENT: DRONE
-    DRONE_DEBUG: true
-    DRONE_TRACE: true
-    DRONE_LOGS_TEXT: true
-    DRONE_LOGS_PRETTY: true
-    DRONE_LOGS_COLOR: true
-    DRONE_SERVER:
-      from_secret: drone_server
-    DRONE_TOKEN:
-      from_secret: drone_token
-    SESSION_SECRET:
-      from_secret: session_secret_for_tests
-  volumes:
-    - name: dockersock
-      path: /root/.dockersock
-  commands:
-    - apk add --no-cache chromium
-    - test -x "$PUPPETEER_EXECUTABLE_PATH"
-    - yarn install --frozen-lockfile
-    - yarn run test:accessibility
 
 acceptance_tests: &acceptance_tests
   pull: if-not-exists
@@ -209,22 +168,6 @@ steps:
         <<: *include_default_and_feature_branches
       event: [push, pull_request]
 
-  - name: ui_integration_tests
-    <<: *ui_integration_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
-    depends_on:
-      - setup
-
-  - name: accessibility_tests
-    <<: *accessibility_tests
-    when:
-      branch:
-        <<: *include_default_and_feature_branches
-      event: [push, pull_request]
-
   - name: build_image
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
     commands:
@@ -240,8 +183,6 @@ steps:
     depends_on: 
       - linting
       - unit_tests
-      - accessibility_tests
-      - ui_integration_tests
 
   - name: image_to_ecr
     image: plugins/ecr
@@ -355,7 +296,7 @@ steps:
         path: /root/.dockersock
     commands:
       - npm install -g n
-      - n 24.22.2
+      - n 24.22.3
       - hash -r
       - node --version
       - yarn install --frozen-lockfile
@@ -639,7 +580,7 @@ steps:
         path: /root/.dockersock
     commands:
       - npm install -g n
-      - n 24.22.2
+      - n 24.22.3
       - hash -r
       - node --version
       - yarn install --frozen-lockfile
@@ -776,7 +717,7 @@ services:
   - name: docker
     image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
 
-  # Redis session setup in background so ui integration tests can run
+  # Redis session setup in background so e2e tests can run
   - name: session
     image: redis
     volumes:

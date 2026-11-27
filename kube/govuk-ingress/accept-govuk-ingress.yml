@@ -6,6 +6,7 @@ metadata:
 {{ file .INGRESS_EXTERNAL_ANNOTATIONS | indent 2 }}
     ingress.kubernetes.io/app-root: /accept
 spec:
+  ingressClassName: nginx-external
   tls:
     - hosts:
         - www.accept-refugee-integration-loan.service.gov.uk
