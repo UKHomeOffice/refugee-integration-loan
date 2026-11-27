@@ -145,15 +145,6 @@ And then you can run your tests using the `TAGS` environmental variable to use i
 TAGS=@test yarn run test:acceptance
 ```
 
-### Pa11y CI Accessibility test runner
-
-Pa11y CI is a CI-centric accessibility test runner, built using [Pa11y](https://github.com/pa11y/pa11y).
-
-Pa11y CI runs accessibility tests against multiple URLs and reports on any issues. This used during automated testing of the application and can act as a gatekeeper to stop common WCAG a11y issues from making it to live.
-
-```bash
-yarn run test:_accessibility          // requires app to be running
-```
 ### BRP Number Validations
 BRP Numbers should contain 2 letters, followed by either an 'X' or a digit, and then 6 digits:
 
