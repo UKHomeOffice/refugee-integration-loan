@@ -125,26 +125,6 @@ Defaults in ACP are:
             Requests - cpu: 50m, memory: 200Mi
             Limits - cpu: 400m, memory: 400Mi
 
-### Acceptance Testing
-You can run the following to run all acceptance tests. These use the `@feature` tag by default:
-```
-yarn run test:acceptance
-```
-You can also run this in browser mode slowed down for visibility when debugging:
-```
-yarn run test:acceptance_browser
-```
-Additionally, you can place your own tag (@<name>), e.g. @test, above a Feature or Scenario section to run just that feature or scenario:
-```
-  @test
-  Scenario: Simple application - Mobile Only with new address
-    Given I start the 'apply' application journey
-```
-And then you can run your tests using the `TAGS` environmental variable to use it:
-```
-TAGS=@test yarn run test:acceptance
-```
-
 ### BRP Number Validations
 BRP Numbers should contain 2 letters, followed by either an 'X' or a digit, and then 6 digits:
 
